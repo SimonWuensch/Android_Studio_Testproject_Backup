@@ -3,4 +3,9 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
+    <color name="transparent">#00ffffff</color>
+
+    <color name="colorBorder">#BBCBDC</color>
+    <color name="colorBlack">#505A64</color>
+    <color name="ssiYellow">#FFFF00</color>
 </resources>
