@@ -1,5 +1,14 @@
 <resources>
     <string name="app_name">SSI_Client</string>
 
-    <string name="fragment_create_project_add_project">Projekt hinzufügen</string>
+    <string name="fragment_create_project_title">Projekt</string>
+    <string name="fragment_create_project_text_view_add_project">Projekt hinzufügen</string>
+    <string name="fragment_create_project_edit_text_hint_ip_address">IP Adresse</string>
+    <string name="fragment_create_project_edit_text_hint_user_name">Benutzername</string>
+    <string name="fragment_create_project_edit_text_hint_password">Passwort</string>
+    <string name="fragment_create_project_button_add_project">hinzufügen</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
 </resources>

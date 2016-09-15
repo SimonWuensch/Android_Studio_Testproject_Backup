@@ -27,7 +27,7 @@
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:layout_toEndOf="@+id/default_action_bar_image_view_page_icon"
             android:layout_centerInParent="true"
-            android:layout_marginStart="10dp"/>
+            android:layout_marginStart="@dimen/default_margin"/>
 
         <ImageButton
             android:id="@+id/default_action_bar_button_settings"

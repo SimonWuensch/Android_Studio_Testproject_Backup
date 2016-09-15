@@ -7,5 +7,6 @@
 
     <color name="colorBorder">#BBCBDC</color>
     <color name="colorBlack">#505A64</color>
+    <color name="colorWhite">#ffffff</color>
     <color name="ssiYellow">#FFFF00</color>
 </resources>
