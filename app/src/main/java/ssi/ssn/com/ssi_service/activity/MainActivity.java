@@ -25,6 +25,8 @@ public class MainActivity extends AppCompatActivity {
         requestHandler = RequestHandler.initRequestHandler(this);
 
         currentProject = new Project("172.26.78.235:8180", "admin", "admin");
+        //
+        String test = "test";
     }
 
     @Override
