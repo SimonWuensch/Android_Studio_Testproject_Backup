@@ -2,6 +2,7 @@ package ssi.ssn.com.ssi_service.fragment.createproject;
 
 
 import android.app.Fragment;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -10,10 +11,15 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import ssi.ssn.com.ssi_service.R;
+import ssi.ssn.com.ssi_service.activity.MainActivity;
 import ssi.ssn.com.ssi_service.model.data.ressource.Project;
-import ssi.ssn.com.ssi_service.test.ExecutorServiceTest;
+import ssi.ssn.com.ssi_service.model.network.handler.RequestHandler;
 
 public class FragmentCreateProject extends Fragment {
 
@@ -84,19 +90,48 @@ public class FragmentCreateProject extends Fragment {
             bAddProject.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    /*Toast.makeText(getActivity(), "Project add clicked... [" +
-                            etProjectAddress.getText().toString() + ", " +
-                            etUserName.getText().toString() + ", " +
-                            etPassword.getText().toString() + "]", Toast.LENGTH_SHORT).show();
-                    */
-                    //Project project = new Project("172.26.78.235:8180", "admin", "admin");
-                    //((MainActivity)getActivity()).getRequestHandler().doNotificationRequest(project, NotificationRequest.Path.TABLE_ALL);
+                final RequestHandler requestHandler = ((MainActivity)getActivity()).getRequestHandler();
+                final ExecutorService executor = Executors.newSingleThreadExecutor();
+                final Project project = new Project(
+                        etProjectAddress.getText().toString(),
+                        etUserName.getText().toString(),
+                        etPassword.getText().toString());
 
-                    try {
-                        ExecutorServiceTest.runIt();
-                    }catch(Throwable t){
-                        t.printStackTrace();
-                    }
+                    requestHandler.getRequestApplicationTask(project).executeOnExecutor(executor);
+
+                    new AsyncTask<Object, Void, Object>(){
+                        @Override
+                        protected Object doInBackground(Object[] objects) {
+                            return null;
+                        }
+
+                        @Override
+                        protected void onPostExecute(Object o) {
+                            if(project.getResponseApplication().getCode() == 200){
+                                requestHandler.getRequestLoginTask(project).executeOnExecutor(executor);
+
+                                new AsyncTask<Object, Void, Object>() {
+                                    @Override
+                                    protected Object doInBackground(Object... objects) {
+                                        return null;
+                                    }
+
+                                    @Override
+                                    protected void onPostExecute(Object o) {
+                                        if(project.getResponseLogin().getCode() == 200){
+                                            Toast.makeText(getActivity(), "Serverdresse und Logindaten sind korrekt.", Toast.LENGTH_LONG).show();
+                                        }else{
+                                            Toast.makeText(getActivity(), "FEHLER: Logindaten sind nicht korrekt.", Toast.LENGTH_LONG).show();
+                                        }
+                                    }
+                                }.executeOnExecutor(executor);
+                            }else{
+                                Toast.makeText(getActivity(), "FEHLER: Serveradresse ist nicht korrekt.", Toast.LENGTH_LONG).show();
+                            }
+                        }
+                    }.executeOnExecutor(executor);
+
+
                 }
             });
         }

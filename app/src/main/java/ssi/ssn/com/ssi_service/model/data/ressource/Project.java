@@ -1,6 +1,6 @@
 package ssi.ssn.com.ssi_service.model.data.ressource;
 
-public class Project {
+public class Project extends AbstractProject{
 
     private long _id;
     private String serverAddress;

@@ -22,18 +22,16 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         showCreateProjectFragment();
-        requestHandler = RequestHandler.initRequestHandler(this);
+        requestHandler = RequestHandler.initRequestHandler();
 
         currentProject = new Project("172.26.78.235:8180", "admin", "admin");
-        //
-        String test = "test";
     }
 
     @Override
     protected void onStart() {
         super.onStart();
         if(currentProject != null) {
-            requestHandler.doLoginRequest(currentProject);
+            requestHandler.getRequestLoginTask(currentProject).execute();
         }
     }
 
@@ -41,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onStop() {
         super.onStop();
         if(currentProject != null) {
-            requestHandler.doLogoutRequest(currentProject);
+            requestHandler.getRequestLogoutTask(currentProject).execute();
         }
     }
 
@@ -55,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void setCurrentProject(Project project){
         this.currentProject = project;
-        requestHandler.doLoginRequest(currentProject);
+        requestHandler.getRequestLoginTask(currentProject).execute();
     }
 
     // ** FRAGMENT ****************************************************************************** //

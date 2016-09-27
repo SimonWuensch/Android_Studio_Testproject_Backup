@@ -26,7 +26,7 @@ public class CookieHandler {
                 cookieManager.getCookieStore().add(null, HttpCookie.parse(cookie).get(0));
             }
         }
-        Log.i(TAG, "CookieManager initialized...");
+        Log.d(TAG, "CookieManager initialized.");
     }
 
     public void setCookieRequestProperty(HttpURLConnection urlConnection){
@@ -35,7 +35,7 @@ public class CookieHandler {
             urlConnection.setRequestProperty("Cookie",
                     TextUtils.join(",", cookieManager.getCookieStore().getCookies()));
         }
-        Log.i(TAG, "Cookie request property set...");
+        Log.d(TAG, "Cookie request property set.");
     }
 
     public boolean isCookieManagerNull(){
