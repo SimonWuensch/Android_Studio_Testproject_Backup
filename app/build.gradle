@@ -5,7 +5,7 @@ android {
     buildToolsVersion "24.0.1"
 
     defaultConfig {
-        applicationId "ssi.ssn.com.ssi_client"
+        applicationId "ssi.ssn.com.ssi_service"
         minSdkVersion 19
         targetSdkVersion 24
         versionCode 1

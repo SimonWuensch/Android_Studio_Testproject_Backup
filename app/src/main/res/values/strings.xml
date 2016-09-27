@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">SSI_Client</string>
+    <string name="app_name">SSI_Service</string>
 
     <string name="fragment_create_project_title">Projekt</string>
     <string name="fragment_create_project_text_view_add_project">Projekt hinzufügen</string>
