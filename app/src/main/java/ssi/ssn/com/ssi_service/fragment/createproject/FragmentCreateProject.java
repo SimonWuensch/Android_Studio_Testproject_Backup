@@ -8,8 +8,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -38,6 +40,8 @@ public class FragmentCreateProject extends Fragment {
     private EditText etUserName;
     private EditText etPassword;
     private Button bAddProject;
+    private Button bShowApplicationInfo;
+    private Spinner spTimeInput;
 
     private View rootView;
 
@@ -72,70 +76,99 @@ public class FragmentCreateProject extends Fragment {
         if (rootView == null) {
             rootView = inflater.inflate(FRAGMENT_LAYOUT, container, false);
             Log.d(TAG, "Fragment inflated [" + getActivity().getResources().getResourceName(FRAGMENT_LAYOUT) + "].");
+            initializeViewComponents();
+            fillInputsWithProject();
+        }
+        return rootView;
+    }
 
-            etProjectAddress = (EditText) rootView.findViewById(R.id.fragment_create_project_edit_text_project_address);
-            etUserName = (EditText) rootView.findViewById(R.id.fragment_create_project_edit_text_user_name);
-            etPassword = (EditText) rootView.findViewById(R.id.fragment_create_project_edit_text_password);
-            bAddProject = (Button) rootView.findViewById(R.id.fragment_create_project_button_add_project);
-            TextView tvHeadLine = (TextView) rootView.findViewById(R.id.default_action_bar_text_view_headline);
+    public void initializeViewComponents(){
+        TextView tvHeadLine = (TextView) rootView.findViewById(R.id.default_action_bar_text_view_headline);
+        tvHeadLine.setText(getActivity().getString(R.string.fragment_create_project_title));
 
+        etProjectAddress = (EditText) rootView.findViewById(R.id.fragment_create_project_edit_text_project_address);
+        etUserName = (EditText) rootView.findViewById(R.id.fragment_create_project_edit_text_user_name);
+        etPassword = (EditText) rootView.findViewById(R.id.fragment_create_project_edit_text_password);
 
-            if(project != null) {
-                etProjectAddress.setText(project.getServerAddress());
-                etUserName.setText(project.getUserName());
-                etPassword.setText(project.getPassword());
+        bShowApplicationInfo = (Button) rootView.findViewById(R.id.fragment_create_project_button_show_project_application_info);
+        bShowApplicationInfo.setOnClickListener(onClickShowApplicationInfo());
+
+        bAddProject = (Button) rootView.findViewById(R.id.fragment_create_project_button_add_project);
+        bAddProject.setOnClickListener(onClickProjectAdd());
+
+        spTimeInput = (Spinner) rootView.findViewById(R.id.fragment_create_project_spinner_time_input);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getActivity(), R.array.drop_down_box_time_input, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spTimeInput.setAdapter(adapter);
+        Log.d(TAG, "Fragment view components initialized.");
+    }
+
+    public void fillInputsWithProject(){
+        if (project != null) {
+            etProjectAddress.setText(project.getServerAddress());
+            etUserName.setText(project.getUserName());
+            etPassword.setText(project.getPassword());
+        }
+        Log.d(TAG, "Fragment view components filled with project [" + project + "].");
+    }
+
+    public View.OnClickListener onClickShowApplicationInfo(){
+        return new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                ((MainActivity) getActivity()).showCustomListFragment();
             }
-            tvHeadLine.setText(getActivity().getString(R.string.fragment_create_project_title));
+        };
+    }
 
-            bAddProject.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                final RequestHandler requestHandler = ((MainActivity)getActivity()).getRequestHandler();
+    public View.OnClickListener onClickProjectAdd(){
+        return new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                final RequestHandler requestHandler = ((MainActivity) getActivity()).getRequestHandler();
                 final ExecutorService executor = Executors.newSingleThreadExecutor();
                 final Project project = new Project(
                         etProjectAddress.getText().toString(),
                         etUserName.getText().toString(),
                         etPassword.getText().toString());
 
-                    requestHandler.getRequestApplicationTask(project).executeOnExecutor(executor);
+                requestHandler.getRequestApplicationTask(project).executeOnExecutor(executor);
 
-                    new AsyncTask<Object, Void, Object>(){
-                        @Override
-                        protected Object doInBackground(Object[] objects) {
-                            return null;
-                        }
+                new AsyncTask<Object, Void, Object>() {
+                    @Override
+                    protected Object doInBackground(Object[] objects) {
+                        return null;
+                    }
 
-                        @Override
-                        protected void onPostExecute(Object o) {
-                            if(project.getResponseApplication().getCode() == 200){
-                                requestHandler.getRequestLoginTask(project).executeOnExecutor(executor);
+                    @Override
+                    protected void onPostExecute(Object o) {
+                        if (project.getDefaultResponseApplication().getCode() == 200) {
+                            requestHandler.getRequestLoginTask(project).executeOnExecutor(executor);
 
-                                new AsyncTask<Object, Void, Object>() {
-                                    @Override
-                                    protected Object doInBackground(Object... objects) {
-                                        return null;
+                            new AsyncTask<Object, Void, Object>() {
+                                @Override
+                                protected Object doInBackground(Object... objects) {
+                                    return null;
+                                }
+
+                                @Override
+                                protected void onPostExecute(Object o) {
+                                    if (project.getDefaultResponseLogin().getCode() == 200) {
+                                        Toast.makeText(getActivity(), "Serverdresse und Logindaten sind korrekt.", Toast.LENGTH_LONG).show();
+                                    } else {
+                                        Toast.makeText(getActivity(), "FEHLER: Logindaten sind nicht korrekt.", Toast.LENGTH_LONG).show();
                                     }
-
-                                    @Override
-                                    protected void onPostExecute(Object o) {
-                                        if(project.getResponseLogin().getCode() == 200){
-                                            Toast.makeText(getActivity(), "Serverdresse und Logindaten sind korrekt.", Toast.LENGTH_LONG).show();
-                                        }else{
-                                            Toast.makeText(getActivity(), "FEHLER: Logindaten sind nicht korrekt.", Toast.LENGTH_LONG).show();
-                                        }
-                                    }
-                                }.executeOnExecutor(executor);
-                            }else{
-                                Toast.makeText(getActivity(), "FEHLER: Serveradresse ist nicht korrekt.", Toast.LENGTH_LONG).show();
-                            }
+                                }
+                            }.executeOnExecutor(executor);
+                        } else {
+                            Toast.makeText(getActivity(), "FEHLER: Serveradresse ist nicht korrekt.", Toast.LENGTH_LONG).show();
                         }
-                    }.executeOnExecutor(executor);
+                    }
+                }.executeOnExecutor(executor);
 
 
-                }
-            });
-        }
-        return rootView;
+            }
+        };
     }
 
 }

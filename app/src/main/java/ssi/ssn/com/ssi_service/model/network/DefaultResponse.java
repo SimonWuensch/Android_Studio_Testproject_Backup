@@ -1,11 +1,11 @@
 package ssi.ssn.com.ssi_service.model.network;
 
-public class Response {
+public class DefaultResponse {
 
     private long code;
     private String result;
 
-    public Response(long code, String result) {
+    public DefaultResponse(long code, String result) {
         this.code = code;
         this.result = result;
     }

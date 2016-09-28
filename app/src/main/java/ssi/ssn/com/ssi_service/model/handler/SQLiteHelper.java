@@ -13,9 +13,9 @@ import java.util.List;
 
 import ssi.ssn.com.ssi_service.model.data.ressource.Project;
 
-public class SQLiteHandler extends SQLiteOpenHelper {
+public class SQLiteHelper extends SQLiteOpenHelper {
 
-    private static final String TAG = SQLiteHandler.class.getSimpleName();
+    private static final String TAG = SQLiteHelper.class.getSimpleName();
 
     private static final String DATABASE_NAME = "ssi_service.db";
     private static final int DATABASE_VERSION = 1;
@@ -34,7 +34,7 @@ public class SQLiteHandler extends SQLiteOpenHelper {
     private static final String DROP_TABLE_PROJECT = //
             "DROP TABLE IF EXISTS " + TABLE_PROJECT;
 
-    public SQLiteHandler(Context context) {
+    public SQLiteHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
@@ -59,7 +59,7 @@ public class SQLiteHandler extends SQLiteOpenHelper {
         try{
             SQLiteDatabase db = getWritableDatabase();
             ContentValues values = new ContentValues();
-            values.put(PROJECT_JSON, JsonHandler.toJson(project));
+            values.put(PROJECT_JSON, ssi.ssn.com.ssi_service.model.handler.JsonHelper.toJson(project));
 
             long id = db.insert(TABLE_PROJECT, null, values);
             Log.i(TAG, "[OK] ADDED PROJECT [" + project + "].");
@@ -83,7 +83,7 @@ public class SQLiteHandler extends SQLiteOpenHelper {
             while(!cursor.isAfterLast()){
                 String jsonString = cursor.getString(cursor.getColumnIndex(PROJECT_JSON));
                 long id = Long.parseLong(cursor.getString(cursor.getColumnIndex(_ID)));
-                project = (Project) JsonHandler.fromJsonGeneric(Project.class, jsonString);
+                project = (Project) JsonHelper.fromJsonGeneric(Project.class, jsonString);
                 project.setId(id);
                 cursor.moveToNext();
             }
@@ -112,7 +112,7 @@ public class SQLiteHandler extends SQLiteOpenHelper {
         if(cursor.moveToFirst()){
             while(!cursor.isAfterLast()){
                 String jsonString = cursor.getString(cursor.getColumnIndex(PROJECT_JSON));
-                project = (Project) JsonHandler.fromJsonGeneric(Project.class, jsonString);
+                project = (Project) ssi.ssn.com.ssi_service.model.handler.JsonHelper.fromJsonGeneric(Project.class, jsonString);
                 project.setId(id);
                 cursor.moveToNext();
                 //TODO TEST this method
@@ -132,7 +132,7 @@ public class SQLiteHandler extends SQLiteOpenHelper {
         try{
             SQLiteDatabase db = getWritableDatabase();
             ContentValues values = new ContentValues();
-            values.put(PROJECT_JSON, JsonHandler.toJson(project));
+            values.put(PROJECT_JSON, ssi.ssn.com.ssi_service.model.handler.JsonHelper.toJson(project));
 
             int affectedRows = db.update(TABLE_PROJECT, values, _ID + " = ?", new String[]{
                     Long.toString(project.getId())
@@ -183,7 +183,7 @@ public class SQLiteHandler extends SQLiteOpenHelper {
             while(!cursor.isAfterLast()){
                 String jsonString = cursor.getString(cursor.getColumnIndex(PROJECT_JSON));
                 long id = Long.parseLong(cursor.getString(cursor.getColumnIndex(_ID)));
-                Project project = (Project) JsonHandler.fromJsonGeneric(Project.class, jsonString);
+                Project project = (Project) ssi.ssn.com.ssi_service.model.handler.JsonHelper.fromJsonGeneric(Project.class, jsonString);
                 project.setId(id);
                 projects.add(project);
                 cursor.moveToNext();

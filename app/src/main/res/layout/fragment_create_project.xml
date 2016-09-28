@@ -37,7 +37,7 @@
         android:id="@+id/fragment_create_project_relative_layout_ip_address"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="30dp"
         android:layout_below="@+id/fragment_create_project_text_view_add_project"
         android:layout_centerInParent="true">
 
@@ -51,7 +51,7 @@
 
         <EditText
             android:id="@+id/fragment_create_project_edit_text_project_address"
-            android:layout_width="300dp"
+            android:layout_width="250dp"
             android:layout_height="wrap_content"
             android:inputType="textUri"
             android:lines="1"
@@ -61,15 +61,24 @@
             android:layout_toEndOf="@+id/fragment_create_project_image_view_ip"
             android:layout_marginStart="5dp"/>
 
+        <Button
+            android:id="@+id/fragment_create_project_button_show_project_application_info"
+            android:layout_width="44dp"
+            android:layout_height="40dp"
+            android:layout_toEndOf="@+id/fragment_create_project_edit_text_project_address"
+            android:background="@color/defaultColor"
+            android:drawableStart="@drawable/icon_info"
+            android:padding="10dp"/>
+
     </RelativeLayout>
 
     <RelativeLayout
         android:id="@+id/fragment_create_project_relative_layout_user_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="15dp"
         android:layout_below="@+id/fragment_create_project_relative_layout_ip_address"
-        android:layout_centerInParent="true">
+        android:layout_alignStart="@+id/fragment_create_project_relative_layout_password">
 
         <ImageView
             android:id="@+id/fragment_create_project_image_user"
@@ -97,7 +106,7 @@
         android:id="@+id/fragment_create_project_relative_layout_password"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="15dp"
         android:layout_below="@+id/fragment_create_project_relative_layout_user_name"
         android:layout_centerInParent="true">
 
@@ -122,14 +131,67 @@
             android:layout_marginStart="5dp"/>
     </RelativeLayout>
 
+    <RelativeLayout
+        android:id="@+id/fragment_create_project_relative_layout_update_interval"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:layout_below="@+id/fragment_create_project_relative_layout_password"
+        android:layout_centerInParent="true">
+
+        <ImageView
+            android:id="@+id/fragment_create_project_image_update_interval"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:src="@drawable/icon_update_interval"
+            android:layout_centerInParent="true"
+            android:layout_alignParentStart="true"/>
+
+        <EditText
+            android:id="@+id/fragment_create_project_edit_text_update_interval"
+            android:layout_width="180dp"
+            android:layout_height="wrap_content"
+            android:inputType="numberDecimal"
+            android:lines="1"
+            android:maxLength="20"
+            android:text="30"
+            android:layout_centerInParent="true"
+            android:layout_toEndOf="@+id/fragment_create_project_image_update_interval"
+            android:layout_marginStart="5dp"/>
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@id/fragment_create_project_edit_text_update_interval">
+
+            <Spinner
+                android:id="@+id/fragment_create_project_spinner_time_input"
+                android:layout_width="115dp"
+                android:layout_height="40dp"
+                android:background="@color/defaultColor"
+                android:popupBackground="@color/defaultColor"/>
+
+            <ImageView
+                android:id="@+id/fragment_create_project_image_drop_down"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:src="@drawable/icon_drop_down_arrow"
+                android:layout_centerVertical="true"
+                android:layout_alignEnd="@+id/fragment_create_project_spinner_time_input"
+                android:layout_marginRight="10dp"/>
+        </RelativeLayout>
+    </RelativeLayout>
+
     <Button
         android:id="@+id/fragment_create_project_button_add_project"
         android:layout_width="320dp"
         android:layout_height="wrap_content"
-        android:background="@color/colorBorder"
+        android:background="@color/defaultColor"
         android:text="@string/fragment_create_project_button_add_project"
         android:layout_centerInParent="true"
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="20dp"/>
+
+
 
 </RelativeLayout>

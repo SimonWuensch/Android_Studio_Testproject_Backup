@@ -1,70 +1,70 @@
 package ssi.ssn.com.ssi_service.model.data.ressource;
 
-import ssi.ssn.com.ssi_service.model.network.Response;
+import ssi.ssn.com.ssi_service.model.network.DefaultResponse;
 
 public class AbstractProject {
 
-    private Response responseApplication;
-    private Response responseLogin;
-    private Response responseLogout;
-    private Response responseNotification;
-    private Response responseOs;
-    private Response responseScada;
-    private Response responseSessionsCurrent;
+    private DefaultResponse defaultResponseApplication;
+    private DefaultResponse defaultResponseLogin;
+    private DefaultResponse defaultResponseLogout;
+    private DefaultResponse defaultResponseNotification;
+    private DefaultResponse defaultResponseOs;
+    private DefaultResponse defaultResponseScada;
+    private DefaultResponse defaultResponseSessionsCurrent;
 
-    public Response getResponseApplication() {
-        return responseApplication;
+    public DefaultResponse getDefaultResponseApplication() {
+        return defaultResponseApplication;
     }
 
-    public void setResponseApplication(Response responseApplication) {
-        this.responseApplication = responseApplication;
+    public void setDefaultResponseApplication(DefaultResponse defaultResponseApplication) {
+        this.defaultResponseApplication = defaultResponseApplication;
     }
 
-    public Response getResponseLogin() {
-        return responseLogin;
+    public DefaultResponse getDefaultResponseLogin() {
+        return defaultResponseLogin;
     }
 
-    public void setResponseLogin(Response responseLogin) {
-        this.responseLogin = responseLogin;
+    public void setDefaultResponseLogin(DefaultResponse defaultResponseLogin) {
+        this.defaultResponseLogin = defaultResponseLogin;
     }
 
-    public Response getResponseLogout() {
-        return responseLogout;
+    public DefaultResponse getDefaultResponseLogout() {
+        return defaultResponseLogout;
     }
 
-    public void setResponseLogout(Response responseLogout) {
-        this.responseLogout = responseLogout;
+    public void setDefaultResponseLogout(DefaultResponse defaultResponseLogout) {
+        this.defaultResponseLogout = defaultResponseLogout;
     }
 
-    public Response getResponseNotification() {
-        return responseNotification;
+    public DefaultResponse getDefaultResponseNotification() {
+        return defaultResponseNotification;
     }
 
-    public void setResponseNotification(Response responseNotification) {
-        this.responseNotification = responseNotification;
+    public void setDefaultResponseNotification(DefaultResponse defaultResponseNotification) {
+        this.defaultResponseNotification = defaultResponseNotification;
     }
 
-    public Response getResponseOs() {
-        return responseOs;
+    public DefaultResponse getDefaultResponseOs() {
+        return defaultResponseOs;
     }
 
-    public void setResponseOs(Response responseOs) {
-        this.responseOs = responseOs;
+    public void setDefaultResponseOs(DefaultResponse defaultResponseOs) {
+        this.defaultResponseOs = defaultResponseOs;
     }
 
-    public Response getResponseScada() {
-        return responseScada;
+    public DefaultResponse getDefaultResponseScada() {
+        return defaultResponseScada;
     }
 
-    public void setResponseScada(Response responseScada) {
-        this.responseScada = responseScada;
+    public void setDefaultResponseScada(DefaultResponse defaultResponseScada) {
+        this.defaultResponseScada = defaultResponseScada;
     }
 
-    public Response getResponseSessionsCurrent() {
-        return responseSessionsCurrent;
+    public DefaultResponse getDefaultResponseSessionsCurrent() {
+        return defaultResponseSessionsCurrent;
     }
 
-    public void setResponseSessionsCurrent(Response responseSessionsCurrent) {
-        this.responseSessionsCurrent = responseSessionsCurrent;
+    public void setDefaultResponseSessionsCurrent(DefaultResponse defaultResponseSessionsCurrent) {
+        this.defaultResponseSessionsCurrent = defaultResponseSessionsCurrent;
     }
 }

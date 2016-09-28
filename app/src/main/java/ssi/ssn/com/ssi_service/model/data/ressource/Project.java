@@ -32,4 +32,13 @@ public class Project extends AbstractProject{
     public String getPassword() {
         return password;
     }
+
+    public String toString(){
+        return new StringBuilder()
+                .append("[")
+                .append("ServerAddress: ").append(serverAddress).append(";")
+                .append("UserName: ").append(userName).append(";")
+                .append("Password: ").append(password).append(";")
+                .append("]").toString();
+    }
 }

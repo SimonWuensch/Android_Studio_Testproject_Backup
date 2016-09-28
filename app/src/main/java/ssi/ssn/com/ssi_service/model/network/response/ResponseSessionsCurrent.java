@@ -2,7 +2,7 @@ package ssi.ssn.com.ssi_service.model.network.response;
 
 import ssi.ssn.com.ssi_service.model.network.response.objects.Actor;
 
-public class SessionsCurrentResponse {
+public class ResponseSessionsCurrent extends ResponseAbstract {
 
     public long id;
     public String key;
@@ -14,7 +14,7 @@ public class SessionsCurrentResponse {
     public String clientAddress;
     public String clientAgent;
 
-    public SessionsCurrentResponse() {
+    public ResponseSessionsCurrent() {
     }
 
     public long getId() {

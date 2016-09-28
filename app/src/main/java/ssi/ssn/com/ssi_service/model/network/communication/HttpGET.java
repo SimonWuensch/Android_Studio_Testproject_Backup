@@ -1,6 +1,5 @@
 package ssi.ssn.com.ssi_service.model.network.communication;
 
-import android.os.AsyncTask;
 import android.util.Log;
 
 import org.apache.commons.io.IOUtils;
@@ -10,7 +9,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-import ssi.ssn.com.ssi_service.model.network.Response;
+import ssi.ssn.com.ssi_service.model.network.DefaultResponse;
 import ssi.ssn.com.ssi_service.model.network.handler.CookieHandler;
 
 public class HttpGET {
@@ -28,7 +27,7 @@ public class HttpGET {
         this.address = address;
     }
 
-    public Response sendRequest(boolean resetCookie){
+    public DefaultResponse sendRequest(boolean resetCookie){
         String hostAddress = PROTOCOLL + address;
         HttpURLConnection urlConnection = null;
         Log.d(TAG, "[GET Request] Address: [" + hostAddress + "].");
@@ -52,11 +51,11 @@ public class HttpGET {
             }
             InputStream is = urlConnection.getInputStream();
             String result = IOUtils.toString(is);
-            Log.i(TAG, "[GET Response] Address: [" + hostAddress + "], Result: [" + result + "]");
-            return new Response(urlConnection.getResponseCode(), result);
+            Log.i(TAG, "[GET DefaultResponse] Address: [" + hostAddress + "], Result: [" + result + "]");
+            return new DefaultResponse(urlConnection.getResponseCode(), result);
         } catch (Throwable t) {
             Log.e(TAG, "[ERROR] GET Request. Address: [" + hostAddress + "]");
-            return new Response(GET_COMMUNICATION_ERROR, t.getMessage());
+            return new DefaultResponse(GET_COMMUNICATION_ERROR, t.getMessage());
         }finally {
             if(urlConnection != null) {
                 urlConnection.disconnect();

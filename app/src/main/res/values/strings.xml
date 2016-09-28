@@ -1,12 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">SSI_Service</string>
 
+    <!-- Fragment Create Project -->
     <string name="fragment_create_project_title">Projekt</string>
     <string name="fragment_create_project_text_view_add_project">Projekt hinzufügen</string>
     <string name="fragment_create_project_edit_text_hint_ip_address">IP Adresse</string>
     <string name="fragment_create_project_edit_text_hint_user_name">Benutzername</string>
     <string name="fragment_create_project_edit_text_hint_password">Passwort</string>
     <string name="fragment_create_project_button_add_project">hinzufügen</string>
+
+
+    <!-- Default -->
+    <string-array name="drop_down_box_time_input">
+        <item>Minuten</item>
+        <item>Stunden</item>
+    </string-array>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
