@@ -5,7 +5,7 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
-public class FormatHandler {
+public class FormatHelper {
 
     public static String formatDate(long millis){
         return formatDate(new Date(millis));
