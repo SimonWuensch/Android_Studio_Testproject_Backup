@@ -10,6 +10,28 @@
     <string name="fragment_create_project_edit_text_hint_password">Passwort</string>
     <string name="fragment_create_project_button_add_project">hinzufügen</string>
 
+    <!-- Fragment Custom List - Application Info -->
+    <string name="fragment_custom_list_application_info_project_headline">Projekt</string>
+    <string name="fragment_custom_list_application_info_project_name">Name</string>
+    <string name="fragment_custom_list_application_info_project_location">Ort</string>
+    <string name="fragment_custom_list_application_info_project_order_nr">Bestell Nr.</string>
+
+    <string name="fragment_custom_list_application_info_state_headline">Zustand</string>
+    <string name="fragment_custom_list_application_info_state_status">Status</string>
+    <string name="fragment_custom_list_application_info_state_since">Seit</string>
+
+    <string name="fragment_custom_list_application_info_build_headline">Build</string>
+    <string name="fragment_custom_list_application_info_build_version">Version</string>
+    <string name="fragment_custom_list_application_info_build_number">Nummer</string>
+    <string name="fragment_custom_list_application_info_build_builtBy">Von</string>
+    <string name="fragment_custom_list_application_info_build_builtOn">Am</string>
+
+    <string name="fragment_custom_list_application_info_time_headline">Zeit</string>
+    <string name="fragment_custom_list_application_info_time_stamp">Stempel</string>
+    <string name="fragment_custom_list_application_info_time_offset">Ausgleich</string>
+
+    <string name="fragment_custom_list_application_info_enabled_modules_headline">Freigegebene Module</string>
+
 
     <!-- Default -->
     <string-array name="drop_down_box_time_input">

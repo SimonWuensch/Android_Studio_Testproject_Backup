@@ -1,25 +1,19 @@
 package ssi.ssn.com.ssi_service.fragment.customlist.source;
 
 import android.app.Activity;
-import android.content.res.Resources;
-import android.os.Build;
+import android.graphics.Color;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.content.res.ResourcesCompat;
 import android.view.View;
-import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import ssi.ssn.com.ssi_service.R;
 
-/**
- * Created by wuens on 28.09.2016.
- */
-
 public class CustomListObject {
 
-    private static View.OnClickListener onClickListener;
+    private View.OnClickListener onClickListener;
 
-    public CustomListObject() {
+    private CustomListObject() {
     }
 
     public CustomListObject(View.OnClickListener onClickListener) {
@@ -30,22 +24,34 @@ public class CustomListObject {
         return onClickListener;
     }
 
-    public void reformatViewComponents(Activity activity, LinearLayout llKeyValue, TextView tvKey, TextView tvValue, View vHorizontalLine) {
+    public void reformatViewComponents(Activity activity, RelativeLayout rlTextViewFrame, TextView tvHeadline, TextView tvKey, TextView tvValue, View vHorizontalLine) {
+        rlTextViewFrame.setBackgroundColor(Color.WHITE);
+        rlTextViewFrame.setVisibility(View.VISIBLE);
+
+        tvHeadline.setVisibility(View.GONE);
+        tvHeadline.setTextColor(ContextCompat.getColor(activity, android.support.v7.appcompat.R.color.secondary_text_default_material_light));
+
+        tvKey.setVisibility(View.VISIBLE);
+        tvValue.setVisibility(View.VISIBLE);
+        vHorizontalLine.setVisibility(View.GONE);
     }
 
     public static class HeadLine extends CustomListObject {
-        private String key;
+        private String headline;
 
-        public HeadLine(String key) {
-            this.key = key;
+        public HeadLine(String headline) {
+            this.headline = headline;
         }
 
         @Override
-        public void reformatViewComponents(Activity activity, LinearLayout llKeyValue, TextView tvKey, TextView tvValue, View vHorizontalLine) {
-            tvKey.setText(key);
+        public void reformatViewComponents(Activity activity, RelativeLayout rlTextViewFrame, TextView tvHeadline, TextView tvKey, TextView tvValue, View vHorizontalLine) {
+            super.reformatViewComponents(activity, rlTextViewFrame, tvHeadline, tvKey, tvValue, vHorizontalLine);
+            tvHeadline.setText(headline);
+            tvHeadline.setTextColor(ContextCompat.getColor(activity, R.color.colorWhite));
+            tvHeadline.setVisibility(View.VISIBLE);
+            tvKey.setVisibility(View.GONE);
             tvValue.setVisibility(View.GONE);
-            llKeyValue.setBackgroundColor(ContextCompat.getColor(activity, R.color.defaultColor));
-            String test;
+            rlTextViewFrame.setBackgroundColor(ContextCompat.getColor(activity, R.color.defaultColor));
         }
     }
 
@@ -57,23 +63,12 @@ public class CustomListObject {
         }
 
         @Override
-        public void reformatViewComponents(Activity activity, LinearLayout llKeyValue, TextView tvKey, TextView tvValue, View vHorizontalLine) {
-            tvKey.setText(key);
-            tvValue.setVisibility(View.GONE);
-        }
-    }
-
-    public static class Only_Value extends CustomListObject {
-        private String value;
-
-        public Only_Value(String value) {
-            this.value = value;
-        }
-
-        @Override
-        public void reformatViewComponents(Activity activity, LinearLayout llKeyValue, TextView tvKey, TextView tvValue, View vHorizontalLine) {
-            tvValue.setText(value);
+        public void reformatViewComponents(Activity activity,RelativeLayout rlTextViewFrame, TextView tvHeadline, TextView tvKey, TextView tvValue, View vHorizontalLine) {
+            super.reformatViewComponents(activity, rlTextViewFrame, tvHeadline, tvKey, tvValue, vHorizontalLine);
+            tvHeadline.setText(key);
+            tvHeadline.setVisibility(View.VISIBLE);
             tvKey.setVisibility(View.GONE);
+            tvValue.setVisibility(View.GONE);
         }
     }
 
@@ -87,7 +82,8 @@ public class CustomListObject {
         }
 
         @Override
-        public void reformatViewComponents(Activity activity, LinearLayout llKeyValue, TextView tvKey, TextView tvValue, View vHorizontalLine) {
+        public void reformatViewComponents(Activity activity,RelativeLayout rlTextViewFrame, TextView tvHeadline, TextView tvKey, TextView tvValue, View vHorizontalLine) {
+            super.reformatViewComponents(activity, rlTextViewFrame, tvHeadline, tvKey, tvValue, vHorizontalLine);
             tvKey.setText(key);
             tvValue.setText(value);
         }
@@ -98,7 +94,8 @@ public class CustomListObject {
         }
 
         @Override
-        public void reformatViewComponents(Activity activity, LinearLayout llKeyValue, TextView tvKey, TextView tvValue, View vHorizontalLine) {
+        public void reformatViewComponents(Activity activity,RelativeLayout rlTextViewFrame, TextView tvHeadline, TextView tvKey, TextView tvValue, View vHorizontalLine) {
+            super.reformatViewComponents(activity, rlTextViewFrame, tvHeadline, tvKey, tvValue, vHorizontalLine);
             tvKey.setVisibility(View.GONE);
             tvValue.setVisibility(View.GONE);
             vHorizontalLine.setVisibility(View.VISIBLE);

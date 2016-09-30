@@ -6,6 +6,7 @@ import ssi.ssn.com.ssi_service.model.data.ressource.Project;
 import ssi.ssn.com.ssi_service.model.network.DefaultResponse;
 import ssi.ssn.com.ssi_service.model.network.communication.HttpGET;
 import ssi.ssn.com.ssi_service.model.network.handler.CookieHandler;
+import ssi.ssn.com.ssi_service.model.network.response.ResponseApplication;
 
 public class RequestLogin {
 

@@ -10,11 +10,19 @@ public class DefaultResponse {
         this.result = result;
     }
 
+    public long getCode() {
+        return code;
+    }
+
+    public void setCode(long code) {
+        this.code = code;
+    }
+
     public String getResult() {
         return result;
     }
 
-    public long getCode() {
-        return code;
+    public void setResult(String result) {
+        this.result = result;
     }
 }

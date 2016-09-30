@@ -20,19 +20,19 @@ import java.util.concurrent.Executors;
 
 import ssi.ssn.com.ssi_service.R;
 import ssi.ssn.com.ssi_service.activity.MainActivity;
+import ssi.ssn.com.ssi_service.fragment.customlist.FragmentCustomList;
 import ssi.ssn.com.ssi_service.model.data.ressource.Project;
 import ssi.ssn.com.ssi_service.model.network.handler.RequestHandler;
 
 public class FragmentCreateProject extends Fragment {
 
-
     public static String TAG = FragmentCreateProject.class.getSimpleName();
 
     private static int FRAGMENT_LAYOUT = R.layout.fragment_create_project;
 
-    private static String ARGS_PROJECT_ADDRESS = TAG + "_ARGS_PROJECT_ADDRESS";
-    private static String ARGS_USERNAME = TAG + "_ARGS_USERNAME";
-    private static String ARGS_PASSWORD = TAG + "_ARGS_PASSWORD";
+    private static String PROJECT_ADDRESS = TAG + "_ARGS_PROJECT_ADDRESS";
+    private static String USERNAME = TAG + "_ARGS_USERNAME";
+    private static String PASSWORD = TAG + "_ARGS_PASSWORD";
 
     private Project project;
 
@@ -52,17 +52,17 @@ public class FragmentCreateProject extends Fragment {
     public static FragmentCreateProject newInstance(Project project) {
         FragmentCreateProject fragment = new FragmentCreateProject();
         Bundle bundle = new Bundle();
-        bundle.putString(ARGS_PROJECT_ADDRESS, project.getServerAddress());
-        bundle.putString(ARGS_USERNAME, project.getUserName());
-        bundle.putString(ARGS_PASSWORD, project.getPassword());
+        bundle.putString(PROJECT_ADDRESS, project.getServerAddress());
+        bundle.putString(USERNAME, project.getUserName());
+        bundle.putString(PASSWORD, project.getPassword());
         fragment.setArguments(bundle);
         return fragment;
     }
 
     private void loadArguments() {
-        String projectAddress = getArguments().getString(ARGS_PROJECT_ADDRESS);
-        String userName = getArguments().getString(ARGS_USERNAME);
-        String password = getArguments().getString(ARGS_PASSWORD);
+        String projectAddress = getArguments().getString(PROJECT_ADDRESS);
+        String userName = getArguments().getString(USERNAME);
+        String password = getArguments().getString(PASSWORD);
         this.project = new Project(projectAddress, userName, password);
     }
 
@@ -76,13 +76,13 @@ public class FragmentCreateProject extends Fragment {
         if (rootView == null) {
             rootView = inflater.inflate(FRAGMENT_LAYOUT, container, false);
             Log.d(TAG, "Fragment inflated [" + getActivity().getResources().getResourceName(FRAGMENT_LAYOUT) + "].");
-            initializeViewComponents();
+            initViewComponents();
             fillInputsWithProject();
         }
         return rootView;
     }
 
-    public void initializeViewComponents(){
+    public void initViewComponents() {
         TextView tvHeadLine = (TextView) rootView.findViewById(R.id.default_action_bar_text_view_headline);
         tvHeadLine.setText(getActivity().getString(R.string.fragment_create_project_title));
 
@@ -103,7 +103,7 @@ public class FragmentCreateProject extends Fragment {
         Log.d(TAG, "Fragment view components initialized.");
     }
 
-    public void fillInputsWithProject(){
+    public void fillInputsWithProject() {
         if (project != null) {
             etProjectAddress.setText(project.getServerAddress());
             etUserName.setText(project.getUserName());
@@ -112,25 +112,48 @@ public class FragmentCreateProject extends Fragment {
         Log.d(TAG, "Fragment view components filled with project [" + project + "].");
     }
 
-    public View.OnClickListener onClickShowApplicationInfo(){
-        return new View.OnClickListener(){
-            @Override
-            public void onClick(View view) {
-                ((MainActivity) getActivity()).showCustomListFragment();
-            }
-        };
+    public Project initProjectWithViewComponents(){
+       return project = new Project(
+                etProjectAddress.getText().toString(),
+                etUserName.getText().toString(),
+                etPassword.getText().toString());
     }
 
-    public View.OnClickListener onClickProjectAdd(){
+    public View.OnClickListener onClickShowApplicationInfo() {
         return new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 final RequestHandler requestHandler = ((MainActivity) getActivity()).getRequestHandler();
                 final ExecutorService executor = Executors.newSingleThreadExecutor();
-                final Project project = new Project(
-                        etProjectAddress.getText().toString(),
-                        etUserName.getText().toString(),
-                        etPassword.getText().toString());
+                initProjectWithViewComponents();
+
+                requestHandler.getRequestApplicationTask(project).executeOnExecutor(executor);
+                new AsyncTask<Object, Void, Object>() {
+                    @Override
+                    protected Object doInBackground(Object[] objects) {
+                        return null;
+                    }
+
+                    @Override
+                    protected void onPostExecute(Object o) {
+                        if (project.getDefaultResponseApplication().getCode() == 200) {
+                            ((MainActivity) getActivity()).showCustomListFragment(FragmentCustomList.Type.APPLICATION, project.getDefaultResponseApplication().getResult());
+                        } else {
+                            Toast.makeText(getActivity(), "FEHLER: Serveradresse ist nicht korrekt.", Toast.LENGTH_LONG).show();
+                        }
+                    }
+                }.executeOnExecutor(executor);
+            }
+        };
+    }
+
+    public View.OnClickListener onClickProjectAdd() {
+        return new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                final RequestHandler requestHandler = ((MainActivity) getActivity()).getRequestHandler();
+                final ExecutorService executor = Executors.newSingleThreadExecutor();
+                initProjectWithViewComponents();
 
                 requestHandler.getRequestApplicationTask(project).executeOnExecutor(executor);
 
@@ -155,6 +178,7 @@ public class FragmentCreateProject extends Fragment {
                                 protected void onPostExecute(Object o) {
                                     if (project.getDefaultResponseLogin().getCode() == 200) {
                                         Toast.makeText(getActivity(), "Serverdresse und Logindaten sind korrekt.", Toast.LENGTH_LONG).show();
+                                        ((MainActivity)getActivity()).setCurrentProject(project);
                                     } else {
                                         Toast.makeText(getActivity(), "FEHLER: Logindaten sind nicht korrekt.", Toast.LENGTH_LONG).show();
                                     }
@@ -165,8 +189,6 @@ public class FragmentCreateProject extends Fragment {
                         }
                     }
                 }.executeOnExecutor(executor);
-
-
             }
         };
     }

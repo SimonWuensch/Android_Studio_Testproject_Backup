@@ -7,15 +7,14 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import ssi.ssn.com.ssi_service.fragment.customlist.source.CustomListObject;
-import ssi.ssn.com.ssi_service.fragment.customlist.source.list.CustomListCreator;
 import ssi.ssn.com.ssi_service.model.handler.JsonHelper;
+import ssi.ssn.com.ssi_service.model.network.response.ResponseAbstract;
 import ssi.ssn.com.ssi_service.model.network.response.ResponseApplication;
 
-public class FragmentCustomListAdapter extends  RecyclerView.Adapter<FragmentCustomListViewHolder>{
+class FragmentCustomListAdapter extends  RecyclerView.Adapter<FragmentCustomListViewHolder>{
 
     private static String TAG = FragmentCustomListAdapter.class.getSimpleName();
 
@@ -26,28 +25,22 @@ public class FragmentCustomListAdapter extends  RecyclerView.Adapter<FragmentCus
     private List<CustomListObject> customListInputs;
     private Activity activity;
 
-    public FragmentCustomListAdapter(int layoutCardView, final FragmentCustomList fragment, String response){
+    FragmentCustomListAdapter(int layoutCardView, final FragmentCustomList fragment, ResponseAbstract responseAbstract){
         this.layoutCardView = layoutCardView;
         this.fragment = fragment;
         this.activity = fragment.getActivity();
-
-        ResponseApplication responseApplication = (ResponseApplication) JsonHelper.fromJsonGeneric(ResponseApplication.class, response);
-        customListInputs = CustomListCreator.getCustomList(responseApplication);
+        customListInputs = responseAbstract.getCustomList(activity);
     }
 
     @Override
     public FragmentCustomListViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         cardView = (CardView) LayoutInflater.from(parent.getContext()).inflate(layoutCardView, parent, false);
-//        Log.d(TAG, "CardView inflated [" + activity.getResources().getResourceName(layoutCardView) + "].");
-        FragmentCustomListViewHolder viewHolder = new FragmentCustomListViewHolder(fragment.getActivity(), cardView);
-        Log.d(TAG, viewHolder.getClass().getSimpleName() + " initialized.");
-        return viewHolder;
+        return new FragmentCustomListViewHolder(fragment.getActivity(), cardView);
     }
 
     @Override
     public void onBindViewHolder(FragmentCustomListViewHolder viewHolder, int position) {
         viewHolder.assignData(customListInputs.get(position));
-        Log.d(TAG, viewHolder.getClass().getSimpleName() + " assigned Data. Position [" + position + "].");
     }
 
     @Override

@@ -1,8 +1,17 @@
 package ssi.ssn.com.ssi_service.model.network.response;
 
-/**
- * Created by wuens on 28.09.2016.
- */
+import android.app.Activity;
+import android.util.Log;
+
+import java.util.List;
+
+import ssi.ssn.com.ssi_service.fragment.customlist.source.CustomListObject;
 
 public class ResponseAbstract {
+
+    public List<CustomListObject> getCustomList(final Activity activity){
+        Log.e(getClass().getSimpleName(), "This response type has no custom list implementation.");
+        throw new NullPointerException(getClass().getSimpleName() + ": This response type has no custom list implementation.");
+    }
+
 }
