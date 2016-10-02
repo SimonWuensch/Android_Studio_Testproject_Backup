@@ -7,8 +7,9 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import ssi.ssn.com.ssi_service.R;
+import ssi.ssn.com.ssi_service.fragment.AbstractFragment;
 
-public class FragmentLaunchBoard extends android.app.Fragment {
+public class FragmentLaunchBoard extends AbstractFragment {
 
     public static String TAG = FragmentLaunchBoard.class.getSimpleName();
 

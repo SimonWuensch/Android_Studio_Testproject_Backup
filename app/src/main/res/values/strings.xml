@@ -11,6 +11,7 @@
     <string name="fragment_create_project_button_add_project">hinzufügen</string>
 
     <!-- Fragment Custom List - Application Info -->
+    <string name="fragment_custom_list_application_info_title">Applikation Information</string>
     <string name="fragment_custom_list_application_info_project_headline">Projekt</string>
     <string name="fragment_custom_list_application_info_project_name">Name</string>
     <string name="fragment_custom_list_application_info_project_location">Ort</string>
@@ -31,6 +32,9 @@
     <string name="fragment_custom_list_application_info_time_offset">Ausgleich</string>
 
     <string name="fragment_custom_list_application_info_enabled_modules_headline">Freigegebene Module</string>
+
+    <!-- Fragment Project List -->
+    <string name="fragment_project_list_title">Hinzugefügte Projekte</string>
 
 
     <!-- Default -->

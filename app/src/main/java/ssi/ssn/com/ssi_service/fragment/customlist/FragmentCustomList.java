@@ -1,6 +1,5 @@
 package ssi.ssn.com.ssi_service.fragment.customlist;
 
-import android.app.Fragment;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -8,13 +7,15 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import ssi.ssn.com.ssi_service.R;
+import ssi.ssn.com.ssi_service.fragment.AbstractFragment;
 import ssi.ssn.com.ssi_service.model.handler.JsonHelper;
 import ssi.ssn.com.ssi_service.model.network.response.ResponseAbstract;
 import ssi.ssn.com.ssi_service.model.network.response.ResponseApplication;
 
-public class FragmentCustomList extends Fragment {
+public class FragmentCustomList extends AbstractFragment {
 
     public static String TAG = FragmentCustomList.class.getSimpleName();
 
@@ -22,15 +23,20 @@ public class FragmentCustomList extends Fragment {
     private static int RECYCLERVIEW = R.id.fragment_custom_list_recycler_view;
     private static int CARDVIEW = R.layout.fragment_custom_list_cardview;
 
+    private static String HEADLINE_STRING_ID = TAG + "HEADLINE_STRING_ID";
     private static String RESPONSE_JSON = TAG + "_RESPONSE_JSON";
     private static String FRAGMENT_TYPE = TAG + "_FRAGMENT_TYPE";
+
+    private int headlineStringID;
     private ResponseAbstract responseAbstract;
+
 
     private View rootView;
 
-    public static FragmentCustomList newInstance(Type type, String jsonResponse) {
+    public static FragmentCustomList newInstance(int headlineString, Type type, String jsonResponse) {
         FragmentCustomList fragment = new FragmentCustomList();
         Bundle bundle = new Bundle();
+        bundle.putInt(HEADLINE_STRING_ID, headlineString);
         bundle.putString(RESPONSE_JSON, jsonResponse);
         bundle.putString(FRAGMENT_TYPE, JsonHelper.toJson(type));
         fragment.setArguments(bundle);
@@ -38,6 +44,7 @@ public class FragmentCustomList extends Fragment {
     }
 
     private void loadArguments(){
+        headlineStringID = getArguments().getInt(HEADLINE_STRING_ID);
         String jsonResponse = getArguments().getString(RESPONSE_JSON);
         Type type = (Type) JsonHelper.fromJsonGeneric(Type.class, getArguments().getString(FRAGMENT_TYPE));
         responseAbstract = type.deserialize(jsonResponse);
@@ -46,7 +53,6 @@ public class FragmentCustomList extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        loadArguments();
     }
 
     @Override
@@ -63,13 +69,14 @@ public class FragmentCustomList extends Fragment {
             mRecyclerView.setHasFixedSize(true);
             mRecyclerView.setAdapter(mAdapter);
             Log.d(TAG, "RecyclerView [" + getActivity().getResources().getResourceName(RECYCLERVIEW) + "] initialized.");
-
             initViewComponents();
         }
         return rootView;
     }
 
     public void initViewComponents(){
+        TextView tvHeadLine = (TextView) rootView.findViewById(R.id.default_action_bar_text_view_headline);
+        tvHeadLine.setText(getActivity().getString(headlineStringID));
     }
 
     public enum Type{

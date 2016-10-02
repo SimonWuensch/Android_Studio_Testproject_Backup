@@ -1,7 +1,6 @@
 package ssi.ssn.com.ssi_service.fragment.createproject;
 
 
-import android.app.Fragment;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -20,11 +19,14 @@ import java.util.concurrent.Executors;
 
 import ssi.ssn.com.ssi_service.R;
 import ssi.ssn.com.ssi_service.activity.MainActivity;
+import ssi.ssn.com.ssi_service.fragment.AbstractFragment;
 import ssi.ssn.com.ssi_service.fragment.customlist.FragmentCustomList;
 import ssi.ssn.com.ssi_service.model.data.ressource.Project;
+import ssi.ssn.com.ssi_service.model.network.DefaultResponse;
 import ssi.ssn.com.ssi_service.model.network.handler.RequestHandler;
+import ssi.ssn.com.ssi_service.test.RESTResponseTEST;
 
-public class FragmentCreateProject extends Fragment {
+public class FragmentCreateProject extends AbstractFragment {
 
     public static String TAG = FragmentCreateProject.class.getSimpleName();
 
@@ -112,7 +114,7 @@ public class FragmentCreateProject extends Fragment {
         Log.d(TAG, "Fragment view components filled with project [" + project + "].");
     }
 
-    public Project initProjectWithViewComponents(){
+    public Project getProjectWithViewComponents(){
        return project = new Project(
                 etProjectAddress.getText().toString(),
                 etUserName.getText().toString(),
@@ -125,7 +127,7 @@ public class FragmentCreateProject extends Fragment {
             public void onClick(View view) {
                 final RequestHandler requestHandler = ((MainActivity) getActivity()).getRequestHandler();
                 final ExecutorService executor = Executors.newSingleThreadExecutor();
-                initProjectWithViewComponents();
+                getProjectWithViewComponents();
 
                 requestHandler.getRequestApplicationTask(project).executeOnExecutor(executor);
                 new AsyncTask<Object, Void, Object>() {
@@ -137,7 +139,7 @@ public class FragmentCreateProject extends Fragment {
                     @Override
                     protected void onPostExecute(Object o) {
                         if (project.getDefaultResponseApplication().getCode() == 200) {
-                            ((MainActivity) getActivity()).showCustomListFragment(FragmentCustomList.Type.APPLICATION, project.getDefaultResponseApplication().getResult());
+                            ((MainActivity) getActivity()).showCustomListFragment(R.string.fragment_custom_list_application_info_title, FragmentCustomList.Type.APPLICATION, project.getDefaultResponseApplication().getResult());
                         } else {
                             Toast.makeText(getActivity(), "FEHLER: Serveradresse ist nicht korrekt.", Toast.LENGTH_LONG).show();
                         }
@@ -151,9 +153,20 @@ public class FragmentCreateProject extends Fragment {
         return new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                /*TODO TEST. DELETE
+                getProjectWithViewComponents();
+                if(!project.getServerAddress().isEmpty() || !project.getUserName().isEmpty() || !project.getPassword().isEmpty()) {
+                    project.setDefaultResponseApplication(new DefaultResponse(200, RESTResponseTEST.restApplication));
+                    project.loadProjectInfoFromApplicationInfo();
+                    getSQLiteHelper().addProject(project);
+                    ((MainActivity) getActivity()).showProjectListFragment();
+                }
+                */
+
                 final RequestHandler requestHandler = ((MainActivity) getActivity()).getRequestHandler();
                 final ExecutorService executor = Executors.newSingleThreadExecutor();
-                initProjectWithViewComponents();
+                getProjectWithViewComponents();
 
                 requestHandler.getRequestApplicationTask(project).executeOnExecutor(executor);
 
@@ -167,7 +180,6 @@ public class FragmentCreateProject extends Fragment {
                     protected void onPostExecute(Object o) {
                         if (project.getDefaultResponseApplication().getCode() == 200) {
                             requestHandler.getRequestLoginTask(project).executeOnExecutor(executor);
-
                             new AsyncTask<Object, Void, Object>() {
                                 @Override
                                 protected Object doInBackground(Object... objects) {
@@ -178,7 +190,9 @@ public class FragmentCreateProject extends Fragment {
                                 protected void onPostExecute(Object o) {
                                     if (project.getDefaultResponseLogin().getCode() == 200) {
                                         Toast.makeText(getActivity(), "Serverdresse und Logindaten sind korrekt.", Toast.LENGTH_LONG).show();
-                                        ((MainActivity)getActivity()).setCurrentProject(project);
+                                        project.loadProjectInfoFromApplicationInfo();
+                                        getSQLiteHelper().addProject(getProjectWithViewComponents());
+                                        ((MainActivity)getActivity()).showProjectListFragment();
                                     } else {
                                         Toast.makeText(getActivity(), "FEHLER: Logindaten sind nicht korrekt.", Toast.LENGTH_LONG).show();
                                     }

@@ -7,7 +7,9 @@ import android.util.Log;
 import ssi.ssn.com.ssi_service.R;
 import ssi.ssn.com.ssi_service.fragment.createproject.FragmentCreateProject;
 import ssi.ssn.com.ssi_service.fragment.customlist.FragmentCustomList;
+import ssi.ssn.com.ssi_service.fragment.projectlist.FragmentProjectList;
 import ssi.ssn.com.ssi_service.model.data.ressource.Project;
+import ssi.ssn.com.ssi_service.model.handler.SQLiteHelper;
 import ssi.ssn.com.ssi_service.model.network.handler.RequestHandler;
 import ssi.ssn.com.ssi_service.test.TestClass;
 
@@ -15,6 +17,7 @@ public class MainActivity extends AppCompatActivity {
 
     private static String TAG = MainActivity.class.getSimpleName();
 
+    private SQLiteHelper sqLiteHelper;
     private RequestHandler requestHandler;
     private Project currentProject;
 
@@ -25,10 +28,16 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        showCreateProjectFragment();
         requestHandler = RequestHandler.initRequestHandler();
+        sqLiteHelper = new SQLiteHelper(this);
 
         currentProject = new Project("172.26.78.235:8180", "admin", "admin");
+
+        if(sqLiteHelper.getProjectList().isEmpty()){
+            showCreateProjectFragment();
+        }else{
+            showProjectListFragment();
+        }
     }
 
     @Override
@@ -45,6 +54,10 @@ public class MainActivity extends AppCompatActivity {
         if(currentProject != null) {
             requestHandler.getRequestLogoutTask(currentProject).execute();
         }
+    }
+
+    public SQLiteHelper getSQLiteHelper(){
+        return sqLiteHelper;
     }
 
     public RequestHandler getRequestHandler(){
@@ -77,8 +90,8 @@ public class MainActivity extends AppCompatActivity {
         Log.i(TAG, "Show Fragment [" + fragmentCreateProject.TAG + "].");
     }
 
-    public void showCustomListFragment(FragmentCustomList.Type type, String jsonResponse){
-        FragmentCustomList fragmentCustomList = FragmentCustomList.newInstance(type, jsonResponse);
+    public void showCustomListFragment(int headlineStringID, FragmentCustomList.Type type, String jsonResponse){
+        FragmentCustomList fragmentCustomList = FragmentCustomList.newInstance(headlineStringID, type, jsonResponse);
         getFragmentManager()
                 .beginTransaction()
                 .replace(R.id.activity_main_fragment_container,
@@ -87,6 +100,18 @@ public class MainActivity extends AppCompatActivity {
                 .addToBackStack(fragmentCustomList.TAG)
                 .commit();
         Log.i(TAG, "Show Fragment [" + fragmentCustomList.TAG + "].");
+    }
+
+    public void showProjectListFragment(){
+        FragmentProjectList fragmentProjectList = FragmentProjectList.newInstance();
+        getFragmentManager()
+                .beginTransaction()
+                .replace(R.id.activity_main_fragment_container,
+                        fragmentProjectList,
+                        fragmentProjectList.TAG)
+                .addToBackStack(fragmentProjectList.TAG)
+                .commit();
+        Log.i(TAG, "Show Fragment [" + fragmentProjectList.TAG + "].");
     }
 
 

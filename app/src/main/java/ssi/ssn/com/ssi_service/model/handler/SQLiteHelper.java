@@ -18,7 +18,7 @@ public class SQLiteHelper extends SQLiteOpenHelper {
     private static final String TAG = SQLiteHelper.class.getSimpleName();
 
     private static final String DATABASE_NAME = "ssi_service.db";
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 10;
 
     private static final String _ID = "_id";
     private static final String TABLE_PROJECT = "project";
@@ -27,9 +27,9 @@ public class SQLiteHelper extends SQLiteOpenHelper {
 
     private static final String CREATE_TABLE_PROJECT = //
             "CREATE TABLE "//
-                + TABLE_PROJECT + "(" + _ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " //
-                                      + PROJECT_JSON + " VARCHAR(500), " //
-                                      + PROJECT_IDENTIFIER + " VARCHAR(100));";
+                    + TABLE_PROJECT + "(" + _ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " //
+                    + PROJECT_JSON + " VARCHAR(500), " //
+                    + PROJECT_IDENTIFIER + " VARCHAR(100));";
 
     private static final String DROP_TABLE_PROJECT = //
             "DROP TABLE IF EXISTS " + TABLE_PROJECT;
@@ -50,23 +50,24 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    private Cursor query(){
+    private Cursor query() {
         SQLiteDatabase db = getWritableDatabase();
         return db.query(TABLE_PROJECT, null, null, null, null, null, _ID + " DESC");
     }
 
-    public boolean addProject(Project project){
-        try{
+    public boolean addProject(Project project) {
+        try {
             SQLiteDatabase db = getWritableDatabase();
             ContentValues values = new ContentValues();
-            values.put(PROJECT_JSON, ssi.ssn.com.ssi_service.model.handler.JsonHelper.toJson(project));
+            String json = JsonHelper.toJson(project);
+            values.put(PROJECT_JSON, JsonHelper.toJson(project));
 
             long id = db.insert(TABLE_PROJECT, null, values);
             Log.i(TAG, "[OK] ADDED PROJECT [" + project + "].");
-            project.setId(id);
+            project.set_id(id);
             return true;
 
-        }catch(SQLiteException ex){
+        } catch (SQLiteException ex) {
             Log.e(TAG, "[ERROR]: PROJECT ADD [" + project + "]:");
             return false;
         }
@@ -102,25 +103,25 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         return getProjectByIdentifier(identifier).getId();
     }*/
 
-    public Project getProjectByID(long id){
+    public Project getProjectByID(long id) {
         SQLiteDatabase db = getWritableDatabase();
         Cursor cursor = db.rawQuery("SELECT * " +
                 "FROM " + TABLE_PROJECT + " " +
                 "WHERE " + _ID + " = " + id + "", null);
 
         Project project = null;
-        if(cursor.moveToFirst()){
-            while(!cursor.isAfterLast()){
+        if (cursor.moveToFirst()) {
+            while (!cursor.isAfterLast()) {
                 String jsonString = cursor.getString(cursor.getColumnIndex(PROJECT_JSON));
                 project = (Project) ssi.ssn.com.ssi_service.model.handler.JsonHelper.fromJsonGeneric(Project.class, jsonString);
-                project.setId(id);
+                project.set_id(id);
                 cursor.moveToNext();
                 //TODO TEST this method
             }
         }
         cursor.close();
 
-        if(project == null){
+        if (project == null) {
             Log.e(TAG, "[ERROR]. PROJECT LOAD BY ID [" + id + "]:");
             throw new NullPointerException("[ERROR] PROJECT LOAD BY ID [" + id + "]:");
         }
@@ -128,69 +129,69 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         return project;
     }
 
-    public boolean updateProject(Project project){
-        try{
+    public boolean updateProject(Project project) {
+        try {
             SQLiteDatabase db = getWritableDatabase();
             ContentValues values = new ContentValues();
             values.put(PROJECT_JSON, ssi.ssn.com.ssi_service.model.handler.JsonHelper.toJson(project));
 
             int affectedRows = db.update(TABLE_PROJECT, values, _ID + " = ?", new String[]{
-                    Long.toString(project.getId())
+                    Long.toString(project.get_id())
             });
 
-            if(affectedRows > 0) {
+            if (affectedRows > 0) {
                 Log.i(TAG, "[OK] UPDATED PROJECT [" + project + "]");
                 return true;
-            }else{
+            } else {
                 Log.e(TAG, "[ERROR] UPDATE PROJECT - no projects being updated. Project: " + project);
                 return false;
             }
-        }catch(SQLiteException ex){
+        } catch (SQLiteException ex) {
             Log.e(TAG, "[ERROR] UPDATE PROJECT [" + project + "]");
             return false;
         }
     }
 
-    public boolean removeProject(Project project){
-        try{
+    public boolean removeProject(Project project) {
+        try {
             SQLiteDatabase db = getWritableDatabase();
             int affectedRows = db.delete(TABLE_PROJECT, _ID + " = ?", new String[]{
-                    Long.toString(project.getId())
+                    Long.toString(project.get_id())
             });
 
-            if(affectedRows > 0) {
+            if (affectedRows > 0) {
                 Log.i(TAG, "[OK] REMOVED PROJECT [" + project + "]");
                 return true;
-            }else{
+            } else {
                 Log.e(TAG, "[ERROR] REMOVE PROJECT - no projects being removed. Project: " + project);
                 return false;
             }
-        }catch(SQLiteException ex){
+        } catch (SQLiteException ex) {
             Log.e(TAG, "[ERROR] REMOVE PROJECT [" + project + "]");
             return false;
         }
     }
 
-    public List<Project> getProjectList(){
+    public List<Project> getProjectList() {
         List<Project> projects = new ArrayList<>();
         Cursor cursor = query();
 
-        if(cursor == null){
+        if (cursor == null) {
             return projects;
         }
 
-        if(cursor.moveToFirst()){
-            while(!cursor.isAfterLast()){
+        if (cursor.moveToFirst()) {
+            while (!cursor.isAfterLast()) {
                 String jsonString = cursor.getString(cursor.getColumnIndex(PROJECT_JSON));
                 long id = Long.parseLong(cursor.getString(cursor.getColumnIndex(_ID)));
-                Project project = (Project) ssi.ssn.com.ssi_service.model.handler.JsonHelper.fromJsonGeneric(Project.class, jsonString);
-                project.setId(id);
+                Project project = (Project) JsonHelper.fromJsonGeneric(Project.class, jsonString);
+                project.set_id(id);
                 projects.add(project);
                 cursor.moveToNext();
             }
         }
         cursor.close();
-        Log.i(TAG, "FOUND " + projects.size() + "] PROJECTS");
+        Log.i(TAG, "FOUND " + projects.size() + "] PROJECTS. [" + projects + "].");
         return projects;
     }
 
