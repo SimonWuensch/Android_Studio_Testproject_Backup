@@ -152,7 +152,7 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         }
     }
 
-    public boolean removeProject(Project project) {
+    public boolean deleteProject(Project project) {
         try {
             SQLiteDatabase db = getWritableDatabase();
             int affectedRows = db.delete(TABLE_PROJECT, _ID + " = ?", new String[]{
@@ -163,7 +163,7 @@ public class SQLiteHelper extends SQLiteOpenHelper {
                 Log.i(TAG, "[OK] REMOVED PROJECT [" + project + "]");
                 return true;
             } else {
-                Log.e(TAG, "[ERROR] REMOVE PROJECT - no projects being removed. Project: " + project);
+                Log.e(TAG, "[ERROR] REMOVE PROJECT - no projects being deleted. Project: " + project);
                 return false;
             }
         } catch (SQLiteException ex) {

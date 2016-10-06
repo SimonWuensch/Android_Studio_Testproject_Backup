@@ -9,16 +9,18 @@ public class Project extends AbstractProject{
     private String serverAddress;
     private String userName;
     private String password;
+    private long observationInterval;
 
     private String projectName;
     private String projectLocation;
     private String projectOrderNr;
-    private boolean projectObservation;
+    private boolean projectObservation = true;
 
-    public Project(String serverAddress, String userName, String password) {
+    public Project(String serverAddress, String userName, String password, long observationInterval) {
         this.serverAddress = serverAddress;
         this.userName = userName;
         this.password = password;
+        this.observationInterval = observationInterval;
     }
 
     public Project() {
@@ -86,6 +88,14 @@ public class Project extends AbstractProject{
 
     public void setProjectObservation(boolean projectObservation) {
         this.projectObservation = projectObservation;
+    }
+
+    public long getObservationInterval() {
+        return observationInterval;
+    }
+
+    public void setObservationInterval(long observationInterval) {
+        this.observationInterval = observationInterval;
     }
 
     public void loadProjectInfoFromApplicationInfo(){

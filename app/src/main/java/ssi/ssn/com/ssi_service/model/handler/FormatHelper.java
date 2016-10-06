@@ -20,11 +20,27 @@ public class FormatHelper {
         return formatLongToTime(millis, "%d Stunden");
     }
 
-    private static String formatLongToTime(long millis, String format){
+    public static String formatLongToTime(long millis, String format){
         return String.format(Locale.getDefault(), format,
                 TimeUnit.MILLISECONDS.toHours(millis),
                 TimeUnit.MILLISECONDS.toMinutes(millis) -
                         TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(millis))
         );
+    }
+
+    public static long formatMinutesToMilliseconds(String minutes){
+        return TimeUnit.MINUTES.toMillis(Integer.parseInt(minutes));
+    }
+
+    public static long formatMillisecondsToMinutes(long millis){
+        return TimeUnit.MILLISECONDS.toMinutes(millis);
+    }
+
+    public static long formatHoursToMilliseconds(String hour){
+        return TimeUnit.HOURS.toMillis(Integer.parseInt(hour));
+    }
+
+    public static long formatMillisecondsToHours(long millis){
+        return TimeUnit.MILLISECONDS.toHours(millis);
     }
 }

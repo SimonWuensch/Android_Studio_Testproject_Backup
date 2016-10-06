@@ -9,6 +9,15 @@
     <string name="fragment_create_project_edit_text_hint_user_name">Benutzername</string>
     <string name="fragment_create_project_edit_text_hint_password">Passwort</string>
     <string name="fragment_create_project_button_add_project">hinzufügen</string>
+    <string name="fragment_create_project_button_delete_project">löschen</string>
+    <string name="fragment_create_project_button_update_project">aktualisieren</string>
+    <string name="fragment_create_project_message_server_address_not_correct">Serveradresse kann nicht gefunden werden</string>
+    <string name="fragment_create_project_message_login_data_not_correct">Benutzername und/oder Passwort sind nicht richtig</string>
+
+    <string-array name="fragment_create_project_drop_down_box_time_input">
+        <item>Minuten</item>
+        <item>Stunden</item>
+    </string-array>
 
     <!-- Fragment Custom List - Application Info -->
     <string name="fragment_custom_list_application_info_title">Applikation Information</string>
@@ -35,12 +44,9 @@
 
     <!-- Fragment Project List -->
     <string name="fragment_project_list_title">Hinzugefügte Projekte</string>
-
-
-    <!-- Default -->
-    <string-array name="drop_down_box_time_input">
-        <item>Minuten</item>
-        <item>Stunden</item>
+    <string-array name="fragment_project_list_drop_down_box_settings">
+        <item>Bearbeiten</item>
+        <item>Löschen</item>
     </string-array>
 
     <!-- TODO: Remove or change this placeholder text -->

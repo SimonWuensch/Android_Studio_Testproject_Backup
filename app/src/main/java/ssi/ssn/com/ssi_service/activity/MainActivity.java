@@ -31,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
         requestHandler = RequestHandler.initRequestHandler();
         sqLiteHelper = new SQLiteHelper(this);
 
-        currentProject = new Project("172.26.78.235:8180", "admin", "admin");
+        //currentProject = new Project("172.26.78.235:8180", "admin", "admin");
 
         if(sqLiteHelper.getProjectList().isEmpty()){
             showCreateProjectFragment();
@@ -78,8 +78,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     // ** FRAGMENT ****************************************************************************** //
-    public void showCreateProjectFragment() {
-        FragmentCreateProject fragmentCreateProject = FragmentCreateProject.newInstance();
+    public void showCreateProjectFragment(){
+        showCreateProjectFragment(null);
+    }
+
+    public void showCreateProjectFragment(Project project) {
+        FragmentCreateProject fragmentCreateProject = FragmentCreateProject.newInstance(project);
         getFragmentManager()
                 .beginTransaction()
                 .replace(R.id.activity_main_fragment_container,

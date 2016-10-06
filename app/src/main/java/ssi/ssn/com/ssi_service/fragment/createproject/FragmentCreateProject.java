@@ -22,55 +22,65 @@ import ssi.ssn.com.ssi_service.activity.MainActivity;
 import ssi.ssn.com.ssi_service.fragment.AbstractFragment;
 import ssi.ssn.com.ssi_service.fragment.customlist.FragmentCustomList;
 import ssi.ssn.com.ssi_service.model.data.ressource.Project;
-import ssi.ssn.com.ssi_service.model.network.DefaultResponse;
+import ssi.ssn.com.ssi_service.model.handler.FormatHelper;
+import ssi.ssn.com.ssi_service.model.handler.JsonHelper;
 import ssi.ssn.com.ssi_service.model.network.handler.RequestHandler;
-import ssi.ssn.com.ssi_service.test.RESTResponseTEST;
 
 public class FragmentCreateProject extends AbstractFragment {
+
+    private enum Status {
+        ADD,
+        UPDATE,
+        DELETE;
+    }
 
     public static String TAG = FragmentCreateProject.class.getSimpleName();
 
     private static int FRAGMENT_LAYOUT = R.layout.fragment_create_project;
 
-    private static String PROJECT_ADDRESS = TAG + "_ARGS_PROJECT_ADDRESS";
-    private static String USERNAME = TAG + "_ARGS_USERNAME";
-    private static String PASSWORD = TAG + "_ARGS_PASSWORD";
+    private static String PROJECT_JSON = TAG + "PROJECT_JSON";
 
-    private Project project;
+    private Status fragmentStatus;
 
     private EditText etProjectAddress;
     private EditText etUserName;
     private EditText etPassword;
-    private Button bAddProject;
-    private Button bShowApplicationInfo;
+    private EditText etObservationInterval;
+    private Button bFinal;
     private Spinner spTimeInput;
 
     private View rootView;
 
-    public static FragmentCreateProject newInstance() {
-        return new FragmentCreateProject();
-    }
+    private Project project;
 
     public static FragmentCreateProject newInstance(Project project) {
+        if (project == null) {
+            return new FragmentCreateProject();
+        }
+
         FragmentCreateProject fragment = new FragmentCreateProject();
         Bundle bundle = new Bundle();
-        bundle.putString(PROJECT_ADDRESS, project.getServerAddress());
-        bundle.putString(USERNAME, project.getUserName());
-        bundle.putString(PASSWORD, project.getPassword());
+        bundle.putString(PROJECT_JSON, JsonHelper.toJson(project));
         fragment.setArguments(bundle);
         return fragment;
     }
 
     private void loadArguments() {
-        String projectAddress = getArguments().getString(PROJECT_ADDRESS);
-        String userName = getArguments().getString(USERNAME);
-        String password = getArguments().getString(PASSWORD);
-        this.project = new Project(projectAddress, userName, password);
+        if (getArguments() == null) {
+            fragmentStatus = Status.ADD;
+            return;
+        }
+
+        fragmentStatus = Status.DELETE;
+        String projectJson = getArguments().getString(PROJECT_JSON);
+        project = (Project) JsonHelper.fromJsonGeneric(Project.class, projectJson);
+        Log.d(TAG, "Fragment status [" + fragmentStatus + "].");
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        loadArguments();
     }
 
     @Override
@@ -78,8 +88,11 @@ public class FragmentCreateProject extends AbstractFragment {
         if (rootView == null) {
             rootView = inflater.inflate(FRAGMENT_LAYOUT, container, false);
             Log.d(TAG, "Fragment inflated [" + getActivity().getResources().getResourceName(FRAGMENT_LAYOUT) + "].");
+
             initViewComponents();
-            fillInputsWithProject();
+            if(!fragmentStatus.equals(Status.ADD)) {
+                fillViewComponentsWithProjectInfo();
+            }
         }
         return rootView;
     }
@@ -91,35 +104,94 @@ public class FragmentCreateProject extends AbstractFragment {
         etProjectAddress = (EditText) rootView.findViewById(R.id.fragment_create_project_edit_text_project_address);
         etUserName = (EditText) rootView.findViewById(R.id.fragment_create_project_edit_text_user_name);
         etPassword = (EditText) rootView.findViewById(R.id.fragment_create_project_edit_text_password);
+        etObservationInterval = (EditText) rootView.findViewById(R.id.fragment_create_project_edit_text_update_interval);
 
-        bShowApplicationInfo = (Button) rootView.findViewById(R.id.fragment_create_project_button_show_project_application_info);
+        Button bShowApplicationInfo = (Button) rootView.findViewById(R.id.fragment_create_project_button_show_project_application_info);
         bShowApplicationInfo.setOnClickListener(onClickShowApplicationInfo());
 
-        bAddProject = (Button) rootView.findViewById(R.id.fragment_create_project_button_add_project);
-        bAddProject.setOnClickListener(onClickProjectAdd());
-
         spTimeInput = (Spinner) rootView.findViewById(R.id.fragment_create_project_spinner_time_input);
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getActivity(), R.array.drop_down_box_time_input, android.R.layout.simple_spinner_item);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getActivity(), R.array.fragment_create_project_drop_down_box_time_input, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(R.layout.spinner_drop_down_item);
         spTimeInput.setAdapter(adapter);
+
+        bFinal = (Button) rootView.findViewById(R.id.fragment_create_project_button_final);
+        bFinal.setOnClickListener(onFinalButtonClick());
         Log.d(TAG, "Fragment view components initialized.");
     }
 
-    public void fillInputsWithProject() {
+    public AsyncTask afterEditTextChangeTask() {
+        return new AsyncTask() {
+            @Override
+            protected Object doInBackground(Object[] objects) {
+                return null;
+            }
+
+            @Override
+            protected void onPostExecute(Object o) {
+                fragmentStatus = FragmentCreateProject.Status.UPDATE;
+                bFinal.setText(getActivity().getString(R.string.fragment_create_project_button_update_project));
+            }
+        };
+    }
+
+    public void fillViewComponentsWithProjectInfo() {
         if (project != null) {
             etProjectAddress.setText(project.getServerAddress());
             etUserName.setText(project.getUserName());
             etPassword.setText(project.getPassword());
+
+            long millis = project.getObservationInterval();
+            String observationInterval;
+            if (FormatHelper.formatMillisecondsToMinutes(millis) % 60 != 0) {
+                observationInterval = String.valueOf(FormatHelper.formatMillisecondsToMinutes(millis));
+                spTimeInput.setSelection(0);
+            } else {
+                observationInterval = String.valueOf(FormatHelper.formatMillisecondsToHours(millis));
+                spTimeInput.setSelection(1);
+            }
+            etObservationInterval.setText(observationInterval);
+
+            switch (fragmentStatus) {
+                case ADD:
+                    bFinal.setText(getActivity().getString(R.string.fragment_create_project_button_add_project));
+                    break;
+                case DELETE:
+                    bFinal.setText(getActivity().getString(R.string.fragment_create_project_button_delete_project));
+                    super.onTextChangeListener(etProjectAddress, afterEditTextChangeTask());
+                    super.onTextChangeListener(etUserName, afterEditTextChangeTask());
+                    super.onTextChangeListener(etPassword, afterEditTextChangeTask());
+                    super.onTextChangeListener(etObservationInterval, afterEditTextChangeTask());
+                    break;
+            }
+            Log.d(TAG, "Fragment view components filled with project [" + project + "].");
         }
-        Log.d(TAG, "Fragment view components filled with project [" + project + "].");
     }
 
-    public Project getProjectWithViewComponents(){
-       return project = new Project(
-                etProjectAddress.getText().toString(),
-                etUserName.getText().toString(),
-                etPassword.getText().toString());
+    public Project getProjectWithViewComponents() {
+        if(project == null){
+            project = new Project();
+        }
+        project.setServerAddress(etProjectAddress.getText().toString());
+        project.setUserName(etUserName.getText().toString());
+        project.setPassword(etPassword.getText().toString());
+        project.setObservationInterval(getObservationInterval());
+        return project;
     }
+
+    private long getObservationInterval() {
+        String selectedItem = spTimeInput.getSelectedItem().toString();
+        String[] spinnerItems = getActivity().getResources().getStringArray(R.array.fragment_create_project_drop_down_box_time_input);
+
+        if (selectedItem.equals(spinnerItems[0])) {
+            return FormatHelper.formatMinutesToMilliseconds(etObservationInterval.getText().toString());
+        }
+        if (selectedItem.equals(spinnerItems[1])) {
+            return FormatHelper.formatHoursToMilliseconds(etObservationInterval.getText().toString());
+        }
+        return 0;
+    }
+
+    // ** APPLICATION INFO BUTTON CLICK ********************************************************* //
 
     public View.OnClickListener onClickShowApplicationInfo() {
         return new View.OnClickListener() {
@@ -127,7 +199,7 @@ public class FragmentCreateProject extends AbstractFragment {
             public void onClick(View view) {
                 final RequestHandler requestHandler = ((MainActivity) getActivity()).getRequestHandler();
                 final ExecutorService executor = Executors.newSingleThreadExecutor();
-                getProjectWithViewComponents();
+                final Project project = getProjectWithViewComponents();
 
                 requestHandler.getRequestApplicationTask(project).executeOnExecutor(executor);
                 new AsyncTask<Object, Void, Object>() {
@@ -141,7 +213,7 @@ public class FragmentCreateProject extends AbstractFragment {
                         if (project.getDefaultResponseApplication().getCode() == 200) {
                             ((MainActivity) getActivity()).showCustomListFragment(R.string.fragment_custom_list_application_info_title, FragmentCustomList.Type.APPLICATION, project.getDefaultResponseApplication().getResult());
                         } else {
-                            Toast.makeText(getActivity(), "FEHLER: Serveradresse ist nicht korrekt.", Toast.LENGTH_LONG).show();
+                            Toast.makeText(getActivity(), getActivity().getString(R.string.fragment_create_project_message_server_address_not_correct), Toast.LENGTH_SHORT).show();
                         }
                     }
                 }.executeOnExecutor(executor);
@@ -149,62 +221,74 @@ public class FragmentCreateProject extends AbstractFragment {
         };
     }
 
-    public View.OnClickListener onClickProjectAdd() {
+
+    // ** FINAL BUTTON CLICK ******************************************************************** //
+    public View.OnClickListener onFinalButtonClick() {
         return new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                /*TODO TEST. DELETE
-                getProjectWithViewComponents();
-                if(!project.getServerAddress().isEmpty() || !project.getUserName().isEmpty() || !project.getPassword().isEmpty()) {
-                    project.setDefaultResponseApplication(new DefaultResponse(200, RESTResponseTEST.restApplication));
-                    project.loadProjectInfoFromApplicationInfo();
-                    getSQLiteHelper().addProject(project);
-                    ((MainActivity) getActivity()).showProjectListFragment();
+                final Project project = getProjectWithViewComponents();
+                switch (fragmentStatus) {
+                    case ADD:
+                        onClickProjectAdd(project);
+                        break;
+                    case UPDATE:
+                        onClickProjectUpdate(project);
+                        break;
+                    case DELETE:
+                        onClickProjectDelete(project);
+                        break;
                 }
-                */
-
-                final RequestHandler requestHandler = ((MainActivity) getActivity()).getRequestHandler();
-                final ExecutorService executor = Executors.newSingleThreadExecutor();
-                getProjectWithViewComponents();
-
-                requestHandler.getRequestApplicationTask(project).executeOnExecutor(executor);
-
-                new AsyncTask<Object, Void, Object>() {
-                    @Override
-                    protected Object doInBackground(Object[] objects) {
-                        return null;
-                    }
-
-                    @Override
-                    protected void onPostExecute(Object o) {
-                        if (project.getDefaultResponseApplication().getCode() == 200) {
-                            requestHandler.getRequestLoginTask(project).executeOnExecutor(executor);
-                            new AsyncTask<Object, Void, Object>() {
-                                @Override
-                                protected Object doInBackground(Object... objects) {
-                                    return null;
-                                }
-
-                                @Override
-                                protected void onPostExecute(Object o) {
-                                    if (project.getDefaultResponseLogin().getCode() == 200) {
-                                        Toast.makeText(getActivity(), "Serverdresse und Logindaten sind korrekt.", Toast.LENGTH_LONG).show();
-                                        project.loadProjectInfoFromApplicationInfo();
-                                        getSQLiteHelper().addProject(getProjectWithViewComponents());
-                                        ((MainActivity)getActivity()).showProjectListFragment();
-                                    } else {
-                                        Toast.makeText(getActivity(), "FEHLER: Logindaten sind nicht korrekt.", Toast.LENGTH_LONG).show();
-                                    }
-                                }
-                            }.executeOnExecutor(executor);
-                        } else {
-                            Toast.makeText(getActivity(), "FEHLER: Serveradresse ist nicht korrekt.", Toast.LENGTH_LONG).show();
-                        }
-                    }
-                }.executeOnExecutor(executor);
             }
         };
     }
 
+    public void onClickProjectAdd(final Project project) {
+        final RequestHandler requestHandler = ((MainActivity) getActivity()).getRequestHandler();
+        final ExecutorService executor = Executors.newSingleThreadExecutor();
+
+        requestHandler.getRequestApplicationTask(project).executeOnExecutor(executor);
+        new AsyncTask<Object, Void, Object>() {
+            @Override
+            protected Object doInBackground(Object[] objects) {
+                return null;
+            }
+
+            @Override
+            protected void onPostExecute(Object o) {
+                if (project.getDefaultResponseApplication().getCode() == 200) {
+                    requestHandler.getRequestLoginTask(project).executeOnExecutor(executor);
+                    new AsyncTask<Object, Void, Object>() {
+                        @Override
+                        protected Object doInBackground(Object... objects) {
+                            return null;
+                        }
+
+                        @Override
+                        protected void onPostExecute(Object o) {
+                            if (project.getDefaultResponseLogin().getCode() == 200) {
+                                project.loadProjectInfoFromApplicationInfo();
+                                getSQLiteHelper().addProject(project);
+                                ((MainActivity) getActivity()).showProjectListFragment();
+                            } else {
+                                Toast.makeText(getActivity(), getActivity().getString(R.string.fragment_create_project_message_login_data_not_correct), Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    }.executeOnExecutor(executor);
+                } else {
+                    Toast.makeText(getActivity(), getActivity().getString(R.string.fragment_create_project_message_server_address_not_correct), Toast.LENGTH_SHORT).show();
+                }
+            }
+        }.executeOnExecutor(executor);
+    }
+
+    public void onClickProjectUpdate(final Project project) {
+        getSQLiteHelper().updateProject(project);
+        ((MainActivity) getActivity()).showProjectListFragment();
+    }
+
+    public void onClickProjectDelete(final Project project) {
+        getSQLiteHelper().deleteProject(project);
+        ((MainActivity) getActivity()).showProjectListFragment();
+    }
 }

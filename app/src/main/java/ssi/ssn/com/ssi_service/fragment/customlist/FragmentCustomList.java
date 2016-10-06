@@ -44,15 +44,18 @@ public class FragmentCustomList extends AbstractFragment {
     }
 
     private void loadArguments(){
-        headlineStringID = getArguments().getInt(HEADLINE_STRING_ID);
-        String jsonResponse = getArguments().getString(RESPONSE_JSON);
-        Type type = (Type) JsonHelper.fromJsonGeneric(Type.class, getArguments().getString(FRAGMENT_TYPE));
-        responseAbstract = type.deserialize(jsonResponse);
+        if(getArguments() != null) {
+            headlineStringID = getArguments().getInt(HEADLINE_STRING_ID);
+            String jsonResponse = getArguments().getString(RESPONSE_JSON);
+            Type type = (Type) JsonHelper.fromJsonGeneric(Type.class, getArguments().getString(FRAGMENT_TYPE));
+            responseAbstract = type.deserialize(jsonResponse);
+        }
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        loadArguments();
     }
 
     @Override
