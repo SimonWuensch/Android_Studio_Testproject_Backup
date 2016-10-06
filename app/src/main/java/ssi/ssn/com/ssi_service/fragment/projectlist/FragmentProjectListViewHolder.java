@@ -72,7 +72,7 @@ public class FragmentProjectListViewHolder extends RecyclerView.ViewHolder {
         return new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(activity, project.toString(), Toast.LENGTH_SHORT).show();
+                ((MainActivity)activity).showLaunchBoardFragment(project);
             }
         };
     }

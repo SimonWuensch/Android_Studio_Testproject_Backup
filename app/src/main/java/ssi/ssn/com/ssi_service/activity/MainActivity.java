@@ -7,11 +7,11 @@ import android.util.Log;
 import ssi.ssn.com.ssi_service.R;
 import ssi.ssn.com.ssi_service.fragment.createproject.FragmentCreateProject;
 import ssi.ssn.com.ssi_service.fragment.customlist.FragmentCustomList;
+import ssi.ssn.com.ssi_service.fragment.launchboard.FragmentLaunchBoard;
 import ssi.ssn.com.ssi_service.fragment.projectlist.FragmentProjectList;
 import ssi.ssn.com.ssi_service.model.data.ressource.Project;
 import ssi.ssn.com.ssi_service.model.handler.SQLiteHelper;
 import ssi.ssn.com.ssi_service.model.network.handler.RequestHandler;
-import ssi.ssn.com.ssi_service.test.TestClass;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -20,9 +20,6 @@ public class MainActivity extends AppCompatActivity {
     private SQLiteHelper sqLiteHelper;
     private RequestHandler requestHandler;
     private Project currentProject;
-
-    //Todo delete after Test
-    private static String restApplication = "{\"state\":{\"since\":1474986112465,\"status\":\"RUNNING\"},\"enabledModules\":[\"Scada\",\"Kpi.UserCharts\",\"Kpi.UserDashboards\"],\"project\":{\"name\":\"AntSimDemo\",\"location\":\"Giebelstadt\",\"orderNr\":\"2x0\"},\"build\":{\"version\":\"2.0.0.0-DEV\",\"number\":\"7755\",\"builtBy\":\"scott.hady\",\"builtOn\":1474880244488},\"time\":{\"stamp\":1475065035240,\"offset\":7200000}}";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -113,9 +110,20 @@ public class MainActivity extends AppCompatActivity {
                 .replace(R.id.activity_main_fragment_container,
                         fragmentProjectList,
                         fragmentProjectList.TAG)
-                .addToBackStack(fragmentProjectList.TAG)
                 .commit();
         Log.i(TAG, "Show Fragment [" + fragmentProjectList.TAG + "].");
+    }
+
+    public void showLaunchBoardFragment(Project project){
+        FragmentLaunchBoard fragmentLaunchBoard = FragmentLaunchBoard.newInstance(project);
+        getFragmentManager()
+                .beginTransaction()
+                .replace(R.id.activity_main_fragment_container,
+                        fragmentLaunchBoard,
+                        fragmentLaunchBoard.TAG)
+                .addToBackStack(fragmentLaunchBoard.TAG)
+                .commit();
+        Log.i(TAG, "Show Fragment [" + fragmentLaunchBoard.TAG + "].");
     }
 
 

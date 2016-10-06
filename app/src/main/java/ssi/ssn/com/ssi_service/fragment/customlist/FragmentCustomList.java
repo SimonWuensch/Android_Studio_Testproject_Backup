@@ -12,7 +12,7 @@ import android.widget.TextView;
 import ssi.ssn.com.ssi_service.R;
 import ssi.ssn.com.ssi_service.fragment.AbstractFragment;
 import ssi.ssn.com.ssi_service.model.handler.JsonHelper;
-import ssi.ssn.com.ssi_service.model.network.response.ResponseAbstract;
+import ssi.ssn.com.ssi_service.model.network.response.AbstractResponse;
 import ssi.ssn.com.ssi_service.model.network.response.ResponseApplication;
 
 public class FragmentCustomList extends AbstractFragment {
@@ -21,14 +21,14 @@ public class FragmentCustomList extends AbstractFragment {
 
     private static int FRAGMENT_LAYOUT = R.layout.fragment_custom_list;
     private static int RECYCLERVIEW = R.id.fragment_custom_list_recycler_view;
-    private static int CARDVIEW = R.layout.fragment_custom_list_cardview;
+    private static int CARDVIEW = R.layout.fragment_custom_list_card_view;
 
     private static String HEADLINE_STRING_ID = TAG + "HEADLINE_STRING_ID";
     private static String RESPONSE_JSON = TAG + "_RESPONSE_JSON";
     private static String FRAGMENT_TYPE = TAG + "_FRAGMENT_TYPE";
 
     private int headlineStringID;
-    private ResponseAbstract responseAbstract;
+    private AbstractResponse responseAbstract;
 
 
     private View rootView;
@@ -90,7 +90,7 @@ public class FragmentCustomList extends AbstractFragment {
             this.responseClass = responseClass;
         }
 
-        public ResponseAbstract deserialize(String json){
+        public AbstractResponse deserialize(String json){
             return (ResponseApplication) JsonHelper.fromJsonGeneric(responseClass, json);
         }
     }

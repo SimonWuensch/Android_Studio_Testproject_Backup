@@ -16,7 +16,7 @@ import ssi.ssn.com.ssi_service.model.network.response.objects.RestProject;
 import ssi.ssn.com.ssi_service.model.network.response.objects.State;
 import ssi.ssn.com.ssi_service.model.network.response.objects.Time;
 
-public class ResponseApplication extends ResponseAbstract {
+public class ResponseApplication extends AbstractResponse {
 
     private State state;
     private String [] enabledModules;

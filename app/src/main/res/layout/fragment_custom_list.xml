@@ -7,11 +7,11 @@
     android:layout_height="match_parent">
 
     <include
+        android:id="@+id/fragment_custom_list_include_headline"
+        layout="@layout/default_action_bar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        layout="@layout/default_action_bar"
-        android:layout_gravity="center_horizontal|top"
-        android:id="@+id/fragment_custom_list_include_headline" />
+        android:layout_gravity="center_horizontal|top" />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/fragment_custom_list_recycler_view"

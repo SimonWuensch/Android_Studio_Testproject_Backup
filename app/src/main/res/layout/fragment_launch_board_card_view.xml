@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+
+    android:id="@+id/fragment_project_list_card_view"
+    android:layout_width="match_parent"
+    android:layout_height="110dp"
+    android:layout_margin="10dp"
+    android:clickable="true"
+    android:foreground="?android:attr/selectableItemBackground"
+    card_view:cardCornerRadius="0dp"
+    card_view:cardElevation="0dp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <FrameLayout
+            android:id="@+id/default_card_view_big_frame_layout_image_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/defaultColor">
+
+            <ImageView
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_margin="5dp"
+                android:src="@drawable/icon_ip" />
+        </FrameLayout>
+
+        <TextView
+            android:id="@+id/default_card_view_big_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginStart="10dp"
+            android:layout_toEndOf="@id/default_card_view_big_frame_layout_image_view"
+            android:text="Title"
+            android:textColor="@color/colorBlack"
+            android:textSize="36sp" />
+
+        <View
+            android:id="@+id/default_card_view_big_view_status"
+            android:layout_width="50dp"
+            android:layout_height="match_parent"
+            android:layout_alignParentEnd="true"
+            android:background="@color/NOT_AVAILABLE" />
+
+        <CheckBox
+            android:id="@+id/default_card_view_big_check_box_observation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignStart="@+id/default_card_view_big_title"
+            android:layout_below="@+id/default_card_view_big_title"
+            android:scaleX="1.5"
+            android:scaleY="1.5" />
+
+    </RelativeLayout>
+</android.support.v7.widget.CardView>

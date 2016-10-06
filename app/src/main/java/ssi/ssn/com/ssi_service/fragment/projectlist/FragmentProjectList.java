@@ -1,7 +1,5 @@
 package ssi.ssn.com.ssi_service.fragment.projectlist;
 
-import android.app.Activity;
-import android.app.Fragment;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -22,7 +20,7 @@ public class FragmentProjectList extends AbstractFragment {
 
     private static int FRAGMENT_LAYOUT = R.layout.fragment_project_list;
     private static int RECYCLERVIEW = R.id.fragment_project_list_recycler_view;
-    private static int CARDVIEW = R.layout.fragment_project_list_cardview;
+    private static int CARDVIEW = R.layout.fragment_project_list_card_view;
 
     private static String OBJECTONE = "OBJECTONE";
     private static String OBJECTTWO = "OBJECTTWO";

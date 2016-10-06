@@ -3,16 +3,13 @@ package ssi.ssn.com.ssi_service.fragment.customlist;
 import android.app.Activity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
 import java.util.List;
 
 import ssi.ssn.com.ssi_service.fragment.customlist.source.CustomListObject;
-import ssi.ssn.com.ssi_service.model.handler.JsonHelper;
-import ssi.ssn.com.ssi_service.model.network.response.ResponseAbstract;
-import ssi.ssn.com.ssi_service.model.network.response.ResponseApplication;
+import ssi.ssn.com.ssi_service.model.network.response.AbstractResponse;
 
 class FragmentCustomListAdapter extends  RecyclerView.Adapter<FragmentCustomListViewHolder>{
 
@@ -25,7 +22,7 @@ class FragmentCustomListAdapter extends  RecyclerView.Adapter<FragmentCustomList
     private List<CustomListObject> customListInputs;
     private Activity activity;
 
-    FragmentCustomListAdapter(int layoutCardView, final FragmentCustomList fragment, ResponseAbstract responseAbstract){
+    FragmentCustomListAdapter(int layoutCardView, final FragmentCustomList fragment, AbstractResponse responseAbstract){
         this.layoutCardView = layoutCardView;
         this.fragment = fragment;
         this.activity = fragment.getActivity();

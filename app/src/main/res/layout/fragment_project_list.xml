@@ -22,11 +22,11 @@
 
     <ImageView
         android:id="@+id/fragment_project_list_image_add_project"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
-        android:layout_margin="30dp"
+        android:layout_margin="15dp"
         android:src="@drawable/icon_add"
         android:tint="@color/defaultColor"/>
 

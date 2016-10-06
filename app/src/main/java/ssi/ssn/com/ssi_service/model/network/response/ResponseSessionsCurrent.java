@@ -2,7 +2,7 @@ package ssi.ssn.com.ssi_service.model.network.response;
 
 import ssi.ssn.com.ssi_service.model.network.response.objects.Actor;
 
-public class ResponseSessionsCurrent extends ResponseAbstract {
+public class ResponseSessionsCurrent extends AbstractResponse {
 
     public long id;
     public String key;
