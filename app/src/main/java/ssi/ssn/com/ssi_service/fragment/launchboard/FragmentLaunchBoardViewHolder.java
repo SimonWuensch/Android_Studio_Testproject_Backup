@@ -6,7 +6,6 @@ import android.view.View;
 import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import ssi.ssn.com.ssi_service.R;
 import ssi.ssn.com.ssi_service.fragment.launchboard.source.AbstractCardObject;

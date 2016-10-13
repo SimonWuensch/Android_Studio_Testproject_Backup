@@ -1,19 +1,8 @@
 package ssi.ssn.com.ssi_service.test;
 
-import android.app.Activity;
-import android.icu.text.DateFormat;
-import android.icu.text.MessageFormat;
-import android.os.AsyncTask;
-
-import com.owlike.genson.Genson;
-
-import java.lang.reflect.Field;
-
 import ssi.ssn.com.ssi_service.R;
 import ssi.ssn.com.ssi_service.activity.MainActivity;
 import ssi.ssn.com.ssi_service.fragment.customlist.FragmentCustomList;
-import ssi.ssn.com.ssi_service.model.handler.JsonHelper;
-import ssi.ssn.com.ssi_service.model.network.response.ResponseApplication;
 
 public class TestClass {
 

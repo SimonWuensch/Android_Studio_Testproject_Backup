@@ -6,9 +6,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
-import com.owlike.genson.annotation.JsonIgnore;
-
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 

@@ -5,11 +5,6 @@ import android.view.View;
 
 import com.owlike.genson.annotation.JsonIgnore;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-
-import ssi.ssn.com.ssi_service.R;
 import ssi.ssn.com.ssi_service.model.data.source.Status;
 
 public class AbstractCardObject {
@@ -18,7 +13,8 @@ public class AbstractCardObject {
     private int title;
     private int icon;
     private boolean observation;
-    @JsonIgnore private Status status;
+    @JsonIgnore
+    private Status status;
     @JsonIgnore private View statusView;
 
     public AbstractCardObject(int title, int icon, boolean observation) {
