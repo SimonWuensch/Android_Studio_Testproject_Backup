@@ -36,7 +36,7 @@
     <string name="fragment_custom_list_application_info_build_builtBy">Von</string>
     <string name="fragment_custom_list_application_info_build_builtOn">Am</string>
 
-    <string name="fragment_custom_list_application_info_time_headline">Zeit</string>
+    <string name="fragment_custom_list_application_info_time_headline">Zeit vor Ort</string>
     <string name="fragment_custom_list_application_info_time_stamp">Stempel</string>
     <string name="fragment_custom_list_application_info_time_offset">Ausgleich</string>
 

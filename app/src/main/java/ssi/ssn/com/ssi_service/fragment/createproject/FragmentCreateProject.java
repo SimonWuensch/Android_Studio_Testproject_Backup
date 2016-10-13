@@ -28,7 +28,7 @@ import ssi.ssn.com.ssi_service.model.network.handler.RequestHandler;
 
 public class FragmentCreateProject extends AbstractFragment {
 
-    private enum Status {
+    public enum Status {
         ADD,
         UPDATE,
         DELETE;
@@ -42,7 +42,7 @@ public class FragmentCreateProject extends AbstractFragment {
 
     private Status fragmentStatus;
 
-    private EditText etProjectAddress;
+    private EditText etServerAddress;
     private EditText etUserName;
     private EditText etPassword;
     private EditText etObservationInterval;
@@ -90,7 +90,7 @@ public class FragmentCreateProject extends AbstractFragment {
             Log.d(TAG, "Fragment inflated [" + getActivity().getResources().getResourceName(FRAGMENT_LAYOUT) + "].");
 
             initViewComponents();
-            if(!fragmentStatus.equals(Status.ADD)) {
+            if (!fragmentStatus.equals(Status.ADD)) {
                 fillViewComponentsWithProjectInfo();
             }
         }
@@ -101,7 +101,7 @@ public class FragmentCreateProject extends AbstractFragment {
         TextView tvHeadLine = (TextView) rootView.findViewById(R.id.default_action_bar_text_view_headline);
         tvHeadLine.setText(getActivity().getString(R.string.fragment_create_project_title));
 
-        etProjectAddress = (EditText) rootView.findViewById(R.id.fragment_create_project_edit_text_project_address);
+        etServerAddress = (EditText) rootView.findViewById(R.id.fragment_create_project_edit_text_project_address);
         etUserName = (EditText) rootView.findViewById(R.id.fragment_create_project_edit_text_user_name);
         etPassword = (EditText) rootView.findViewById(R.id.fragment_create_project_edit_text_password);
         etObservationInterval = (EditText) rootView.findViewById(R.id.fragment_create_project_edit_text_update_interval);
@@ -119,24 +119,9 @@ public class FragmentCreateProject extends AbstractFragment {
         Log.d(TAG, "Fragment view components initialized.");
     }
 
-    public AsyncTask afterEditTextChangeTask() {
-        return new AsyncTask() {
-            @Override
-            protected Object doInBackground(Object[] objects) {
-                return null;
-            }
-
-            @Override
-            protected void onPostExecute(Object o) {
-                fragmentStatus = FragmentCreateProject.Status.UPDATE;
-                bFinal.setText(getActivity().getString(R.string.fragment_create_project_button_update_project));
-            }
-        };
-    }
-
     public void fillViewComponentsWithProjectInfo() {
         if (project != null) {
-            etProjectAddress.setText(project.getServerAddress());
+            etServerAddress.setText(project.getServerAddress());
             etUserName.setText(project.getUserName());
             etPassword.setText(project.getPassword());
 
@@ -157,21 +142,62 @@ public class FragmentCreateProject extends AbstractFragment {
                     break;
                 case DELETE:
                     bFinal.setText(getActivity().getString(R.string.fragment_create_project_button_delete_project));
-                    super.onTextChangeListener(etProjectAddress, afterEditTextChangeTask());
-                    super.onTextChangeListener(etUserName, afterEditTextChangeTask());
-                    super.onTextChangeListener(etPassword, afterEditTextChangeTask());
-                    super.onTextChangeListener(etObservationInterval, afterEditTextChangeTask());
+                    super.onTextChangeListener(etServerAddress);
+                    super.onTextChangeListener(etUserName);
+                    super.onTextChangeListener(etPassword);
+                    super.onTextChangeListener(etObservationInterval);
                     break;
             }
             Log.d(TAG, "Fragment view components filled with project [" + project + "].");
         }
     }
 
+    @Override
+    public void doAfterTextChanged() {
+        String initialServerAddress = project.getServerAddress();
+        String initialUserName = project.getUserName();
+        String initialPassword = project.getPassword();
+
+        long millis = project.getObservationInterval();
+        String initialObservationInterval;
+        if (FormatHelper.formatMillisecondsToMinutes(millis) % 60 != 0) {
+            initialObservationInterval = String.valueOf(FormatHelper.formatMillisecondsToMinutes(millis));
+        } else {
+            initialObservationInterval = String.valueOf(FormatHelper.formatMillisecondsToHours(millis));
+        }
+
+        boolean isChangedServerAddress = !initialServerAddress.equals(etServerAddress.getText().toString());
+        boolean isChangedUsername = !initialUserName.equals(etUserName.getText().toString());
+        boolean isChangedPassword = !initialPassword.equals(etPassword.getText().toString());
+        boolean isChangedObservationInterval = !initialObservationInterval.equals(etObservationInterval.getText().toString());
+
+        if (isChangedServerAddress || isChangedUsername || isChangedPassword || isChangedObservationInterval) {
+            fragmentStatus = Status.UPDATE;
+        } else {
+            fragmentStatus = Status.DELETE;
+        }
+        updateFinalButtonText();
+    }
+
+    public void updateFinalButtonText() {
+        switch (fragmentStatus) {
+            case ADD:
+                bFinal.setText(getActivity().getString(R.string.fragment_create_project_button_add_project));
+                break;
+            case UPDATE:
+                bFinal.setText(getActivity().getString(R.string.fragment_create_project_button_update_project));
+                break;
+            case DELETE:
+                bFinal.setText(getActivity().getString(R.string.fragment_create_project_button_delete_project));
+                break;
+        }
+    }
+
     public Project getProjectWithViewComponents() {
-        if(project == null){
+        if (project == null) {
             project = new Project();
         }
-        project.setServerAddress(etProjectAddress.getText().toString());
+        project.setServerAddress(etServerAddress.getText().toString());
         project.setUserName(etUserName.getText().toString());
         project.setPassword(etPassword.getText().toString());
         project.setObservationInterval(getObservationInterval());
@@ -220,7 +246,6 @@ public class FragmentCreateProject extends AbstractFragment {
             }
         };
     }
-
 
     // ** FINAL BUTTON CLICK ******************************************************************** //
     public View.OnClickListener onFinalButtonClick() {
