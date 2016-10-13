@@ -12,6 +12,7 @@
     <string name="fragment_create_project_button_delete_project">löschen</string>
     <string name="fragment_create_project_button_update_project">aktualisieren</string>
     <string name="fragment_create_project_message_server_address_not_correct">Serveradresse kann nicht gefunden werden</string>
+    <string name="fragment_create_project_message_server_address_time_out">Serveradresse ist momentan nicht erreichbar</string>
     <string name="fragment_create_project_message_login_data_not_correct">Benutzername und/oder Passwort sind nicht richtig</string>
 
     <string-array name="fragment_create_project_drop_down_box_time_input">

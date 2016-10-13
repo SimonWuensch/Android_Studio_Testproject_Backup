@@ -47,6 +47,7 @@ public class FragmentCreateProject extends AbstractFragment {
     private EditText etPassword;
     private EditText etObservationInterval;
     private Button bFinal;
+    private Button bShowApplicationInfo;
     private Spinner spTimeInput;
 
     private View rootView;
@@ -106,7 +107,7 @@ public class FragmentCreateProject extends AbstractFragment {
         etPassword = (EditText) rootView.findViewById(R.id.fragment_create_project_edit_text_password);
         etObservationInterval = (EditText) rootView.findViewById(R.id.fragment_create_project_edit_text_update_interval);
 
-        Button bShowApplicationInfo = (Button) rootView.findViewById(R.id.fragment_create_project_button_show_project_application_info);
+        bShowApplicationInfo = (Button) rootView.findViewById(R.id.fragment_create_project_button_show_project_application_info);
         bShowApplicationInfo.setOnClickListener(onClickShowApplicationInfo());
 
         spTimeInput = (Spinner) rootView.findViewById(R.id.fragment_create_project_spinner_time_input);
@@ -226,6 +227,7 @@ public class FragmentCreateProject extends AbstractFragment {
                 final RequestHandler requestHandler = ((MainActivity) getActivity()).getRequestHandler();
                 final ExecutorService executor = Executors.newSingleThreadExecutor();
                 final Project project = getProjectWithViewComponents();
+                bShowApplicationInfo.setEnabled(false);
 
                 requestHandler.getRequestApplicationTask(project).executeOnExecutor(executor);
                 new AsyncTask<Object, Void, Object>() {
@@ -238,9 +240,12 @@ public class FragmentCreateProject extends AbstractFragment {
                     protected void onPostExecute(Object o) {
                         if (project.getDefaultResponseApplication().getCode() == 200) {
                             ((MainActivity) getActivity()).showCustomListFragment(R.string.fragment_custom_list_application_info_title, FragmentCustomList.Type.APPLICATION, project.getDefaultResponseApplication().getResult());
-                        } else {
+                        } else if (project.getDefaultResponseApplication().getCode() == 901) {
+                            Toast.makeText(getActivity(), getActivity().getString(R.string.fragment_create_project_message_server_address_time_out), Toast.LENGTH_SHORT).show();
+                        } else{
                             Toast.makeText(getActivity(), getActivity().getString(R.string.fragment_create_project_message_server_address_not_correct), Toast.LENGTH_SHORT).show();
                         }
+                        bShowApplicationInfo.setEnabled(true);
                     }
                 }.executeOnExecutor(executor);
             }

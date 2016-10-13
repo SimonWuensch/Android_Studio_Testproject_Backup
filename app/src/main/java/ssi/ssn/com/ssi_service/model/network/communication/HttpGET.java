@@ -17,6 +17,7 @@ public class HttpGET {
     private static String TAG = HttpGET.class.getSimpleName();
     private static String PROTOCOLL = "http://";
     private static int GET_COMMUNICATION_ERROR = 900;
+    private static int GET_COMMUNICATION_ERROR_TIMEOUT = 901;
 
     private CookieHandler cookieHandler;
     private String address;
@@ -37,6 +38,8 @@ public class HttpGET {
             urlConnection = (HttpURLConnection) url.openConnection();
             urlConnection.addRequestProperty("Content-Type", "application/json");
             urlConnection.setRequestMethod("GET");
+            urlConnection.setConnectTimeout(3000);
+            urlConnection.setReadTimeout(3000);
 
             if(cookieHandler.isCookieManagerNull()){
                 resetCookie = true;
@@ -53,7 +56,10 @@ public class HttpGET {
             String result = IOUtils.toString(is);
             Log.i(TAG, "[GET DefaultResponse] Address: [" + hostAddress + "], Result: [" + result + "]");
             return new DefaultResponse(urlConnection.getResponseCode(), result);
-        } catch (Throwable t) {
+        } catch (java.net.SocketTimeoutException e) {
+            Log.e(TAG, "[ERROR] GET Request Timeout: [" + hostAddress + "]");
+            return new DefaultResponse(GET_COMMUNICATION_ERROR_TIMEOUT, e.getMessage());
+        }catch (Throwable t) {
             Log.e(TAG, "[ERROR] GET Request. Address: [" + hostAddress + "]");
             return new DefaultResponse(GET_COMMUNICATION_ERROR, t.getMessage());
         }finally {
