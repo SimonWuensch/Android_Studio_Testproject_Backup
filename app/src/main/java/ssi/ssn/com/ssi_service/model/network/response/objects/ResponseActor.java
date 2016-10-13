@@ -1,10 +1,10 @@
 package ssi.ssn.com.ssi_service.model.network.response.objects;
 
-public class Actor {
+public class ResponseActor {
 
     public String key;
 
-    public Actor() {
+    public ResponseActor() {
     }
 
     public String getKey() {

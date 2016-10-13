@@ -1,4 +1,4 @@
-package ssi.ssn.com.ssi_service.model.data.ressource;
+package ssi.ssn.com.ssi_service.model.data.source;
 
 import com.owlike.genson.annotation.JsonIgnore;
 

@@ -6,11 +6,10 @@ import android.view.View;
 import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import ssi.ssn.com.ssi_service.R;
 import ssi.ssn.com.ssi_service.activity.MainActivity;
-import ssi.ssn.com.ssi_service.model.data.ressource.Project;
+import ssi.ssn.com.ssi_service.model.data.source.Project;
 
 
 public class FragmentProjectListViewHolder extends RecyclerView.ViewHolder {
@@ -48,14 +47,13 @@ public class FragmentProjectListViewHolder extends RecyclerView.ViewHolder {
         tvProjectLocation.setText(project.getProjectLocation());
         tvProjectOrderNr.setText(project.getProjectOrderNr());
 
-        cbObserveProject.setSelected(project.isProjectObservation());
+        cbObserveProject.setChecked(project.isProjectObservation());
         ivProjectSettings.setOnClickListener(onClickCardViewProjectSettings(project));
 
         if (project.isProjectObservation()) {
             //TODO
             // Passe Status View vProjectState an
         }
-
         cardView.setOnClickListener(onClickCardView(project));
     }
 

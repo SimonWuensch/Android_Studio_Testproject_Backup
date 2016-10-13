@@ -3,6 +3,7 @@ package ssi.ssn.com.ssi_service.model.handler;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
@@ -11,7 +12,7 @@ import android.util.Log;
 import java.util.ArrayList;
 import java.util.List;
 
-import ssi.ssn.com.ssi_service.model.data.ressource.Project;
+import ssi.ssn.com.ssi_service.model.data.source.Project;
 
 public class SQLiteHelper extends SQLiteOpenHelper {
 
@@ -73,36 +74,6 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         }
     }
 
-    /*public Project getProjectByIdentifier(String identifier){
-        SQLiteDatabase db = getWritableDatabase();
-        Cursor cursor = db.rawQuery("SELECT * " +
-                "FROM " + TABLE_PROJECT + " " +
-                "WHERE " + PROJECT_IDENTIFIER + " = \"" + identifier +"\"", null);
-
-        Project project = null;
-        if(cursor.moveToFirst()){
-            while(!cursor.isAfterLast()){
-                String jsonString = cursor.getString(cursor.getColumnIndex(PROJECT_JSON));
-                long id = Long.parseLong(cursor.getString(cursor.getColumnIndex(_ID)));
-                project = (Project) JsonHelper.fromJsonGeneric(Project.class, jsonString);
-                project.setId(id);
-                cursor.moveToNext();
-            }
-        }
-        cursor.close();
-
-        if(project == null){
-            Log.e(TAG, "ERROR PROJECT LOAD BY IDENTIFIER [" + identifier +  "]");
-            throw new NullPointerException("ERROR PROJECT LOAD BY IDENTIFIER [" + identifier + "]");
-        }
-        Log.i(TAG, "FOUND PROJECT [" + project + "]");
-        return project;
-    }*/
-
-    /*public long getProjectIdByIdentifier(String identifier){
-        return getProjectByIdentifier(identifier).getId();
-    }*/
-
     public Project getProjectByID(long id) {
         SQLiteDatabase db = getWritableDatabase();
         Cursor cursor = db.rawQuery("SELECT * " +
@@ -113,7 +84,7 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         if (cursor.moveToFirst()) {
             while (!cursor.isAfterLast()) {
                 String jsonString = cursor.getString(cursor.getColumnIndex(PROJECT_JSON));
-                project = (Project) ssi.ssn.com.ssi_service.model.handler.JsonHelper.fromJsonGeneric(Project.class, jsonString);
+                project = (Project) JsonHelper.fromJsonGeneric(Project.class, jsonString);
                 project.set_id(id);
                 cursor.moveToNext();
                 //TODO TEST this method
@@ -133,7 +104,7 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         try {
             SQLiteDatabase db = getWritableDatabase();
             ContentValues values = new ContentValues();
-            values.put(PROJECT_JSON, ssi.ssn.com.ssi_service.model.handler.JsonHelper.toJson(project));
+            values.put(PROJECT_JSON, JsonHelper.toJson(project));
 
             int affectedRows = db.update(TABLE_PROJECT, values, _ID + " = ?", new String[]{
                     Long.toString(project.get_id())
@@ -191,27 +162,15 @@ public class SQLiteHelper extends SQLiteOpenHelper {
             }
         }
         cursor.close();
-        Log.i(TAG, "FOUND " + projects.size() + "] PROJECTS. [" + projects + "].");
+        Log.i(TAG, "FOUND [" + projects.size() + "] PROJECTS. [" + projects + "].");
         return projects;
     }
 
-    /*public List<String> getProjectIdentifierList() {
-        List<String> identifiers = new ArrayList<String>();
-        Cursor cursor = query();
-
-        if(cursor == null){
-            return identifiers;
-        }
-
-        if(cursor.moveToFirst()){
-            while(!cursor.isAfterLast()){
-                String identifier = cursor.getString(cursor.getColumnIndex(PROJECT_IDENTIFIER));
-                identifiers.add(identifier);
-                cursor.moveToNext();
-            }
-        }
-        cursor.close();
-        Log.i(TAG, "FOUND [" + identifiers.size() + "] PROJECT IDENTIFIERS");
-        return identifiers;
-    }*/
+    public long getProjectCount(){
+        SQLiteDatabase db = this.getReadableDatabase();
+        long cnt  = DatabaseUtils.queryNumEntries(db, TABLE_PROJECT);
+        db.close();
+        Log.i(TAG, "PROJECT COUNT [" + cnt + "].");
+        return cnt;
+    }
 }

@@ -4,12 +4,12 @@ package ssi.ssn.com.ssi_service.model.network.response.objects;
  * Created by wuens on 28.09.2016.
  */
 
-public class Time {
+public class ResponseTime {
 
     public long stamp;
     public long offset;
 
-    public Time(){
+    public ResponseTime(){
     }
 
     public long getStamp() {

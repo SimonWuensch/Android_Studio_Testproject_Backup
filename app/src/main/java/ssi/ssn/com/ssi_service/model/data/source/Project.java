@@ -1,4 +1,4 @@
-package ssi.ssn.com.ssi_service.model.data.ressource;
+package ssi.ssn.com.ssi_service.model.data.source;
 
 import ssi.ssn.com.ssi_service.model.handler.JsonHelper;
 import ssi.ssn.com.ssi_service.model.network.response.ResponseApplication;
@@ -100,9 +100,9 @@ public class Project extends AbstractProject{
 
     public void loadProjectInfoFromApplicationInfo(){
         ResponseApplication responseApplication = (ResponseApplication) JsonHelper.fromJsonGeneric(ResponseApplication.class, getDefaultResponseApplication().getResult());
-        this.projectName= responseApplication.getRestProject().getName();
-        this.projectLocation = responseApplication.getRestProject().getLocation();
-        this.projectOrderNr = responseApplication.getRestProject().getOrderNr();
+        this.projectName= responseApplication.getProject().getName();
+        this.projectLocation = responseApplication.getProject().getLocation();
+        this.projectOrderNr = responseApplication.getProject().getOrderNr();
     }
 
     public String toString(){

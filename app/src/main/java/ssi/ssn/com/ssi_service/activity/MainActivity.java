@@ -10,7 +10,7 @@ import ssi.ssn.com.ssi_service.fragment.createproject.FragmentCreateProject;
 import ssi.ssn.com.ssi_service.fragment.customlist.FragmentCustomList;
 import ssi.ssn.com.ssi_service.fragment.launchboard.FragmentLaunchBoard;
 import ssi.ssn.com.ssi_service.fragment.projectlist.FragmentProjectList;
-import ssi.ssn.com.ssi_service.model.data.ressource.Project;
+import ssi.ssn.com.ssi_service.model.data.source.Project;
 import ssi.ssn.com.ssi_service.model.handler.SQLiteHelper;
 import ssi.ssn.com.ssi_service.model.network.handler.RequestHandler;
 
@@ -33,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
 
         //currentProject = new Project("172.26.78.235:8180", "admin", "admin");
 
-        if(sqLiteHelper.getProjectList().isEmpty()){
+        if(sqLiteHelper.getProjectCount() == 0){
             showCreateProjectFragment();
         }else{
             showProjectListFragment();

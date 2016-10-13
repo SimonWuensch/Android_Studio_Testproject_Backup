@@ -4,14 +4,14 @@ package ssi.ssn.com.ssi_service.model.network.response.objects;
  * Created by wuens on 28.09.2016.
  */
 
-public class Build {
+public class ResponseBuild {
 
     public String version;
     public long number;
     public String builtBy;
     public long builtOn;
 
-    public Build() {
+    public ResponseBuild() {
     }
 
     public String getVersion() {

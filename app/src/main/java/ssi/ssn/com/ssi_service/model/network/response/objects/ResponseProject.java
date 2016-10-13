@@ -1,12 +1,12 @@
 package ssi.ssn.com.ssi_service.model.network.response.objects;
 
-public class RestProject {
+public class ResponseProject {
 
     private String name;
     private String location;
     private String orderNr;
 
-    public RestProject() {
+    public ResponseProject() {
     }
 
     public String getName() {

@@ -3,14 +3,12 @@ package ssi.ssn.com.ssi_service.fragment.projectlist;
 import android.app.Activity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import ssi.ssn.com.ssi_service.model.data.ressource.Project;
+import ssi.ssn.com.ssi_service.model.data.source.Project;
 
 public class FragmentProjectListAdapter extends RecyclerView.Adapter<FragmentProjectListViewHolder> {
 

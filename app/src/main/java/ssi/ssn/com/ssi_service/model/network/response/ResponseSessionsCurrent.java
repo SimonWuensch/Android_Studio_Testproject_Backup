@@ -1,13 +1,13 @@
 package ssi.ssn.com.ssi_service.model.network.response;
 
-import ssi.ssn.com.ssi_service.model.network.response.objects.Actor;
+import ssi.ssn.com.ssi_service.model.network.response.objects.ResponseActor;
 
 public class ResponseSessionsCurrent extends AbstractResponse {
 
     public long id;
     public String key;
     public String status;
-    public Actor actor;
+    public ResponseActor actor;
     public String[] rights;
     public long createdOn;
     public long lastModifiedOn;
@@ -41,11 +41,11 @@ public class ResponseSessionsCurrent extends AbstractResponse {
         this.status = status;
     }
 
-    public Actor getActor() {
+    public ResponseActor getActor() {
         return actor;
     }
 
-    public void setActor(Actor actor) {
+    public void setActor(ResponseActor actor) {
         this.actor = actor;
     }
 

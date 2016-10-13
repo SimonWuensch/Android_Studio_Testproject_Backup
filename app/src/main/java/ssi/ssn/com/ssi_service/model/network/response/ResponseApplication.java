@@ -3,7 +3,6 @@ package ssi.ssn.com.ssi_service.model.network.response;
 import android.app.Activity;
 
 import com.owlike.genson.annotation.JsonIgnore;
-import com.owlike.genson.annotation.JsonProperty;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -11,28 +10,27 @@ import java.util.List;
 import ssi.ssn.com.ssi_service.R;
 import ssi.ssn.com.ssi_service.fragment.customlist.source.CustomListObject;
 import ssi.ssn.com.ssi_service.model.handler.FormatHelper;
-import ssi.ssn.com.ssi_service.model.network.response.objects.Build;
-import ssi.ssn.com.ssi_service.model.network.response.objects.RestProject;
-import ssi.ssn.com.ssi_service.model.network.response.objects.State;
-import ssi.ssn.com.ssi_service.model.network.response.objects.Time;
+import ssi.ssn.com.ssi_service.model.network.response.objects.ResponseBuild;
+import ssi.ssn.com.ssi_service.model.network.response.objects.ResponseProject;
+import ssi.ssn.com.ssi_service.model.network.response.objects.ResponseState;
+import ssi.ssn.com.ssi_service.model.network.response.objects.ResponseTime;
 
 public class ResponseApplication extends AbstractResponse {
 
-    private State state;
+    private ResponseState state;
     private String [] enabledModules;
-    @JsonProperty(value="project")
-    private RestProject restProject;
-    private Build build;
-    private Time time;
+    private ResponseProject project;
+    private ResponseBuild build;
+    private ResponseTime time;
 
     public ResponseApplication() {
     }
 
-    public State getState() {
+    public ResponseState getState() {
         return state;
     }
 
-    public void setState(State state) {
+    public void setState(ResponseState state) {
         this.state = state;
     }
 
@@ -44,27 +42,27 @@ public class ResponseApplication extends AbstractResponse {
         this.enabledModules = enabledModules;
     }
 
-    public RestProject getRestProject() {
-        return restProject;
+    public ResponseProject getProject() {
+        return project;
     }
 
-    public void setRestProject(RestProject restProject) {
-        this.restProject = restProject;
+    public void setProject(ResponseProject project) {
+        this.project = project;
     }
 
-    public Build getBuild() {
+    public ResponseBuild getBuild() {
         return build;
     }
 
-    public void setBuild(Build build) {
+    public void setBuild(ResponseBuild build) {
         this.build = build;
     }
 
-    public Time getTime() {
+    public ResponseTime getTime() {
         return time;
     }
 
-    public void setTime(Time time) {
+    public void setTime(ResponseTime time) {
         this.time = time;
     }
 
@@ -74,9 +72,9 @@ public class ResponseApplication extends AbstractResponse {
         return new LinkedList<CustomListObject>() {
             {
                 add(new CustomListObject.HeadLine(activity.getString(R.string.fragment_custom_list_application_info_project_headline)));
-                add(new CustomListObject.Key_Value(activity.getString(R.string.fragment_custom_list_application_info_project_name), getRestProject().getName()));
-                add(new CustomListObject.Key_Value(activity.getString(R.string.fragment_custom_list_application_info_project_location), getRestProject().getLocation()));
-                add(new CustomListObject.Key_Value(activity.getString(R.string.fragment_custom_list_application_info_project_order_nr), getRestProject().getOrderNr()));
+                add(new CustomListObject.Key_Value(activity.getString(R.string.fragment_custom_list_application_info_project_name), getProject().getName()));
+                add(new CustomListObject.Key_Value(activity.getString(R.string.fragment_custom_list_application_info_project_location), getProject().getLocation()));
+                add(new CustomListObject.Key_Value(activity.getString(R.string.fragment_custom_list_application_info_project_order_nr), getProject().getOrderNr()));
 
                 add(new CustomListObject.HeadLine(activity.getString(R.string.fragment_custom_list_application_info_state_headline)));
                 add(new CustomListObject.Key_Value(activity.getString(R.string.fragment_custom_list_application_info_state_status), getState().getStatus()));
@@ -90,7 +88,8 @@ public class ResponseApplication extends AbstractResponse {
 
                 add(new CustomListObject.HeadLine(activity.getString(R.string.fragment_custom_list_application_info_time_headline)));
                 add(new CustomListObject.Key_Value(activity.getString(R.string.fragment_custom_list_application_info_time_stamp), FormatHelper.formatDate(getTime().getStamp())));
-                add(new CustomListObject.Key_Value(activity.getString(R.string.fragment_custom_list_application_info_time_offset), FormatHelper.formatLongToTime(getTime().getOffset())));
+                add(new CustomListObject.Key_Value(activity.getString(R.string.fragment_custom_list_application_info_time_offset),
+                        FormatHelper.formatMillisecondsToHours(getTime().getOffset()) + " " + activity.getString(R.string.hours)));
 
                 add(new CustomListObject.HeadLine(activity.getString(R.string.fragment_custom_list_application_info_enabled_modules_headline)));
                 String[] enabledModules = getEnabledModules();

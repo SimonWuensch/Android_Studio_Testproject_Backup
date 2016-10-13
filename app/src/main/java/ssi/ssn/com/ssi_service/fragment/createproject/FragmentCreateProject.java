@@ -22,7 +22,7 @@ import ssi.ssn.com.ssi_service.R;
 import ssi.ssn.com.ssi_service.activity.MainActivity;
 import ssi.ssn.com.ssi_service.fragment.AbstractFragment;
 import ssi.ssn.com.ssi_service.fragment.customlist.FragmentCustomList;
-import ssi.ssn.com.ssi_service.model.data.ressource.Project;
+import ssi.ssn.com.ssi_service.model.data.source.Project;
 import ssi.ssn.com.ssi_service.model.handler.FormatHelper;
 import ssi.ssn.com.ssi_service.model.handler.JsonHelper;
 import ssi.ssn.com.ssi_service.model.network.handler.RequestHandler;

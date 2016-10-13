@@ -2,7 +2,7 @@ package ssi.ssn.com.ssi_service.model.network.handler;
 
 import android.os.AsyncTask;
 
-import ssi.ssn.com.ssi_service.model.data.ressource.Project;
+import ssi.ssn.com.ssi_service.model.data.source.Project;
 import ssi.ssn.com.ssi_service.model.network.request.RequestApplication;
 import ssi.ssn.com.ssi_service.model.network.request.RequestLogin;
 import ssi.ssn.com.ssi_service.model.network.request.RequestLogout;
