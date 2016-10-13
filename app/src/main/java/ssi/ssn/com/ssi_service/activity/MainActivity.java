@@ -3,6 +3,7 @@ package ssi.ssn.com.ssi_service.activity;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.View;
 
 import ssi.ssn.com.ssi_service.R;
 import ssi.ssn.com.ssi_service.fragment.createproject.FragmentCreateProject;
@@ -21,6 +22,8 @@ public class MainActivity extends AppCompatActivity {
     private RequestHandler requestHandler;
     private Project currentProject;
 
+    private View loadingView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,6 +38,8 @@ public class MainActivity extends AppCompatActivity {
         }else{
             showProjectListFragment();
         }
+        loadingView = (View) findViewById(R.id.activity_main_view_loading);
+        loadingView.setVisibility(View.GONE);
     }
 
     @Override
@@ -72,6 +77,10 @@ public class MainActivity extends AppCompatActivity {
 
         this.currentProject = project;
         requestHandler.getRequestLoginTask(currentProject).execute();
+    }
+
+    public void setLoadingViewVisible(boolean isVisible){
+        loadingView.setVisibility(isVisible ? View.VISIBLE : View.GONE);
     }
 
     // ** FRAGMENT ****************************************************************************** //

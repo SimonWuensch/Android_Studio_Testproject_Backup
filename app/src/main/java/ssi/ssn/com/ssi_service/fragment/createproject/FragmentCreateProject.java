@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -147,6 +148,15 @@ public class FragmentCreateProject extends AbstractFragment {
                     super.onTextChangeListener(etUserName);
                     super.onTextChangeListener(etPassword);
                     super.onTextChangeListener(etObservationInterval);
+                    spTimeInput.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                        @Override
+                        public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
+                            doAfterChanged();
+                        }
+                        @Override
+                        public void onNothingSelected(AdapterView<?> parentView) {
+                        }
+                    });
                     break;
             }
             Log.d(TAG, "Fragment view components filled with project [" + project + "].");
@@ -154,25 +164,29 @@ public class FragmentCreateProject extends AbstractFragment {
     }
 
     @Override
-    public void doAfterTextChanged() {
+    public void doAfterChanged() {
         String initialServerAddress = project.getServerAddress();
         String initialUserName = project.getUserName();
         String initialPassword = project.getPassword();
 
         long millis = project.getObservationInterval();
         String initialObservationInterval;
+        int timeInputSelection;
         if (FormatHelper.formatMillisecondsToMinutes(millis) % 60 != 0) {
             initialObservationInterval = String.valueOf(FormatHelper.formatMillisecondsToMinutes(millis));
+            timeInputSelection = 0;
         } else {
             initialObservationInterval = String.valueOf(FormatHelper.formatMillisecondsToHours(millis));
+            timeInputSelection = 1;
         }
 
         boolean isChangedServerAddress = !initialServerAddress.equals(etServerAddress.getText().toString());
         boolean isChangedUsername = !initialUserName.equals(etUserName.getText().toString());
         boolean isChangedPassword = !initialPassword.equals(etPassword.getText().toString());
         boolean isChangedObservationInterval = !initialObservationInterval.equals(etObservationInterval.getText().toString());
+        boolean isChangedTimeInput = timeInputSelection != spTimeInput.getSelectedItemPosition();
 
-        if (isChangedServerAddress || isChangedUsername || isChangedPassword || isChangedObservationInterval) {
+        if (isChangedServerAddress || isChangedUsername || isChangedPassword || isChangedObservationInterval || isChangedTimeInput) {
             fragmentStatus = Status.UPDATE;
         } else {
             fragmentStatus = Status.DELETE;
@@ -228,6 +242,7 @@ public class FragmentCreateProject extends AbstractFragment {
                 final ExecutorService executor = Executors.newSingleThreadExecutor();
                 final Project project = getProjectWithViewComponents();
                 bShowApplicationInfo.setEnabled(false);
+                setLoadingViewVisible(true);
 
                 requestHandler.getRequestApplicationTask(project).executeOnExecutor(executor);
                 new AsyncTask<Object, Void, Object>() {
@@ -240,12 +255,11 @@ public class FragmentCreateProject extends AbstractFragment {
                     protected void onPostExecute(Object o) {
                         if (project.getDefaultResponseApplication().getCode() == 200) {
                             ((MainActivity) getActivity()).showCustomListFragment(R.string.fragment_custom_list_application_info_title, FragmentCustomList.Type.APPLICATION, project.getDefaultResponseApplication().getResult());
-                        } else if (project.getDefaultResponseApplication().getCode() == 901) {
-                            Toast.makeText(getActivity(), getActivity().getString(R.string.fragment_create_project_message_server_address_time_out), Toast.LENGTH_SHORT).show();
-                        } else{
+                        } else {
                             Toast.makeText(getActivity(), getActivity().getString(R.string.fragment_create_project_message_server_address_not_correct), Toast.LENGTH_SHORT).show();
                         }
                         bShowApplicationInfo.setEnabled(true);
+                        setLoadingViewVisible(false);
                     }
                 }.executeOnExecutor(executor);
             }
@@ -276,6 +290,7 @@ public class FragmentCreateProject extends AbstractFragment {
     public void onClickProjectAdd(final Project project) {
         final RequestHandler requestHandler = ((MainActivity) getActivity()).getRequestHandler();
         final ExecutorService executor = Executors.newSingleThreadExecutor();
+        setLoadingViewVisible(true);
 
         requestHandler.getRequestApplicationTask(project).executeOnExecutor(executor);
         new AsyncTask<Object, Void, Object>() {
@@ -303,10 +318,12 @@ public class FragmentCreateProject extends AbstractFragment {
                             } else {
                                 Toast.makeText(getActivity(), getActivity().getString(R.string.fragment_create_project_message_login_data_not_correct), Toast.LENGTH_SHORT).show();
                             }
+                            setLoadingViewVisible(false);
                         }
                     }.executeOnExecutor(executor);
                 } else {
                     Toast.makeText(getActivity(), getActivity().getString(R.string.fragment_create_project_message_server_address_not_correct), Toast.LENGTH_SHORT).show();
+                    setLoadingViewVisible(false);
                 }
             }
         }.executeOnExecutor(executor);

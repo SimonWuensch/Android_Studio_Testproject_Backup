@@ -9,6 +9,7 @@
     <color name="colorBlack">#505A64</color>
     <color name="colorWhite">#ffffff</color>
     <color name="ssiYellow">#FFFF00</color>
+    <color name="loading_view_background">#25000000</color>
 
     <!-- Project status -->
     <color name="OK">#7CD175</color>
