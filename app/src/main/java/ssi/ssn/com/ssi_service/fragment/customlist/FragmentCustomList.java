@@ -11,7 +11,7 @@ import android.widget.TextView;
 
 import ssi.ssn.com.ssi_service.R;
 import ssi.ssn.com.ssi_service.fragment.AbstractFragment;
-import ssi.ssn.com.ssi_service.model.handler.JsonHelper;
+import ssi.ssn.com.ssi_service.model.helper.JsonHelper;
 import ssi.ssn.com.ssi_service.model.network.response.AbstractResponse;
 import ssi.ssn.com.ssi_service.model.network.response.ResponseApplication;
 

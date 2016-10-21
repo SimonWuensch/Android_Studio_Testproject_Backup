@@ -9,7 +9,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import ssi.ssn.com.ssi_service.activity.MainActivity;
-import ssi.ssn.com.ssi_service.model.handler.SQLiteHelper;
+import ssi.ssn.com.ssi_service.model.helper.SQLiteHelper;
 
 public class AbstractFragment extends Fragment {
 

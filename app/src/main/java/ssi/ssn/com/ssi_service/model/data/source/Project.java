@@ -1,9 +1,9 @@
 package ssi.ssn.com.ssi_service.model.data.source;
 
-import ssi.ssn.com.ssi_service.model.handler.JsonHelper;
+import ssi.ssn.com.ssi_service.model.helper.JsonHelper;
 import ssi.ssn.com.ssi_service.model.network.response.ResponseApplication;
 
-public class Project extends AbstractProject{
+public class Project extends AbstractProject {
 
     private long _id;
     private String serverAddress;
@@ -98,14 +98,14 @@ public class Project extends AbstractProject{
         this.observationInterval = observationInterval;
     }
 
-    public void loadProjectInfoFromApplicationInfo(){
+    public void loadProjectInfoFromApplicationInfo() {
         ResponseApplication responseApplication = (ResponseApplication) JsonHelper.fromJsonGeneric(ResponseApplication.class, getDefaultResponseApplication().getResult());
-        this.projectName= responseApplication.getProject().getName();
+        this.projectName = responseApplication.getProject().getName();
         this.projectLocation = responseApplication.getProject().getLocation();
         this.projectOrderNr = responseApplication.getProject().getOrderNr();
     }
 
-    public String toString(){
+    public String toString() {
         return JsonHelper.toJson(this);
     }
 }

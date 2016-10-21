@@ -1,5 +1,6 @@
-package ssi.ssn.com.ssi_service.model.handler;
+package ssi.ssn.com.ssi_service.model.helper;
 
+import java.io.UnsupportedEncodingException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
@@ -13,6 +14,14 @@ public class FormatHelper {
     public static String formatDate(Date date) {
         SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy - hh:mm:ss");
         return format.format(date);
+    }
+
+    public static String getEncodeAddress(String address) throws UnsupportedEncodingException {
+        if (address.contains("?")) {
+            address = address.replaceAll(" ", "%20");
+            return address;
+        }
+        return address;
     }
 
     public static long formatHoursToMilliseconds(String hour) {

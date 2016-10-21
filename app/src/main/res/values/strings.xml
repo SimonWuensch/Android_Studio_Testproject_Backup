@@ -5,6 +5,8 @@
     <!-- DEFAULT -->
     <string name="days">Tage</string>
     <string name="hours">Stunden</string>
+    <string name="yes">Ja</string>
+    <string name="no">Nein</string>
 
     <!-- Fragment Create Project -->
     <string name="fragment_create_project_title">Projekt</string>
@@ -15,8 +17,12 @@
     <string name="fragment_create_project_button_add_project">hinzufügen</string>
     <string name="fragment_create_project_button_delete_project">löschen</string>
     <string name="fragment_create_project_button_update_project">aktualisieren</string>
-    <string name="fragment_create_project_message_server_address_not_correct">Serveradresse kann nicht gefunden werden</string>
-    <string name="fragment_create_project_message_login_data_not_correct">Benutzername und/oder Passwort sind nicht richtig</string>
+    <string name="fragment_create_project_message_server_address_not_correct">Serveradresse ist nicht korrekt.</string>
+    <string name="fragment_create_project_message_server_address_is_no_valid_lighthouse_address">Serveradresse ist keine valide Lighthouse Adresse</string>
+    <string name="fragment_create_project_message_login_data_not_correct">Logindaten sind nicht korrekt.</string>
+    <string name="fragment_create_project_message_server_address_not_correct_anyhow_add">Serveradresse ist nicht korrekt. Projekt dennoch hinzufügen?</string>
+    <string name="fragment_create_project_message_server_address_not_correct_anyhow_update">Serveradresse ist nicht korrekt. Projekt dennoch aktualisieren?</string>
+    <string name="fragment_create_project_message_application_version_equals_not_2.0">SVersion der Applikation entspricht nicht der Version 2.0</string>
 
     <string-array name="fragment_create_project_drop_down_box_time_input">
         <item>Minuten</item>

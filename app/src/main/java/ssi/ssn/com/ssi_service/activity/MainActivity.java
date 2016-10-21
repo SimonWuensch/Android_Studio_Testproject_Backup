@@ -11,12 +11,13 @@ import ssi.ssn.com.ssi_service.fragment.customlist.FragmentCustomList;
 import ssi.ssn.com.ssi_service.fragment.launchboard.FragmentLaunchBoard;
 import ssi.ssn.com.ssi_service.fragment.projectlist.FragmentProjectList;
 import ssi.ssn.com.ssi_service.model.data.source.Project;
-import ssi.ssn.com.ssi_service.model.handler.SQLiteHelper;
+import ssi.ssn.com.ssi_service.model.helper.SQLiteHelper;
 import ssi.ssn.com.ssi_service.model.network.handler.RequestHandler;
 
 public class MainActivity extends AppCompatActivity {
 
     private static String TAG = MainActivity.class.getSimpleName();
+    public static String ACCEPTED_PROJECT_VERSION = "2.0.0.0-DEV";
 
     private SQLiteHelper sqLiteHelper;
     private RequestHandler requestHandler;

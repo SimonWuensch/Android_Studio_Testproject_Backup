@@ -9,7 +9,7 @@ import java.util.List;
 
 import ssi.ssn.com.ssi_service.R;
 import ssi.ssn.com.ssi_service.fragment.customlist.source.CustomListObject;
-import ssi.ssn.com.ssi_service.model.handler.FormatHelper;
+import ssi.ssn.com.ssi_service.model.helper.FormatHelper;
 import ssi.ssn.com.ssi_service.model.network.response.objects.ResponseBuild;
 import ssi.ssn.com.ssi_service.model.network.response.objects.ResponseProject;
 import ssi.ssn.com.ssi_service.model.network.response.objects.ResponseState;

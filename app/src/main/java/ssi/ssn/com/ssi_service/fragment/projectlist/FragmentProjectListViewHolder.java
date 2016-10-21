@@ -1,15 +1,20 @@
 package ssi.ssn.com.ssi_service.fragment.projectlist;
 
 import android.app.Activity;
+import android.os.AsyncTask;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
 import ssi.ssn.com.ssi_service.R;
 import ssi.ssn.com.ssi_service.activity.MainActivity;
 import ssi.ssn.com.ssi_service.model.data.source.Project;
+import ssi.ssn.com.ssi_service.model.network.handler.RequestHandler;
 
 
 public class FragmentProjectListViewHolder extends RecyclerView.ViewHolder {
@@ -38,14 +43,24 @@ public class FragmentProjectListViewHolder extends RecyclerView.ViewHolder {
         tvProjectName = (TextView) cardView.findViewById(R.id.fragment_project_list_card_view_text_view_project_name);
         tvProjectLocation = (TextView) cardView.findViewById(R.id.fragment_project_list_card_view_text_view_project_location);
         tvProjectOrderNr = (TextView) cardView.findViewById(R.id.fragment_project_list_card_view_text_view_project_order_nr);
-        ivProjectSettings = (ImageView)cardView.findViewById(R.id.fragment_project_list_card_view_image_settings);
+        ivProjectSettings = (ImageView) cardView.findViewById(R.id.fragment_project_list_card_view_image_settings);
         vProjectState = cardView.findViewById(R.id.fragment_project_list_card_view_view_project_status);
     }
 
     protected void assignData(final Project project) {
-        tvProjectName.setText(project.getProjectName());
-        tvProjectLocation.setText(project.getProjectLocation());
-        tvProjectOrderNr.setText(project.getProjectOrderNr());
+        String projectName = project.getProjectName();
+        String projectLocation = project.getProjectLocation();
+        String projectOrderNr = project.getProjectOrderNr();
+
+        if (projectName == null || projectLocation == null || projectOrderNr == null) {
+            tvProjectName.setText(project.getServerAddress());
+            tvProjectLocation.setText(project.getUserName());
+            tvProjectOrderNr.setText("");
+        } else {
+            tvProjectName.setText(projectName);
+            tvProjectLocation.setText(projectLocation);
+            tvProjectOrderNr.setText(projectOrderNr);
+        }
 
         cbObserveProject.setChecked(project.isProjectObservation());
         ivProjectSettings.setOnClickListener(onClickCardViewProjectSettings(project));
@@ -54,14 +69,33 @@ public class FragmentProjectListViewHolder extends RecyclerView.ViewHolder {
             //TODO
             // Passe Status View vProjectState an
         }
-        cardView.setOnClickListener(onClickCardView(project));
+
+        RequestHandler requestHandler = ((MainActivity) activity).getRequestHandler();
+        ExecutorService executor = Executors.newSingleThreadExecutor();
+        requestHandler.getRequestApplicationTask(project).executeOnExecutor(executor);
+        new AsyncTask<Object, Void, Object>() {
+            @Override
+            protected Object doInBackground(Object... objects) {
+                return null;
+            }
+
+            @Override
+            protected void onPostExecute(Object o) {
+                if (project.getDefaultResponseApplication().getCode() == 200) {
+                    vProjectState.setBackgroundColor(ssi.ssn.com.ssi_service.model.data.source.Status.OK.getColor(activity));
+                    cardView.setOnClickListener(onClickCardView(project));
+                } else {
+                    vProjectState.setBackgroundColor(ssi.ssn.com.ssi_service.model.data.source.Status.ERROR.getColor(activity));
+                }
+            }
+        }.executeOnExecutor(executor);
     }
 
     private View.OnClickListener onClickCardViewProjectSettings(final Project project) {
         return new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ((MainActivity)activity).showCreateProjectFragment(project);
+                ((MainActivity) activity).showCreateProjectFragment(project);
             }
         };
     }
@@ -70,7 +104,7 @@ public class FragmentProjectListViewHolder extends RecyclerView.ViewHolder {
         return new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((MainActivity)activity).showLaunchBoardFragment(project);
+                ((MainActivity) activity).showLaunchBoardFragment(project);
             }
         };
     }

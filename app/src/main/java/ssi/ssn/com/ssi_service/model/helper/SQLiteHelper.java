@@ -1,4 +1,4 @@
-package ssi.ssn.com.ssi_service.model.handler;
+package ssi.ssn.com.ssi_service.model.helper;
 
 import android.content.ContentValues;
 import android.content.Context;

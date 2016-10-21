@@ -3,7 +3,7 @@ package ssi.ssn.com.ssi_service.model.network.request;
 import android.os.AsyncTask;
 
 import ssi.ssn.com.ssi_service.model.data.source.Project;
-import ssi.ssn.com.ssi_service.model.handler.JsonHelper;
+import ssi.ssn.com.ssi_service.model.helper.JsonHelper;
 import ssi.ssn.com.ssi_service.model.network.DefaultResponse;
 import ssi.ssn.com.ssi_service.model.network.communication.HttpGET;
 import ssi.ssn.com.ssi_service.model.network.handler.CookieHandler;

@@ -5,6 +5,9 @@ public class DefaultResponse {
     private long code;
     private String result;
 
+    public DefaultResponse() {
+    }
+
     public DefaultResponse(long code, String result) {
         this.code = code;
         this.result = result;

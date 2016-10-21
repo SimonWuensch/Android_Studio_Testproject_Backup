@@ -1,6 +1,7 @@
 package ssi.ssn.com.ssi_service.fragment.createproject;
 
 
+import android.app.AlertDialog;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -23,9 +24,13 @@ import ssi.ssn.com.ssi_service.activity.MainActivity;
 import ssi.ssn.com.ssi_service.fragment.AbstractFragment;
 import ssi.ssn.com.ssi_service.fragment.customlist.FragmentCustomList;
 import ssi.ssn.com.ssi_service.model.data.source.Project;
-import ssi.ssn.com.ssi_service.model.handler.FormatHelper;
-import ssi.ssn.com.ssi_service.model.handler.JsonHelper;
+import ssi.ssn.com.ssi_service.model.extended.ExtendedAsyncTask;
+import ssi.ssn.com.ssi_service.model.helper.AlertDialogHelper;
+import ssi.ssn.com.ssi_service.model.helper.FormatHelper;
+import ssi.ssn.com.ssi_service.model.helper.JsonHelper;
+import ssi.ssn.com.ssi_service.model.network.communication.HttpAddressExists;
 import ssi.ssn.com.ssi_service.model.network.handler.RequestHandler;
+import ssi.ssn.com.ssi_service.model.network.response.ResponseApplication;
 
 public class FragmentCreateProject extends AbstractFragment {
 
@@ -153,6 +158,7 @@ public class FragmentCreateProject extends AbstractFragment {
                         public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
                             doAfterChanged();
                         }
+
                         @Override
                         public void onNothingSelected(AdapterView<?> parentView) {
                         }
@@ -232,6 +238,38 @@ public class FragmentCreateProject extends AbstractFragment {
         return 0;
     }
 
+    private AlertDialog getAlertDialog() {
+        String message = getActivity().getString(fragmentStatus.equals(Status.ADD) ?
+                R.string.fragment_create_project_message_server_address_not_correct_anyhow_add :
+                R.string.fragment_create_project_message_server_address_not_correct_anyhow_update);
+        String positiveButtonText = getActivity().getString(R.string.yes);
+        String negativeButtonText = getActivity().getString(R.string.no);
+
+        project.setProjectName(null);
+        project.setProjectLocation(null);
+        project.setProjectOrderNr(null);
+        AsyncTask positiveButtonTask = new AsyncTask() {
+            @Override
+            protected Object doInBackground(Object[] objects) {
+                switch (fragmentStatus) {
+                    case ADD:
+                        getSQLiteHelper().addProject(project);
+                        break;
+                    case UPDATE:
+                        getSQLiteHelper().updateProject(project);
+                        break;
+                }
+                return null;
+            }
+
+            @Override
+            protected void onPostExecute(Object o) {
+                ((MainActivity) getActivity()).showProjectListFragment();
+            }
+        };
+        return AlertDialogHelper.init(getActivity(), message, positiveButtonText, positiveButtonTask, negativeButtonText, null);
+    }
+
     // ** APPLICATION INFO BUTTON CLICK ********************************************************* //
 
     public View.OnClickListener onClickShowApplicationInfo() {
@@ -244,7 +282,7 @@ public class FragmentCreateProject extends AbstractFragment {
                 bShowApplicationInfo.setEnabled(false);
                 setLoadingViewVisible(true);
 
-                requestHandler.getRequestApplicationTask(project).executeOnExecutor(executor);
+                final ExtendedAsyncTask extendedAsyncTask = (ExtendedAsyncTask) HttpAddressExists.exists(project.getServerAddress()).executeOnExecutor(executor);
                 new AsyncTask<Object, Void, Object>() {
                     @Override
                     protected Object doInBackground(Object[] objects) {
@@ -253,10 +291,25 @@ public class FragmentCreateProject extends AbstractFragment {
 
                     @Override
                     protected void onPostExecute(Object o) {
-                        if (project.getDefaultResponseApplication().getCode() == 200) {
-                            ((MainActivity) getActivity()).showCustomListFragment(R.string.fragment_custom_list_application_info_title, FragmentCustomList.Type.APPLICATION, project.getDefaultResponseApplication().getResult());
-                        } else {
+                        if (!extendedAsyncTask.getReturnValue().equals("200")) {
                             Toast.makeText(getActivity(), getActivity().getString(R.string.fragment_create_project_message_server_address_not_correct), Toast.LENGTH_SHORT).show();
+                        } else {
+                            requestHandler.getRequestApplicationTask(project).executeOnExecutor(executor);
+                            new AsyncTask<Object, Void, Object>() {
+                                @Override
+                                protected Object doInBackground(Object[] objects) {
+                                    return null;
+                                }
+
+                                @Override
+                                protected void onPostExecute(Object o) {
+                                    if (project.getDefaultResponseApplication().getCode() == 200) {
+                                        ((MainActivity) getActivity()).showCustomListFragment(R.string.fragment_custom_list_application_info_title, FragmentCustomList.Type.APPLICATION, project.getDefaultResponseApplication().getResult());
+                                    } else {
+                                        Toast.makeText(getActivity(), getActivity().getString(R.string.fragment_create_project_message_server_address_is_no_valid_lighthouse_address), Toast.LENGTH_SHORT).show();
+                                    }
+                                }
+                            }.executeOnExecutor(executor);
                         }
                         bShowApplicationInfo.setEnabled(true);
                         setLoadingViewVisible(false);
@@ -274,10 +327,8 @@ public class FragmentCreateProject extends AbstractFragment {
                 final Project project = getProjectWithViewComponents();
                 switch (fragmentStatus) {
                     case ADD:
-                        onClickProjectAdd(project);
-                        break;
                     case UPDATE:
-                        onClickProjectUpdate(project);
+                        onClickProjectAddUpdate(project);
                         break;
                     case DELETE:
                         onClickProjectDelete(project);
@@ -287,12 +338,17 @@ public class FragmentCreateProject extends AbstractFragment {
         };
     }
 
-    public void onClickProjectAdd(final Project project) {
+    public void onClickProjectDelete(final Project project) {
+        getSQLiteHelper().deleteProject(project);
+        ((MainActivity) getActivity()).showProjectListFragment();
+    }
+
+    public void onClickProjectAddUpdate(final Project project) {
         final RequestHandler requestHandler = ((MainActivity) getActivity()).getRequestHandler();
         final ExecutorService executor = Executors.newSingleThreadExecutor();
         setLoadingViewVisible(true);
 
-        requestHandler.getRequestApplicationTask(project).executeOnExecutor(executor);
+        final ExtendedAsyncTask extendedAsyncTask = (ExtendedAsyncTask) HttpAddressExists.exists(project.getServerAddress()).executeOnExecutor(executor);
         new AsyncTask<Object, Void, Object>() {
             @Override
             protected Object doInBackground(Object[] objects) {
@@ -301,41 +357,73 @@ public class FragmentCreateProject extends AbstractFragment {
 
             @Override
             protected void onPostExecute(Object o) {
-                if (project.getDefaultResponseApplication().getCode() == 200) {
-                    requestHandler.getRequestLoginTask(project).executeOnExecutor(executor);
-                    new AsyncTask<Object, Void, Object>() {
-                        @Override
-                        protected Object doInBackground(Object... objects) {
-                            return null;
+                if (!extendedAsyncTask.getReturnValue().equals("200")) {
+                    getAlertDialog().show();
+                    return;
+                }
+
+                requestHandler.getRequestApplicationTask(project).executeOnExecutor(executor);
+                new AsyncTask<Object, Void, Object>() {
+                    @Override
+                    protected Object doInBackground(Object[] objects) {
+                        return null;
+                    }
+
+                    @Override
+                    protected void onPostExecute(Object o) {
+                        if (project.getDefaultResponseApplication().getCode() != 200) {
+                            Toast.makeText(getActivity(), getActivity().getString(R.string.fragment_create_project_message_server_address_is_no_valid_lighthouse_address), Toast.LENGTH_SHORT).show();
+                            return;
                         }
 
-                        @Override
-                        protected void onPostExecute(Object o) {
-                            if (project.getDefaultResponseLogin().getCode() == 200) {
-                                project.loadProjectInfoFromApplicationInfo();
-                                getSQLiteHelper().addProject(project);
-                                ((MainActivity) getActivity()).showProjectListFragment();
-                            } else {
+                        ResponseApplication responseApplication = (ResponseApplication) JsonHelper.fromJsonGeneric(ResponseApplication.class, project.getDefaultResponseApplication().getResult());
+                        if (!responseApplication.getBuild().getVersion().equals(MainActivity.ACCEPTED_PROJECT_VERSION)) {
+                            Toast.makeText(getActivity(),
+                                    getActivity().getString(R.string.fragment_create_project_message_application_version_equals_not_2_0)
+                                            + " - [" + responseApplication.getBuild().getVersion() + "]", Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+
+                        requestHandler.getRequestLoginTask(project).executeOnExecutor(executor);
+                        new AsyncTask<Object, Void, Object>() {
+                            @Override
+                            protected Object doInBackground(Object... objects) {
+                                return null;
+                            }
+
+                            @Override
+                            protected void onPostExecute(Object o) {
+                                if (project.getDefaultResponseLogin().getCode() == 200) {
+                                    project.loadProjectInfoFromApplicationInfo();
+                                    switch (fragmentStatus) {
+                                        case ADD:
+                                            getSQLiteHelper().addProject(project);
+                                            break;
+                                        case UPDATE:
+                                            getSQLiteHelper().updateProject(project);
+                                            break;
+                                    }
+                                    ((MainActivity) getActivity()).showProjectListFragment();
+                                    return;
+                                }
                                 Toast.makeText(getActivity(), getActivity().getString(R.string.fragment_create_project_message_login_data_not_correct), Toast.LENGTH_SHORT).show();
                             }
-                            setLoadingViewVisible(false);
-                        }
-                    }.executeOnExecutor(executor);
-                } else {
-                    Toast.makeText(getActivity(), getActivity().getString(R.string.fragment_create_project_message_server_address_not_correct), Toast.LENGTH_SHORT).show();
-                    setLoadingViewVisible(false);
-                }
+                        }.executeOnExecutor(executor);
+                    }
+                }.executeOnExecutor(executor);
             }
         }.executeOnExecutor(executor);
-    }
+        new AsyncTask<Object, Void, Object>() {
+            @Override
+            protected Object doInBackground(Object... objects) {
+                return null;
+            }
 
-    public void onClickProjectUpdate(final Project project) {
-        getSQLiteHelper().updateProject(project);
-        ((MainActivity) getActivity()).showProjectListFragment();
-    }
-
-    public void onClickProjectDelete(final Project project) {
-        getSQLiteHelper().deleteProject(project);
-        ((MainActivity) getActivity()).showProjectListFragment();
+            @Override
+            protected void onPostExecute(Object o) {
+                bShowApplicationInfo.setEnabled(true);
+                setLoadingViewVisible(false);
+            }
+        }.executeOnExecutor(executor);
     }
 }
