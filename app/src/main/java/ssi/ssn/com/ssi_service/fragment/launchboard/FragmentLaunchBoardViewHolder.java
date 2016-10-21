@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import ssi.ssn.com.ssi_service.R;
 import ssi.ssn.com.ssi_service.fragment.launchboard.source.AbstractCardObject;
+import ssi.ssn.com.ssi_service.model.data.source.Project;
 import ssi.ssn.com.ssi_service.model.data.source.Status;
 
 
@@ -36,7 +37,7 @@ public class FragmentLaunchBoardViewHolder extends RecyclerView.ViewHolder {
         vStatus = (View) cardView.findViewById(R.id.fragment_launch_board_card_view_view_status);
     }
 
-    protected void assignData(final AbstractCardObject cardObject) {
+    protected void assignData(final AbstractCardObject cardObject, final Project project) {
         image.setImageResource(cardObject.getIcon());
         tvTitle.setText(activity.getString(cardObject.getTitle()));
         cbObservation.setChecked(cardObject.isObservation());
@@ -45,7 +46,7 @@ public class FragmentLaunchBoardViewHolder extends RecyclerView.ViewHolder {
         cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                cardObject.setStatus(Status.ERROR, activity);
+                cardObject.onClick(activity, project);
             }
         });
     }

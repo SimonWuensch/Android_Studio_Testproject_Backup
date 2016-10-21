@@ -35,13 +35,14 @@ public class FragmentLaunchBoard extends AbstractFragment {
     private static int CARDVIEW = R.layout.fragment_launch_board_card_view;
 
     private static String PROJECT_JSON = TAG + "PROJECT_JSON";
-    private Project project;
 
     private View rootView;
     private RelativeLayout rlProjectStateBackground;
     private TextView tvProjectStatus;
     private TextView tvProjectLifeTime;
     private TextView tvProjectVersion;
+
+    private Project project;
 
     public static FragmentLaunchBoard newInstance(Project project) {
         if (project == null) {
@@ -76,7 +77,7 @@ public class FragmentLaunchBoard extends AbstractFragment {
             rootView = inflater.inflate(FRAGMENT_LAYOUT, container, false);
             Log.d(TAG, "Fragment inflated [" + getActivity().getResources().getResourceName(FRAGMENT_LAYOUT) + "].");
 
-            RecyclerView.Adapter mAdapter = new FragmentLaunchBoardAdapter(CARDVIEW, this);
+            RecyclerView.Adapter mAdapter = new FragmentLaunchBoardAdapter(CARDVIEW, this, project);
             Log.d(TAG, "Adapter [" + mAdapter.getClass().getSimpleName() + "] with CardView [" + getActivity().getResources().getResourceName(CARDVIEW) + "] initialized.");
 
             RecyclerView mRecyclerView = (RecyclerView) rootView.findViewById(RECYCLERVIEW);
@@ -91,6 +92,10 @@ public class FragmentLaunchBoard extends AbstractFragment {
     }
 
     public void initViewComponents() {
+        TextView tvHeadLine = (TextView) rootView.findViewById(R.id.default_action_bar_text_view_headline);
+        String headLineText = project.getProjectName() + " " + project.getProjectLocation() + " " + project.getProjectOrderNr();
+        tvHeadLine.setText(headLineText);
+
         rlProjectStateBackground = (RelativeLayout) rootView.findViewById(R.id.fragment_launch_board_relative_layout_project_state_background);
         tvProjectStatus = (TextView) rootView.findViewById(R.id.fragment_launch_board_project_text_view_project_status);
         tvProjectLifeTime = (TextView) rootView.findViewById(R.id.fragment_launch_board_project_text_view_project_life_time);

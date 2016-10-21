@@ -7,6 +7,7 @@ import ssi.ssn.com.ssi_service.model.network.DefaultResponse;
 public class AbstractProject {
 
     @JsonIgnore private DefaultResponse defaultResponseApplication;
+    @JsonIgnore private DefaultResponse defaultResponseApplicationConfig;
     @JsonIgnore private DefaultResponse defaultResponseLogin;
     @JsonIgnore private DefaultResponse defaultResponseLogout;
     @JsonIgnore private DefaultResponse defaultResponseNotification;
@@ -22,6 +23,16 @@ public class AbstractProject {
     @JsonIgnore
     public void setDefaultResponseApplication(DefaultResponse defaultResponseApplication) {
         this.defaultResponseApplication = defaultResponseApplication;
+    }
+
+    @JsonIgnore
+    public DefaultResponse getDefaultResponseApplicationConfig() {
+        return defaultResponseApplicationConfig;
+    }
+
+    @JsonIgnore
+    public void setDefaultResponseApplicationConfig(DefaultResponse defaultResponseApplicationConfig) {
+        this.defaultResponseApplicationConfig = defaultResponseApplicationConfig;
     }
 
     @JsonIgnore

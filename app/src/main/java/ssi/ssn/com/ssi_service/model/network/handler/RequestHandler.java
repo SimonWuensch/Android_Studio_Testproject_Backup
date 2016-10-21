@@ -4,6 +4,7 @@ import android.os.AsyncTask;
 
 import ssi.ssn.com.ssi_service.model.data.source.Project;
 import ssi.ssn.com.ssi_service.model.network.request.RequestApplication;
+import ssi.ssn.com.ssi_service.model.network.request.RequestApplicationConfig;
 import ssi.ssn.com.ssi_service.model.network.request.RequestLogin;
 import ssi.ssn.com.ssi_service.model.network.request.RequestLogout;
 import ssi.ssn.com.ssi_service.model.network.request.RequestNotification;
@@ -34,13 +35,18 @@ public class RequestHandler {
         return RequestSessionsCurrent.init(project).getTaskGET(cookieHandler);
     }
 
-    // ** With Cookie **************************************************************************** //
+    // ** With Cookie *************************************************************************** //
     // *** Login  ******************************************************************************* //
     public AsyncTask getRequestLoginTask(Project project){
         return RequestLogin.init(project).getTaskGET(cookieHandler);
     }
 
-    // *** OS *********************************************************************************** //
+    // *** Application Config ******************************************************************* //
+    public AsyncTask getRequestApplicationConfigTask(Project project) {
+        return RequestApplicationConfig.init(project).getTaskGET(cookieHandler);
+    }
+
+        // *** OS *********************************************************************************** //
     public AsyncTask getRequestOsTask(Project project){
         return RequestOs.init(project).getTaskGET(cookieHandler);
     }

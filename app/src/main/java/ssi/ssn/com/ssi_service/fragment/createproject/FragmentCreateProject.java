@@ -377,7 +377,7 @@ public class FragmentCreateProject extends AbstractFragment {
                         }
 
                         ResponseApplication responseApplication = (ResponseApplication) JsonHelper.fromJsonGeneric(ResponseApplication.class, project.getDefaultResponseApplication().getResult());
-                        if (!responseApplication.getBuild().getVersion().equals(MainActivity.ACCEPTED_PROJECT_VERSION)) {
+                        if (!responseApplication.getBuild().getVersion().startsWith(MainActivity.ACCEPTED_PROJECT_VERSION)) {
                             Toast.makeText(getActivity(),
                                     getActivity().getString(R.string.fragment_create_project_message_application_version_equals_not_2_0)
                                             + " - [" + responseApplication.getBuild().getVersion() + "]", Toast.LENGTH_SHORT).show();

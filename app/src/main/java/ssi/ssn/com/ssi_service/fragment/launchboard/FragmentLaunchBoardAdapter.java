@@ -15,6 +15,7 @@ import ssi.ssn.com.ssi_service.fragment.launchboard.source.CardObjectComponent;
 import ssi.ssn.com.ssi_service.fragment.launchboard.source.CardObjectKPI;
 import ssi.ssn.com.ssi_service.fragment.launchboard.source.CardObjectModule;
 import ssi.ssn.com.ssi_service.fragment.launchboard.source.CardObjectNotification;
+import ssi.ssn.com.ssi_service.model.data.source.Project;
 
 public class FragmentLaunchBoardAdapter extends RecyclerView.Adapter<FragmentLaunchBoardViewHolder> {
 
@@ -26,11 +27,13 @@ public class FragmentLaunchBoardAdapter extends RecyclerView.Adapter<FragmentLau
 
     private List<AbstractCardObject> cardInputs;
     private Activity activity;
+    private Project project;
 
-    public FragmentLaunchBoardAdapter(int layoutCardView, final FragmentLaunchBoard fragment) {
+    public FragmentLaunchBoardAdapter(int layoutCardView, final FragmentLaunchBoard fragment, Project project) {
         this.layoutCardView = layoutCardView;
         this.fragment = fragment;
         this.activity = fragment.getActivity();
+        this.project = project;
         initDefaultInputs();
     }
 
@@ -70,7 +73,7 @@ public class FragmentLaunchBoardAdapter extends RecyclerView.Adapter<FragmentLau
 
     @Override
     public void onBindViewHolder(FragmentLaunchBoardViewHolder viewHolder, int position) {
-        viewHolder.assignData(cardInputs.get(position));
+        viewHolder.assignData(cardInputs.get(position), project);
     }
 
     @Override

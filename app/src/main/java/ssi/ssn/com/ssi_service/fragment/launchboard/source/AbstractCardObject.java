@@ -5,6 +5,8 @@ import android.view.View;
 
 import com.owlike.genson.annotation.JsonIgnore;
 
+import ssi.ssn.com.ssi_service.activity.AbstractActivity;
+import ssi.ssn.com.ssi_service.model.data.source.Project;
 import ssi.ssn.com.ssi_service.model.data.source.Status;
 
 public class AbstractCardObject {
@@ -81,4 +83,7 @@ public class AbstractCardObject {
         this.statusView = statusView;
     }
 
+    public void onClick(Activity activity, Project project) {
+
+    }
 }

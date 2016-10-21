@@ -11,45 +11,6 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal|top" />
 
-    <RelativeLayout
-        android:id="@+id/fragment_launch_board_relative_layout_project_state_background"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/fragment_launch_board_include_headline"
-        android:layout_margin="5dp"
-        android:padding="10dp"
-        android:background="@color/NOT_AVAILABLE">
-
-        <TextView
-            android:id="@+id/fragment_launch_board_project_text_view_project_status"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="STATUS loading..."
-            android:textColor="@color/colorWhite"
-            android:textSize="40dp"/>
-
-        <TextView
-            android:id="@+id/fragment_launch_board_project_text_view_project_life_time"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:text="Since loading..."
-            android:textColor="@color/colorWhite"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:layout_below="@+id/fragment_launch_board_project_text_view_project_status"/>
-
-        <TextView
-            android:id="@+id/fragment_launch_board_project_text_view_project_version"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:text="Version loading..."
-            android:textColor="@color/colorWhite"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:layout_below="@+id/fragment_launch_board_project_text_view_project_life_time"/>
-
-    </RelativeLayout>
-
     <android.support.v7.widget.RecyclerView
         android:id="@+id/fragment_launch_board_recycler_view"
         android:layout_width="match_parent"
@@ -58,5 +19,47 @@
         android:layout_below="@+id/fragment_launch_board_relative_layout_project_state_background"
         android:layout_margin="5dp"
         android:scrollbars="vertical" />
+
+    <RelativeLayout
+        android:id="@+id/fragment_launch_board_relative_layout_project_state_background"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:background="@color/NOT_AVAILABLE"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginTop="5dp"
+        android:layout_below="@+id/fragment_launch_board_include_headline"
+        android:layout_centerHorizontal="true">
+
+        <TextView
+            android:id="@+id/fragment_launch_board_project_text_view_project_status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="STATUS loading..."
+            android:textColor="@color/colorWhite"/>
+
+        <TextView
+            android:id="@+id/fragment_launch_board_project_text_view_project_life_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:text="Since loading..."
+            android:textColor="@color/colorWhite"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:layout_below="@+id/fragment_launch_board_project_text_view_project_status" />
+
+        <TextView
+            android:id="@+id/fragment_launch_board_project_text_view_project_version"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:text="Version loading..."
+            android:textColor="@color/colorWhite"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:layout_below="@+id/fragment_launch_board_project_text_view_project_life_time"/>
+
+    </RelativeLayout>
 
 </RelativeLayout>
