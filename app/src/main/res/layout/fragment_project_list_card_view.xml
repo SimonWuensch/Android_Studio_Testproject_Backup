@@ -1,21 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.CardView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
-
-    android:layout_marginBottom="5dp"
 
     android:id="@+id/fragment_project_list_card_view"
 
-    android:orientation="vertical"
     android:layout_width="match_parent"
+
     android:layout_height="90dp"
-
-    card_view:cardElevation="0dp"
-    card_view:cardCornerRadius="0dp"
-
+    android:layout_marginBottom="5dp"
     android:clickable="true"
-    android:foreground="?android:attr/selectableItemBackground">
+
+    android:foreground="?android:attr/selectableItemBackground"
+    android:orientation="vertical"
+
+    card_view:cardCornerRadius="0dp"
+    card_view:cardElevation="0dp">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -30,58 +29,58 @@
             android:layout_centerVertical="true"
             android:layout_marginStart="10dp"
             android:scaleX="1.5"
-            android:scaleY="1.5"/>
+            android:scaleY="1.5" />
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_toEndOf="@id/fragment_project_list_card_view_check_box_project_observation"
+            android:layout_centerInParent="true"
             android:layout_marginStart="10dp"
-            android:layout_centerInParent="true">
+            android:layout_toEndOf="@id/fragment_project_list_card_view_check_box_project_observation"
+            android:orientation="vertical">
 
             <TextView
                 android:id="@+id/fragment_project_list_card_view_text_view_project_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="Project Name"/>
+                android:text="Project Name"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
 
             <TextView
                 android:id="@+id/fragment_project_list_card_view_text_view_project_location"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:layout_marginTop="5dp"
                 android:text="Project Location"
-                android:layout_marginTop="5dp"/>
+                android:textAppearance="?android:attr/textAppearanceMedium" />
 
             <TextView
                 android:id="@+id/fragment_project_list_card_view_text_view_project_order_nr"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:layout_marginTop="5dp"
                 android:text="Project Order Nr"
-                android:layout_marginTop="5dp"/>
+                android:textAppearance="?android:attr/textAppearanceMedium" />
         </LinearLayout>
 
         <View
             android:id="@+id/fragment_project_list_card_view_view_project_status"
             android:layout_width="50dp"
             android:layout_height="match_parent"
-            android:background="@color/NOT_AVAILABLE"
-            android:layout_alignParentEnd="true"/>
+            android:layout_alignParentEnd="true"
+            android:background="@color/NOT_AVAILABLE" />
 
         <RelativeLayout
-            android:layout_toStartOf="@+id/fragment_project_list_card_view_view_project_status"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_toStartOf="@+id/fragment_project_list_card_view_view_project_status">
 
             <ImageView
                 android:id="@+id/fragment_project_list_card_view_image_settings"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
-                android:src="@drawable/icon_three_dots"
-                android:contentDescription="icon_three_dots" />
+                android:contentDescription="icon_three_dots"
+                android:src="@drawable/icon_three_dots" />
         </RelativeLayout>
 
     </RelativeLayout>

@@ -166,9 +166,9 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         return projects;
     }
 
-    public long getProjectCount(){
+    public long getProjectCount() {
         SQLiteDatabase db = this.getReadableDatabase();
-        long cnt  = DatabaseUtils.queryNumEntries(db, TABLE_PROJECT);
+        long cnt = DatabaseUtils.queryNumEntries(db, TABLE_PROJECT);
         db.close();
         Log.i(TAG, "PROJECT COUNT [" + cnt + "].");
         return cnt;

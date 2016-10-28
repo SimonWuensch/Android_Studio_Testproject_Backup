@@ -32,20 +32,20 @@ public class AbstractActivity extends Activity {
         sqLiteHelper = new SQLiteHelper(this);
     }
 
-    public SQLiteHelper getSQLiteHelper(){
+    public SQLiteHelper getSQLiteHelper() {
         return sqLiteHelper;
     }
 
-    public RequestHandler getRequestHandler(){
+    public RequestHandler getRequestHandler() {
         return requestHandler;
     }
 
-    public Project getCurrentProject(){
+    public Project getCurrentProject() {
         return currentProject;
     }
 
-    public void setCurrentProject(Project project){
-        if(currentProject != null){
+    public void setCurrentProject(Project project) {
+        if (currentProject != null) {
             requestHandler.getRequestLogoutTask(project);
         }
 
@@ -53,12 +53,12 @@ public class AbstractActivity extends Activity {
         requestHandler.getRequestLoginTask(currentProject).execute();
     }
 
-    public void setLoadingViewVisible(boolean isVisible){
+    public void setLoadingViewVisible(boolean isVisible) {
         loadingView.setVisibility(isVisible ? View.VISIBLE : View.GONE);
     }
 
     // ** FRAGMENT ****************************************************************************** //
-    public void showCreateProjectFragment(){
+    public void showCreateProjectFragment() {
         showCreateProjectFragment(null);
     }
 
@@ -74,7 +74,7 @@ public class AbstractActivity extends Activity {
         Log.i(getClass().getSimpleName(), "Show Fragment [" + fragmentCreateProject.TAG + "].");
     }
 
-    public void showCustomListFragment(int headlineStringID, FragmentCustomList.Type type, String jsonResponse){
+    public void showCustomListFragment(int headlineStringID, FragmentCustomList.Type type, String jsonResponse) {
         FragmentCustomList fragmentCustomList = FragmentCustomList.newInstance(headlineStringID, type, jsonResponse);
         getFragmentManager()
                 .beginTransaction()
@@ -86,7 +86,7 @@ public class AbstractActivity extends Activity {
         Log.i(getClass().getSimpleName(), "Show Fragment [" + fragmentCustomList.TAG + "].");
     }
 
-    public void showProjectListFragment(){
+    public void showProjectListFragment() {
         FragmentProjectList fragmentProjectList = FragmentProjectList.newInstance();
         getFragmentManager()
                 .beginTransaction()
@@ -97,7 +97,7 @@ public class AbstractActivity extends Activity {
         Log.i(getClass().getSimpleName(), "Show Fragment [" + fragmentProjectList.TAG + "].");
     }
 
-    public void showLaunchBoardFragment(Project project){
+    public void showLaunchBoardFragment(Project project) {
         FragmentLaunchBoard fragmentLaunchBoard = FragmentLaunchBoard.newInstance(project);
         getFragmentManager()
                 .beginTransaction()
@@ -109,7 +109,7 @@ public class AbstractActivity extends Activity {
         Log.i(getClass().getSimpleName(), "Show Fragment [" + fragmentLaunchBoard.TAG + "].");
     }
 
-    public void showModuleListFragment(Project project){
+    public void showModuleListFragment(Project project) {
         FragmentModuleList fragmentModuleList = FragmentModuleList.newInstance(project);
         getFragmentManager()
                 .beginTransaction()
@@ -121,7 +121,7 @@ public class AbstractActivity extends Activity {
         Log.i(getClass().getSimpleName(), "Show Fragment [" + fragmentModuleList.TAG + "].");
     }
 
-    public void showComponentListFragment(Project project){
+    public void showComponentListFragment(Project project) {
         FragmentComponentList fragmentComponentList = FragmentComponentList.newInstance(project);
         getFragmentManager()
                 .beginTransaction()

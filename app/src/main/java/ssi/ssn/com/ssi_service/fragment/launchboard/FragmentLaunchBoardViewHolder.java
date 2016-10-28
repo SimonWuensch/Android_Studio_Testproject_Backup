@@ -10,10 +10,9 @@ import android.widget.TextView;
 import ssi.ssn.com.ssi_service.R;
 import ssi.ssn.com.ssi_service.fragment.launchboard.source.AbstractCardObject;
 import ssi.ssn.com.ssi_service.model.data.source.Project;
-import ssi.ssn.com.ssi_service.model.data.source.Status;
 
 
-public class FragmentLaunchBoardViewHolder extends RecyclerView.ViewHolder {
+class FragmentLaunchBoardViewHolder extends RecyclerView.ViewHolder {
 
     private static String TAG = FragmentLaunchBoardViewHolder.class.getSimpleName();
 
@@ -24,9 +23,10 @@ public class FragmentLaunchBoardViewHolder extends RecyclerView.ViewHolder {
     private TextView tvTitle;
     private CheckBox cbObservation;
     private View vStatus;
+    private View loadingView;
 
 
-    public FragmentLaunchBoardViewHolder(Activity activity, View cardView) {
+    FragmentLaunchBoardViewHolder(Activity activity, View cardView) {
         super(cardView);
         this.activity = activity;
         this.cardView = cardView;
@@ -34,7 +34,8 @@ public class FragmentLaunchBoardViewHolder extends RecyclerView.ViewHolder {
         image = (ImageView) cardView.findViewById(R.id.fragment_launch_board_card_view_image);
         tvTitle = (TextView) cardView.findViewById(R.id.fragment_launch_board_card_view_title);
         cbObservation = (CheckBox) cardView.findViewById(R.id.fragment_launch_board_card_view_check_box_observation);
-        vStatus = (View) cardView.findViewById(R.id.fragment_launch_board_card_view_view_status);
+        vStatus = cardView.findViewById(R.id.fragment_launch_board_card_view_view_status);
+        loadingView = cardView.findViewById(R.id.fragment_launch_board_card_view_loading_view);
     }
 
     protected void assignData(final AbstractCardObject cardObject, final Project project) {
@@ -42,6 +43,7 @@ public class FragmentLaunchBoardViewHolder extends RecyclerView.ViewHolder {
         tvTitle.setText(activity.getString(cardObject.getTitle()));
         cbObservation.setChecked(cardObject.isObservation());
         cardObject.setStatusView(vStatus);
+        cardObject.setLoadingView(loadingView);
 
         cardView.setOnClickListener(new View.OnClickListener() {
             @Override

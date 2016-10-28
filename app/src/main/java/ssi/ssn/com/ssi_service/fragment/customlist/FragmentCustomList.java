@@ -43,8 +43,8 @@ public class FragmentCustomList extends AbstractFragment {
         return fragment;
     }
 
-    private void loadArguments(){
-        if(getArguments() != null) {
+    private void loadArguments() {
+        if (getArguments() != null) {
             headlineStringID = getArguments().getInt(HEADLINE_STRING_ID);
             String jsonResponse = getArguments().getString(RESPONSE_JSON);
             Type type = (Type) JsonHelper.fromJsonGeneric(Type.class, getArguments().getString(FRAGMENT_TYPE));
@@ -60,7 +60,7 @@ public class FragmentCustomList extends AbstractFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        if(rootView == null) {
+        if (rootView == null) {
             rootView = inflater.inflate(FRAGMENT_LAYOUT, container, false);
             Log.d(TAG, "Fragment inflated [" + getActivity().getResources().getResourceName(FRAGMENT_LAYOUT) + "].");
 
@@ -77,20 +77,21 @@ public class FragmentCustomList extends AbstractFragment {
         return rootView;
     }
 
-    public void initViewComponents(){
+    public void initViewComponents() {
         TextView tvHeadLine = (TextView) rootView.findViewById(R.id.default_action_bar_text_view_headline);
         tvHeadLine.setText(getActivity().getString(headlineStringID));
     }
 
-    public enum Type{
+    public enum Type {
         APPLICATION(ResponseApplication.class);
 
         public Class responseClass;
-        Type(Class responseClass){
+
+        Type(Class responseClass) {
             this.responseClass = responseClass;
         }
 
-        public AbstractResponse deserialize(String json){
+        public AbstractResponse deserialize(String json) {
             return (ResponseApplication) JsonHelper.fromJsonGeneric(responseClass, json);
         }
     }

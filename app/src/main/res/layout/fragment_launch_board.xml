@@ -24,41 +24,41 @@
         android:id="@+id/fragment_launch_board_relative_layout_project_state_background"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="10dp"
-        android:background="@color/NOT_AVAILABLE"
+        android:layout_below="@+id/fragment_launch_board_include_headline"
+        android:layout_centerHorizontal="true"
         android:layout_marginLeft="5dp"
         android:layout_marginRight="5dp"
         android:layout_marginTop="5dp"
-        android:layout_below="@+id/fragment_launch_board_include_headline"
-        android:layout_centerHorizontal="true">
+        android:background="@color/NOT_AVAILABLE"
+        android:padding="10dp">
 
         <TextView
             android:id="@+id/fragment_launch_board_project_text_view_project_status"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
             android:text="STATUS loading..."
-            android:textColor="@color/colorWhite"/>
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textColor="@color/colorWhite" />
 
         <TextView
             android:id="@+id/fragment_launch_board_project_text_view_project_life_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_below="@+id/fragment_launch_board_project_text_view_project_status"
             android:layout_marginTop="5dp"
             android:text="Since loading..."
-            android:textColor="@color/colorWhite"
             android:textAppearance="?android:attr/textAppearanceSmall"
-            android:layout_below="@+id/fragment_launch_board_project_text_view_project_status" />
+            android:textColor="@color/colorWhite" />
 
         <TextView
             android:id="@+id/fragment_launch_board_project_text_view_project_version"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_below="@+id/fragment_launch_board_project_text_view_project_life_time"
             android:layout_marginTop="5dp"
             android:text="Version loading..."
-            android:textColor="@color/colorWhite"
             android:textAppearance="?android:attr/textAppearanceSmall"
-            android:layout_below="@+id/fragment_launch_board_project_text_view_project_life_time"/>
+            android:textColor="@color/colorWhite" />
 
     </RelativeLayout>
 

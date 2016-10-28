@@ -6,10 +6,12 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
-import java.util.ArrayList;
 import java.util.List;
 
-public class FragmentModuleListAdapter extends RecyclerView.Adapter<FragmentModuleListViewHolder> {
+import ssi.ssn.com.ssi_service.fragment.launchboard.source.CardObjectModule;
+import ssi.ssn.com.ssi_service.model.helper.XMLHelper;
+
+class FragmentModuleListAdapter extends RecyclerView.Adapter<FragmentModuleListViewHolder> {
 
     private static String TAG = FragmentModuleListAdapter.class.getSimpleName();
 
@@ -17,34 +19,25 @@ public class FragmentModuleListAdapter extends RecyclerView.Adapter<FragmentModu
     private final FragmentModuleList fragment;
     private CardView cardView;
 
-    private List<String> defaultInputs;
+    private List<XMLHelper.XMLObject> moduleObjects;
     private Activity activity;
 
-    public FragmentModuleListAdapter(int layoutCardView, final FragmentModuleList fragment) {
+    FragmentModuleListAdapter(int layoutCardView, FragmentModuleList fragment, String responseApplicationConfig) {
         this.layoutCardView = layoutCardView;
         this.fragment = fragment;
-        initDefaultInputs();
-    }
-
-    private void initDefaultInputs() {
-        defaultInputs = new ArrayList<>();
-
-        defaultInputs.add("ONE");
-        defaultInputs.add("TWO");
-        defaultInputs.add("THREE");
-        defaultInputs.add("FOUR");
+        this.activity = fragment.getActivity();
+        moduleObjects = CardObjectModule.searchObjectsInResponseXML(responseApplicationConfig);
     }
 
     @Override
     public FragmentModuleListViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         cardView = (CardView) LayoutInflater.from(parent.getContext()).inflate(layoutCardView, parent, false);
-        FragmentModuleListViewHolder viewHolder = new FragmentModuleListViewHolder(fragment.getActivity(), cardView);
-        return viewHolder;
+        return new FragmentModuleListViewHolder(fragment.getActivity(), cardView);
     }
 
     @Override
     public void onBindViewHolder(FragmentModuleListViewHolder viewHolder, int position) {
-        viewHolder.assignData(defaultInputs.get(position));
+        viewHolder.assignData(moduleObjects.get(position));
     }
 
     @Override
@@ -54,7 +47,7 @@ public class FragmentModuleListAdapter extends RecyclerView.Adapter<FragmentModu
 
     @Override
     public int getItemCount() {
-        return defaultInputs.size();
+        return moduleObjects.size();
     }
 
 }

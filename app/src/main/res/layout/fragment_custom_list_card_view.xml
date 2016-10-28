@@ -1,19 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.CardView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
 
     android:id="@+id/fragment_custom_list_card_view"
 
-    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-
-    card_view:cardElevation="6dp"
-    card_view:cardCornerRadius="0dp"
-
     android:clickable="true"
-    android:foreground="?android:attr/selectableItemBackground">
+
+    android:foreground="?android:attr/selectableItemBackground"
+    android:orientation="vertical"
+
+    card_view:cardCornerRadius="0dp"
+    card_view:cardElevation="6dp">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -33,24 +32,24 @@
                 android:id="@+id/fragment_custom_list_text_view_key"
                 android:layout_width="150dp"
                 android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="Key"/>
+                android:text="Key"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
 
             <TextView
                 android:id="@+id/fragment_custom_list_text_view_value"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
                 android:layout_toEndOf="@+id/fragment_custom_list_text_view_key"
-                android:text="Value" />
+                android:text="Value"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
 
             <TextView
                 android:id="@+id/fragment_custom_list_text_view_headline"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
                 android:text="Headline"
-                android:visibility="gone"/>
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:visibility="gone" />
         </RelativeLayout>
 
         <View
@@ -58,7 +57,7 @@
             android:layout_width="match_parent"
             android:layout_height="3dp"
             android:background="@color/defaultColor"
-            android:visibility="gone"/>
+            android:visibility="gone" />
 
     </RelativeLayout>
 

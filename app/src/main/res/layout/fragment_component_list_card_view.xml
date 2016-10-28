@@ -1,54 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.CardView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
 
 
     android:id="@+id/fragment_component_list_card_view"
 
-    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-
-    card_view:cardElevation="2dp"
-    card_view:cardCornerRadius="0dp"
-
     android:layout_marginBottom="10dp"
+
     android:clickable="true"
-    android:foreground="?android:attr/selectableItemBackground">
+    android:foreground="?android:attr/selectableItemBackground"
+
+    android:orientation="vertical"
+    card_view:cardCornerRadius="0dp"
+    card_view:cardElevation="2dp">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:longClickable="false"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:paddingBottom="5dp">
 
         <RelativeLayout
+            android:id="@+id/fragment_component_list_relative_layout_name_background"
             android:layout_width="match_parent"
             android:layout_height="30dp"
-            android:background="@color/defaultColor">
+            android:background="@color/NOT_AVAILABLE">
 
             <TextView
                 android:id="@+id/fragment_component_list_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_centerInParent="true"
                 android:layout_marginStart="15dp"
                 android:text="NAME"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:layout_centerInParent="true"
-                android:layout_alignParentStart="true"/>
+                android:textAppearance="?android:attr/textAppearanceLarge" />
 
         </RelativeLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginTop="5dp">
+            android:layout_marginTop="5dp"
+            android:orientation="horizontal">
 
             <TextView
-                android:id="@+id/fragment_component_list_enabled_key"
+                android:id="@+id/fragment_component_list_manage_key"
                 android:layout_width="100dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="15dp"
@@ -56,7 +57,7 @@
                 android:textAppearance="?android:attr/textAppearanceMedium" />
 
             <TextView
-                android:id="@+id/fragment_component_list_enabled_value"
+                android:id="@+id/fragment_component_list_manage_value"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="15dp"
@@ -67,9 +68,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
             android:layout_marginTop="5dp"
-            android:layout_marginBottom="5dp">
+            android:orientation="horizontal">
 
             <TextView
                 android:id="@+id/fragment_component_list_status_key"
@@ -81,6 +81,31 @@
 
             <TextView
                 android:id="@+id/fragment_component_list_status_value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="15dp"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/fragment_component_list_linear_layout_enabled"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:orientation="horizontal"
+            android:visibility="gone">
+
+            <TextView
+                android:id="@+id/fragment_component_list_enabled_key"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="15dp"
+                android:text="@string/fragment_component_list_card_view_enabled"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+
+            <TextView
+                android:id="@+id/fragment_component_list_enabled_value"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="15dp"

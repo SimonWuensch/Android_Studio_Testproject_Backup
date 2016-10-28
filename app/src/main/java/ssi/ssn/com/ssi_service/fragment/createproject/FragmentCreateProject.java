@@ -34,20 +34,10 @@ import ssi.ssn.com.ssi_service.model.network.response.ResponseApplication;
 
 public class FragmentCreateProject extends AbstractFragment {
 
-    public enum Status {
-        ADD,
-        UPDATE,
-        DELETE;
-    }
-
     public static String TAG = FragmentCreateProject.class.getSimpleName();
-
     private static int FRAGMENT_LAYOUT = R.layout.fragment_create_project;
-
     private static String PROJECT_JSON = TAG + "PROJECT_JSON";
-
     private Status fragmentStatus;
-
     private EditText etServerAddress;
     private EditText etUserName;
     private EditText etPassword;
@@ -55,9 +45,7 @@ public class FragmentCreateProject extends AbstractFragment {
     private Button bFinal;
     private Button bShowApplicationInfo;
     private Spinner spTimeInput;
-
     private View rootView;
-
     private Project project;
 
     public static FragmentCreateProject newInstance(Project project) {
@@ -270,8 +258,6 @@ public class FragmentCreateProject extends AbstractFragment {
         return AlertDialogHelper.init(getActivity(), message, positiveButtonText, positiveButtonTask, negativeButtonText, null);
     }
 
-    // ** APPLICATION INFO BUTTON CLICK ********************************************************* //
-
     public View.OnClickListener onClickShowApplicationInfo() {
         return new View.OnClickListener() {
             @Override
@@ -315,9 +301,12 @@ public class FragmentCreateProject extends AbstractFragment {
                         setLoadingViewVisible(false);
                     }
                 }.executeOnExecutor(executor);
+                executor.shutdown();
             }
         };
     }
+
+    // ** APPLICATION INFO BUTTON CLICK ********************************************************* //
 
     // ** FINAL BUTTON CLICK ******************************************************************** //
     public View.OnClickListener onFinalButtonClick() {
@@ -425,5 +414,12 @@ public class FragmentCreateProject extends AbstractFragment {
                 setLoadingViewVisible(false);
             }
         }.executeOnExecutor(executor);
+        executor.shutdown();
+    }
+
+    public enum Status {
+        ADD,
+        UPDATE,
+        DELETE;
     }
 }

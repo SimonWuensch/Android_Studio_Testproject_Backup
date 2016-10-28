@@ -11,7 +11,7 @@ import java.util.List;
 import ssi.ssn.com.ssi_service.fragment.customlist.source.CustomListObject;
 import ssi.ssn.com.ssi_service.model.network.response.AbstractResponse;
 
-class FragmentCustomListAdapter extends  RecyclerView.Adapter<FragmentCustomListViewHolder>{
+class FragmentCustomListAdapter extends RecyclerView.Adapter<FragmentCustomListViewHolder> {
 
     private static String TAG = FragmentCustomListAdapter.class.getSimpleName();
 
@@ -22,7 +22,7 @@ class FragmentCustomListAdapter extends  RecyclerView.Adapter<FragmentCustomList
     private List<CustomListObject> customListInputs;
     private Activity activity;
 
-    FragmentCustomListAdapter(int layoutCardView, final FragmentCustomList fragment, AbstractResponse responseAbstract){
+    FragmentCustomListAdapter(int layoutCardView, final FragmentCustomList fragment, AbstractResponse responseAbstract) {
         this.layoutCardView = layoutCardView;
         this.fragment = fragment;
         this.activity = fragment.getActivity();

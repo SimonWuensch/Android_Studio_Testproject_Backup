@@ -63,7 +63,7 @@ public class CustomListObject {
         }
 
         @Override
-        public void reformatViewComponents(Activity activity,RelativeLayout rlTextViewFrame, TextView tvHeadline, TextView tvKey, TextView tvValue, View vHorizontalLine) {
+        public void reformatViewComponents(Activity activity, RelativeLayout rlTextViewFrame, TextView tvHeadline, TextView tvKey, TextView tvValue, View vHorizontalLine) {
             super.reformatViewComponents(activity, rlTextViewFrame, tvHeadline, tvKey, tvValue, vHorizontalLine);
             tvHeadline.setText(key);
             tvHeadline.setVisibility(View.VISIBLE);
@@ -82,7 +82,7 @@ public class CustomListObject {
         }
 
         @Override
-        public void reformatViewComponents(Activity activity,RelativeLayout rlTextViewFrame, TextView tvHeadline, TextView tvKey, TextView tvValue, View vHorizontalLine) {
+        public void reformatViewComponents(Activity activity, RelativeLayout rlTextViewFrame, TextView tvHeadline, TextView tvKey, TextView tvValue, View vHorizontalLine) {
             super.reformatViewComponents(activity, rlTextViewFrame, tvHeadline, tvKey, tvValue, vHorizontalLine);
             tvKey.setText(key);
             tvValue.setText(value);
@@ -94,7 +94,7 @@ public class CustomListObject {
         }
 
         @Override
-        public void reformatViewComponents(Activity activity,RelativeLayout rlTextViewFrame, TextView tvHeadline, TextView tvKey, TextView tvValue, View vHorizontalLine) {
+        public void reformatViewComponents(Activity activity, RelativeLayout rlTextViewFrame, TextView tvHeadline, TextView tvKey, TextView tvValue, View vHorizontalLine) {
             super.reformatViewComponents(activity, rlTextViewFrame, tvHeadline, tvKey, tvValue, vHorizontalLine);
             tvKey.setVisibility(View.GONE);
             tvValue.setVisibility(View.GONE);

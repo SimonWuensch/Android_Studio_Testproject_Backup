@@ -19,6 +19,7 @@ import java.util.concurrent.TimeUnit;
 import ssi.ssn.com.ssi_service.R;
 import ssi.ssn.com.ssi_service.activity.MainActivity;
 import ssi.ssn.com.ssi_service.fragment.AbstractFragment;
+import ssi.ssn.com.ssi_service.fragment.launchboard.source.AbstractCardObject;
 import ssi.ssn.com.ssi_service.model.data.source.Project;
 import ssi.ssn.com.ssi_service.model.helper.FormatHelper;
 import ssi.ssn.com.ssi_service.model.helper.JsonHelper;
@@ -41,6 +42,8 @@ public class FragmentLaunchBoard extends AbstractFragment {
     private TextView tvProjectStatus;
     private TextView tvProjectLifeTime;
     private TextView tvProjectVersion;
+
+    private FragmentLaunchBoardAdapter mAdapter;
 
     private Project project;
 
@@ -77,7 +80,7 @@ public class FragmentLaunchBoard extends AbstractFragment {
             rootView = inflater.inflate(FRAGMENT_LAYOUT, container, false);
             Log.d(TAG, "Fragment inflated [" + getActivity().getResources().getResourceName(FRAGMENT_LAYOUT) + "].");
 
-            RecyclerView.Adapter mAdapter = new FragmentLaunchBoardAdapter(CARDVIEW, this, project);
+            mAdapter = new FragmentLaunchBoardAdapter(CARDVIEW, this, project);
             Log.d(TAG, "Adapter [" + mAdapter.getClass().getSimpleName() + "] with CardView [" + getActivity().getResources().getResourceName(CARDVIEW) + "] initialized.");
 
             RecyclerView mRecyclerView = (RecyclerView) rootView.findViewById(RECYCLERVIEW);
@@ -122,7 +125,7 @@ public class FragmentLaunchBoard extends AbstractFragment {
                     ResponseApplication responseApplication = (ResponseApplication) JsonHelper.fromJsonGeneric(ResponseApplication.class, defaultResponseApplication.getResult());
                     String projectStatus = responseApplication.getState().getStatus();
                     tvProjectStatus.setText(projectStatus);
-                    if (projectStatus.equals("RUNNING")) {
+                    if (projectStatus.equals(ssi.ssn.com.ssi_service.model.data.source.Status.TEXT_RUNNING)) {
                         rlProjectStateBackground.setBackgroundColor(ssi.ssn.com.ssi_service.model.data.source.Status.OK.getColor(getActivity()));
 
                         Date since = new Date(responseApplication.getState().getSince());
@@ -146,5 +149,14 @@ public class FragmentLaunchBoard extends AbstractFragment {
                 setLoadingViewVisible(false);
             }
         }.executeOnExecutor(executor);
+        executor.shutdown();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        for (AbstractCardObject cardObject : mAdapter.getCardInputs()) {
+            cardObject.checkStatus(getActivity(), project);
+        }
     }
 }

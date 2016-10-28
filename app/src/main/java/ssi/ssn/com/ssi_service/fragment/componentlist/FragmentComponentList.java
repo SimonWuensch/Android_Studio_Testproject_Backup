@@ -11,7 +11,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import ssi.ssn.com.ssi_service.R;
-import ssi.ssn.com.ssi_service.fragment.modulelist.FragmentModuleList;
 import ssi.ssn.com.ssi_service.model.data.source.Project;
 import ssi.ssn.com.ssi_service.model.helper.JsonHelper;
 
@@ -24,9 +23,11 @@ public class FragmentComponentList extends Fragment {
     private static int CARDVIEW = R.layout.fragment_component_list_card_view;
 
     private static String PROJECT_JSON = TAG + "PROJECT_JSON";
+    private static String RESPONSE = TAG + "RESPONSE";
 
     private View rootView;
     private Project project;
+    private String responseApplicationConfig;
 
     public static FragmentComponentList newInstance(Project project) {
         if (project == null) {
@@ -36,6 +37,7 @@ public class FragmentComponentList extends Fragment {
         FragmentComponentList fragment = new FragmentComponentList();
         Bundle bundle = new Bundle();
         bundle.putString(PROJECT_JSON, JsonHelper.toJson(project));
+        bundle.putString(RESPONSE, project.getDefaultResponseApplicationConfig().getResult());
         fragment.setArguments(bundle);
         return fragment;
     }
@@ -46,6 +48,7 @@ public class FragmentComponentList extends Fragment {
         }
 
         String projectJson = getArguments().getString(PROJECT_JSON);
+        responseApplicationConfig = getArguments().getString(RESPONSE);
         project = (Project) JsonHelper.fromJsonGeneric(Project.class, projectJson);
     }
 
@@ -61,7 +64,7 @@ public class FragmentComponentList extends Fragment {
             rootView = inflater.inflate(FRAGMENT_LAYOUT, container, false);
             Log.d(TAG, "Fragment inflated [" + getActivity().getResources().getResourceName(FRAGMENT_LAYOUT) + "].");
 
-            RecyclerView.Adapter mAdapter = new FragmentComponentListAdapter(CARDVIEW, this);
+            RecyclerView.Adapter mAdapter = new FragmentComponentListAdapter(CARDVIEW, this, responseApplicationConfig);
             Log.d(TAG, "Adapter [" + mAdapter.getClass().getSimpleName() + "] with CardView [" + getActivity().getResources().getResourceName(CARDVIEW) + "] initialized.");
 
             RecyclerView mRecyclerView = (RecyclerView) rootView.findViewById(RECYCLERVIEW);
@@ -79,4 +82,6 @@ public class FragmentComponentList extends Fragment {
         TextView tvHeadLine = (TextView) rootView.findViewById(R.id.default_action_bar_text_view_headline);
         tvHeadLine.setText(getActivity().getString(R.string.fragment_component_list_title));
     }
+
+
 }

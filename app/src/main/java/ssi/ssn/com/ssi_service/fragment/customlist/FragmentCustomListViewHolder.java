@@ -9,7 +9,7 @@ import android.widget.TextView;
 import ssi.ssn.com.ssi_service.R;
 import ssi.ssn.com.ssi_service.fragment.customlist.source.CustomListObject;
 
-class FragmentCustomListViewHolder extends RecyclerView.ViewHolder{
+class FragmentCustomListViewHolder extends RecyclerView.ViewHolder {
 
     private static String TAG = FragmentCustomListViewHolder.class.getSimpleName();
 
@@ -29,7 +29,7 @@ class FragmentCustomListViewHolder extends RecyclerView.ViewHolder{
         initViewComponents();
     }
 
-    private void initViewComponents(){
+    private void initViewComponents() {
         rlKeyValueFrame = (RelativeLayout) cardView.findViewById(R.id.fragment_custom_list_relative_layout_key_value);
         tvHeadline = (TextView) cardView.findViewById(R.id.fragment_custom_list_text_view_headline);
         tvKey = (TextView) cardView.findViewById(R.id.fragment_custom_list_text_view_key);
@@ -37,9 +37,9 @@ class FragmentCustomListViewHolder extends RecyclerView.ViewHolder{
         vHorizontalLine = cardView.findViewById(R.id.fragment_custom_list_view_horizontal_line);
     }
 
-    void assignData(CustomListObject customListObject){
+    void assignData(CustomListObject customListObject) {
         customListObject.reformatViewComponents(activity, rlKeyValueFrame, tvHeadline, tvKey, tvValue, vHorizontalLine);
-        if(customListObject.getOnClickListener() != null){
+        if (customListObject.getOnClickListener() != null) {
             cardView.setOnClickListener(customListObject.getOnClickListener());
         }
     }

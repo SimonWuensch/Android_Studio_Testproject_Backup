@@ -17,7 +17,7 @@ import ssi.ssn.com.ssi_service.fragment.launchboard.source.CardObjectModule;
 import ssi.ssn.com.ssi_service.fragment.launchboard.source.CardObjectNotification;
 import ssi.ssn.com.ssi_service.model.data.source.Project;
 
-public class FragmentLaunchBoardAdapter extends RecyclerView.Adapter<FragmentLaunchBoardViewHolder> {
+class FragmentLaunchBoardAdapter extends RecyclerView.Adapter<FragmentLaunchBoardViewHolder> {
 
     private static String TAG = FragmentLaunchBoardAdapter.class.getSimpleName();
 
@@ -29,7 +29,7 @@ public class FragmentLaunchBoardAdapter extends RecyclerView.Adapter<FragmentLau
     private Activity activity;
     private Project project;
 
-    public FragmentLaunchBoardAdapter(int layoutCardView, final FragmentLaunchBoard fragment, Project project) {
+    FragmentLaunchBoardAdapter(int layoutCardView, final FragmentLaunchBoard fragment, Project project) {
         this.layoutCardView = layoutCardView;
         this.fragment = fragment;
         this.activity = fragment.getActivity();
@@ -38,6 +38,7 @@ public class FragmentLaunchBoardAdapter extends RecyclerView.Adapter<FragmentLau
     }
 
     private void initDefaultInputs() {
+        //TODO save and load CardObjectSetting from DB
         cardInputs = new LinkedList<AbstractCardObject>() {
             {
                 add(new CardObjectModule(
@@ -67,8 +68,7 @@ public class FragmentLaunchBoardAdapter extends RecyclerView.Adapter<FragmentLau
     @Override
     public FragmentLaunchBoardViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         cardView = (CardView) LayoutInflater.from(parent.getContext()).inflate(layoutCardView, parent, false);
-        FragmentLaunchBoardViewHolder viewHolder = new FragmentLaunchBoardViewHolder(fragment.getActivity(), cardView);
-        return viewHolder;
+        return new FragmentLaunchBoardViewHolder(fragment.getActivity(), cardView);
     }
 
     @Override
@@ -84,6 +84,10 @@ public class FragmentLaunchBoardAdapter extends RecyclerView.Adapter<FragmentLau
     @Override
     public int getItemCount() {
         return cardInputs.size();
+    }
+
+    List<AbstractCardObject> getCardInputs() {
+        return cardInputs;
     }
 
 }

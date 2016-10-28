@@ -21,15 +21,15 @@ public class RequestSessionsCurrent {
         this.project = project;
     }
 
-    public static RequestSessionsCurrent init(Project project){
+    public static RequestSessionsCurrent init(Project project) {
         return new RequestSessionsCurrent(project);
     }
 
-    private String getAddress(){
+    private String getAddress() {
         return project.getServerAddress() + ADDRESS;
     }
 
-    public AsyncTask getTaskGET(final CookieHandler cookieHandler){
+    public AsyncTask getTaskGET(final CookieHandler cookieHandler) {
         return new AsyncTask() {
             @Override
             protected Object doInBackground(Object[] objects) {
@@ -41,8 +41,8 @@ public class RequestSessionsCurrent {
         };
     }
 
-    public boolean isLoggedIn(){
-        if(project.getDefaultResponseSessionsCurrent() != null){
+    public boolean isLoggedIn() {
+        if (project.getDefaultResponseSessionsCurrent() != null) {
             ResponseSessionsCurrent responseSessionsCurrent = (ResponseSessionsCurrent) JsonHelper.fromJsonGeneric(ResponseSessionsCurrent.class, project.getDefaultResponseSessionsCurrent().getResult());
             return responseSessionsCurrent.getStatus().equals("LOGGED_IN");
         }

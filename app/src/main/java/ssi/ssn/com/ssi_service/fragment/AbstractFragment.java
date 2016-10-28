@@ -5,9 +5,6 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.widget.EditText;
 
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-
 import ssi.ssn.com.ssi_service.activity.MainActivity;
 import ssi.ssn.com.ssi_service.model.helper.SQLiteHelper;
 
@@ -17,13 +14,12 @@ public class AbstractFragment extends Fragment {
         return ((MainActivity) getActivity()).getSQLiteHelper();
     }
 
-    public void setLoadingViewVisible(boolean isVisible){
-        ((MainActivity)getActivity()).setLoadingViewVisible(isVisible);
+    public void setLoadingViewVisible(boolean isVisible) {
+        ((MainActivity) getActivity()).setLoadingViewVisible(isVisible);
     }
 
-    public void onTextChangeListener(EditText editText){
+    public void onTextChangeListener(EditText editText) {
         editText.addTextChangedListener(new TextWatcher() {
-            private ExecutorService executor = Executors.newSingleThreadExecutor();
             public void afterTextChanged(Editable s) {
                 doAfterChanged();
             }
@@ -38,7 +34,12 @@ public class AbstractFragment extends Fragment {
         });
     }
 
-    public void doAfterChanged(){}
-    public void doBeforeTextChanged(){}
-    public void doTextChanged(){}
+    public void doAfterChanged() {
+    }
+
+    public void doBeforeTextChanged() {
+    }
+
+    public void doTextChanged() {
+    }
 }

@@ -1,15 +1,11 @@
 package ssi.ssn.com.ssi_service.model.network.response.objects;
 
-/**
- * Created by wuens on 28.09.2016.
- */
-
 public class ResponseTime {
 
-    public long stamp;
-    public long offset;
+    private long stamp;
+    private long offset;
 
-    public ResponseTime(){
+    public ResponseTime() {
     }
 
     public long getStamp() {

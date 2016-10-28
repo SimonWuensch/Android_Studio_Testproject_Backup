@@ -23,15 +23,15 @@ public class HttpGET {
     private CookieHandler cookieHandler;
     private String address;
 
-    public HttpGET(CookieHandler cookieHandler, String address){
+    public HttpGET(CookieHandler cookieHandler, String address) {
         this.cookieHandler = cookieHandler;
         this.address = address;
     }
 
-    public DefaultResponse sendRequest(boolean resetCookie){
+    public DefaultResponse sendRequest(boolean resetCookie) {
         String hostAddress = PROTOCOLL + address;
         HttpURLConnection urlConnection = null;
-        try{
+        try {
             String address = FormatHelper.getEncodeAddress(hostAddress);
             URL url = new URL(address);
             urlConnection = (HttpURLConnection) url.openConnection();
@@ -40,11 +40,11 @@ public class HttpGET {
             urlConnection.setConnectTimeout(READ_TIME_OUT_INTERVAL);
             urlConnection.setReadTimeout(READ_TIME_OUT_INTERVAL);
 
-            if(cookieHandler.isCookieManagerNull()){
+            if (cookieHandler.isCookieManagerNull()) {
                 resetCookie = true;
             }
 
-            if(cookieHandler != null) {
+            if (cookieHandler != null) {
                 if (resetCookie) {
                     cookieHandler.initCookieManager(urlConnection);
                 } else {
@@ -58,11 +58,11 @@ public class HttpGET {
         } catch (java.net.SocketTimeoutException e) {
             Log.e(TAG, "[ERROR] GET Request Timeout: [" + hostAddress + "]");
             return new DefaultResponse(GET_COMMUNICATION_ERROR_TIMEOUT, e.getMessage());
-        }catch (Throwable t) {
+        } catch (Throwable t) {
             Log.e(TAG, "[ERROR] GET Request. Address: [" + hostAddress + "]");
             return new DefaultResponse(GET_COMMUNICATION_ERROR, t.getMessage());
-        }finally {
-            if(urlConnection != null) {
+        } finally {
+            if (urlConnection != null) {
                 urlConnection.disconnect();
             }
         }

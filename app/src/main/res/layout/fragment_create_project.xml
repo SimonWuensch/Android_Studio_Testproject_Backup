@@ -1,16 +1,15 @@
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".fragment.createproject.FragmentCreateProject">
 
     <include
+        android:id="@+id/fragment_create_project_include_headline"
+        layout="@layout/default_action_bar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        layout="@layout/default_action_bar"
-        android:layout_gravity="center_horizontal|top"
-        android:id="@+id/fragment_create_project_include_headline" />
+        android:layout_gravity="center_horizontal|top" />
 
     <ImageView
         android:id="@+id/fragment_create_project_image_view_project"
@@ -19,17 +18,17 @@
         android:layout_below="@+id/fragment_create_project_include_headline"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="20dp"
-        android:background="@drawable/icon_project"/>
+        android:background="@drawable/icon_project" />
 
     <TextView
         android:id="@+id/fragment_create_project_text_view_add_project"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="@string/fragment_create_project_text_view_add_project"
         android:layout_below="@+id/fragment_create_project_image_view_project"
         android:layout_centerInParent="true"
         android:layout_marginTop="10dp"
+        android:text="@string/fragment_create_project_text_view_add_project"
+        android:textAppearance="?android:attr/textAppearanceMedium"
         android:textColor="@color/colorBlack"
         android:textStyle="bold" />
 
@@ -37,39 +36,39 @@
         android:id="@+id/fragment_create_project_relative_layout_ip_address"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
         android:layout_below="@+id/fragment_create_project_text_view_add_project"
-        android:layout_centerInParent="true">
+        android:layout_centerInParent="true"
+        android:layout_marginTop="30dp">
 
         <ImageView
             android:id="@+id/fragment_create_project_image_view_ip"
             android:layout_width="20dp"
             android:layout_height="20dp"
-            android:src="@drawable/icon_ip"
-            android:layout_centerInParent="true"
             android:layout_alignParentStart="true"
-            android:contentDescription="Icon_IP_Address" />
+            android:layout_centerInParent="true"
+            android:contentDescription="Icon_IP_Address"
+            android:src="@drawable/icon_ip" />
 
         <EditText
             android:id="@+id/fragment_create_project_edit_text_project_address"
             android:layout_width="250dp"
             android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_marginStart="5dp"
+            android:layout_toEndOf="@+id/fragment_create_project_image_view_ip"
+            android:hint="@string/fragment_create_project_edit_text_hint_ip_address"
             android:inputType="textUri"
             android:lines="1"
-            android:maxLength="20"
-            android:hint="@string/fragment_create_project_edit_text_hint_ip_address"
-            android:layout_centerInParent="true"
-            android:layout_toEndOf="@+id/fragment_create_project_image_view_ip"
-            android:layout_marginStart="5dp"/>
+            android:maxLength="20" />
 
         <Button
             android:id="@+id/fragment_create_project_button_show_project_application_info"
             android:layout_width="44dp"
             android:layout_height="40dp"
             android:layout_toEndOf="@+id/fragment_create_project_edit_text_project_address"
+            android:background="@color/defaultColor"
             android:drawableStart="@drawable/icon_info"
-            android:padding="10dp"
-            android:background="@color/defaultColor"/>
+            android:padding="10dp" />
 
     </RelativeLayout>
 
@@ -77,30 +76,30 @@
         android:id="@+id/fragment_create_project_relative_layout_user_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
+        android:layout_alignStart="@+id/fragment_create_project_relative_layout_password"
         android:layout_below="@+id/fragment_create_project_relative_layout_ip_address"
-        android:layout_alignStart="@+id/fragment_create_project_relative_layout_password">
+        android:layout_marginTop="15dp">
 
         <ImageView
             android:id="@+id/fragment_create_project_image_user"
             android:layout_width="20dp"
             android:layout_height="20dp"
-            android:src="@drawable/icon_user"
-            android:layout_centerInParent="true"
             android:layout_alignParentStart="true"
-            android:contentDescription="icon_username" />
+            android:layout_centerInParent="true"
+            android:contentDescription="icon_username"
+            android:src="@drawable/icon_user" />
 
         <EditText
             android:id="@+id/fragment_create_project_edit_text_user_name"
             android:layout_width="300dp"
             android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_marginStart="5dp"
+            android:layout_toEndOf="@+id/fragment_create_project_image_user"
+            android:hint="@string/fragment_create_project_edit_text_hint_user_name"
             android:inputType="textPersonName"
             android:lines="1"
-            android:maxLength="20"
-            android:hint="@string/fragment_create_project_edit_text_hint_user_name"
-            android:layout_centerInParent="true"
-            android:layout_toEndOf="@+id/fragment_create_project_image_user"
-            android:layout_marginStart="5dp"/>
+            android:maxLength="20" />
 
     </RelativeLayout>
 
@@ -108,60 +107,60 @@
         android:id="@+id/fragment_create_project_relative_layout_password"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
         android:layout_below="@+id/fragment_create_project_relative_layout_user_name"
-        android:layout_centerInParent="true">
+        android:layout_centerInParent="true"
+        android:layout_marginTop="15dp">
 
         <ImageView
             android:id="@+id/fragment_create_project_image_password"
             android:layout_width="20dp"
             android:layout_height="20dp"
-            android:src="@drawable/icon_password"
-            android:layout_centerInParent="true"
             android:layout_alignParentStart="true"
-            android:contentDescription="icon_password" />
+            android:layout_centerInParent="true"
+            android:contentDescription="icon_password"
+            android:src="@drawable/icon_password" />
 
         <EditText
             android:id="@+id/fragment_create_project_edit_text_password"
             android:layout_width="300dp"
             android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_marginStart="5dp"
+            android:layout_toEndOf="@+id/fragment_create_project_image_password"
+            android:hint="@string/fragment_create_project_edit_text_hint_password"
             android:inputType="textPassword"
             android:lines="1"
-            android:maxLength="20"
-            android:hint="@string/fragment_create_project_edit_text_hint_password"
-            android:layout_centerInParent="true"
-            android:layout_toEndOf="@+id/fragment_create_project_image_password"
-            android:layout_marginStart="5dp"/>
+            android:maxLength="20" />
     </RelativeLayout>
 
     <RelativeLayout
         android:id="@+id/fragment_create_project_relative_layout_update_interval"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
         android:layout_below="@+id/fragment_create_project_relative_layout_password"
-        android:layout_centerInParent="true">
+        android:layout_centerInParent="true"
+        android:layout_marginTop="15dp">
 
         <ImageView
             android:id="@+id/fragment_create_project_image_update_interval"
             android:layout_width="20dp"
             android:layout_height="20dp"
-            android:src="@drawable/icon_update_interval"
-            android:layout_centerInParent="true"
             android:layout_alignParentStart="true"
-            android:contentDescription="icon_update_interval" />
+            android:layout_centerInParent="true"
+            android:contentDescription="icon_update_interval"
+            android:src="@drawable/icon_update_interval" />
 
         <EditText
             android:id="@+id/fragment_create_project_edit_text_update_interval"
             android:layout_width="180dp"
             android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_marginStart="5dp"
+            android:layout_toEndOf="@+id/fragment_create_project_image_update_interval"
             android:inputType="numberDecimal"
             android:lines="1"
             android:maxLength="20"
-            android:text="30"
-            android:layout_centerInParent="true"
-            android:layout_toEndOf="@+id/fragment_create_project_image_update_interval"
-            android:layout_marginStart="5dp"/>
+            android:text="30" />
 
         <RelativeLayout
             android:layout_width="wrap_content"
@@ -172,17 +171,17 @@
                 android:id="@+id/fragment_create_project_spinner_time_input"
                 android:layout_width="115dp"
                 android:layout_height="40dp"
-                android:background="@color/defaultColor"/>
+                android:background="@color/defaultColor" />
 
             <ImageView
                 android:id="@+id/fragment_create_project_image_drop_down"
                 android:layout_width="20dp"
                 android:layout_height="20dp"
-                android:src="@drawable/icon_drop_down_arrow"
-                android:layout_centerVertical="true"
                 android:layout_alignEnd="@+id/fragment_create_project_spinner_time_input"
+                android:layout_centerVertical="true"
                 android:layout_marginRight="10dp"
-                android:contentDescription="icon_drop_down_arrow" />
+                android:contentDescription="icon_drop_down_arrow"
+                android:src="@drawable/icon_drop_down_arrow" />
         </RelativeLayout>
     </RelativeLayout>
 
@@ -190,9 +189,9 @@
         android:id="@+id/fragment_create_project_button_final"
         android:layout_width="320dp"
         android:layout_height="wrap_content"
-        android:background="@color/defaultColor"
-        android:text="@string/fragment_create_project_button_add_project"
-        android:layout_centerInParent="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="20dp"/>
+        android:layout_centerInParent="true"
+        android:layout_marginBottom="20dp"
+        android:background="@color/defaultColor"
+        android:text="@string/fragment_create_project_button_add_project" />
 </RelativeLayout>

@@ -59,9 +59,6 @@
         <item>Löschen</item>
     </string-array>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-
     <!-- Launch Board -->
     <string name="fragment_launch_board_server_address_not_available">Server ist nicht erreichbar.</string>
     <string name="fragment_launch_board_state_not_available">NICHT ERREICHBAR</string>
@@ -70,6 +67,9 @@
     <string name="fragment_launch_board_card_notification">Meldungen</string>
     <string name="fragment_launch_board_card_kpi">KPI</string>
 
+    <string name="fragment_launch_board_error_module">"Die Platform und Plugin Module konnten nicht geladen werden."</string>
+    <string name="fragment_launch_board_error_component">"Die Komponenten konnten nicht geladen werden."</string>
+
     <!-- Fragment Module List -->
     <string name="fragment_module_list_title">Module</string>
     <string name="fragment_module_list_card_view_enabled">Freigegeben</string>
@@ -77,7 +77,8 @@
 
     <!-- Fragment Component List -->
     <string name="fragment_component_list_title">Komponente</string>
-    <string name="fragment_component_list_card_view_managed">Managed</string>
+    <string name="fragment_component_list_card_view_managed">Verwaltet</string>
     <string name="fragment_component_list_card_view_status">Status</string>
+    <string name="fragment_component_list_card_view_enabled">Freigegeben</string>
 
 </resources>

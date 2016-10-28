@@ -18,7 +18,7 @@ import ssi.ssn.com.ssi_service.model.network.response.objects.ResponseTime;
 public class ResponseApplication extends AbstractResponse {
 
     private ResponseState state;
-    private String [] enabledModules;
+    private String[] enabledModules;
     private ResponseProject project;
     private ResponseBuild build;
     private ResponseTime time;
@@ -34,7 +34,7 @@ public class ResponseApplication extends AbstractResponse {
         this.state = state;
     }
 
-    public String[] getEnabledModules() {
+    private String[] getEnabledModules() {
         return enabledModules;
     }
 
@@ -58,7 +58,7 @@ public class ResponseApplication extends AbstractResponse {
         this.build = build;
     }
 
-    public ResponseTime getTime() {
+    private ResponseTime getTime() {
         return time;
     }
 
@@ -78,13 +78,13 @@ public class ResponseApplication extends AbstractResponse {
 
                 add(new CustomListObject.HeadLine(activity.getString(R.string.fragment_custom_list_application_info_state_headline)));
                 add(new CustomListObject.Key_Value(activity.getString(R.string.fragment_custom_list_application_info_state_status), getState().getStatus()));
-                add(new CustomListObject.Key_Value(activity.getString(R.string.fragment_custom_list_application_info_state_since),  FormatHelper.formatDate(getState().getSince())));
+                add(new CustomListObject.Key_Value(activity.getString(R.string.fragment_custom_list_application_info_state_since), FormatHelper.formatDate(getState().getSince())));
 
                 add(new CustomListObject.HeadLine(activity.getString(R.string.fragment_custom_list_application_info_build_headline)));
                 add(new CustomListObject.Key_Value(activity.getString(R.string.fragment_custom_list_application_info_build_version), getBuild().getVersion()));
                 add(new CustomListObject.Key_Value(activity.getString(R.string.fragment_custom_list_application_info_build_number), getBuild().getNumber() + ""));
                 add(new CustomListObject.Key_Value(activity.getString(R.string.fragment_custom_list_application_info_build_builtBy), getBuild().getBuiltBy()));
-                add(new CustomListObject.Key_Value(activity.getString(R.string.fragment_custom_list_application_info_build_builtOn),  FormatHelper.formatDate(getBuild().getBuiltOn())));
+                add(new CustomListObject.Key_Value(activity.getString(R.string.fragment_custom_list_application_info_build_builtOn), FormatHelper.formatDate(getBuild().getBuiltOn())));
 
                 add(new CustomListObject.HeadLine(activity.getString(R.string.fragment_custom_list_application_info_time_headline)));
                 add(new CustomListObject.Key_Value(activity.getString(R.string.fragment_custom_list_application_info_time_stamp), FormatHelper.formatDate(getTime().getStamp())));

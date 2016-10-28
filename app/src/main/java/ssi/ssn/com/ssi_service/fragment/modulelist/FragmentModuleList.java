@@ -10,16 +10,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-
 import ssi.ssn.com.ssi_service.R;
-import ssi.ssn.com.ssi_service.activity.AbstractActivity;
-import ssi.ssn.com.ssi_service.fragment.launchboard.FragmentLaunchBoard;
-import ssi.ssn.com.ssi_service.model.data.source.AbstractProject;
 import ssi.ssn.com.ssi_service.model.data.source.Project;
 import ssi.ssn.com.ssi_service.model.helper.JsonHelper;
-import ssi.ssn.com.ssi_service.model.network.handler.RequestHandler;
 
 public class FragmentModuleList extends Fragment {
 
@@ -30,9 +23,11 @@ public class FragmentModuleList extends Fragment {
     private static int CARDVIEW = R.layout.fragment_module_list_card_view;
 
     private static String PROJECT_JSON = TAG + "PROJECT_JSON";
+    private static String RESPONSE = TAG + "RESPONSE";
 
     private View rootView;
     private Project project;
+    private String responseApplicationConfig;
 
     public static FragmentModuleList newInstance(Project project) {
         if (project == null) {
@@ -42,6 +37,7 @@ public class FragmentModuleList extends Fragment {
         FragmentModuleList fragment = new FragmentModuleList();
         Bundle bundle = new Bundle();
         bundle.putString(PROJECT_JSON, JsonHelper.toJson(project));
+        bundle.putString(RESPONSE, project.getDefaultResponseApplicationConfig().getResult());
         fragment.setArguments(bundle);
         return fragment;
     }
@@ -52,14 +48,8 @@ public class FragmentModuleList extends Fragment {
         }
 
         String projectJson = getArguments().getString(PROJECT_JSON);
+        responseApplicationConfig = getArguments().getString(RESPONSE);
         project = (Project) JsonHelper.fromJsonGeneric(Project.class, projectJson);
-
-        //TODO DELETE
-        RequestHandler requestHandler = ((AbstractActivity)getActivity()).getRequestHandler();
-        ExecutorService executor = Executors.newSingleThreadExecutor();
-        requestHandler.getRequestLoginTask(project).executeOnExecutor(executor);
-        requestHandler.getRequestApplicationConfigTask(project).executeOnExecutor(executor);
-
     }
 
     @Override
@@ -74,7 +64,7 @@ public class FragmentModuleList extends Fragment {
             rootView = inflater.inflate(FRAGMENT_LAYOUT, container, false);
             Log.d(TAG, "Fragment inflated [" + getActivity().getResources().getResourceName(FRAGMENT_LAYOUT) + "].");
 
-            RecyclerView.Adapter mAdapter = new FragmentModuleListAdapter(CARDVIEW, this);
+            RecyclerView.Adapter mAdapter = new FragmentModuleListAdapter(CARDVIEW, this, responseApplicationConfig);
             Log.d(TAG, "Adapter [" + mAdapter.getClass().getSimpleName() + "] with CardView [" + getActivity().getResources().getResourceName(CARDVIEW) + "] initialized.");
 
             RecyclerView mRecyclerView = (RecyclerView) rootView.findViewById(RECYCLERVIEW);

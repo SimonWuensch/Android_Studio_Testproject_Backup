@@ -1,14 +1,15 @@
 package ssi.ssn.com.ssi_service.activity;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+import java.util.ArrayList;
+import java.util.List;
 
 import ssi.ssn.com.ssi_service.R;
-import ssi.ssn.com.ssi_service.model.network.handler.RequestHandler;
-import ssi.ssn.com.ssi_service.test.TestClass;
+import ssi.ssn.com.ssi_service.model.helper.XMLHelper;
+import ssi.ssn.com.ssi_service.test.RESTResponseTEST;
 
 public class MainActivity extends AbstractActivity {
 
@@ -18,22 +19,75 @@ public class MainActivity extends AbstractActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        if(sqLiteHelper.getProjectCount() == 0){
+        if (sqLiteHelper.getProjectCount() == 0) {
             showCreateProjectFragment();
-        }else{
+        } else {
             showProjectListFragment();
         }
-        loadingView = (View) findViewById(R.id.activity_main_view_loading);
-        loadingView.setVisibility(View.GONE);
+        loadingView = findViewById(R.id.activity_main_view_loading);
+        setLoadingViewVisible(false);
 
+
+        XMLHelper xmlHelper;
+        List<XMLHelper.XMLObject> xmlObjectList;
         //TODO TEST IT
-        TestClass.xmlParser();
+        Log.d(TAG, "components-module");
+        xmlHelper = new XMLHelper("components-module",
+                new ArrayList<String>() {
+                    {
+                        add("server");
+                    }
+                },
+                new ArrayList<String>() {
+                    {
+                        add("manage");
+                        add("enabled");
+                    }
+                });
+        xmlObjectList = xmlHelper.startSearching(RESTResponseTEST.restApplicationConfig);
+        for (XMLHelper.XMLObject object : xmlObjectList) {
+            for (String attributeName : object.getAttributes().keySet())
+                Log.d(TAG, object.getTagName() + ": " + attributeName + " - " + object.getAttributes().get(attributeName));
+        }
+
+        /*
+        Log.d(TAG, "platform-modules");
+        xmlHelper = new XMLHelper("platform-modules",
+                new ArrayList<String>() {
+                    {
+                        add("module");
+                    }
+                },
+                new ArrayList<String>());
+        xmlObjectList = xmlHelper.startSearching(RESTResponseTEST.restApplicationConfig);
+        for (XMLHelper.XMLObject object : xmlObjectList) {
+                Log.d(TAG, object.getTagName());
+        }
+
+        Log.d(TAG, "plugin-modules");
+        xmlHelper = new XMLHelper("plugin-modules",
+                new ArrayList<String>() {
+                    {
+                        add("module");
+                    }
+                },
+                new ArrayList<String>(){
+                    {
+                        add("enabled");
+                    }
+                });
+        xmlObjectList = xmlHelper.startSearching(RESTResponseTEST.restApplicationConfig);
+        for (XMLHelper.XMLObject object : xmlObjectList) {
+            for (String attributeName : object.getAttributes().keySet())
+                Log.d(TAG, object.getTagName() + ": " + attributeName + " - " + object.getAttributes().get(attributeName));
+        }
+        */
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        if(currentProject != null) {
+        if (currentProject != null) {
             requestHandler.getRequestLoginTask(currentProject).execute();
         }
     }
@@ -41,12 +95,10 @@ public class MainActivity extends AbstractActivity {
     @Override
     protected void onStop() {
         super.onStop();
-        if(currentProject != null) {
+        if (currentProject != null) {
             requestHandler.getRequestLogoutTask(currentProject).execute();
         }
     }
-
-
 
 
 }

@@ -3,14 +3,15 @@ package ssi.ssn.com.ssi_service.fragment.componentlist;
 import android.app.Activity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
-import java.util.ArrayList;
 import java.util.List;
 
-public class FragmentComponentListAdapter extends RecyclerView.Adapter<FragmentComponentListViewHolder> {
+import ssi.ssn.com.ssi_service.fragment.launchboard.source.CardObjectComponent;
+import ssi.ssn.com.ssi_service.model.helper.XMLHelper;
+
+class FragmentComponentListAdapter extends RecyclerView.Adapter<FragmentComponentListViewHolder> {
 
     private static String TAG = FragmentComponentListAdapter.class.getSimpleName();
 
@@ -18,34 +19,28 @@ public class FragmentComponentListAdapter extends RecyclerView.Adapter<FragmentC
     private final FragmentComponentList fragment;
     private CardView cardView;
 
-    private List<String> defaultInputs;
+    private List<XMLHelper.XMLObject> componentObjects;
     private Activity activity;
 
-    public FragmentComponentListAdapter(int layoutCardView, final FragmentComponentList fragment) {
+    FragmentComponentListAdapter(int layoutCardView, final FragmentComponentList fragment, String responseApplicationConfig) {
         this.layoutCardView = layoutCardView;
         this.fragment = fragment;
-        initDefaultInputs();
-    }
-
-    private void initDefaultInputs() {
-        defaultInputs = new ArrayList<>();
-
-        defaultInputs.add("ONE");
-        defaultInputs.add("TWO");
-        defaultInputs.add("THREE");
-        defaultInputs.add("FOUR");
+        this.activity = fragment.getActivity();
+        componentObjects = CardObjectComponent.searchObjectsInResponseXML(responseApplicationConfig);
     }
 
     @Override
     public FragmentComponentListViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         cardView = (CardView) LayoutInflater.from(parent.getContext()).inflate(layoutCardView, parent, false);
-        FragmentComponentListViewHolder viewHolder = new FragmentComponentListViewHolder(fragment.getActivity(), cardView);
-        return viewHolder;
+        return new FragmentComponentListViewHolder(fragment.getActivity(), cardView);
     }
 
     @Override
     public void onBindViewHolder(FragmentComponentListViewHolder viewHolder, int position) {
-        viewHolder.assignData(defaultInputs.get(position));
+        XMLHelper.XMLObject object = componentObjects.get(position);
+        if (object.getAttributes().containsKey(CardObjectComponent.XML_ATTRIBUTE_MANAGE)) {
+            viewHolder.assignData(object);
+        }
     }
 
     @Override
@@ -55,7 +50,7 @@ public class FragmentComponentListAdapter extends RecyclerView.Adapter<FragmentC
 
     @Override
     public int getItemCount() {
-        return defaultInputs.size();
+        return componentObjects.size();
     }
 
 }

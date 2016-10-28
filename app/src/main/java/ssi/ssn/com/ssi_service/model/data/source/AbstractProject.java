@@ -6,14 +6,22 @@ import ssi.ssn.com.ssi_service.model.network.DefaultResponse;
 
 public class AbstractProject {
 
-    @JsonIgnore private DefaultResponse defaultResponseApplication;
-    @JsonIgnore private DefaultResponse defaultResponseApplicationConfig;
-    @JsonIgnore private DefaultResponse defaultResponseLogin;
-    @JsonIgnore private DefaultResponse defaultResponseLogout;
-    @JsonIgnore private DefaultResponse defaultResponseNotification;
-    @JsonIgnore private DefaultResponse defaultResponseOs;
-    @JsonIgnore private DefaultResponse defaultResponseScada;
-    @JsonIgnore private DefaultResponse defaultResponseSessionsCurrent;
+    @JsonIgnore
+    private DefaultResponse defaultResponseApplication;
+    @JsonIgnore
+    private DefaultResponse defaultResponseApplicationConfig;
+    @JsonIgnore
+    private DefaultResponse defaultResponseLogin;
+    @JsonIgnore
+    private DefaultResponse defaultResponseLogout;
+    @JsonIgnore
+    private DefaultResponse defaultResponseNotification;
+    @JsonIgnore
+    private DefaultResponse defaultResponseOs;
+    @JsonIgnore
+    private DefaultResponse defaultResponseScada;
+    @JsonIgnore
+    private DefaultResponse defaultResponseSessionsCurrent;
 
     @JsonIgnore
     public DefaultResponse getDefaultResponseApplication() {

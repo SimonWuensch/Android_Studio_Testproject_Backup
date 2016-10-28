@@ -17,7 +17,7 @@ import ssi.ssn.com.ssi_service.model.data.source.Project;
 import ssi.ssn.com.ssi_service.model.network.handler.RequestHandler;
 
 
-public class FragmentProjectListViewHolder extends RecyclerView.ViewHolder {
+class FragmentProjectListViewHolder extends RecyclerView.ViewHolder {
 
     private static String TAG = FragmentProjectListViewHolder.class.getSimpleName();
 
@@ -31,7 +31,7 @@ public class FragmentProjectListViewHolder extends RecyclerView.ViewHolder {
     private ImageView ivProjectSettings;
     private View vProjectState;
 
-    public FragmentProjectListViewHolder(Activity activity, View cardView) {
+    FragmentProjectListViewHolder(Activity activity, View cardView) {
         super(cardView);
         this.activity = activity;
         this.cardView = cardView;
@@ -86,9 +86,12 @@ public class FragmentProjectListViewHolder extends RecyclerView.ViewHolder {
                     cardView.setOnClickListener(onClickCardView(project));
                 } else {
                     vProjectState.setBackgroundColor(ssi.ssn.com.ssi_service.model.data.source.Status.ERROR.getColor(activity));
+                    //TODO TEST REMOVE
+                    cardView.setOnClickListener(onClickCardView(project));
                 }
             }
         }.executeOnExecutor(executor);
+        executor.shutdown();
     }
 
     private View.OnClickListener onClickCardViewProjectSettings(final Project project) {

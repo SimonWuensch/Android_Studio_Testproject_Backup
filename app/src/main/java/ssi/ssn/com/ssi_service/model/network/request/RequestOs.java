@@ -19,15 +19,15 @@ public class RequestOs {
         this.project = project;
     }
 
-    public static RequestOs init(Project project){
+    public static RequestOs init(Project project) {
         return new RequestOs(project);
     }
 
-    private String getAddress(){
+    private String getAddress() {
         return project.getServerAddress() + ADDRESS;
     }
 
-    public AsyncTask getTaskGET(final CookieHandler cookieHandler){
+    public AsyncTask getTaskGET(final CookieHandler cookieHandler) {
         return new AsyncTask() {
             @Override
             protected Object doInBackground(Object[] objects) {
