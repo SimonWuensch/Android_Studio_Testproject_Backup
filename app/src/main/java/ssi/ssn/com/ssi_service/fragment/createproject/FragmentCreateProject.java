@@ -28,6 +28,7 @@ import ssi.ssn.com.ssi_service.model.extended.ExtendedAsyncTask;
 import ssi.ssn.com.ssi_service.model.helper.AlertDialogHelper;
 import ssi.ssn.com.ssi_service.model.helper.FormatHelper;
 import ssi.ssn.com.ssi_service.model.helper.JsonHelper;
+import ssi.ssn.com.ssi_service.model.helper.SourceHelper;
 import ssi.ssn.com.ssi_service.model.network.communication.HttpAddressExists;
 import ssi.ssn.com.ssi_service.model.network.handler.RequestHandler;
 import ssi.ssn.com.ssi_service.model.network.response.ResponseApplication;
@@ -37,6 +38,7 @@ public class FragmentCreateProject extends AbstractFragment {
     public static String TAG = FragmentCreateProject.class.getSimpleName();
     private static int FRAGMENT_LAYOUT = R.layout.fragment_create_project;
     private static String PROJECT_JSON = TAG + "PROJECT_JSON";
+
     private Status fragmentStatus;
     private EditText etServerAddress;
     private EditText etUserName;
@@ -47,6 +49,9 @@ public class FragmentCreateProject extends AbstractFragment {
     private Spinner spTimeInput;
     private View rootView;
     private Project project;
+
+    private RequestHandler requestHandler;
+    private ExecutorService executor;
 
     public static FragmentCreateProject newInstance(Project project) {
         if (project == null) {
@@ -75,6 +80,8 @@ public class FragmentCreateProject extends AbstractFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        requestHandler = ((MainActivity) getActivity()).getRequestHandler();
+        executor = Executors.newSingleThreadExecutor();
         loadArguments();
     }
 
@@ -92,9 +99,15 @@ public class FragmentCreateProject extends AbstractFragment {
         return rootView;
     }
 
+    @Override
+    public void onStop() {
+        super.onStop();
+        executor.shutdown();
+    }
+
     public void initViewComponents() {
         TextView tvHeadLine = (TextView) rootView.findViewById(R.id.default_action_bar_text_view_headline);
-        tvHeadLine.setText(getActivity().getString(R.string.fragment_create_project_title));
+        tvHeadLine.setText(SourceHelper.getString(getActivity(), R.string.fragment_create_project_title));
 
         etServerAddress = (EditText) rootView.findViewById(R.id.fragment_create_project_edit_text_project_address);
         etUserName = (EditText) rootView.findViewById(R.id.fragment_create_project_edit_text_user_name);
@@ -133,10 +146,10 @@ public class FragmentCreateProject extends AbstractFragment {
 
             switch (fragmentStatus) {
                 case ADD:
-                    bFinal.setText(getActivity().getString(R.string.fragment_create_project_button_add_project));
+                    bFinal.setText(SourceHelper.getString(getActivity(), R.string.fragment_create_project_button_add_project));
                     break;
                 case DELETE:
-                    bFinal.setText(getActivity().getString(R.string.fragment_create_project_button_delete_project));
+                    bFinal.setText(SourceHelper.getString(getActivity(), R.string.fragment_create_project_button_delete_project));
                     super.onTextChangeListener(etServerAddress);
                     super.onTextChangeListener(etUserName);
                     super.onTextChangeListener(etPassword);
@@ -191,13 +204,13 @@ public class FragmentCreateProject extends AbstractFragment {
     public void updateFinalButtonText() {
         switch (fragmentStatus) {
             case ADD:
-                bFinal.setText(getActivity().getString(R.string.fragment_create_project_button_add_project));
+                bFinal.setText(SourceHelper.getString(getActivity(), R.string.fragment_create_project_button_add_project));
                 break;
             case UPDATE:
-                bFinal.setText(getActivity().getString(R.string.fragment_create_project_button_update_project));
+                bFinal.setText(SourceHelper.getString(getActivity(), R.string.fragment_create_project_button_update_project));
                 break;
             case DELETE:
-                bFinal.setText(getActivity().getString(R.string.fragment_create_project_button_delete_project));
+                bFinal.setText(SourceHelper.getString(getActivity(), R.string.fragment_create_project_button_delete_project));
                 break;
         }
     }
@@ -227,11 +240,11 @@ public class FragmentCreateProject extends AbstractFragment {
     }
 
     private AlertDialog getAlertDialog() {
-        String message = getActivity().getString(fragmentStatus.equals(Status.ADD) ?
+        String message = SourceHelper.getString(getActivity(), fragmentStatus.equals(Status.ADD) ?
                 R.string.fragment_create_project_message_server_address_not_correct_anyhow_add :
                 R.string.fragment_create_project_message_server_address_not_correct_anyhow_update);
-        String positiveButtonText = getActivity().getString(R.string.yes);
-        String negativeButtonText = getActivity().getString(R.string.no);
+        String positiveButtonText = SourceHelper.getString(getActivity(), R.string.yes);
+        String negativeButtonText = SourceHelper.getString(getActivity(), R.string.no);
 
         project.setProjectName(null);
         project.setProjectLocation(null);
@@ -262,8 +275,6 @@ public class FragmentCreateProject extends AbstractFragment {
         return new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                final RequestHandler requestHandler = ((MainActivity) getActivity()).getRequestHandler();
-                final ExecutorService executor = Executors.newSingleThreadExecutor();
                 final Project project = getProjectWithViewComponents();
                 bShowApplicationInfo.setEnabled(false);
                 setLoadingViewVisible(true);
@@ -278,7 +289,7 @@ public class FragmentCreateProject extends AbstractFragment {
                     @Override
                     protected void onPostExecute(Object o) {
                         if (!extendedAsyncTask.getReturnValue().equals("200")) {
-                            Toast.makeText(getActivity(), getActivity().getString(R.string.fragment_create_project_message_server_address_not_correct), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getActivity(), SourceHelper.getString(getActivity(), R.string.fragment_create_project_message_server_address_not_correct), Toast.LENGTH_SHORT).show();
                         } else {
                             requestHandler.getRequestApplicationTask(project).executeOnExecutor(executor);
                             new AsyncTask<Object, Void, Object>() {
@@ -292,7 +303,7 @@ public class FragmentCreateProject extends AbstractFragment {
                                     if (project.getDefaultResponseApplication().getCode() == 200) {
                                         ((MainActivity) getActivity()).showCustomListFragment(R.string.fragment_custom_list_application_info_title, FragmentCustomList.Type.APPLICATION, project.getDefaultResponseApplication().getResult());
                                     } else {
-                                        Toast.makeText(getActivity(), getActivity().getString(R.string.fragment_create_project_message_server_address_is_no_valid_lighthouse_address), Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(getActivity(), SourceHelper.getString(getActivity(), R.string.fragment_create_project_message_server_address_is_no_valid_lighthouse_address), Toast.LENGTH_SHORT).show();
                                     }
                                 }
                             }.executeOnExecutor(executor);
@@ -301,7 +312,6 @@ public class FragmentCreateProject extends AbstractFragment {
                         setLoadingViewVisible(false);
                     }
                 }.executeOnExecutor(executor);
-                executor.shutdown();
             }
         };
     }
@@ -333,8 +343,6 @@ public class FragmentCreateProject extends AbstractFragment {
     }
 
     public void onClickProjectAddUpdate(final Project project) {
-        final RequestHandler requestHandler = ((MainActivity) getActivity()).getRequestHandler();
-        final ExecutorService executor = Executors.newSingleThreadExecutor();
         setLoadingViewVisible(true);
 
         final ExtendedAsyncTask extendedAsyncTask = (ExtendedAsyncTask) HttpAddressExists.exists(project.getServerAddress()).executeOnExecutor(executor);
@@ -361,14 +369,14 @@ public class FragmentCreateProject extends AbstractFragment {
                     @Override
                     protected void onPostExecute(Object o) {
                         if (project.getDefaultResponseApplication().getCode() != 200) {
-                            Toast.makeText(getActivity(), getActivity().getString(R.string.fragment_create_project_message_server_address_is_no_valid_lighthouse_address), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getActivity(), SourceHelper.getString(getActivity(), R.string.fragment_create_project_message_server_address_is_no_valid_lighthouse_address), Toast.LENGTH_SHORT).show();
                             return;
                         }
 
                         ResponseApplication responseApplication = (ResponseApplication) JsonHelper.fromJsonGeneric(ResponseApplication.class, project.getDefaultResponseApplication().getResult());
                         if (!responseApplication.getBuild().getVersion().startsWith(MainActivity.ACCEPTED_PROJECT_VERSION)) {
                             Toast.makeText(getActivity(),
-                                    getActivity().getString(R.string.fragment_create_project_message_application_version_equals_not_2_0)
+                                    SourceHelper.getString(getActivity(), R.string.fragment_create_project_message_application_version_equals_not_2_0)
                                             + " - [" + responseApplication.getBuild().getVersion() + "]", Toast.LENGTH_SHORT).show();
                             return;
                         }
@@ -395,7 +403,7 @@ public class FragmentCreateProject extends AbstractFragment {
                                     ((MainActivity) getActivity()).showProjectListFragment();
                                     return;
                                 }
-                                Toast.makeText(getActivity(), getActivity().getString(R.string.fragment_create_project_message_login_data_not_correct), Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getActivity(), SourceHelper.getString(getActivity(), R.string.fragment_create_project_message_login_data_not_correct), Toast.LENGTH_SHORT).show();
                             }
                         }.executeOnExecutor(executor);
                     }
@@ -414,7 +422,7 @@ public class FragmentCreateProject extends AbstractFragment {
                 setLoadingViewVisible(false);
             }
         }.executeOnExecutor(executor);
-        executor.shutdown();
+
     }
 
     public enum Status {

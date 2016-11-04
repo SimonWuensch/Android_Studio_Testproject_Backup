@@ -7,6 +7,7 @@
     <string name="hours">Stunden</string>
     <string name="yes">Ja</string>
     <string name="no">Nein</string>
+    <string name="loading_error">FEHLER</string>
 
     <!-- Fragment Create Project -->
     <string name="fragment_create_project_title">Projekt</string>
@@ -58,6 +59,7 @@
         <item>Bearbeiten</item>
         <item>Löschen</item>
     </string-array>
+    <string name="fragment_project_list_error_project_not_available">"Projekt kann nicht geladen werden. IP-Adresse ist nicht erreichbar."</string>
 
     <!-- Launch Board -->
     <string name="fragment_launch_board_server_address_not_available">Server ist nicht erreichbar.</string>

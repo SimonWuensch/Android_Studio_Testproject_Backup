@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -14,6 +15,7 @@ import java.util.concurrent.Executors;
 import ssi.ssn.com.ssi_service.R;
 import ssi.ssn.com.ssi_service.activity.MainActivity;
 import ssi.ssn.com.ssi_service.model.data.source.Project;
+import ssi.ssn.com.ssi_service.model.helper.SourceHelper;
 import ssi.ssn.com.ssi_service.model.network.handler.RequestHandler;
 
 
@@ -66,8 +68,7 @@ class FragmentProjectListViewHolder extends RecyclerView.ViewHolder {
         ivProjectSettings.setOnClickListener(onClickCardViewProjectSettings(project));
 
         if (project.isProjectObservation()) {
-            //TODO
-            // Passe Status View vProjectState an
+            //TODO Passe Status View vProjectState an
         }
 
         RequestHandler requestHandler = ((MainActivity) activity).getRequestHandler();
@@ -86,7 +87,14 @@ class FragmentProjectListViewHolder extends RecyclerView.ViewHolder {
                     cardView.setOnClickListener(onClickCardView(project));
                 } else {
                     vProjectState.setBackgroundColor(ssi.ssn.com.ssi_service.model.data.source.Status.ERROR.getColor(activity));
-                    //TODO TEST REMOVE
+                    cardView.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            Toast.makeText(activity, SourceHelper.getString(activity, R.string.fragment_project_list_error_project_not_available), Toast.LENGTH_SHORT).show();
+                        }
+                    });
+
+                    //TODO Delete
                     cardView.setOnClickListener(onClickCardView(project));
                 }
             }

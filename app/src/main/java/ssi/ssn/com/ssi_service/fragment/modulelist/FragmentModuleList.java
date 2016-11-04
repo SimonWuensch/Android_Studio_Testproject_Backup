@@ -13,6 +13,7 @@ import android.widget.TextView;
 import ssi.ssn.com.ssi_service.R;
 import ssi.ssn.com.ssi_service.model.data.source.Project;
 import ssi.ssn.com.ssi_service.model.helper.JsonHelper;
+import ssi.ssn.com.ssi_service.model.helper.SourceHelper;
 
 public class FragmentModuleList extends Fragment {
 
@@ -80,6 +81,6 @@ public class FragmentModuleList extends Fragment {
 
     public void initViewComponents() {
         TextView tvHeadLine = (TextView) rootView.findViewById(R.id.default_action_bar_text_view_headline);
-        tvHeadLine.setText(getActivity().getString(R.string.fragment_module_list_title));
+        tvHeadLine.setText(SourceHelper.getString(getActivity(), R.string.fragment_module_list_title));
     }
 }

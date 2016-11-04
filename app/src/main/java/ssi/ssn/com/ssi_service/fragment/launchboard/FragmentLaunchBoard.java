@@ -22,6 +22,7 @@ import ssi.ssn.com.ssi_service.fragment.AbstractFragment;
 import ssi.ssn.com.ssi_service.fragment.launchboard.source.AbstractCardObject;
 import ssi.ssn.com.ssi_service.model.data.source.Project;
 import ssi.ssn.com.ssi_service.model.helper.FormatHelper;
+import ssi.ssn.com.ssi_service.model.helper.SourceHelper;
 import ssi.ssn.com.ssi_service.model.helper.JsonHelper;
 import ssi.ssn.com.ssi_service.model.network.DefaultResponse;
 import ssi.ssn.com.ssi_service.model.network.handler.RequestHandler;
@@ -42,6 +43,7 @@ public class FragmentLaunchBoard extends AbstractFragment {
     private TextView tvProjectStatus;
     private TextView tvProjectLifeTime;
     private TextView tvProjectVersion;
+    private RelativeLayout rlLoadingView;
 
     private FragmentLaunchBoardAdapter mAdapter;
 
@@ -100,9 +102,11 @@ public class FragmentLaunchBoard extends AbstractFragment {
         tvHeadLine.setText(headLineText);
 
         rlProjectStateBackground = (RelativeLayout) rootView.findViewById(R.id.fragment_launch_board_relative_layout_project_state_background);
-        tvProjectStatus = (TextView) rootView.findViewById(R.id.fragment_launch_board_project_text_view_project_status);
-        tvProjectLifeTime = (TextView) rootView.findViewById(R.id.fragment_launch_board_project_text_view_project_life_time);
-        tvProjectVersion = (TextView) rootView.findViewById(R.id.fragment_launch_board_project_text_view_project_version);
+        tvProjectStatus = (TextView) rootView.findViewById(R.id.fragment_launch_board_project_state_text_view_project_status);
+        tvProjectLifeTime = (TextView) rootView.findViewById(R.id.fragment_launch_board_project_state_text_view_project_life_time);
+        tvProjectVersion = (TextView) rootView.findViewById(R.id.fragment_launch_board_project_state_text_view_project_version);
+        rlLoadingView = (RelativeLayout) rootView.findViewById(R.id.fragment_launch_board_project_state_loading_view);
+        rlLoadingView.setVisibility(View.GONE);
 
         updateProjectStateView();
     }
@@ -111,7 +115,7 @@ public class FragmentLaunchBoard extends AbstractFragment {
         final RequestHandler requestHandler = ((MainActivity) getActivity()).getRequestHandler();
         final ExecutorService executor = Executors.newSingleThreadExecutor();
         requestHandler.getRequestApplicationTask(project).executeOnExecutor(executor);
-        setLoadingViewVisible(true);
+        rlLoadingView.setVisibility(View.VISIBLE);
         new AsyncTask<Object, Void, Object>() {
             @Override
             protected Object doInBackground(Object[] objects) {
@@ -133,7 +137,7 @@ public class FragmentLaunchBoard extends AbstractFragment {
                         long lifeTimeHour = new Date().getTime() - since.getTime();
                         int days = (int) TimeUnit.MILLISECONDS.toDays(lifeTimeHour);
                         long hours = TimeUnit.MILLISECONDS.toHours(lifeTimeHour) - TimeUnit.DAYS.toHours(days);
-                        String lifeTime = days + " " + getActivity().getString(R.string.days) + " " + hours + " " + getActivity().getString(R.string.hours);
+                        String lifeTime = days + " " + SourceHelper.getString(getActivity(), R.string.days) + " " + hours + " " + SourceHelper.getString(getActivity(), R.string.hours);
                         tvProjectLifeTime.setText(dateString + " (" + lifeTime + ")");
 
                         tvProjectVersion.setText(responseApplication.getBuild().getVersion());
@@ -141,12 +145,12 @@ public class FragmentLaunchBoard extends AbstractFragment {
                         rlProjectStateBackground.setBackgroundColor(ssi.ssn.com.ssi_service.model.data.source.Status.ERROR.getColor(getActivity()));
                     }
                 } else {
-                    tvProjectStatus.setText(getActivity().getString(R.string.fragment_launch_board_state_not_available));
+                    tvProjectStatus.setText(SourceHelper.getString(getActivity(), R.string.fragment_launch_board_state_not_available));
                     rlProjectStateBackground.setBackgroundColor(ssi.ssn.com.ssi_service.model.data.source.Status.NOT_AVAILABLE.getColor(getActivity()));
-                    tvProjectLifeTime.setText(getActivity().getString(R.string.fragment_launch_board_server_address_not_available));
+                    tvProjectLifeTime.setText(SourceHelper.getString(getActivity(), R.string.fragment_launch_board_server_address_not_available));
                     tvProjectVersion.setText("-");
                 }
-                setLoadingViewVisible(false);
+                rlLoadingView.setVisibility(View.GONE);
             }
         }.executeOnExecutor(executor);
         executor.shutdown();

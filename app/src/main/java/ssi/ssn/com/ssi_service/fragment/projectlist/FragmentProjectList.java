@@ -13,6 +13,7 @@ import android.widget.TextView;
 import ssi.ssn.com.ssi_service.R;
 import ssi.ssn.com.ssi_service.activity.MainActivity;
 import ssi.ssn.com.ssi_service.fragment.AbstractFragment;
+import ssi.ssn.com.ssi_service.model.helper.SourceHelper;
 
 public class FragmentProjectList extends AbstractFragment {
 
@@ -43,7 +44,7 @@ public class FragmentProjectList extends AbstractFragment {
 
     public void initViewComponents() {
         TextView tvHeadLine = (TextView) rootView.findViewById(R.id.default_action_bar_text_view_headline);
-        tvHeadLine.setText(getActivity().getString(R.string.fragment_project_list_title));
+        tvHeadLine.setText(SourceHelper.getString(getActivity(), R.string.fragment_project_list_title));
 
         ImageView ivAddProject = (ImageView) rootView.findViewById(R.id.fragment_project_list_image_add_project);
         ivAddProject.setOnClickListener(new View.OnClickListener() {

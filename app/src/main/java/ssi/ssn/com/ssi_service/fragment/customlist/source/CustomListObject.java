@@ -8,6 +8,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import ssi.ssn.com.ssi_service.R;
+import ssi.ssn.com.ssi_service.model.helper.SourceHelper;
 
 public class CustomListObject {
 
@@ -29,7 +30,7 @@ public class CustomListObject {
         rlTextViewFrame.setVisibility(View.VISIBLE);
 
         tvHeadline.setVisibility(View.GONE);
-        tvHeadline.setTextColor(ContextCompat.getColor(activity, android.support.v7.appcompat.R.color.secondary_text_default_material_light));
+        tvHeadline.setTextColor(SourceHelper.getColor(activity, android.support.v7.appcompat.R.color.secondary_text_default_material_light));
 
         tvKey.setVisibility(View.VISIBLE);
         tvValue.setVisibility(View.VISIBLE);
@@ -47,11 +48,11 @@ public class CustomListObject {
         public void reformatViewComponents(Activity activity, RelativeLayout rlTextViewFrame, TextView tvHeadline, TextView tvKey, TextView tvValue, View vHorizontalLine) {
             super.reformatViewComponents(activity, rlTextViewFrame, tvHeadline, tvKey, tvValue, vHorizontalLine);
             tvHeadline.setText(headline);
-            tvHeadline.setTextColor(ContextCompat.getColor(activity, R.color.colorWhite));
+            tvHeadline.setTextColor(SourceHelper.getColor(activity, R.color.colorWhite));
             tvHeadline.setVisibility(View.VISIBLE);
             tvKey.setVisibility(View.GONE);
             tvValue.setVisibility(View.GONE);
-            rlTextViewFrame.setBackgroundColor(ContextCompat.getColor(activity, R.color.defaultColor));
+            rlTextViewFrame.setBackgroundColor(SourceHelper.getColor(activity, R.color.defaultColor));
         }
     }
 

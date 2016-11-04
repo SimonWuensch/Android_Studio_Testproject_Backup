@@ -10,6 +10,7 @@ import android.widget.TextView;
 import ssi.ssn.com.ssi_service.R;
 import ssi.ssn.com.ssi_service.fragment.launchboard.source.AbstractCardObject;
 import ssi.ssn.com.ssi_service.model.data.source.Project;
+import ssi.ssn.com.ssi_service.model.helper.SourceHelper;
 
 
 class FragmentLaunchBoardViewHolder extends RecyclerView.ViewHolder {
@@ -40,7 +41,7 @@ class FragmentLaunchBoardViewHolder extends RecyclerView.ViewHolder {
 
     protected void assignData(final AbstractCardObject cardObject, final Project project) {
         image.setImageResource(cardObject.getIcon());
-        tvTitle.setText(activity.getString(cardObject.getTitle()));
+        tvTitle.setText(SourceHelper.getString(activity, cardObject.getTitle()));
         cbObservation.setChecked(cardObject.isObservation());
         cardObject.setStatusView(vStatus);
         cardObject.setLoadingView(loadingView);

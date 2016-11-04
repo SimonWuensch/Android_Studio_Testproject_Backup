@@ -1,9 +1,9 @@
 package ssi.ssn.com.ssi_service.model.data.source;
 
 import android.app.Activity;
-import android.support.v4.content.ContextCompat;
 
 import ssi.ssn.com.ssi_service.R;
+import ssi.ssn.com.ssi_service.model.helper.SourceHelper;
 
 public enum Status {
 
@@ -24,6 +24,6 @@ public enum Status {
     }
 
     public int getColor(Activity activity) {
-        return ContextCompat.getColor(activity, color);
+        return SourceHelper.getColor(activity, color);
     }
 }

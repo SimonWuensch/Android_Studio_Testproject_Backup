@@ -10,6 +10,7 @@ import java.util.List;
 import ssi.ssn.com.ssi_service.R;
 import ssi.ssn.com.ssi_service.fragment.customlist.source.CustomListObject;
 import ssi.ssn.com.ssi_service.model.helper.FormatHelper;
+import ssi.ssn.com.ssi_service.model.helper.SourceHelper;
 import ssi.ssn.com.ssi_service.model.network.response.objects.ResponseBuild;
 import ssi.ssn.com.ssi_service.model.network.response.objects.ResponseProject;
 import ssi.ssn.com.ssi_service.model.network.response.objects.ResponseState;
@@ -71,27 +72,27 @@ public class ResponseApplication extends AbstractResponse {
     public List<CustomListObject> getCustomList(final Activity activity) {
         return new LinkedList<CustomListObject>() {
             {
-                add(new CustomListObject.HeadLine(activity.getString(R.string.fragment_custom_list_application_info_project_headline)));
-                add(new CustomListObject.Key_Value(activity.getString(R.string.fragment_custom_list_application_info_project_name), getProject().getName()));
-                add(new CustomListObject.Key_Value(activity.getString(R.string.fragment_custom_list_application_info_project_location), getProject().getLocation()));
-                add(new CustomListObject.Key_Value(activity.getString(R.string.fragment_custom_list_application_info_project_order_nr), getProject().getOrderNr()));
+                add(new CustomListObject.HeadLine(SourceHelper.getString(activity, R.string.fragment_custom_list_application_info_project_headline)));
+                add(new CustomListObject.Key_Value(SourceHelper.getString(activity, R.string.fragment_custom_list_application_info_project_name), getProject().getName()));
+                add(new CustomListObject.Key_Value(SourceHelper.getString(activity, R.string.fragment_custom_list_application_info_project_location), getProject().getLocation()));
+                add(new CustomListObject.Key_Value(SourceHelper.getString(activity, R.string.fragment_custom_list_application_info_project_order_nr), getProject().getOrderNr()));
 
-                add(new CustomListObject.HeadLine(activity.getString(R.string.fragment_custom_list_application_info_state_headline)));
-                add(new CustomListObject.Key_Value(activity.getString(R.string.fragment_custom_list_application_info_state_status), getState().getStatus()));
-                add(new CustomListObject.Key_Value(activity.getString(R.string.fragment_custom_list_application_info_state_since), FormatHelper.formatDate(getState().getSince())));
+                add(new CustomListObject.HeadLine(SourceHelper.getString(activity, R.string.fragment_custom_list_application_info_state_headline)));
+                add(new CustomListObject.Key_Value(SourceHelper.getString(activity, R.string.fragment_custom_list_application_info_state_status), getState().getStatus()));
+                add(new CustomListObject.Key_Value(SourceHelper.getString(activity, R.string.fragment_custom_list_application_info_state_since), FormatHelper.formatDate(getState().getSince())));
 
-                add(new CustomListObject.HeadLine(activity.getString(R.string.fragment_custom_list_application_info_build_headline)));
-                add(new CustomListObject.Key_Value(activity.getString(R.string.fragment_custom_list_application_info_build_version), getBuild().getVersion()));
-                add(new CustomListObject.Key_Value(activity.getString(R.string.fragment_custom_list_application_info_build_number), getBuild().getNumber() + ""));
-                add(new CustomListObject.Key_Value(activity.getString(R.string.fragment_custom_list_application_info_build_builtBy), getBuild().getBuiltBy()));
-                add(new CustomListObject.Key_Value(activity.getString(R.string.fragment_custom_list_application_info_build_builtOn), FormatHelper.formatDate(getBuild().getBuiltOn())));
+                add(new CustomListObject.HeadLine(SourceHelper.getString(activity, R.string.fragment_custom_list_application_info_build_headline)));
+                add(new CustomListObject.Key_Value(SourceHelper.getString(activity, R.string.fragment_custom_list_application_info_build_version), getBuild().getVersion()));
+                add(new CustomListObject.Key_Value(SourceHelper.getString(activity, R.string.fragment_custom_list_application_info_build_number), getBuild().getNumber() + ""));
+                add(new CustomListObject.Key_Value(SourceHelper.getString(activity, R.string.fragment_custom_list_application_info_build_builtBy), getBuild().getBuiltBy()));
+                add(new CustomListObject.Key_Value(SourceHelper.getString(activity, R.string.fragment_custom_list_application_info_build_builtOn), FormatHelper.formatDate(getBuild().getBuiltOn())));
 
-                add(new CustomListObject.HeadLine(activity.getString(R.string.fragment_custom_list_application_info_time_headline)));
-                add(new CustomListObject.Key_Value(activity.getString(R.string.fragment_custom_list_application_info_time_stamp), FormatHelper.formatDate(getTime().getStamp())));
-                add(new CustomListObject.Key_Value(activity.getString(R.string.fragment_custom_list_application_info_time_offset),
-                        FormatHelper.formatMillisecondsToHours(getTime().getOffset()) + " " + activity.getString(R.string.hours)));
+                add(new CustomListObject.HeadLine(SourceHelper.getString(activity, R.string.fragment_custom_list_application_info_time_headline)));
+                add(new CustomListObject.Key_Value(SourceHelper.getString(activity, R.string.fragment_custom_list_application_info_time_stamp), FormatHelper.formatDate(getTime().getStamp())));
+                add(new CustomListObject.Key_Value(SourceHelper.getString(activity, R.string.fragment_custom_list_application_info_time_offset),
+                        FormatHelper.formatMillisecondsToHours(getTime().getOffset()) + " " + SourceHelper.getString(activity, R.string.hours)));
 
-                add(new CustomListObject.HeadLine(activity.getString(R.string.fragment_custom_list_application_info_enabled_modules_headline)));
+                add(new CustomListObject.HeadLine(SourceHelper.getString(activity, R.string.fragment_custom_list_application_info_enabled_modules_headline)));
                 String[] enabledModules = getEnabledModules();
                 for (String module : enabledModules) {
                     add(new CustomListObject.Only_Key(module));

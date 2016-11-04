@@ -28,7 +28,7 @@ public class MainActivity extends AbstractActivity {
         setLoadingViewVisible(false);
 
 
-        XMLHelper xmlHelper;
+        /*XMLHelper xmlHelper;
         List<XMLHelper.XMLObject> xmlObjectList;
         //TODO TEST IT
         Log.d(TAG, "components-module");
@@ -48,7 +48,7 @@ public class MainActivity extends AbstractActivity {
         for (XMLHelper.XMLObject object : xmlObjectList) {
             for (String attributeName : object.getAttributes().keySet())
                 Log.d(TAG, object.getTagName() + ": " + attributeName + " - " + object.getAttributes().get(attributeName));
-        }
+        }*/
 
         /*
         Log.d(TAG, "platform-modules");

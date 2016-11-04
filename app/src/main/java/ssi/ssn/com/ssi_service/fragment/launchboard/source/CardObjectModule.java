@@ -14,6 +14,7 @@ import ssi.ssn.com.ssi_service.R;
 import ssi.ssn.com.ssi_service.activity.AbstractActivity;
 import ssi.ssn.com.ssi_service.activity.MainActivity;
 import ssi.ssn.com.ssi_service.model.data.source.Project;
+import ssi.ssn.com.ssi_service.model.helper.SourceHelper;
 import ssi.ssn.com.ssi_service.model.helper.XMLHelper;
 import ssi.ssn.com.ssi_service.model.network.DefaultResponse;
 import ssi.ssn.com.ssi_service.model.network.handler.RequestHandler;
@@ -92,9 +93,9 @@ public class CardObjectModule extends AbstractCardObject {
             @Override
             protected void onPostExecute(Object o) {
                 //TODO delete set
-                project.setDefaultResponseApplicationConfig(new DefaultResponse(200, RESTResponseTEST.restApplicationConfig));
+                //project.setDefaultResponseApplicationConfig(new DefaultResponse(200, RESTResponseTEST.restApplicationConfig));
                 if (project.getDefaultResponseApplicationConfig().getCode() != 200) {
-                    Toast.makeText(activity, activity.getString(R.string.fragment_launch_board_error_module), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(activity, SourceHelper.getString(activity, R.string.fragment_launch_board_error_module), Toast.LENGTH_SHORT).show();
                 } else {
                     ((AbstractActivity) activity).showModuleListFragment(project);
                 }
