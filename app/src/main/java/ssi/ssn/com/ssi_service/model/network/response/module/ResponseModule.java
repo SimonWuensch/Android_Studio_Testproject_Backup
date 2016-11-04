@@ -5,6 +5,7 @@ public class ResponseModule {
     private String name;
     private String status;
     private long since;
+    private String enabled;
 
     public ResponseModule() {
     }
@@ -31,5 +32,13 @@ public class ResponseModule {
 
     public void setSince(long since) {
         this.since = since;
+    }
+
+    public String getEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(String enabled) {
+        this.enabled = enabled;
     }
 }

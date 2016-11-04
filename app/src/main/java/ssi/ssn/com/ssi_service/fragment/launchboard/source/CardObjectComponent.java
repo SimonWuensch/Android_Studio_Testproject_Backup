@@ -183,17 +183,22 @@ public class CardObjectComponent extends AbstractCardObject {
                     return;
                 }
 
-                boolean allModuleStatusOnline = responseComponentList.isEmpty() ? false : true;
+                boolean AllComponentStatusOnline = responseComponentList.isEmpty() ? false : true;
+                if(!AllComponentStatusOnline){
+                    setStatus(ssi.ssn.com.ssi_service.model.data.source.Status.NOT_AVAILABLE, activity);
+                    return;
+                }
+
                 for (ResponseComponent responseComponent : responseComponentList) {
                     String status = responseComponent.getState().getStatus();
                     if (status.equals(ssi.ssn.com.ssi_service.model.data.source.Status.ONLINE) &&
                             status.equals(ssi.ssn.com.ssi_service.model.data.source.Status.UNKNOWN)) {
-                        allModuleStatusOnline = false;
+                        AllComponentStatusOnline = false;
 
                     }
                 }
 
-                if (!allModuleStatusOnline) {
+                if (!AllComponentStatusOnline) {
                     setStatus(ssi.ssn.com.ssi_service.model.data.source.Status.ERROR, activity);
                 } else {
                     setStatus(ssi.ssn.com.ssi_service.model.data.source.Status.OK, activity);

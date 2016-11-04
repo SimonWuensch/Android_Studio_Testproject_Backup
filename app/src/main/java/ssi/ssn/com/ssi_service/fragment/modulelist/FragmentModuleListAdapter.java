@@ -6,6 +6,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import ssi.ssn.com.ssi_service.fragment.launchboard.source.CardObjectModule;
@@ -26,7 +27,8 @@ class FragmentModuleListAdapter extends RecyclerView.Adapter<FragmentModuleListV
         this.layoutCardView = layoutCardView;
         this.fragment = fragment;
         this.activity = fragment.getActivity();
-        moduleObjects = CardObjectModule.searchObjectsInResponseXML(responseApplicationConfig);
+        //moduleObjects = CardObjectModule.searchObjectsInResponseXML(responseApplicationConfig);
+        moduleObjects = new ArrayList<>();
     }
 
     @Override
