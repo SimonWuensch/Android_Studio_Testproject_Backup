@@ -1,5 +1,7 @@
 package ssi.ssn.com.ssi_service.model.helper;
 
+import android.util.Log;
+
 import org.apache.commons.io.IOUtils;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserFactory;
@@ -10,6 +12,8 @@ import java.util.List;
 import java.util.Map;
 
 public class XMLHelper {
+
+    private static String TAG = XMLHelper.class.getSimpleName();
 
     private String startTag;
     private List<String> searchedTags;
@@ -22,6 +26,7 @@ public class XMLHelper {
     }
 
     public List<XMLObject> startSearching(String xmlString) {
+        Log.d(TAG, "Searching started. [" + xmlString + "]");
         List<XMLObject> xmlObjects = new ArrayList<XMLObject>();
         XmlPullParser myParser = null;
         try {

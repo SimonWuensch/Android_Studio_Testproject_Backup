@@ -16,9 +16,7 @@ import ssi.ssn.com.ssi_service.activity.MainActivity;
 import ssi.ssn.com.ssi_service.model.data.source.Project;
 import ssi.ssn.com.ssi_service.model.helper.SourceHelper;
 import ssi.ssn.com.ssi_service.model.helper.XMLHelper;
-import ssi.ssn.com.ssi_service.model.network.DefaultResponse;
 import ssi.ssn.com.ssi_service.model.network.handler.RequestHandler;
-import ssi.ssn.com.ssi_service.test.RESTResponseTEST;
 
 public class CardObjectModule extends AbstractCardObject {
 
@@ -26,6 +24,7 @@ public class CardObjectModule extends AbstractCardObject {
     private static String XML_START_TAG_PLUGIN_MODULES = "plugin-modules";
     private static String XML_SEARCHED_TAG_MODULE = "module";
     public static String XML_ATTRIBUTE_ENABLED = "enabled";
+
 
     public CardObjectModule(int title, int icon, boolean observation) {
         super(title, icon, observation);

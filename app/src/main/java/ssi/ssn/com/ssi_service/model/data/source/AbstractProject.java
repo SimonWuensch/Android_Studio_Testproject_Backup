@@ -2,6 +2,9 @@ package ssi.ssn.com.ssi_service.model.data.source;
 
 import com.owlike.genson.annotation.JsonIgnore;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import ssi.ssn.com.ssi_service.model.network.DefaultResponse;
 
 public class AbstractProject {
@@ -22,6 +25,10 @@ public class AbstractProject {
     private DefaultResponse defaultResponseScada;
     @JsonIgnore
     private DefaultResponse defaultResponseSessionsCurrent;
+    @JsonIgnore
+    private List<DefaultResponse> defaultResponseComponentList;
+    @JsonIgnore
+    private List<DefaultResponse> defaultResponseModuleList;
 
     @JsonIgnore
     public DefaultResponse getDefaultResponseApplication() {
@@ -101,5 +108,35 @@ public class AbstractProject {
     @JsonIgnore
     public void setDefaultResponseSessionsCurrent(DefaultResponse defaultResponseSessionsCurrent) {
         this.defaultResponseSessionsCurrent = defaultResponseSessionsCurrent;
+    }
+
+    public List<DefaultResponse> getDefaultResponseComponentList() {
+        return defaultResponseComponentList == null ? new ArrayList<DefaultResponse>() : defaultResponseComponentList;
+    }
+
+    public void setDefaultResponseComponentList(List<DefaultResponse> defaultResponseComponentList) {
+        this.defaultResponseComponentList = defaultResponseComponentList;
+    }
+
+    public void addDefaultResponseComponent(DefaultResponse defaultResponseComponent) {
+        if (defaultResponseComponentList == null) {
+            defaultResponseComponentList = new ArrayList<>();
+        }
+        defaultResponseComponentList.add(defaultResponseComponent);
+    }
+
+    public List<DefaultResponse> getDefaultResponseModuleList() {
+        return defaultResponseModuleList;
+    }
+
+    public void setDefaultResponseModuleList(List<DefaultResponse> defaultResponseModuleList) {
+        this.defaultResponseModuleList = defaultResponseModuleList;
+    }
+
+    public void addDefaultResponseModul(DefaultResponse defaultResponseModul) {
+        if (defaultResponseModuleList == null) {
+            defaultResponseModuleList = new ArrayList<>();
+        }
+        defaultResponseModuleList.add(defaultResponseModul);
     }
 }

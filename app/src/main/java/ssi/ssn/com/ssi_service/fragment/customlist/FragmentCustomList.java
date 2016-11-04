@@ -14,7 +14,7 @@ import ssi.ssn.com.ssi_service.fragment.AbstractFragment;
 import ssi.ssn.com.ssi_service.model.helper.JsonHelper;
 import ssi.ssn.com.ssi_service.model.helper.SourceHelper;
 import ssi.ssn.com.ssi_service.model.network.response.AbstractResponse;
-import ssi.ssn.com.ssi_service.model.network.response.ResponseApplication;
+import ssi.ssn.com.ssi_service.model.network.response.application.ResponseApplication;
 
 public class FragmentCustomList extends AbstractFragment {
 

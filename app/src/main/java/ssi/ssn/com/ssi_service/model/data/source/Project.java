@@ -1,7 +1,7 @@
 package ssi.ssn.com.ssi_service.model.data.source;
 
 import ssi.ssn.com.ssi_service.model.helper.JsonHelper;
-import ssi.ssn.com.ssi_service.model.network.response.ResponseApplication;
+import ssi.ssn.com.ssi_service.model.network.response.application.ResponseApplication;
 
 public class Project extends AbstractProject {
 

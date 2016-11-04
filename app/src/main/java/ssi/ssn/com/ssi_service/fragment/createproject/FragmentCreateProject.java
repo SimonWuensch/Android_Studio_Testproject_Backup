@@ -31,7 +31,7 @@ import ssi.ssn.com.ssi_service.model.helper.JsonHelper;
 import ssi.ssn.com.ssi_service.model.helper.SourceHelper;
 import ssi.ssn.com.ssi_service.model.network.communication.HttpAddressExists;
 import ssi.ssn.com.ssi_service.model.network.handler.RequestHandler;
-import ssi.ssn.com.ssi_service.model.network.response.ResponseApplication;
+import ssi.ssn.com.ssi_service.model.network.response.application.ResponseApplication;
 
 public class FragmentCreateProject extends AbstractFragment {
 

@@ -1,4 +1,4 @@
-package ssi.ssn.com.ssi_service.model.network.response;
+package ssi.ssn.com.ssi_service.model.network.response.application;
 
 import android.app.Activity;
 
@@ -11,10 +11,11 @@ import ssi.ssn.com.ssi_service.R;
 import ssi.ssn.com.ssi_service.fragment.customlist.source.CustomListObject;
 import ssi.ssn.com.ssi_service.model.helper.FormatHelper;
 import ssi.ssn.com.ssi_service.model.helper.SourceHelper;
-import ssi.ssn.com.ssi_service.model.network.response.objects.ResponseBuild;
-import ssi.ssn.com.ssi_service.model.network.response.objects.ResponseProject;
-import ssi.ssn.com.ssi_service.model.network.response.objects.ResponseState;
-import ssi.ssn.com.ssi_service.model.network.response.objects.ResponseTime;
+import ssi.ssn.com.ssi_service.model.network.response.AbstractResponse;
+import ssi.ssn.com.ssi_service.model.network.response.application.objects.ResponseBuild;
+import ssi.ssn.com.ssi_service.model.network.response.application.objects.ResponseProject;
+import ssi.ssn.com.ssi_service.model.network.response.application.objects.ResponseState;
+import ssi.ssn.com.ssi_service.model.network.response.application.objects.ResponseTime;
 
 public class ResponseApplication extends AbstractResponse {
 

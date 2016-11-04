@@ -1,4 +1,4 @@
-package ssi.ssn.com.ssi_service.model.network.response.objects;
+package ssi.ssn.com.ssi_service.model.network.response.application.objects;
 
 public class ResponseTime {
 

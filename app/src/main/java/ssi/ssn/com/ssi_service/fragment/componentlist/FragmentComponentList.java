@@ -10,10 +10,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.owlike.genson.GenericType;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import ssi.ssn.com.ssi_service.R;
 import ssi.ssn.com.ssi_service.model.data.source.Project;
 import ssi.ssn.com.ssi_service.model.helper.JsonHelper;
 import ssi.ssn.com.ssi_service.model.helper.SourceHelper;
+import ssi.ssn.com.ssi_service.model.network.response.component.ResponseComponent;
 
 public class FragmentComponentList extends Fragment {
 
@@ -25,12 +31,13 @@ public class FragmentComponentList extends Fragment {
 
     private static String PROJECT_JSON = TAG + "PROJECT_JSON";
     private static String RESPONSE = TAG + "RESPONSE";
+    private static String RESPONSE_COMPONENT_LIST = TAG + "RESPONSE_COMPONENT_LIST";
 
     private View rootView;
     private Project project;
-    private String responseApplicationConfig;
+    private List<ResponseComponent> responseComponentList;
 
-    public static FragmentComponentList newInstance(Project project) {
+    public static FragmentComponentList newInstance(Project project, List<ResponseComponent> responseComponentList) {
         if (project == null) {
             return new FragmentComponentList();
         }
@@ -39,18 +46,21 @@ public class FragmentComponentList extends Fragment {
         Bundle bundle = new Bundle();
         bundle.putString(PROJECT_JSON, JsonHelper.toJson(project));
         bundle.putString(RESPONSE, project.getDefaultResponseApplicationConfig().getResult());
+        bundle.putSerializable(RESPONSE_COMPONENT_LIST, JsonHelper.toJson(responseComponentList));
         fragment.setArguments(bundle);
         return fragment;
+
     }
 
     private void loadArguments() {
         if (getArguments() == null) {
             return;
         }
-
         String projectJson = getArguments().getString(PROJECT_JSON);
-        responseApplicationConfig = getArguments().getString(RESPONSE);
         project = (Project) JsonHelper.fromJsonGeneric(Project.class, projectJson);
+        String jsonResponseComponentList = getArguments().getString(RESPONSE_COMPONENT_LIST);
+        responseComponentList = (ArrayList<ResponseComponent>) JsonHelper.fromJsonGeneric(new GenericType<List<ResponseComponent>>() {
+        }, jsonResponseComponentList);
     }
 
     @Override
@@ -65,7 +75,7 @@ public class FragmentComponentList extends Fragment {
             rootView = inflater.inflate(FRAGMENT_LAYOUT, container, false);
             Log.d(TAG, "Fragment inflated [" + getActivity().getResources().getResourceName(FRAGMENT_LAYOUT) + "].");
 
-            RecyclerView.Adapter mAdapter = new FragmentComponentListAdapter(CARDVIEW, this, responseApplicationConfig);
+            RecyclerView.Adapter mAdapter = new FragmentComponentListAdapter(CARDVIEW, this, responseComponentList);
             Log.d(TAG, "Adapter [" + mAdapter.getClass().getSimpleName() + "] with CardView [" + getActivity().getResources().getResourceName(CARDVIEW) + "] initialized.");
 
             RecyclerView mRecyclerView = (RecyclerView) rootView.findViewById(RECYCLERVIEW);

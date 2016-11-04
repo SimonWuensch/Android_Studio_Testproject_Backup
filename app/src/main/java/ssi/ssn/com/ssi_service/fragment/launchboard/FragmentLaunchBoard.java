@@ -22,11 +22,11 @@ import ssi.ssn.com.ssi_service.fragment.AbstractFragment;
 import ssi.ssn.com.ssi_service.fragment.launchboard.source.AbstractCardObject;
 import ssi.ssn.com.ssi_service.model.data.source.Project;
 import ssi.ssn.com.ssi_service.model.helper.FormatHelper;
-import ssi.ssn.com.ssi_service.model.helper.SourceHelper;
 import ssi.ssn.com.ssi_service.model.helper.JsonHelper;
+import ssi.ssn.com.ssi_service.model.helper.SourceHelper;
 import ssi.ssn.com.ssi_service.model.network.DefaultResponse;
 import ssi.ssn.com.ssi_service.model.network.handler.RequestHandler;
-import ssi.ssn.com.ssi_service.model.network.response.ResponseApplication;
+import ssi.ssn.com.ssi_service.model.network.response.application.ResponseApplication;
 
 public class FragmentLaunchBoard extends AbstractFragment {
 
@@ -129,7 +129,7 @@ public class FragmentLaunchBoard extends AbstractFragment {
                     ResponseApplication responseApplication = (ResponseApplication) JsonHelper.fromJsonGeneric(ResponseApplication.class, defaultResponseApplication.getResult());
                     String projectStatus = responseApplication.getState().getStatus();
                     tvProjectStatus.setText(projectStatus);
-                    if (projectStatus.equals(ssi.ssn.com.ssi_service.model.data.source.Status.TEXT_RUNNING)) {
+                    if (projectStatus.equals(ssi.ssn.com.ssi_service.model.data.source.Status.RUNNING)) {
                         rlProjectStateBackground.setBackgroundColor(ssi.ssn.com.ssi_service.model.data.source.Status.OK.getColor(getActivity()));
 
                         Date since = new Date(responseApplication.getState().getSince());

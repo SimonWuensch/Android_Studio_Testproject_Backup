@@ -2,6 +2,7 @@ package ssi.ssn.com.ssi_service.fragment.launchboard.source;
 
 import android.app.Activity;
 import android.os.AsyncTask;
+import android.util.Log;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -14,27 +15,34 @@ import ssi.ssn.com.ssi_service.R;
 import ssi.ssn.com.ssi_service.activity.AbstractActivity;
 import ssi.ssn.com.ssi_service.activity.MainActivity;
 import ssi.ssn.com.ssi_service.model.data.source.Project;
+import ssi.ssn.com.ssi_service.model.helper.JsonHelper;
 import ssi.ssn.com.ssi_service.model.helper.SourceHelper;
 import ssi.ssn.com.ssi_service.model.helper.XMLHelper;
 import ssi.ssn.com.ssi_service.model.network.DefaultResponse;
 import ssi.ssn.com.ssi_service.model.network.handler.RequestHandler;
-import ssi.ssn.com.ssi_service.test.RESTResponseTEST;
+import ssi.ssn.com.ssi_service.model.network.response.component.ResponseComponent;
 
 public class CardObjectComponent extends AbstractCardObject {
+
+    private static String TAG = CardObjectComponent.class.getSimpleName();
 
     private static String XML_START_TAG_COMPONENTS_MODULE = "components-module";
     private static String XML_SEARCHED_TAG_SERVER = "server";
     public static String XML_ATTRIBUTE_MANAGE = "manage";
     public static String XML_ATTRIBUTE_ENABLED = "enabled";
 
-    private List<XMLHelper.XMLObject> componentObjects = new ArrayList<>();
+    private List<ResponseComponent> responseComponentList = new ArrayList<>();
+    private List<XMLHelper.XMLObject> componentObjects;
 
     public CardObjectComponent(int title, int icon, boolean observation) {
         super(title, icon, observation);
     }
 
-    public static List<XMLHelper.XMLObject> searchObjectsInResponseXML(String responseApplicationConfig) {
-        List<XMLHelper.XMLObject> componentObjects;
+    public List<XMLHelper.XMLObject> searchObjectsInResponseXML(String responseApplicationConfig) {
+        if (componentObjects != null) {
+            return componentObjects;
+        }
+
         XMLHelper xmlHelper = new XMLHelper(XML_START_TAG_COMPONENTS_MODULE,
                 new ArrayList<String>() {
                     {
@@ -49,6 +57,7 @@ public class CardObjectComponent extends AbstractCardObject {
                 });
         componentObjects = xmlHelper.startSearching(responseApplicationConfig);
         for (int i = 0; i < componentObjects.size(); i++) {
+
             if (!componentObjects.get(i).getAttributes().containsKey(XML_ATTRIBUTE_MANAGE)) {
                 componentObjects.remove(i);
             }
@@ -57,15 +66,18 @@ public class CardObjectComponent extends AbstractCardObject {
     }
 
     @Override
-    public ExecutorService loadInformationFromApplicationServer(final Activity activity, Project project) {
+    public ExecutorService loadInformationFromApplicationServer(final Activity activity, final Project project) {
         if (!isOutOfTime(project)) {
             return Executors.newSingleThreadExecutor();
         }
+
         setLoadingViewVisible(true);
+        final List<String> notEnabledComponents = new ArrayList<>();
         final ExecutorService executor = Executors.newSingleThreadExecutor();
         final RequestHandler requestHandler = ((MainActivity) activity).getRequestHandler();
         requestHandler.getRequestLoginTask(project).executeOnExecutor(executor);
         requestHandler.getRequestApplicationConfigTask(project).executeOnExecutor(executor);
+
         new AsyncTask<Object, Void, Objects>() {
             @Override
             protected Objects doInBackground(Object... objects) {
@@ -74,7 +86,61 @@ public class CardObjectComponent extends AbstractCardObject {
 
             @Override
             protected void onPostExecute(Objects objects) {
-                setLoadingViewVisible(false);
+                if (project.getDefaultResponseApplicationConfig().getCode() != 200) {
+                    return;
+                }
+
+                List<XMLHelper.XMLObject> xmlObjects = searchObjectsInResponseXML(project.getDefaultResponseApplicationConfig().getResult());
+                for (XMLHelper.XMLObject xmlObject : xmlObjects) {
+                    String tagName = xmlObject.getTagName();
+                    String componentName = tagName.substring(0, tagName.indexOf("-"));
+                    requestHandler.getRequestComponentTask(project, componentName).executeOnExecutor(executor);
+
+                    if (xmlObject.getAttributes().containsKey(CardObjectComponent.XML_ATTRIBUTE_ENABLED)) {
+                        String isEnabled = xmlObject.getAttributes().get(CardObjectComponent.XML_ATTRIBUTE_ENABLED);
+                        if (!Boolean.valueOf(isEnabled)) {
+                            notEnabledComponents.add(componentName);
+                        }
+                    }
+                }
+
+                new AsyncTask<Object, Void, Object>() {
+                    @Override
+                    protected Object doInBackground(Object... objects) {
+                        return null;
+                    }
+
+                    @Override
+                    protected void onPostExecute(Object o) {
+                        responseComponentList = new ArrayList<>();
+                        for (DefaultResponse defaultResponse : project.getDefaultResponseComponentList()) {
+                            if (defaultResponse.getCode() != 200) {
+                                continue;
+                            }
+
+                            ResponseComponent responseComponent = (ResponseComponent) JsonHelper.fromJsonGeneric(ResponseComponent.class, defaultResponse.getResult());
+                            if (notEnabledComponents.contains(responseComponent.getName())) {
+                                responseComponent.getState().setEnabled(false);
+                            }
+                            responseComponentList.add(responseComponent);
+                        }
+                        Log.d(TAG, "ResponseComponentList size [" + responseComponentList.size() + "]");
+
+                    }
+                }.executeOnExecutor(executor);
+
+                new AsyncTask<Object, Void, Objects>() {
+                    @Override
+                    protected Objects doInBackground(Object... objects) {
+                        return null;
+                    }
+
+                    @Override
+                    protected void onPostExecute(Objects objects) {
+                        setLoadingViewVisible(false);
+                        checkStatus(activity, project);
+                    }
+                }.executeOnExecutor(executor);
             }
         }.executeOnExecutor(executor);
         return executor;
@@ -91,16 +157,14 @@ public class CardObjectComponent extends AbstractCardObject {
 
             @Override
             protected void onPostExecute(Object o) {
-                //TODO delete set
-                //project.setDefaultResponseApplicationConfig(new DefaultResponse(200, RESTResponseTEST.restApplicationConfig));
-                if (project.getDefaultResponseApplicationConfig().getCode() != 200) {
+                if (project.getDefaultResponseApplicationConfig().getCode() != 200 || responseComponentList.isEmpty()) {
                     Toast.makeText(activity, SourceHelper.getString(activity, R.string.fragment_launch_board_error_component), Toast.LENGTH_SHORT).show();
+
                 } else {
-                    ((AbstractActivity) activity).showComponentListFragment(project);
+                    ((AbstractActivity) activity).showComponentListFragment(project, responseComponentList);
                 }
             }
         }.executeOnExecutor(executor);
-        executor.shutdown();
     }
 
     @Override
@@ -114,28 +178,20 @@ public class CardObjectComponent extends AbstractCardObject {
 
             @Override
             protected void onPostExecute(Object o) {
-                long responseCode = project.getDefaultResponseApplicationConfig().getCode();
-                if (responseCode == 404 || responseCode == 900 || responseCode == 901) {
-                    setStatus(ssi.ssn.com.ssi_service.model.data.source.Status.ERROR, activity);
+                if (project.getDefaultResponseApplicationConfig().getCode() != 200) {
+                    setStatus(ssi.ssn.com.ssi_service.model.data.source.Status.NOT_AVAILABLE, activity);
                     return;
                 }
-                List<XMLHelper.XMLObject> componentObjects = searchObjectsInResponseXML(project.getDefaultResponseApplicationConfig().getResult());
-                boolean allModuleEnabled = true;
-                boolean allModuleStatusOnline = true;
-                for (XMLHelper.XMLObject object : componentObjects) {
-                    if (object.getAttributes().containsKey(XML_ATTRIBUTE_ENABLED)) {
-                        if (!Boolean.valueOf(object.getAttributes().get(XML_ATTRIBUTE_ENABLED))) {
-                            allModuleEnabled = false;
-                        }
+
+                boolean allModuleStatusOnline = responseComponentList.isEmpty() ? false : true;
+                for (ResponseComponent responseComponent : responseComponentList) {
+                    String status = responseComponent.getState().getStatus();
+                    if (status.equals(ssi.ssn.com.ssi_service.model.data.source.Status.ONLINE) &&
+                            status.equals(ssi.ssn.com.ssi_service.model.data.source.Status.UNKNOWN)) {
+                        allModuleStatusOnline = false;
+
                     }
-                    //TODO CHECK FOR STATUS
-                    allModuleStatusOnline = false;
                 }
-                /*
-                if(!allModuleEnabled){
-                    setStatus(ssi.ssn.com.ssi_service.model.data.source.Status.NOT_AVAILABLE, activity);
-                }else
-                */
 
                 if (!allModuleStatusOnline) {
                     setStatus(ssi.ssn.com.ssi_service.model.data.source.Status.ERROR, activity);
@@ -144,6 +200,5 @@ public class CardObjectComponent extends AbstractCardObject {
                 }
             }
         }.executeOnExecutor(executor);
-        executor.shutdown();
     }
 }

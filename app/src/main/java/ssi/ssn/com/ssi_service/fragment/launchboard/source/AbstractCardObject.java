@@ -113,9 +113,8 @@ public class AbstractCardObject {
     }
 
     @JsonIgnore
-    void setStatus(Status status, Activity activity) {
+    protected void setStatus(Status status, Activity activity) {
         this.status = status;
-
         if (statusView != null) {
             statusView.setBackgroundColor(status.getColor(activity));
         }

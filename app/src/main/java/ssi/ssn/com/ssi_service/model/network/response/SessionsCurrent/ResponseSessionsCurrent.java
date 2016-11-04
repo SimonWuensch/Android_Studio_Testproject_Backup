@@ -1,6 +1,7 @@
-package ssi.ssn.com.ssi_service.model.network.response;
+package ssi.ssn.com.ssi_service.model.network.response.sessionscurrent;
 
-import ssi.ssn.com.ssi_service.model.network.response.objects.ResponseActor;
+import ssi.ssn.com.ssi_service.model.network.response.AbstractResponse;
+import ssi.ssn.com.ssi_service.model.network.response.sessionscurrent.objects.ResponseActor;
 
 public class ResponseSessionsCurrent extends AbstractResponse {
 

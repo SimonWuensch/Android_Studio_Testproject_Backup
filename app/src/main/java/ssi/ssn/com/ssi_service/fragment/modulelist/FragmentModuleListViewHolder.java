@@ -5,7 +5,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import ssi.ssn.com.ssi_service.R;
 import ssi.ssn.com.ssi_service.fragment.launchboard.source.CardObjectModule;
@@ -55,19 +54,12 @@ class FragmentModuleListViewHolder extends RecyclerView.ViewHolder {
 
         if (!Boolean.valueOf(isEnabled)) {
             rlNameBackground.setBackgroundColor(Status.NOT_AVAILABLE.getColor(activity));
-        } else if (status.equals(Status.TEXT_RUNNING)) {
+        } else if (status.equals(Status.RUNNING)) {
             rlNameBackground.setBackgroundColor(Status.OK.getColor(activity));
-        } else if (status.equals(Status.TEXT_NOT_RUNNING)) {
+        } else if (status.equals(Status.UNKNOWN)) {
             rlNameBackground.setBackgroundColor(Status.ERROR.getColor(activity));
         } else {
             rlNameBackground.setBackgroundColor(Status.NOT_AVAILABLE.getColor(activity));
         }
-
-        cardView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(activity, object.getTagName(), Toast.LENGTH_SHORT).show();
-            }
-        });
     }
 }

@@ -6,12 +6,11 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import ssi.ssn.com.ssi_service.R;
-import ssi.ssn.com.ssi_service.fragment.launchboard.source.CardObjectComponent;
 import ssi.ssn.com.ssi_service.model.data.source.Status;
-import ssi.ssn.com.ssi_service.model.helper.XMLHelper;
+import ssi.ssn.com.ssi_service.model.network.response.component.ResponseComponent;
+import ssi.ssn.com.ssi_service.model.network.response.component.objects.ResponseState;
 
 
 class FragmentComponentListViewHolder extends RecyclerView.ViewHolder {
@@ -41,42 +40,24 @@ class FragmentComponentListViewHolder extends RecyclerView.ViewHolder {
         llEnabled = (LinearLayout) cardView.findViewById(R.id.fragment_component_list_linear_layout_enabled);
     }
 
-    protected void assignData(final XMLHelper.XMLObject object) {
+    protected void assignData(final ResponseComponent responseComponent) {
+
+        final ResponseState state = responseComponent.getState();
+        tvName.setText(state.getName());
+        tvManage.setText(state.getManaged());
+        tvStatus.setText(state.getStatus());
+
         llEnabled.setVisibility(View.GONE);
-
-        String tagName = object.getTagName();
-        String componentName = tagName.substring(0, 1).toUpperCase() + tagName.substring(1, tagName.indexOf("-"));
-        tvName.setText(componentName);
-
-        String isManaged = object.getAttributes().get(CardObjectComponent.XML_ATTRIBUTE_MANAGE);
-        tvManage.setText(isManaged);
-
-        //Todo Component Status set
-        String status = "NULL";
-        tvStatus.setText(status);
-
-        String isEnabled = "true";
-        if (object.getAttributes().containsKey(CardObjectComponent.XML_ATTRIBUTE_ENABLED)) {
+        if (!state.isEnabled()) {
+            rlName.setBackgroundColor(Status.NOT_AVAILABLE.getColor(activity));
             llEnabled.setVisibility(View.VISIBLE);
-            isEnabled = object.getAttributes().get(CardObjectComponent.XML_ATTRIBUTE_ENABLED);
-            tvEnabled.setText(isEnabled);
-        }
-
-        if (!Boolean.valueOf(isEnabled)) {
-            rlName.setBackgroundColor(Status.NOT_AVAILABLE.getColor(activity));
-        } else if (status.equals(Status.TEXT_RUNNING)) {
+            tvEnabled.setText(String.valueOf(state.isEnabled()));
+        } else if (state.getStatus().equals(Status.ONLINE)) {
             rlName.setBackgroundColor(Status.OK.getColor(activity));
-        } else if (status.equals(Status.TEXT_NOT_RUNNING)) {
-            rlName.setBackgroundColor(Status.ERROR.getColor(activity));
-        } else {
+        } else if (state.getStatus().equals(Status.UNKNOWN)) {
             rlName.setBackgroundColor(Status.NOT_AVAILABLE.getColor(activity));
+        } else {
+            rlName.setBackgroundColor(Status.ERROR.getColor(activity));
         }
-
-        cardView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(activity, object.getTagName(), Toast.LENGTH_SHORT).show();
-            }
-        });
     }
 }

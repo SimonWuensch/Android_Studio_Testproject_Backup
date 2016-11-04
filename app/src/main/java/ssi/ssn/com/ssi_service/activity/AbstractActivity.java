@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 
+import java.util.List;
+
 import ssi.ssn.com.ssi_service.R;
 import ssi.ssn.com.ssi_service.fragment.componentlist.FragmentComponentList;
 import ssi.ssn.com.ssi_service.fragment.createproject.FragmentCreateProject;
@@ -15,6 +17,7 @@ import ssi.ssn.com.ssi_service.fragment.projectlist.FragmentProjectList;
 import ssi.ssn.com.ssi_service.model.data.source.Project;
 import ssi.ssn.com.ssi_service.model.helper.SQLiteHelper;
 import ssi.ssn.com.ssi_service.model.network.handler.RequestHandler;
+import ssi.ssn.com.ssi_service.model.network.response.component.ResponseComponent;
 
 public class AbstractActivity extends Activity {
 
@@ -121,8 +124,8 @@ public class AbstractActivity extends Activity {
         Log.i(getClass().getSimpleName(), "Show Fragment [" + fragmentModuleList.TAG + "].");
     }
 
-    public void showComponentListFragment(Project project) {
-        FragmentComponentList fragmentComponentList = FragmentComponentList.newInstance(project);
+    public void showComponentListFragment(Project project, List<ResponseComponent> responseComponentList) {
+        FragmentComponentList fragmentComponentList = FragmentComponentList.newInstance(project, responseComponentList);
         getFragmentManager()
                 .beginTransaction()
                 .replace(R.id.activity_main_fragment_container,

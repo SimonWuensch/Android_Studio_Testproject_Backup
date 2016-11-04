@@ -1,5 +1,6 @@
 package ssi.ssn.com.ssi_service.model.helper;
 
+import com.owlike.genson.GenericType;
 import com.owlike.genson.Genson;
 
 import java.util.LinkedHashMap;
@@ -16,6 +17,11 @@ public class JsonHelper {
     public static Object fromJsonGeneric(Class value, String jsonString) {
         Genson genson = new Genson();
         return genson.deserialize(jsonString, value);
+    }
+
+    public static Object fromJsonGeneric(GenericType genericType, String jsonString) {
+        Genson genson = new Genson();
+        return genson.deserialize(jsonString, genericType);
     }
 
     public static Map<String, Object> fromJsonToMap(String jsonString) {
