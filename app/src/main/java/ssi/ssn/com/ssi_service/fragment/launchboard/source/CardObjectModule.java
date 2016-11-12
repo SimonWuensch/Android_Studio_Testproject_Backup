@@ -17,6 +17,7 @@ import ssi.ssn.com.ssi_service.R;
 import ssi.ssn.com.ssi_service.activity.AbstractActivity;
 import ssi.ssn.com.ssi_service.activity.MainActivity;
 import ssi.ssn.com.ssi_service.model.data.source.Project;
+import ssi.ssn.com.ssi_service.model.data.source.Status;
 import ssi.ssn.com.ssi_service.model.helper.JsonHelper;
 import ssi.ssn.com.ssi_service.model.helper.SourceHelper;
 import ssi.ssn.com.ssi_service.model.helper.XMLHelper;
@@ -72,37 +73,14 @@ public class CardObjectModule extends AbstractCardObject {
     }
 
     @Override
-    public ExecutorService loadInformationFromApplicationServer(Activity activity, Project project) {
+    public ExecutorService loadInformationFromApplicationServer(final Activity activity, final Project project) {
         if (!isOutOfTime(project)) {
             return Executors.newSingleThreadExecutor();
         }
         setLoadingViewVisible(true);
         final ExecutorService executor = Executors.newSingleThreadExecutor();
         final RequestHandler requestHandler = ((MainActivity) activity).getRequestHandler();
-        requestHandler.getRequestLoginTask(project).executeOnExecutor(executor);
-        requestHandler.getRequestApplicationConfigTask(project).executeOnExecutor(executor);
-        new AsyncTask<Object, Void, Objects>() {
-            @Override
-            protected Objects doInBackground(Object... objects) {
-                return null;
-            }
-
-            @Override
-            protected void onPostExecute(Objects objects) {
-                setLoadingViewVisible(false);
-            }
-        }.executeOnExecutor(executor);
-        return executor;
-    }
-
-    public ExecutorService loadInformationFromApplicationServer2(final Activity activity, final Project project) {
-        if (!isOutOfTime(project)) {
-            return Executors.newSingleThreadExecutor();
-        }
-        setLoadingViewVisible(true);
-        final ExecutorService executor = Executors.newSingleThreadExecutor();
-        final RequestHandler requestHandler = ((MainActivity) activity).getRequestHandler();
-        requestHandler.getRequestLoginTask(project).executeOnExecutor(executor);
+        requestHandler.addRequestLoginTaskToExecutor(executor, project);
         requestHandler.getRequestApplicationConfigTask(project).executeOnExecutor(executor);
         new AsyncTask<Object, Void, Objects>() {
             @Override
@@ -177,7 +155,8 @@ public class CardObjectModule extends AbstractCardObject {
 
     @Override
     public void onClick(final Activity activity, final Project project) {
-        ExecutorService executor = loadInformationFromApplicationServer2(activity, project);
+        ExecutorService executor = loadInformationFromApplicationServer(activity, project);
+        final AbstractCardObject cardObject = this;
         new AsyncTask<Object, Void, Object>() {
             @Override
             protected Object doInBackground(Object... objects) {
@@ -186,7 +165,7 @@ public class CardObjectModule extends AbstractCardObject {
 
             @Override
             protected void onPostExecute(Object o) {
-                if (getStatus().equals(ssi.ssn.com.ssi_service.model.data.source.Status.NOT_AVAILABLE)) {
+                if (cardObject.getStatus().equals(ssi.ssn.com.ssi_service.model.data.source.Status.NOT_AVAILABLE)) {
                     Toast.makeText(activity, SourceHelper.getString(activity, R.string.fragment_launch_board_error_module), Toast.LENGTH_SHORT).show();
                 } else {
                     ((AbstractActivity) activity).showModuleListFragment(project, responseModuleList);
@@ -197,7 +176,7 @@ public class CardObjectModule extends AbstractCardObject {
 
     @Override
     public void checkStatus(final Activity activity, final Project project) {
-        ExecutorService executor = loadInformationFromApplicationServer2(activity, project);
+        ExecutorService executor = loadInformationFromApplicationServer(activity, project);
         new AsyncTask<Object, Void, Object>() {
             @Override
             protected Object doInBackground(Object... objects) {

@@ -5,6 +5,8 @@ import ssi.ssn.com.ssi_service.model.network.response.sessionscurrent.objects.Re
 
 public class ResponseSessionsCurrent extends AbstractResponse {
 
+    public static String STATUS_LOGGED_ID = "LOGGED_IN";
+
     public long id;
     public String key;
     public String status;

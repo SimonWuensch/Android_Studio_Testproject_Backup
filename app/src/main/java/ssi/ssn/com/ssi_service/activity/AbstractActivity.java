@@ -1,11 +1,14 @@
 package ssi.ssn.com.ssi_service.activity;
 
 import android.app.Activity;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import ssi.ssn.com.ssi_service.R;
 import ssi.ssn.com.ssi_service.fragment.componentlist.FragmentComponentList;
@@ -101,16 +104,28 @@ public class AbstractActivity extends Activity {
         Log.i(getClass().getSimpleName(), "Show Fragment [" + fragmentProjectList.TAG + "].");
     }
 
-    public void showLaunchBoardFragment(Project project) {
-        FragmentLaunchBoard fragmentLaunchBoard = FragmentLaunchBoard.newInstance(project);
-        getFragmentManager()
-                .beginTransaction()
-                .replace(R.id.activity_main_fragment_container,
-                        fragmentLaunchBoard,
-                        fragmentLaunchBoard.TAG)
-                .addToBackStack(fragmentLaunchBoard.TAG)
-                .commit();
-        Log.i(getClass().getSimpleName(), "Show Fragment [" + fragmentLaunchBoard.TAG + "].");
+    public void showLaunchBoardFragment(final Project project) {
+        final ExecutorService executor = Executors.newSingleThreadExecutor();
+        requestHandler.addRequestLoginTaskToExecutor(executor, project);
+        new AsyncTask<Object, Void, Object>(){
+            @Override
+            protected Object doInBackground(Object... objects) {
+                return null;
+            }
+
+            @Override
+            protected void onPostExecute(Object o) {
+                FragmentLaunchBoard fragmentLaunchBoard = FragmentLaunchBoard.newInstance(project);
+                getFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.activity_main_fragment_container,
+                                fragmentLaunchBoard,
+                                fragmentLaunchBoard.TAG)
+                        .addToBackStack(fragmentLaunchBoard.TAG)
+                        .commit();
+                Log.i(getClass().getSimpleName(), "Show Fragment [" + fragmentLaunchBoard.TAG + "].");
+            }
+        }.executeOnExecutor(executor);
     }
 
     public void showModuleListFragment(Project project, List<ResponseModule> responseModuleList) {

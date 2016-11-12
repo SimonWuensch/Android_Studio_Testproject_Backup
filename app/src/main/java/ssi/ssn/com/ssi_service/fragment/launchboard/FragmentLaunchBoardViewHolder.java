@@ -49,7 +49,9 @@ class FragmentLaunchBoardViewHolder extends RecyclerView.ViewHolder {
         cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                cardObject.onClick(activity, project);
+                if (loadingView.getVisibility() != View.VISIBLE) {
+                    cardObject.onClick(activity, project);
+                }
             }
         });
     }

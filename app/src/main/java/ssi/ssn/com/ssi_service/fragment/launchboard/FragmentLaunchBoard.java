@@ -2,6 +2,7 @@ package ssi.ssn.com.ssi_service.fragment.launchboard;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -108,10 +109,10 @@ public class FragmentLaunchBoard extends AbstractFragment {
         rlLoadingView = (RelativeLayout) rootView.findViewById(R.id.fragment_launch_board_project_state_loading_view);
         rlLoadingView.setVisibility(View.GONE);
 
-        updateProjectStateView();
+        checkProjectState();
     }
 
-    public void updateProjectStateView() {
+    public void checkProjectState() {
         final RequestHandler requestHandler = ((MainActivity) getActivity()).getRequestHandler();
         final ExecutorService executor = Executors.newSingleThreadExecutor();
         requestHandler.getRequestApplicationTask(project).executeOnExecutor(executor);
@@ -162,5 +163,11 @@ public class FragmentLaunchBoard extends AbstractFragment {
         for (AbstractCardObject cardObject : mAdapter.getCardInputs()) {
             cardObject.checkStatus(getActivity(), project);
         }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        ((MainActivity) getActivity()).getRequestHandler().getRequestLogoutTask(project).execute();
     }
 }

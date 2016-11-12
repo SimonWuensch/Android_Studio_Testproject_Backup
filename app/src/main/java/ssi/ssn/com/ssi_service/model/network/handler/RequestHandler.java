@@ -2,6 +2,8 @@ package ssi.ssn.com.ssi_service.model.network.handler;
 
 import android.os.AsyncTask;
 
+import java.util.concurrent.ExecutorService;
+
 import ssi.ssn.com.ssi_service.model.data.source.Project;
 import ssi.ssn.com.ssi_service.model.network.request.RequestApplication;
 import ssi.ssn.com.ssi_service.model.network.request.RequestApplicationConfig;
@@ -40,7 +42,11 @@ public class RequestHandler {
     // ** With Cookie *************************************************************************** //
     // *** Login  ******************************************************************************* //
     public AsyncTask getRequestLoginTask(Project project) {
-        return RequestLogin.init(project).getTaskGET(cookieHandler);
+        return RequestLogin.init(this, project).getTaskGET(cookieHandler);
+    }
+
+    public void addRequestLoginTaskToExecutor(ExecutorService executor, Project project) {
+        RequestLogin.init(this, project).addTaskGETtoExecutor(executor, cookieHandler);
     }
 
     // *** Application Config ******************************************************************* //

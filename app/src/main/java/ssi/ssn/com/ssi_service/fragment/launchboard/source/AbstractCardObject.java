@@ -117,6 +117,7 @@ public class AbstractCardObject {
         this.status = status;
         if (statusView != null) {
             statusView.setBackgroundColor(status.getColor(activity));
+            setLoadingViewVisible(false);
         }
     }
 

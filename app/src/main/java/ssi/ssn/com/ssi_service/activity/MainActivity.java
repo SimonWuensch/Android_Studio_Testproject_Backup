@@ -1,15 +1,8 @@
 package ssi.ssn.com.ssi_service.activity;
 
 import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import ssi.ssn.com.ssi_service.R;
-import ssi.ssn.com.ssi_service.model.helper.XMLHelper;
-import ssi.ssn.com.ssi_service.test.RESTResponseTEST;
 
 public class MainActivity extends AbstractActivity {
 
@@ -83,22 +76,4 @@ public class MainActivity extends AbstractActivity {
         }
         */
     }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        if (currentProject != null) {
-            requestHandler.getRequestLoginTask(currentProject).execute();
-        }
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        if (currentProject != null) {
-            requestHandler.getRequestLogoutTask(currentProject).execute();
-        }
-    }
-
-
 }

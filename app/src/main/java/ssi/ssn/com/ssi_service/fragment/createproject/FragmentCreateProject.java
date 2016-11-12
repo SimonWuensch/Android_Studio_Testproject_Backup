@@ -381,7 +381,7 @@ public class FragmentCreateProject extends AbstractFragment {
                             return;
                         }
 
-                        requestHandler.getRequestLoginTask(project).executeOnExecutor(executor);
+                        requestHandler.addRequestLoginTaskToExecutor(executor, project);
                         new AsyncTask<Object, Void, Object>() {
                             @Override
                             protected Object doInBackground(Object... objects) {

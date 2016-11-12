@@ -76,7 +76,7 @@ public class CardObjectComponent extends AbstractCardObject {
         final List<String> notEnabledComponents = new ArrayList<>();
         final ExecutorService executor = Executors.newSingleThreadExecutor();
         final RequestHandler requestHandler = ((MainActivity) activity).getRequestHandler();
-        requestHandler.getRequestLoginTask(project).executeOnExecutor(executor);
+        requestHandler.addRequestLoginTaskToExecutor(executor, project);
         requestHandler.getRequestApplicationConfigTask(project).executeOnExecutor(executor);
 
         new AsyncTask<Object, Void, Objects>() {
@@ -150,6 +150,7 @@ public class CardObjectComponent extends AbstractCardObject {
     @Override
     public void onClick(final Activity activity, final Project project) {
         ExecutorService executor = loadInformationFromApplicationServer(activity, project);
+        final AbstractCardObject cardObject = this;
         new AsyncTask<Object, Void, Object>() {
             @Override
             protected Object doInBackground(Object... objects) {
@@ -158,7 +159,7 @@ public class CardObjectComponent extends AbstractCardObject {
 
             @Override
             protected void onPostExecute(Object o) {
-                if (getStatus().equals(ssi.ssn.com.ssi_service.model.data.source.Status.NOT_AVAILABLE)) {
+                if (cardObject.getStatus().equals(ssi.ssn.com.ssi_service.model.data.source.Status.NOT_AVAILABLE)) {
                     Toast.makeText(activity, SourceHelper.getString(activity, R.string.fragment_launch_board_error_component), Toast.LENGTH_SHORT).show();
                 } else {
                     ((AbstractActivity) activity).showComponentListFragment(project, responseComponentList);
