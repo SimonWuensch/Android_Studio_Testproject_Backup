@@ -13,6 +13,8 @@ public class RequestModule {
 
     private static String ADDRESS = "/services/{name}/state";
 
+    public static String ADDITIONAL_MODULE_NAME = TAG + "ADDITIONAL_MODULE_NAME";
+
     private Project project;
     private String name;
 
@@ -36,7 +38,8 @@ public class RequestModule {
             protected Object doInBackground(Object[] objects) {
                 HttpGET httpGET = new HttpGET(cookieHandler, getAddress());
                 DefaultResponse defaultResponse = httpGET.sendRequest(false);
-                project.addDefaultResponseComponent(defaultResponse);
+                defaultResponse.addAdditional(ADDITIONAL_MODULE_NAME, name);
+                project.addDefaultResponseModul(defaultResponse);
                 return null;
             }
         };

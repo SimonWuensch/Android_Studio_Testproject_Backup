@@ -6,6 +6,7 @@ public class ResponseModule {
     private String status;
     private long since;
     private String enabled;
+    private String xmlModuleName;
 
     public ResponseModule() {
     }
@@ -40,5 +41,13 @@ public class ResponseModule {
 
     public void setEnabled(String enabled) {
         this.enabled = enabled;
+    }
+
+    public String getXmlModuleName() {
+        return xmlModuleName;
+    }
+
+    public void setXmlModuleName(String xmlModuleName) {
+        this.xmlModuleName = xmlModuleName;
     }
 }

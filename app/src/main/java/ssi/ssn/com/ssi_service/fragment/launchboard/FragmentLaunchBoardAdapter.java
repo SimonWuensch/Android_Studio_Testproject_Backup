@@ -51,7 +51,7 @@ class FragmentLaunchBoardAdapter extends RecyclerView.Adapter<FragmentLaunchBoar
                         R.drawable.icon_component,
                         true
                 ));
-                add(new CardObjectNotification(
+                /*add(new CardObjectNotification(
                         R.string.fragment_launch_board_card_notification,
                         R.drawable.icon_notification,
                         true
@@ -60,7 +60,7 @@ class FragmentLaunchBoardAdapter extends RecyclerView.Adapter<FragmentLaunchBoar
                         R.string.fragment_launch_board_card_kpi,
                         R.drawable.icon_kpi,
                         true
-                ));
+                ));*/
             }
         };
     }

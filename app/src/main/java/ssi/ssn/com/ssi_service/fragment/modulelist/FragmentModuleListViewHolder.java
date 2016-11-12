@@ -7,9 +7,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import ssi.ssn.com.ssi_service.R;
-import ssi.ssn.com.ssi_service.fragment.launchboard.source.CardObjectModule;
 import ssi.ssn.com.ssi_service.model.data.source.Status;
-import ssi.ssn.com.ssi_service.model.helper.XMLHelper;
+import ssi.ssn.com.ssi_service.model.network.response.module.ResponseModule;
 
 
 class FragmentModuleListViewHolder extends RecyclerView.ViewHolder {
@@ -35,28 +34,16 @@ class FragmentModuleListViewHolder extends RecyclerView.ViewHolder {
         rlNameBackground = (RelativeLayout) cardView.findViewById(R.id.fragment_module_list_relative_layout_name_background);
     }
 
-    protected void assignData(final XMLHelper.XMLObject object) {
-        String tagName = object.getTagName();
-        String moduleName = tagName.substring(0, 1).toUpperCase() + tagName.substring(1, tagName.indexOf("-"));
-        tvName.setText(moduleName);
+    protected void assignData(final ResponseModule responseModule) {
+        tvName.setText(responseModule.getName());
+        tvStatus.setText(responseModule.getStatus());
+        tvEnabled.setText(responseModule.getEnabled());
 
-        String isEnabled;
-        if (object.getAttributes().containsKey(CardObjectModule.XML_ATTRIBUTE_ENABLED)) {
-            isEnabled = object.getAttributes().get(CardObjectModule.XML_ATTRIBUTE_ENABLED);
-        } else {
-            isEnabled = "true";
-        }
-        tvEnabled.setText(isEnabled);
-
-        //Todo Module Status set
-        String status = "NULL";
-        tvStatus.setText(status);
-
-        if (!Boolean.valueOf(isEnabled)) {
+        if (!Boolean.valueOf(responseModule.getEnabled())) {
             rlNameBackground.setBackgroundColor(Status.NOT_AVAILABLE.getColor(activity));
-        } else if (status.equals(Status.RUNNING)) {
+        } else if (responseModule.getStatus().equals(Status.RUNNING)) {
             rlNameBackground.setBackgroundColor(Status.OK.getColor(activity));
-        } else if (status.equals(Status.UNKNOWN)) {
+        } else if (!responseModule.getStatus().equals(Status.RUNNING)) {
             rlNameBackground.setBackgroundColor(Status.ERROR.getColor(activity));
         } else {
             rlNameBackground.setBackgroundColor(Status.NOT_AVAILABLE.getColor(activity));

@@ -11,35 +11,35 @@ import java.util.List;
 
 import ssi.ssn.com.ssi_service.fragment.launchboard.source.CardObjectModule;
 import ssi.ssn.com.ssi_service.model.helper.XMLHelper;
+import ssi.ssn.com.ssi_service.model.network.response.component.ResponseComponent;
+import ssi.ssn.com.ssi_service.model.network.response.module.ResponseModule;
 
 class FragmentModuleListAdapter extends RecyclerView.Adapter<FragmentModuleListViewHolder> {
 
     private static String TAG = FragmentModuleListAdapter.class.getSimpleName();
 
     private final int layoutCardView;
-    private final FragmentModuleList fragment;
     private CardView cardView;
 
-    private List<XMLHelper.XMLObject> moduleObjects;
+    private List<ResponseModule> responseModuleList;
     private Activity activity;
 
-    FragmentModuleListAdapter(int layoutCardView, FragmentModuleList fragment, String responseApplicationConfig) {
+    FragmentModuleListAdapter(int layoutCardView, FragmentModuleList fragment, List<ResponseModule> responseModuleList) {
         this.layoutCardView = layoutCardView;
-        this.fragment = fragment;
         this.activity = fragment.getActivity();
-        //moduleObjects = CardObjectModule.searchObjectsInResponseXML(responseApplicationConfig);
-        moduleObjects = new ArrayList<>();
+        this.responseModuleList = responseModuleList;
     }
 
     @Override
     public FragmentModuleListViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         cardView = (CardView) LayoutInflater.from(parent.getContext()).inflate(layoutCardView, parent, false);
-        return new FragmentModuleListViewHolder(fragment.getActivity(), cardView);
+        return new FragmentModuleListViewHolder(activity, cardView);
     }
 
     @Override
     public void onBindViewHolder(FragmentModuleListViewHolder viewHolder, int position) {
-        viewHolder.assignData(moduleObjects.get(position));
+        ResponseModule responseModule = responseModuleList.get(position);
+        viewHolder.assignData(responseModule);
     }
 
     @Override
@@ -49,7 +49,7 @@ class FragmentModuleListAdapter extends RecyclerView.Adapter<FragmentModuleListV
 
     @Override
     public int getItemCount() {
-        return moduleObjects.size();
+        return responseModuleList.size();
     }
 
 }

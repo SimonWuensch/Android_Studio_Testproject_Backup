@@ -41,7 +41,6 @@ class FragmentComponentListViewHolder extends RecyclerView.ViewHolder {
     }
 
     protected void assignData(final ResponseComponent responseComponent) {
-
         final ResponseState state = responseComponent.getState();
         tvName.setText(state.getName());
         tvManage.setText(state.getManaged());

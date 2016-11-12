@@ -15,6 +15,7 @@ import ssi.ssn.com.ssi_service.R;
 import ssi.ssn.com.ssi_service.activity.AbstractActivity;
 import ssi.ssn.com.ssi_service.activity.MainActivity;
 import ssi.ssn.com.ssi_service.model.data.source.Project;
+import ssi.ssn.com.ssi_service.model.data.source.Status;
 import ssi.ssn.com.ssi_service.model.helper.JsonHelper;
 import ssi.ssn.com.ssi_service.model.helper.SourceHelper;
 import ssi.ssn.com.ssi_service.model.helper.XMLHelper;
@@ -157,9 +158,8 @@ public class CardObjectComponent extends AbstractCardObject {
 
             @Override
             protected void onPostExecute(Object o) {
-                if (project.getDefaultResponseApplicationConfig().getCode() != 200 || responseComponentList.isEmpty()) {
+                if (getStatus().equals(ssi.ssn.com.ssi_service.model.data.source.Status.NOT_AVAILABLE)) {
                     Toast.makeText(activity, SourceHelper.getString(activity, R.string.fragment_launch_board_error_component), Toast.LENGTH_SHORT).show();
-
                 } else {
                     ((AbstractActivity) activity).showComponentListFragment(project, responseComponentList);
                 }
@@ -191,8 +191,8 @@ public class CardObjectComponent extends AbstractCardObject {
 
                 for (ResponseComponent responseComponent : responseComponentList) {
                     String status = responseComponent.getState().getStatus();
-                    if (status.equals(ssi.ssn.com.ssi_service.model.data.source.Status.ONLINE) &&
-                            status.equals(ssi.ssn.com.ssi_service.model.data.source.Status.UNKNOWN)) {
+                    if (!status.equals(ssi.ssn.com.ssi_service.model.data.source.Status.ONLINE) &&
+                            !status.equals(ssi.ssn.com.ssi_service.model.data.source.Status.UNKNOWN)) {
                         AllComponentStatusOnline = false;
 
                     }

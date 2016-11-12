@@ -18,6 +18,7 @@ import ssi.ssn.com.ssi_service.model.data.source.Project;
 import ssi.ssn.com.ssi_service.model.helper.SQLiteHelper;
 import ssi.ssn.com.ssi_service.model.network.handler.RequestHandler;
 import ssi.ssn.com.ssi_service.model.network.response.component.ResponseComponent;
+import ssi.ssn.com.ssi_service.model.network.response.module.ResponseModule;
 
 public class AbstractActivity extends Activity {
 
@@ -112,8 +113,8 @@ public class AbstractActivity extends Activity {
         Log.i(getClass().getSimpleName(), "Show Fragment [" + fragmentLaunchBoard.TAG + "].");
     }
 
-    public void showModuleListFragment(Project project) {
-        FragmentModuleList fragmentModuleList = FragmentModuleList.newInstance(project);
+    public void showModuleListFragment(Project project, List<ResponseModule> responseModuleList) {
+        FragmentModuleList fragmentModuleList = FragmentModuleList.newInstance(project, responseModuleList);
         getFragmentManager()
                 .beginTransaction()
                 .replace(R.id.activity_main_fragment_container,

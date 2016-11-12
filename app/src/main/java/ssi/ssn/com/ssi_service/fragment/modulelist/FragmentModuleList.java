@@ -10,10 +10,17 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.owlike.genson.GenericType;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import ssi.ssn.com.ssi_service.R;
 import ssi.ssn.com.ssi_service.model.data.source.Project;
 import ssi.ssn.com.ssi_service.model.helper.JsonHelper;
 import ssi.ssn.com.ssi_service.model.helper.SourceHelper;
+import ssi.ssn.com.ssi_service.model.network.response.component.ResponseComponent;
+import ssi.ssn.com.ssi_service.model.network.response.module.ResponseModule;
 
 public class FragmentModuleList extends Fragment {
 
@@ -25,12 +32,13 @@ public class FragmentModuleList extends Fragment {
 
     private static String PROJECT_JSON = TAG + "PROJECT_JSON";
     private static String RESPONSE = TAG + "RESPONSE";
+    private static String RESPONSE_MODULE_LIST = TAG + "RESPONSE_MODULE_LIST";
 
     private View rootView;
     private Project project;
-    private String responseApplicationConfig;
+    private List<ResponseModule> responseModuleList;
 
-    public static FragmentModuleList newInstance(Project project) {
+    public static FragmentModuleList newInstance(Project project, List<ResponseModule> responseModuleList) {
         if (project == null) {
             return new FragmentModuleList();
         }
@@ -39,6 +47,7 @@ public class FragmentModuleList extends Fragment {
         Bundle bundle = new Bundle();
         bundle.putString(PROJECT_JSON, JsonHelper.toJson(project));
         bundle.putString(RESPONSE, project.getDefaultResponseApplicationConfig().getResult());
+        bundle.putSerializable(RESPONSE_MODULE_LIST, JsonHelper.toJson(responseModuleList));
         fragment.setArguments(bundle);
         return fragment;
     }
@@ -49,8 +58,10 @@ public class FragmentModuleList extends Fragment {
         }
 
         String projectJson = getArguments().getString(PROJECT_JSON);
-        responseApplicationConfig = getArguments().getString(RESPONSE);
         project = (Project) JsonHelper.fromJsonGeneric(Project.class, projectJson);
+        String jsonResponseModuleList = getArguments().getString(RESPONSE_MODULE_LIST);
+        responseModuleList = (ArrayList<ResponseModule>) JsonHelper.fromJsonGeneric(new GenericType<List<ResponseModule>>() {
+        }, jsonResponseModuleList);
     }
 
     @Override
@@ -65,7 +76,7 @@ public class FragmentModuleList extends Fragment {
             rootView = inflater.inflate(FRAGMENT_LAYOUT, container, false);
             Log.d(TAG, "Fragment inflated [" + getActivity().getResources().getResourceName(FRAGMENT_LAYOUT) + "].");
 
-            RecyclerView.Adapter mAdapter = new FragmentModuleListAdapter(CARDVIEW, this, responseApplicationConfig);
+            RecyclerView.Adapter mAdapter = new FragmentModuleListAdapter(CARDVIEW, this, responseModuleList);
             Log.d(TAG, "Adapter [" + mAdapter.getClass().getSimpleName() + "] with CardView [" + getActivity().getResources().getResourceName(CARDVIEW) + "] initialized.");
 
             RecyclerView mRecyclerView = (RecyclerView) rootView.findViewById(RECYCLERVIEW);
