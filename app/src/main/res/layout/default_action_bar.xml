@@ -36,7 +36,6 @@
             android:background="@color/transparent"
             android:src="@drawable/icon_menu"
             android:visibility="gone" />
-
     </RelativeLayout>
 
     <RelativeLayout
@@ -49,6 +48,15 @@
             android:layout_width="match_parent"
             android:layout_height="15dp"
             android:background="@color/ssiYellow" />
+
+        <TextView
+            android:id="@+id/default_action_bar_text_view_app_version"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/app_version"
+            android:paddingStart="5dp"
+            android:layout_alignParentBottom="true"
+            android:textAppearance="?android:attr/buttonStyleSmall"/>
 
         <ImageView
             android:layout_width="100dp"
