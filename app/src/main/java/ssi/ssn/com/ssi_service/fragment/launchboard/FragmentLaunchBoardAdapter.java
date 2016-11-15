@@ -12,9 +12,7 @@ import java.util.List;
 import ssi.ssn.com.ssi_service.R;
 import ssi.ssn.com.ssi_service.fragment.launchboard.source.AbstractCardObject;
 import ssi.ssn.com.ssi_service.fragment.launchboard.source.CardObjectComponent;
-import ssi.ssn.com.ssi_service.fragment.launchboard.source.CardObjectKPI;
 import ssi.ssn.com.ssi_service.fragment.launchboard.source.CardObjectModule;
-import ssi.ssn.com.ssi_service.fragment.launchboard.source.CardObjectNotification;
 import ssi.ssn.com.ssi_service.model.data.source.Project;
 
 class FragmentLaunchBoardAdapter extends RecyclerView.Adapter<FragmentLaunchBoardViewHolder> {

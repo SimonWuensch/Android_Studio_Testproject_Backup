@@ -2,13 +2,13 @@ package ssi.ssn.com.ssi_service.fragment.launchboard;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -45,7 +45,6 @@ public class FragmentLaunchBoard extends AbstractFragment {
     private TextView tvProjectLifeTime;
     private TextView tvProjectVersion;
     private RelativeLayout rlLoadingView;
-
     private FragmentLaunchBoardAdapter mAdapter;
 
     private Project project;
@@ -98,6 +97,30 @@ public class FragmentLaunchBoard extends AbstractFragment {
     }
 
     public void initViewComponents() {
+        ImageButton bReload = (ImageButton) rootView.findViewById(R.id.default_action_bar_button_reload);
+        bReload.setVisibility(View.VISIBLE);
+        bReload.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        checkProjectState();
+                        boolean isUpdating = false;
+                        for (AbstractCardObject cardObject : mAdapter.getCardInputs()) {
+                            if (cardObject.getLoadingView().getVisibility() == View.VISIBLE) {
+                                isUpdating = true;
+                            }
+                        }
+                        Log.d(TAG, "Card objects still updating status...");
+
+                        if (!isUpdating) {
+                            for (AbstractCardObject cardObject : mAdapter.getCardInputs()) {
+                                cardObject.reloadStatus(getActivity(), project);
+                            }
+                        }
+                    }
+                }
+        );
+
         TextView tvHeadLine = (TextView) rootView.findViewById(R.id.default_action_bar_text_view_headline);
         String headLineText = project.getProjectName() + " " + project.getProjectLocation() + " " + project.getProjectOrderNr();
         tvHeadLine.setText(headLineText);

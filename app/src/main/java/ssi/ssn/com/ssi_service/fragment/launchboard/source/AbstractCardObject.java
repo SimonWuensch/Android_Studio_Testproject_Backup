@@ -70,6 +70,10 @@ public class AbstractCardObject {
         this.observation = observation;
     }
 
+    @JsonIgnore
+    public View getLoadingView() {
+        return loadingView;
+    }
 
     @JsonIgnore
     public void setLoadingView(View loadingView) {
@@ -122,7 +126,12 @@ public class AbstractCardObject {
     }
 
     @JsonIgnore
-    public void checkStatus(final Activity activity, final Project project) {
+    public void checkStatus(Activity activity, Project project) {
+    }
+
+    public void reloadStatus(Activity activity, Project project) {
+        lastStatusCheck = null;
+        checkStatus(activity, project);
     }
 
     boolean isOutOfTime(Project project) {

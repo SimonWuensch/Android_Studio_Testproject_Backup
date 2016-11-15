@@ -19,7 +19,6 @@ import ssi.ssn.com.ssi_service.R;
 import ssi.ssn.com.ssi_service.model.data.source.Project;
 import ssi.ssn.com.ssi_service.model.helper.JsonHelper;
 import ssi.ssn.com.ssi_service.model.helper.SourceHelper;
-import ssi.ssn.com.ssi_service.model.network.response.component.ResponseComponent;
 import ssi.ssn.com.ssi_service.model.network.response.module.ResponseModule;
 
 public class FragmentModuleList extends Fragment {

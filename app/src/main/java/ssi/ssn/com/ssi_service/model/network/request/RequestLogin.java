@@ -4,9 +4,7 @@ import android.os.AsyncTask;
 import android.util.Log;
 
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
-import ssi.ssn.com.ssi_service.activity.MainActivity;
 import ssi.ssn.com.ssi_service.model.data.source.Project;
 import ssi.ssn.com.ssi_service.model.helper.JsonHelper;
 import ssi.ssn.com.ssi_service.model.network.DefaultResponse;

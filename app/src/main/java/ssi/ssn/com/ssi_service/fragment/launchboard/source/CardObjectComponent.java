@@ -15,7 +15,6 @@ import ssi.ssn.com.ssi_service.R;
 import ssi.ssn.com.ssi_service.activity.AbstractActivity;
 import ssi.ssn.com.ssi_service.activity.MainActivity;
 import ssi.ssn.com.ssi_service.model.data.source.Project;
-import ssi.ssn.com.ssi_service.model.data.source.Status;
 import ssi.ssn.com.ssi_service.model.helper.JsonHelper;
 import ssi.ssn.com.ssi_service.model.helper.SourceHelper;
 import ssi.ssn.com.ssi_service.model.helper.XMLHelper;
@@ -58,7 +57,6 @@ public class CardObjectComponent extends AbstractCardObject {
                 });
         componentObjects = xmlHelper.startSearching(responseApplicationConfig);
         for (int i = 0; i < componentObjects.size(); i++) {
-
             if (!componentObjects.get(i).getAttributes().containsKey(XML_ATTRIBUTE_MANAGE)) {
                 componentObjects.remove(i);
             }

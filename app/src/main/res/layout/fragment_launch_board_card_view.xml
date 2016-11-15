@@ -48,30 +48,29 @@
             android:layout_marginStart="6dp"
             android:layout_toEndOf="@id/fragment_launch_board_card_view_frame_layout_image_view"
             android:scaleX="1.2"
-            android:scaleY="1.2" />
+            android:scaleY="1.2"
+            android:visibility="gone" />
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true">
 
         <View
             android:id="@+id/fragment_launch_board_card_view_view_status"
             android:layout_width="50dp"
             android:layout_height="match_parent"
-            android:layout_alignParentEnd="true"
             android:background="@color/NOT_AVAILABLE" />
 
-        <RelativeLayout
-            android:id="@+id/fragment_launch_board_card_view_loading_view"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="5dp"
-            android:layout_marginTop="5dp"
-            android:layout_toStartOf="@+id/fragment_launch_board_card_view_view_status"
-            android:visibility="visible">
-
             <ProgressBar
-                android:id="@+id/progressBar"
+                android:id="@+id/fragment_launch_board_card_view_view_loading_view"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
-                android:indeterminate="true" />
-
+            android:layout_centerInParent="true"
+            android:layout_marginRight="5dp"
+                android:layout_marginTop="5dp"
+                android:indeterminate="true"
+                android:visibility="visible" />
         </RelativeLayout>
 
     </RelativeLayout>

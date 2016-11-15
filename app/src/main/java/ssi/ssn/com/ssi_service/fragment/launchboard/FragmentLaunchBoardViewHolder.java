@@ -36,7 +36,7 @@ class FragmentLaunchBoardViewHolder extends RecyclerView.ViewHolder {
         tvTitle = (TextView) cardView.findViewById(R.id.fragment_launch_board_card_view_title);
         cbObservation = (CheckBox) cardView.findViewById(R.id.fragment_launch_board_card_view_check_box_observation);
         vStatus = cardView.findViewById(R.id.fragment_launch_board_card_view_view_status);
-        loadingView = cardView.findViewById(R.id.fragment_launch_board_card_view_loading_view);
+        loadingView = cardView.findViewById(R.id.fragment_launch_board_card_view_view_loading_view);
     }
 
     protected void assignData(final AbstractCardObject cardObject, final Project project) {

@@ -93,6 +93,11 @@ public class AbstractActivity extends Activity {
         Log.i(getClass().getSimpleName(), "Show Fragment [" + fragmentCustomList.TAG + "].");
     }
 
+    public void reloadProjectListFragment(FragmentProjectList fragmentProjectList) {
+        getFragmentManager().beginTransaction().remove(fragmentProjectList).commit();
+        showProjectListFragment();
+    }
+
     public void showProjectListFragment() {
         FragmentProjectList fragmentProjectList = FragmentProjectList.newInstance();
         getFragmentManager()
@@ -102,6 +107,12 @@ public class AbstractActivity extends Activity {
                         fragmentProjectList.TAG)
                 .commit();
         Log.i(getClass().getSimpleName(), "Show Fragment [" + fragmentProjectList.TAG + "].");
+    }
+
+    public void reloadLaunchBoardFragment(FragmentLaunchBoard fragmentLaunchBoard, Project project) {
+        getFragmentManager().beginTransaction().remove(fragmentLaunchBoard).commit();
+        getFragmentManager().popBackStack();
+        showLaunchBoardFragment(project);
     }
 
     public void showLaunchBoardFragment(final Project project) {

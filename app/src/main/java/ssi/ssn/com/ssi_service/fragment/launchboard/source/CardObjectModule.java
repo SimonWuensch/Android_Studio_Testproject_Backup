@@ -17,7 +17,6 @@ import ssi.ssn.com.ssi_service.R;
 import ssi.ssn.com.ssi_service.activity.AbstractActivity;
 import ssi.ssn.com.ssi_service.activity.MainActivity;
 import ssi.ssn.com.ssi_service.model.data.source.Project;
-import ssi.ssn.com.ssi_service.model.data.source.Status;
 import ssi.ssn.com.ssi_service.model.helper.JsonHelper;
 import ssi.ssn.com.ssi_service.model.helper.SourceHelper;
 import ssi.ssn.com.ssi_service.model.helper.XMLHelper;
@@ -35,7 +34,6 @@ public class CardObjectModule extends AbstractCardObject {
     private static String XML_SEARCHED_TAG_MODULE = "module";
     public static String XML_ATTRIBUTE_ENABLED = "enabled";
 
-    private Map<String, String> enabledModuleList = new HashMap<>();
     private List<ResponseModule> responseModuleList = new ArrayList<>();
     private List<XMLHelper.XMLObject> moduleObjects;
 
@@ -82,6 +80,8 @@ public class CardObjectModule extends AbstractCardObject {
         final RequestHandler requestHandler = ((MainActivity) activity).getRequestHandler();
         requestHandler.addRequestLoginTaskToExecutor(executor, project);
         requestHandler.getRequestApplicationConfigTask(project).executeOnExecutor(executor);
+
+        final Map<String, String> enabledModuleList = new HashMap<>();
         new AsyncTask<Object, Void, Objects>() {
             @Override
             protected Objects doInBackground(Object... objects) {
@@ -132,7 +132,6 @@ public class CardObjectModule extends AbstractCardObject {
                             responseModuleList.add(responseModule);
                         }
                         Log.d(TAG, "ResponseModuleList size [" + responseModuleList.size() + "]");
-
                     }
                 }.executeOnExecutor(executor);
 
@@ -198,7 +197,9 @@ public class CardObjectModule extends AbstractCardObject {
 
                 for (ResponseModule responseModule : responseModuleList) {
                     String status = responseModule.getStatus();
-                    if (!status.equals(ssi.ssn.com.ssi_service.model.data.source.Status.RUNNING) &&
+                    if (!Boolean.valueOf(responseModule.getEnabled())) {
+                        continue;
+                    } else if (!status.equals(ssi.ssn.com.ssi_service.model.data.source.Status.RUNNING) &&
                             !status.equals(ssi.ssn.com.ssi_service.model.data.source.Status.UNKNOWN)) {
                         allModuleStatusOnline = false;
                     }

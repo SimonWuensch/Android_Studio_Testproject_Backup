@@ -24,6 +24,9 @@ public class RequestModule {
     }
 
     public static RequestModule init(Project project, String name) {
+        if (project.getDefaultResponseModuleList() != null) {
+            project.getDefaultResponseModuleList().clear();
+        }
         return new RequestModule(project, name);
     }
 

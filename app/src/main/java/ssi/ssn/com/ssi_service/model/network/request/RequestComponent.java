@@ -22,6 +22,9 @@ public class RequestComponent {
     }
 
     public static RequestComponent init(Project project, String name) {
+        if (project.getDefaultResponseComponentList() != null) {
+            project.getDefaultResponseComponentList().clear();
+        }
         return new RequestComponent(project, name);
     }
 

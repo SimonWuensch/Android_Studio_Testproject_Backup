@@ -102,7 +102,6 @@ public class FragmentCreateProject extends AbstractFragment {
     @Override
     public void onStop() {
         super.onStop();
-        executor.shutdown();
     }
 
     public void initViewComponents() {
@@ -381,7 +380,7 @@ public class FragmentCreateProject extends AbstractFragment {
                             return;
                         }
 
-                        requestHandler.addRequestLoginTaskToExecutor(executor, project);
+                        requestHandler.getRequestLoginTask(project).executeOnExecutor(executor);
                         new AsyncTask<Object, Void, Object>() {
                             @Override
                             protected Object doInBackground(Object... objects) {
@@ -390,6 +389,7 @@ public class FragmentCreateProject extends AbstractFragment {
 
                             @Override
                             protected void onPostExecute(Object o) {
+
                                 if (project.getDefaultResponseLogin().getCode() == 200) {
                                     project.loadProjectInfoFromApplicationInfo();
                                     switch (fragmentStatus) {

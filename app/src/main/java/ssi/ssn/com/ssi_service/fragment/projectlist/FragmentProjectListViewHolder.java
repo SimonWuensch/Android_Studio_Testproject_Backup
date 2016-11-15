@@ -32,6 +32,7 @@ class FragmentProjectListViewHolder extends RecyclerView.ViewHolder {
     private TextView tvProjectOrderNr;
     private ImageView ivProjectSettings;
     private View vProjectState;
+    private View loadingView;
 
     FragmentProjectListViewHolder(Activity activity, View cardView) {
         super(cardView);
@@ -47,6 +48,7 @@ class FragmentProjectListViewHolder extends RecyclerView.ViewHolder {
         tvProjectOrderNr = (TextView) cardView.findViewById(R.id.fragment_project_list_card_view_text_view_project_order_nr);
         ivProjectSettings = (ImageView) cardView.findViewById(R.id.fragment_project_list_card_view_image_settings);
         vProjectState = cardView.findViewById(R.id.fragment_project_list_card_view_view_project_status);
+        loadingView = cardView.findViewById(R.id.fragment_project_list_card_view_view_loading_view);
     }
 
     protected void assignData(final Project project) {
@@ -86,17 +88,15 @@ class FragmentProjectListViewHolder extends RecyclerView.ViewHolder {
                     vProjectState.setBackgroundColor(ssi.ssn.com.ssi_service.model.data.source.Status.OK.getColor(activity));
                     cardView.setOnClickListener(onClickCardView(project));
                 } else {
-                    vProjectState.setBackgroundColor(ssi.ssn.com.ssi_service.model.data.source.Status.ERROR.getColor(activity));
+                    vProjectState.setBackgroundColor(ssi.ssn.com.ssi_service.model.data.source.Status.NOT_AVAILABLE.getColor(activity));
                     cardView.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
                             Toast.makeText(activity, SourceHelper.getString(activity, R.string.fragment_project_list_error_project_not_available), Toast.LENGTH_SHORT).show();
                         }
                     });
-
-                    //TODO Delete
-                    cardView.setOnClickListener(onClickCardView(project));
                 }
+                loadingView.setVisibility(View.GONE);
             }
         }.executeOnExecutor(executor);
         executor.shutdown();
@@ -115,7 +115,9 @@ class FragmentProjectListViewHolder extends RecyclerView.ViewHolder {
         return new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((MainActivity) activity).showLaunchBoardFragment(project);
+                if (loadingView.getVisibility() != View.VISIBLE) {
+                    ((MainActivity) activity).showLaunchBoardFragment(project);
+                }
             }
         };
     }

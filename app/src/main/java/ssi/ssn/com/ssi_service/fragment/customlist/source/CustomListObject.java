@@ -2,7 +2,6 @@ package ssi.ssn.com.ssi_service.fragment.customlist.source;
 
 import android.app.Activity;
 import android.graphics.Color;
-import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;

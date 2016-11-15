@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -45,6 +46,15 @@ public class FragmentProjectList extends AbstractFragment {
     public void initViewComponents() {
         TextView tvHeadLine = (TextView) rootView.findViewById(R.id.default_action_bar_text_view_headline);
         tvHeadLine.setText(SourceHelper.getString(getActivity(), R.string.fragment_project_list_title));
+
+        ImageButton bReload = (ImageButton) rootView.findViewById(R.id.default_action_bar_button_reload);
+        bReload.setVisibility(View.VISIBLE);
+        bReload.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ((MainActivity) getActivity()).reloadProjectListFragment(FragmentProjectList.this);
+            }
+        });
 
         ImageView ivAddProject = (ImageView) rootView.findViewById(R.id.fragment_project_list_image_add_project);
         ivAddProject.setOnClickListener(new View.OnClickListener() {
