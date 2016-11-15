@@ -64,7 +64,6 @@
                 android:textAppearance="?android:attr/textAppearanceMedium" />
         </LinearLayout>
 
-
         <ImageView
             android:id="@+id/fragment_project_list_card_view_image_settings"
             android:layout_width="30dp"
@@ -83,7 +82,7 @@
                 android:id="@+id/fragment_project_list_card_view_view_project_status"
                 android:layout_width="50dp"
                 android:layout_height="match_parent"
-                android:background="@color/NOT_AVAILABLE" />
+                android:background="@color/lightGray" />
 
             <ProgressBar
                 android:id="@+id/fragment_project_list_card_view_view_loading_view"

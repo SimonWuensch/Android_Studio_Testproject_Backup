@@ -316,7 +316,6 @@ public class FragmentCreateProject extends AbstractFragment {
     }
 
     // ** APPLICATION INFO BUTTON CLICK ********************************************************* //
-
     // ** FINAL BUTTON CLICK ******************************************************************** //
     public View.OnClickListener onFinalButtonClick() {
         return new View.OnClickListener() {

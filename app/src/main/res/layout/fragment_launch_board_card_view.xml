@@ -60,7 +60,7 @@
             android:id="@+id/fragment_launch_board_card_view_view_status"
             android:layout_width="50dp"
             android:layout_height="match_parent"
-            android:background="@color/NOT_AVAILABLE" />
+            android:background="@color/lightGray" />
 
             <ProgressBar
                 android:id="@+id/fragment_launch_board_card_view_view_loading_view"

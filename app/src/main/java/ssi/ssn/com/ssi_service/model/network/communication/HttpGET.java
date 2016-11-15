@@ -16,7 +16,7 @@ public class HttpGET {
 
     private static String TAG = HttpGET.class.getSimpleName();
     private static String PROTOCOLL = "http://";
-    private static int READ_TIME_OUT_INTERVAL = 3000;
+    private static int READ_TIME_OUT_INTERVAL = 10000;
     private static int GET_COMMUNICATION_ERROR = 900;
     private static int GET_COMMUNICATION_ERROR_TIMEOUT = 901;
 
@@ -56,6 +56,7 @@ public class HttpGET {
             Log.i(TAG, "[GET DefaultResponse] Address: [" + hostAddress + "], Result: [" + result + "]");
             return new DefaultResponse(urlConnection.getResponseCode(), result);
         } catch (java.net.SocketTimeoutException e) {
+            e.printStackTrace();
             Log.e(TAG, "[ERROR] GET Request Timeout: [" + hostAddress + "]");
             return new DefaultResponse(GET_COMMUNICATION_ERROR_TIMEOUT, e.getMessage());
         } catch (Throwable t) {
