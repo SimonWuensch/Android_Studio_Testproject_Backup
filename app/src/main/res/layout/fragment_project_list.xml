@@ -15,7 +15,7 @@
         android:id="@+id/fragment_project_list_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
         android:layout_below="@+id/fragment_project_list_include_headline"
         android:layout_margin="5dp"
         android:scrollbars="vertical" />
@@ -25,7 +25,7 @@
         android:layout_width="70dp"
         android:layout_height="70dp"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
         android:layout_margin="15dp"
         android:src="@drawable/icon_add"
         android:tint="@color/defaultColor" />

@@ -14,24 +14,24 @@
             android:id="@+id/default_action_bar_image_view_page_icon"
             android:layout_width="50dp"
             android:layout_height="40dp"
-            android:layout_alignParentStart="true"
+            android:layout_alignParentLeft="true"
             android:layout_centerInParent="true"
             android:src="@drawable/icon_app_logo" />
 
         <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_toEndOf="@+id/default_action_bar_image_view_page_icon"
+            android:layout_toRightOf="@+id/default_action_bar_image_view_page_icon"
             android:layout_centerInParent="true">
 
             <TextView
                 android:id="@+id/default_action_bar_text_view_headline"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
+                android:layout_alignParentLeft="true"
                 android:layout_centerInParent="true"
-                android:layout_marginStart="@dimen/default_margin"
-                android:layout_toStartOf="@+id/default_action_bar_button_reload"
+                android:layout_marginLeft="@dimen/default_margin"
+                android:layout_toLeftOf="@+id/default_action_bar_button_reload"
                 android:text="Headline"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:textStyle="bold" />
@@ -40,7 +40,7 @@
                 android:id="@+id/default_action_bar_button_reload"
                 android:layout_width="35dp"
                 android:layout_height="35dp"
-                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
                 android:layout_centerInParent="true"
                 android:background="@color/transparent"
                 android:src="@drawable/icon_reload"
@@ -66,15 +66,15 @@
             android:layout_height="wrap_content"
             android:text="@string/app_version"
             android:layout_alignParentTop="true"
-            android:paddingStart="2dp"
+            android:paddingLeft="2dp"
             android:textAppearance="?android:attr/buttonStyleSmall"/>
 
         <ImageView
             android:layout_width="100dp"
             android:layout_height="15dp"
-            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
             android:layout_centerInParent="true"
-            android:layout_marginEnd="5dp"
+            android:layout_marginRight="5dp"
             android:src="@drawable/icon_ssi_logo" />
 
     </RelativeLayout>

@@ -56,11 +56,11 @@ public class HttpGET {
             Log.i(TAG, "[GET DefaultResponse] Address: [" + hostAddress + "], Result: [" + result + "]");
             return new DefaultResponse(urlConnection.getResponseCode(), result);
         } catch (java.net.SocketTimeoutException e) {
-            e.printStackTrace();
             Log.e(TAG, "[ERROR] GET Request Timeout: [" + hostAddress + "]");
             return new DefaultResponse(GET_COMMUNICATION_ERROR_TIMEOUT, e.getMessage());
         } catch (Throwable t) {
             Log.e(TAG, "[ERROR] GET Request. Address: [" + hostAddress + "]");
+            t.printStackTrace();
             return new DefaultResponse(GET_COMMUNICATION_ERROR, t.getMessage());
         } finally {
             if (urlConnection != null) {

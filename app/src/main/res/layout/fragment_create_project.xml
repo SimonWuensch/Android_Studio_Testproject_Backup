@@ -44,7 +44,7 @@
             android:id="@+id/fragment_create_project_image_view_ip"
             android:layout_width="20dp"
             android:layout_height="20dp"
-            android:layout_alignParentStart="true"
+            android:layout_alignParentLeft="true"
             android:layout_centerInParent="true"
             android:contentDescription="Icon_IP_Address"
             android:src="@drawable/icon_ip" />
@@ -54,8 +54,8 @@
             android:layout_width="250dp"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:layout_marginStart="5dp"
-            android:layout_toEndOf="@+id/fragment_create_project_image_view_ip"
+            android:layout_marginLeft="5dp"
+            android:layout_toRightOf="@+id/fragment_create_project_image_view_ip"
             android:hint="@string/fragment_create_project_edit_text_hint_ip_address"
             android:inputType="textUri"
             android:lines="1"
@@ -65,9 +65,9 @@
             android:id="@+id/fragment_create_project_button_show_project_application_info"
             android:layout_width="44dp"
             android:layout_height="40dp"
-            android:layout_toEndOf="@+id/fragment_create_project_edit_text_project_address"
+            android:layout_toRightOf="@+id/fragment_create_project_edit_text_project_address"
             android:background="@color/defaultColor"
-            android:drawableStart="@drawable/icon_info"
+            android:drawableLeft="@drawable/icon_info"
             android:padding="10dp" />
 
     </RelativeLayout>
@@ -76,7 +76,7 @@
         android:id="@+id/fragment_create_project_relative_layout_user_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignStart="@+id/fragment_create_project_relative_layout_password"
+        android:layout_alignLeft="@+id/fragment_create_project_relative_layout_password"
         android:layout_below="@+id/fragment_create_project_relative_layout_ip_address"
         android:layout_marginTop="15dp">
 
@@ -84,7 +84,7 @@
             android:id="@+id/fragment_create_project_image_user"
             android:layout_width="20dp"
             android:layout_height="20dp"
-            android:layout_alignParentStart="true"
+            android:layout_alignParentLeft="true"
             android:layout_centerInParent="true"
             android:contentDescription="icon_username"
             android:src="@drawable/icon_user" />
@@ -94,8 +94,8 @@
             android:layout_width="300dp"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:layout_marginStart="5dp"
-            android:layout_toEndOf="@+id/fragment_create_project_image_user"
+            android:layout_marginLeft="5dp"
+            android:layout_toRightOf="@+id/fragment_create_project_image_user"
             android:hint="@string/fragment_create_project_edit_text_hint_user_name"
             android:inputType="textPersonName"
             android:lines="1"
@@ -115,7 +115,7 @@
             android:id="@+id/fragment_create_project_image_password"
             android:layout_width="20dp"
             android:layout_height="20dp"
-            android:layout_alignParentStart="true"
+            android:layout_alignParentLeft="true"
             android:layout_centerInParent="true"
             android:contentDescription="icon_password"
             android:src="@drawable/icon_password" />
@@ -125,8 +125,8 @@
             android:layout_width="300dp"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:layout_marginStart="5dp"
-            android:layout_toEndOf="@+id/fragment_create_project_image_password"
+            android:layout_marginLeft="5dp"
+            android:layout_toRightOf="@+id/fragment_create_project_image_password"
             android:hint="@string/fragment_create_project_edit_text_hint_password"
             android:inputType="textPassword"
             android:lines="1"
@@ -145,7 +145,7 @@
             android:id="@+id/fragment_create_project_image_update_interval"
             android:layout_width="20dp"
             android:layout_height="20dp"
-            android:layout_alignParentStart="true"
+            android:layout_alignParentLeft="true"
             android:layout_centerInParent="true"
             android:contentDescription="icon_update_interval"
             android:src="@drawable/icon_update_interval" />
@@ -155,8 +155,8 @@
             android:layout_width="180dp"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:layout_marginStart="5dp"
-            android:layout_toEndOf="@+id/fragment_create_project_image_update_interval"
+            android:layout_marginLeft="5dp"
+            android:layout_toRightOf="@+id/fragment_create_project_image_update_interval"
             android:inputType="numberDecimal"
             android:lines="1"
             android:maxLength="20"
@@ -165,7 +165,7 @@
         <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_toEndOf="@id/fragment_create_project_edit_text_update_interval">
+            android:layout_toRightOf="@id/fragment_create_project_edit_text_update_interval">
 
             <Spinner
                 android:id="@+id/fragment_create_project_spinner_time_input"
@@ -177,7 +177,7 @@
                 android:id="@+id/fragment_create_project_image_drop_down"
                 android:layout_width="20dp"
                 android:layout_height="20dp"
-                android:layout_alignEnd="@+id/fragment_create_project_spinner_time_input"
+                android:layout_alignRight="@+id/fragment_create_project_spinner_time_input"
                 android:layout_centerVertical="true"
                 android:layout_marginRight="10dp"
                 android:contentDescription="icon_drop_down_arrow"
