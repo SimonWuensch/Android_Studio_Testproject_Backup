@@ -7,9 +7,8 @@ import java.util.List;
 
 import ssi.ssn.com.ssi_service.model.network.DefaultResponse;
 
-public class AbstractProject {
+public class NetworkProject {
 
-    @JsonIgnore
     private DefaultResponse defaultResponseApplication;
     @JsonIgnore
     private DefaultResponse defaultResponseApplicationConfig;
@@ -30,12 +29,13 @@ public class AbstractProject {
     @JsonIgnore
     private List<DefaultResponse> defaultResponseModuleList;
 
-    @JsonIgnore
+    public NetworkProject() {
+    }
+
     public DefaultResponse getDefaultResponseApplication() {
         return defaultResponseApplication;
     }
 
-    @JsonIgnore
     public void setDefaultResponseApplication(DefaultResponse defaultResponseApplication) {
         this.defaultResponseApplication = defaultResponseApplication;
     }
@@ -109,11 +109,11 @@ public class AbstractProject {
     public void setDefaultResponseSessionsCurrent(DefaultResponse defaultResponseSessionsCurrent) {
         this.defaultResponseSessionsCurrent = defaultResponseSessionsCurrent;
     }
-
+    @JsonIgnore
     public List<DefaultResponse> getDefaultResponseComponentList() {
         return defaultResponseComponentList == null ? new ArrayList<DefaultResponse>() : defaultResponseComponentList;
     }
-
+    @JsonIgnore
     public void setDefaultResponseComponentList(List<DefaultResponse> defaultResponseComponentList) {
         this.defaultResponseComponentList = defaultResponseComponentList;
     }
@@ -124,11 +124,11 @@ public class AbstractProject {
         }
         defaultResponseComponentList.add(defaultResponseComponent);
     }
-
+    @JsonIgnore
     public List<DefaultResponse> getDefaultResponseModuleList() {
         return defaultResponseModuleList;
     }
-
+    @JsonIgnore
     public void setDefaultResponseModuleList(List<DefaultResponse> defaultResponseModuleList) {
         this.defaultResponseModuleList = defaultResponseModuleList;
     }

@@ -43,7 +43,7 @@ class FragmentLaunchBoardViewHolder extends RecyclerView.ViewHolder {
         image.setImageResource(cardObject.getIcon());
         tvTitle.setText(SourceHelper.getString(activity, cardObject.getTitle()));
         cbObservation.setChecked(cardObject.isObservation());
-        cardObject.setStatusView(vStatus);
+        cardObject.setStatusView(vStatus, activity);
         cardObject.setLoadingView(loadingView);
 
         cardView.setOnClickListener(new View.OnClickListener() {

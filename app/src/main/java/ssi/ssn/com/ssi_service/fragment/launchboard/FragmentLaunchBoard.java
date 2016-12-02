@@ -12,7 +12,12 @@ import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.owlike.genson.GenericType;
+
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
@@ -21,13 +26,17 @@ import ssi.ssn.com.ssi_service.R;
 import ssi.ssn.com.ssi_service.activity.MainActivity;
 import ssi.ssn.com.ssi_service.fragment.AbstractFragment;
 import ssi.ssn.com.ssi_service.fragment.launchboard.source.AbstractCardObject;
+import ssi.ssn.com.ssi_service.fragment.launchboard.source.CardObjectComponent;
+import ssi.ssn.com.ssi_service.fragment.launchboard.source.CardObjectKPI;
+import ssi.ssn.com.ssi_service.fragment.launchboard.source.CardObjectModule;
+import ssi.ssn.com.ssi_service.fragment.launchboard.source.CardObjectNotification;
 import ssi.ssn.com.ssi_service.model.data.source.Project;
 import ssi.ssn.com.ssi_service.model.helper.FormatHelper;
 import ssi.ssn.com.ssi_service.model.helper.JsonHelper;
 import ssi.ssn.com.ssi_service.model.helper.SourceHelper;
-import ssi.ssn.com.ssi_service.model.network.DefaultResponse;
 import ssi.ssn.com.ssi_service.model.network.handler.RequestHandler;
 import ssi.ssn.com.ssi_service.model.network.response.application.ResponseApplication;
+import ssi.ssn.com.ssi_service.model.network.response.component.ResponseComponent;
 
 public class FragmentLaunchBoard extends AbstractFragment {
 
@@ -38,6 +47,10 @@ public class FragmentLaunchBoard extends AbstractFragment {
     private static int CARDVIEW = R.layout.fragment_launch_board_card_view;
 
     private static String PROJECT_JSON = TAG + "PROJECT_JSON";
+    private static String CARD_OBJECT_COMPONENT = TAG + "CARD_OBJECT_COMPONENT";
+    private static String CARD_OBJECT_MODULE = TAG + "CARD_OBJECT_MODULE";
+    private static String CARD_OBJECT_NOTIFICATION = TAG + "CARD_OBJECT_NOTIFICATION";
+    private static String CARD_OBJECT_KPI = TAG + "CARD_OBJECT_KPI";
 
     private View rootView;
     private RelativeLayout rlProjectStateBackground;
@@ -48,8 +61,9 @@ public class FragmentLaunchBoard extends AbstractFragment {
     private FragmentLaunchBoardAdapter mAdapter;
 
     private Project project;
+    private List<AbstractCardObject> cardObjects;
 
-    public static FragmentLaunchBoard newInstance(Project project) {
+    public static FragmentLaunchBoard newInstance(Project project, CardObjectModule cardObjectModule,  CardObjectComponent cardObjectComponent, CardObjectNotification cardObjectNotification, CardObjectKPI cardObjectKPI) {
         if (project == null) {
             return new FragmentLaunchBoard();
         }
@@ -57,6 +71,10 @@ public class FragmentLaunchBoard extends AbstractFragment {
         FragmentLaunchBoard fragment = new FragmentLaunchBoard();
         Bundle bundle = new Bundle();
         bundle.putString(PROJECT_JSON, JsonHelper.toJson(project));
+        bundle.putString(CARD_OBJECT_MODULE, JsonHelper.toJson(cardObjectModule));
+        bundle.putString(CARD_OBJECT_COMPONENT, JsonHelper.toJson(cardObjectComponent));
+        bundle.putString(CARD_OBJECT_NOTIFICATION, JsonHelper.toJson(cardObjectNotification));
+        bundle.putString(CARD_OBJECT_KPI, JsonHelper.toJson(cardObjectKPI));
         fragment.setArguments(bundle);
         return fragment;
     }
@@ -68,6 +86,24 @@ public class FragmentLaunchBoard extends AbstractFragment {
 
         String projectJson = getArguments().getString(PROJECT_JSON);
         project = (Project) JsonHelper.fromJsonGeneric(Project.class, projectJson);
+
+        String cardObjectModuleJson = getArguments().getString(CARD_OBJECT_MODULE);
+        CardObjectModule cardObjectModule = (CardObjectModule) JsonHelper.fromJsonGeneric(CardObjectModule.class, cardObjectModuleJson);
+
+        String cardObjectComponentJson = getArguments().getString(CARD_OBJECT_COMPONENT);
+        CardObjectComponent cardObjectComponent = (CardObjectComponent) JsonHelper.fromJsonGeneric(CardObjectComponent.class, cardObjectComponentJson);
+
+        String cardObjectNotificationJson = getArguments().getString(CARD_OBJECT_NOTIFICATION);
+        CardObjectNotification cardObjectNotification = (CardObjectNotification) JsonHelper.fromJsonGeneric(CardObjectNotification.class, cardObjectNotificationJson);
+
+        String cardObjectKPIJson = getArguments().getString(CARD_OBJECT_KPI);
+        CardObjectKPI cardObjectKPI = (CardObjectKPI) JsonHelper.fromJsonGeneric(CardObjectKPI.class, cardObjectKPIJson);
+
+        cardObjects = new LinkedList<AbstractCardObject>();
+        cardObjects.add(cardObjectModule);
+        cardObjects.add(cardObjectComponent);
+        cardObjects.add(cardObjectNotification);
+        cardObjects.add(cardObjectKPI);
     }
 
     @Override
@@ -82,7 +118,7 @@ public class FragmentLaunchBoard extends AbstractFragment {
             rootView = inflater.inflate(FRAGMENT_LAYOUT, container, false);
             Log.d(TAG, "Fragment inflated [" + getActivity().getResources().getResourceName(FRAGMENT_LAYOUT) + "].");
 
-            mAdapter = new FragmentLaunchBoardAdapter(CARDVIEW, this, project);
+            mAdapter = new FragmentLaunchBoardAdapter(CARDVIEW, this, project, cardObjects);
             Log.d(TAG, "Adapter [" + mAdapter.getClass().getSimpleName() + "] with CardView [" + getActivity().getResources().getResourceName(CARDVIEW) + "] initialized.");
 
             RecyclerView mRecyclerView = (RecyclerView) rootView.findViewById(RECYCLERVIEW);
@@ -105,15 +141,15 @@ public class FragmentLaunchBoard extends AbstractFragment {
                     public void onClick(View view) {
                         checkProjectState();
                         boolean isUpdating = false;
-                        for (AbstractCardObject cardObject : mAdapter.getCardInputs()) {
+                        for (AbstractCardObject cardObject : cardObjects) {
                             if (cardObject.getLoadingView().getVisibility() == View.VISIBLE) {
                                 isUpdating = true;
                             }
                         }
                         Log.d(TAG, "Card objects still updating status...");
 
-                        if (!isUpdating) {
-                            for (AbstractCardObject cardObject : mAdapter.getCardInputs()) {
+                        if (isUpdating) {
+                            for (AbstractCardObject cardObject : cardObjects) {
                                 cardObject.reloadStatus(getActivity(), project);
                             }
                         }
@@ -136,9 +172,14 @@ public class FragmentLaunchBoard extends AbstractFragment {
     }
 
     public void checkProjectState() {
-        final RequestHandler requestHandler = ((MainActivity) getActivity()).getRequestHandler();
-        final ExecutorService executor = Executors.newSingleThreadExecutor();
-        requestHandler.getRequestApplicationTask(project).executeOnExecutor(executor);
+        ExecutorService executor = Executors.newSingleThreadExecutor();
+
+        boolean isOutOfTime = new Date().getTime() - project.getLastObservationTime() > project.getObservationInterval();
+        if (project.getDefaultResponseApplication() == null || isOutOfTime) {
+            RequestHandler requestHandler = ((MainActivity) getActivity()).getRequestHandler();
+            requestHandler.getRequestApplicationTask(project).executeOnExecutor(executor);
+        }
+
         rlLoadingView.setVisibility(View.VISIBLE);
         new AsyncTask<Object, Void, Object>() {
             @Override
@@ -148,9 +189,8 @@ public class FragmentLaunchBoard extends AbstractFragment {
 
             @Override
             protected void onPostExecute(Object o) {
-                DefaultResponse defaultResponseApplication = project.getDefaultResponseApplication();
-                if (defaultResponseApplication.getCode() == 200) {
-                    ResponseApplication responseApplication = (ResponseApplication) JsonHelper.fromJsonGeneric(ResponseApplication.class, defaultResponseApplication.getResult());
+                if (project.getDefaultResponseApplication().getCode() == 200) {
+                    ResponseApplication responseApplication = (ResponseApplication) JsonHelper.fromJsonGeneric(ResponseApplication.class, project.getDefaultResponseApplication().getResult());
                     String projectStatus = responseApplication.getState().getStatus();
                     tvProjectStatus.setText(projectStatus);
                     if (projectStatus.equals(ssi.ssn.com.ssi_service.model.data.source.Status.RUNNING)) {
@@ -177,14 +217,13 @@ public class FragmentLaunchBoard extends AbstractFragment {
                 rlLoadingView.setVisibility(View.GONE);
             }
         }.executeOnExecutor(executor);
-        executor.shutdown();
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        for (AbstractCardObject cardObject : mAdapter.getCardInputs()) {
-            cardObject.checkStatus(getActivity(), project);
+        for (AbstractCardObject cardObject : cardObjects) {
+            cardObject.detectCardStatus(getActivity(), project);
         }
     }
 

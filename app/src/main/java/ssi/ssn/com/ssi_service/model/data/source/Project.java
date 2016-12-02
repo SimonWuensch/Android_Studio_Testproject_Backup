@@ -3,7 +3,7 @@ package ssi.ssn.com.ssi_service.model.data.source;
 import ssi.ssn.com.ssi_service.model.helper.JsonHelper;
 import ssi.ssn.com.ssi_service.model.network.response.application.ResponseApplication;
 
-public class Project extends AbstractProject {
+public class Project extends NetworkProject {
 
     private long _id;
     private String serverAddress;
@@ -15,6 +15,10 @@ public class Project extends AbstractProject {
     private String projectLocation;
     private String projectOrderNr;
     private boolean projectObservation = true;
+
+    private Status status;
+    private long lastObservationTime;
+
 
     public Project(String serverAddress, String userName, String password, long observationInterval) {
         this.serverAddress = serverAddress;
@@ -58,6 +62,14 @@ public class Project extends AbstractProject {
         this.password = password;
     }
 
+    public long getObservationInterval() {
+        return observationInterval;
+    }
+
+    public void setObservationInterval(long observationInterval) {
+        this.observationInterval = observationInterval;
+    }
+
     public String getProjectName() {
         return projectName;
     }
@@ -90,15 +102,23 @@ public class Project extends AbstractProject {
         this.projectObservation = projectObservation;
     }
 
-    public long getObservationInterval() {
-        return observationInterval;
+    public Status getStatus() {
+        return status;
     }
 
-    public void setObservationInterval(long observationInterval) {
-        this.observationInterval = observationInterval;
+    public void setStatus(Status status) {
+        this.status = status;
     }
 
-    public void loadProjectInfoFromApplicationInfo() {
+    public long getLastObservationTime() {
+        return lastObservationTime;
+    }
+
+    public void setLastObservationTime(long lastObservationTime) {
+        this.lastObservationTime = lastObservationTime;
+    }
+
+    public void loadFromNetwork() {
         ResponseApplication responseApplication = (ResponseApplication) JsonHelper.fromJsonGeneric(ResponseApplication.class, getDefaultResponseApplication().getResult());
         this.projectName = responseApplication.getProject().getName();
         this.projectLocation = responseApplication.getProject().getLocation();

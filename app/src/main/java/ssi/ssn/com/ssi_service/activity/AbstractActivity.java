@@ -15,6 +15,11 @@ import ssi.ssn.com.ssi_service.fragment.componentlist.FragmentComponentList;
 import ssi.ssn.com.ssi_service.fragment.createproject.FragmentCreateProject;
 import ssi.ssn.com.ssi_service.fragment.customlist.FragmentCustomList;
 import ssi.ssn.com.ssi_service.fragment.launchboard.FragmentLaunchBoard;
+import ssi.ssn.com.ssi_service.fragment.launchboard.source.AbstractCardObject;
+import ssi.ssn.com.ssi_service.fragment.launchboard.source.CardObjectComponent;
+import ssi.ssn.com.ssi_service.fragment.launchboard.source.CardObjectKPI;
+import ssi.ssn.com.ssi_service.fragment.launchboard.source.CardObjectModule;
+import ssi.ssn.com.ssi_service.fragment.launchboard.source.CardObjectNotification;
 import ssi.ssn.com.ssi_service.fragment.modulelist.FragmentModuleList;
 import ssi.ssn.com.ssi_service.fragment.projectlist.FragmentProjectList;
 import ssi.ssn.com.ssi_service.model.data.source.Project;
@@ -109,13 +114,7 @@ public class AbstractActivity extends Activity {
         Log.i(getClass().getSimpleName(), "Show Fragment [" + fragmentProjectList.TAG + "].");
     }
 
-    public void reloadLaunchBoardFragment(FragmentLaunchBoard fragmentLaunchBoard, Project project) {
-        getFragmentManager().beginTransaction().remove(fragmentLaunchBoard).commit();
-        getFragmentManager().popBackStack();
-        showLaunchBoardFragment(project);
-    }
-
-    public void showLaunchBoardFragment(final Project project) {
+    public void showLaunchBoardFragment(final Project project, final List<AbstractCardObject> cardObjects) {
         final ExecutorService executor = Executors.newSingleThreadExecutor();
         requestHandler.addRequestLoginTaskToExecutor(executor, project);
         new AsyncTask<Object, Void, Object>(){
@@ -126,7 +125,12 @@ public class AbstractActivity extends Activity {
 
             @Override
             protected void onPostExecute(Object o) {
-                FragmentLaunchBoard fragmentLaunchBoard = FragmentLaunchBoard.newInstance(project);
+                FragmentLaunchBoard fragmentLaunchBoard = FragmentLaunchBoard.newInstance(project,
+                        (CardObjectModule) cardObjects.get(0),
+                        (CardObjectComponent) cardObjects.get(1),
+                        (CardObjectNotification) cardObjects.get(2),
+                        (CardObjectKPI) cardObjects.get(3));
+
                 getFragmentManager()
                         .beginTransaction()
                         .replace(R.id.activity_main_fragment_container,

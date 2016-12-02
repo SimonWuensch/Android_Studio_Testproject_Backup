@@ -19,11 +19,18 @@ public enum Status {
 
     private int color;
 
+    Status() {
+    }
+
     Status(int color) {
         this.color = color;
     }
 
     public int getColor(Activity activity) {
         return SourceHelper.getColor(activity, color);
+    }
+
+    public void setColor(int color) {
+        this.color = color;
     }
 }

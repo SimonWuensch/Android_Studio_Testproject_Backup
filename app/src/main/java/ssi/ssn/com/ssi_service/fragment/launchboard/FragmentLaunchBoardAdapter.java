@@ -23,44 +23,16 @@ class FragmentLaunchBoardAdapter extends RecyclerView.Adapter<FragmentLaunchBoar
     private final FragmentLaunchBoard fragment;
     private CardView cardView;
 
-    private List<AbstractCardObject> cardInputs;
+    private List<AbstractCardObject> cardObjects;
     private Activity activity;
     private Project project;
 
-    FragmentLaunchBoardAdapter(int layoutCardView, final FragmentLaunchBoard fragment, Project project) {
+    FragmentLaunchBoardAdapter(int layoutCardView, final FragmentLaunchBoard fragment, Project project, List<AbstractCardObject> cardObjects) {
         this.layoutCardView = layoutCardView;
         this.fragment = fragment;
         this.activity = fragment.getActivity();
         this.project = project;
-        initDefaultInputs();
-    }
-
-    private void initDefaultInputs() {
-        //TODO save and load CardObjectSetting from DB
-        cardInputs = new LinkedList<AbstractCardObject>() {
-            {
-                add(new CardObjectModule(
-                        R.string.fragment_launch_board_card_module,
-                        R.drawable.icon_modul,
-                        true
-                ));
-                add(new CardObjectComponent(
-                        R.string.fragment_launch_board_card_component,
-                        R.drawable.icon_component,
-                        true
-                ));
-                /*add(new CardObjectNotification(
-                        R.string.fragment_launch_board_card_notification,
-                        R.drawable.icon_notification,
-                        true
-                ));
-                add(new CardObjectKPI(
-                        R.string.fragment_launch_board_card_kpi,
-                        R.drawable.icon_kpi,
-                        true
-                ));*/
-            }
-        };
+        this.cardObjects = cardObjects;
     }
 
     @Override
@@ -71,7 +43,7 @@ class FragmentLaunchBoardAdapter extends RecyclerView.Adapter<FragmentLaunchBoar
 
     @Override
     public void onBindViewHolder(FragmentLaunchBoardViewHolder viewHolder, int position) {
-        viewHolder.assignData(cardInputs.get(position), project);
+        viewHolder.assignData(cardObjects.get(position), project);
     }
 
     @Override
@@ -81,11 +53,7 @@ class FragmentLaunchBoardAdapter extends RecyclerView.Adapter<FragmentLaunchBoar
 
     @Override
     public int getItemCount() {
-        return cardInputs.size();
-    }
-
-    List<AbstractCardObject> getCardInputs() {
-        return cardInputs;
+        return cardObjects.size();
     }
 
 }

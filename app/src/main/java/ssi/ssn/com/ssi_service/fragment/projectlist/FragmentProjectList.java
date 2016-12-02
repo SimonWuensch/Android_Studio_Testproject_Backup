@@ -24,23 +24,11 @@ public class FragmentProjectList extends AbstractFragment {
     private static int RECYCLERVIEW = R.id.fragment_project_list_recycler_view;
     private static int CARDVIEW = R.layout.fragment_project_list_card_view;
 
-    private static String OBJECTONE = "OBJECTONE";
-    private static String OBJECTTWO = "OBJECTTWO";
-
     private View rootView;
 
     public static FragmentProjectList newInstance() {
         FragmentProjectList fragment = new FragmentProjectList();
-        Bundle bundle = new Bundle();
-        bundle.putString(OBJECTONE, "TESTONE");
-        bundle.putString(OBJECTTWO, "TESTTWO");
-        fragment.setArguments(bundle);
         return fragment;
-    }
-
-    private void loadArguments() {
-        String objectOne = getArguments().getString(OBJECTONE);
-        String objectTwo = getArguments().getString(OBJECTTWO);
     }
 
     public void initViewComponents() {

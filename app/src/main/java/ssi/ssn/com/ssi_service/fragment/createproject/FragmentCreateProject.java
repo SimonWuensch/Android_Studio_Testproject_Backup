@@ -390,7 +390,7 @@ public class FragmentCreateProject extends AbstractFragment {
                             protected void onPostExecute(Object o) {
 
                                 if (project.getDefaultResponseLogin().getCode() == 200) {
-                                    project.loadProjectInfoFromApplicationInfo();
+                                    project.loadFromNetwork();
                                     switch (fragmentStatus) {
                                         case ADD:
                                             getSQLiteHelper().addProject(project);

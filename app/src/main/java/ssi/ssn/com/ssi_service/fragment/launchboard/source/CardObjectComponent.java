@@ -34,6 +34,17 @@ public class CardObjectComponent extends AbstractCardObject {
     private List<ResponseComponent> responseComponentList = new ArrayList<>();
     private List<XMLHelper.XMLObject> componentObjects;
 
+    public CardObjectComponent(){
+    }
+
+    public List<ResponseComponent> getResponseComponentList() {
+        return responseComponentList;
+    }
+
+    public void setResponseComponentList(List<ResponseComponent> responseComponentList) {
+        this.responseComponentList = responseComponentList;
+    }
+
     public CardObjectComponent(int title, int icon, boolean observation) {
         super(title, icon, observation);
     }
@@ -65,7 +76,7 @@ public class CardObjectComponent extends AbstractCardObject {
     }
 
     @Override
-    public ExecutorService loadInformationFromApplicationServer(final Activity activity, final Project project) {
+    public ExecutorService loadFromNetwork(final Activity activity, final Project project) {
         if (!isOutOfTime(project)) {
             return Executors.newSingleThreadExecutor();
         }
@@ -137,7 +148,7 @@ public class CardObjectComponent extends AbstractCardObject {
                     @Override
                     protected void onPostExecute(Objects objects) {
                         setLoadingViewVisible(false);
-                        checkStatus(activity, project);
+                        detectCardStatus(activity, project);
                     }
                 }.executeOnExecutor(executor);
             }
@@ -147,7 +158,7 @@ public class CardObjectComponent extends AbstractCardObject {
 
     @Override
     public void onClick(final Activity activity, final Project project) {
-        ExecutorService executor = loadInformationFromApplicationServer(activity, project);
+        ExecutorService executor = loadFromNetwork(activity, project);
         final AbstractCardObject cardObject = this;
         new AsyncTask<Object, Void, Object>() {
             @Override
@@ -167,8 +178,8 @@ public class CardObjectComponent extends AbstractCardObject {
     }
 
     @Override
-    public void checkStatus(final Activity activity, final Project project) {
-        ExecutorService executor = loadInformationFromApplicationServer(activity, project);
+    public void detectCardStatus(final Activity activity, final Project project) {
+        ExecutorService executor = loadFromNetwork(activity, project);
         new AsyncTask<Object, Void, Object>() {
             @Override
             protected Object doInBackground(Object... objects) {
@@ -177,31 +188,20 @@ public class CardObjectComponent extends AbstractCardObject {
 
             @Override
             protected void onPostExecute(Object o) {
-                if (project.getDefaultResponseApplicationConfig().getCode() != 200) {
+                if (project.getDefaultResponseApplicationConfig().getCode() != 200 || responseComponentList.isEmpty()) {
                     setStatus(ssi.ssn.com.ssi_service.model.data.source.Status.NOT_AVAILABLE, activity);
                     return;
                 }
 
-                boolean AllComponentStatusOnline = responseComponentList.isEmpty() ? false : true;
-                if(!AllComponentStatusOnline){
-                    setStatus(ssi.ssn.com.ssi_service.model.data.source.Status.NOT_AVAILABLE, activity);
-                    return;
-                }
-
+                ssi.ssn.com.ssi_service.model.data.source.Status overAllState = ssi.ssn.com.ssi_service.model.data.source.Status.OK;
                 for (ResponseComponent responseComponent : responseComponentList) {
-                    String status = responseComponent.getState().getStatus();
-                    if (!status.equals(ssi.ssn.com.ssi_service.model.data.source.Status.ONLINE) &&
-                            !status.equals(ssi.ssn.com.ssi_service.model.data.source.Status.UNKNOWN)) {
-                        AllComponentStatusOnline = false;
-
+                    String componentStatus = responseComponent.getState().getStatus();
+                    if (!componentStatus.equals(ssi.ssn.com.ssi_service.model.data.source.Status.ONLINE) &&
+                            !componentStatus.equals(ssi.ssn.com.ssi_service.model.data.source.Status.UNKNOWN)) {
+                        overAllState = ssi.ssn.com.ssi_service.model.data.source.Status.ERROR;
                     }
                 }
-
-                if (!AllComponentStatusOnline) {
-                    setStatus(ssi.ssn.com.ssi_service.model.data.source.Status.ERROR, activity);
-                } else {
-                    setStatus(ssi.ssn.com.ssi_service.model.data.source.Status.OK, activity);
-                }
+                setStatus(overAllState, activity);
             }
         }.executeOnExecutor(executor);
     }

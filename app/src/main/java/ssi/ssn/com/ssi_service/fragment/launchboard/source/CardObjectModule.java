@@ -37,6 +37,17 @@ public class CardObjectModule extends AbstractCardObject {
     private List<ResponseModule> responseModuleList = new ArrayList<>();
     private List<XMLHelper.XMLObject> moduleObjects;
 
+    public CardObjectModule(){
+    }
+
+    public List<ResponseModule> getResponseModuleList() {
+        return responseModuleList;
+    }
+
+    public void setResponseModuleList(List<ResponseModule> responseModuleList) {
+        this.responseModuleList = responseModuleList;
+    }
+
     public CardObjectModule(int title, int icon, boolean observation) {
         super(title, icon, observation);
     }
@@ -71,7 +82,7 @@ public class CardObjectModule extends AbstractCardObject {
     }
 
     @Override
-    public ExecutorService loadInformationFromApplicationServer(final Activity activity, final Project project) {
+    public ExecutorService loadFromNetwork(final Activity activity, final Project project) {
         if (!isOutOfTime(project)) {
             return Executors.newSingleThreadExecutor();
         }
@@ -144,7 +155,7 @@ public class CardObjectModule extends AbstractCardObject {
                     @Override
                     protected void onPostExecute(Objects objects) {
                         setLoadingViewVisible(false);
-                        checkStatus(activity, project);
+                        detectCardStatus(activity, project);
                     }
                 }.executeOnExecutor(executor);
             }
@@ -154,7 +165,7 @@ public class CardObjectModule extends AbstractCardObject {
 
     @Override
     public void onClick(final Activity activity, final Project project) {
-        ExecutorService executor = loadInformationFromApplicationServer(activity, project);
+        ExecutorService executor = loadFromNetwork(activity, project);
         final AbstractCardObject cardObject = this;
         new AsyncTask<Object, Void, Object>() {
             @Override
@@ -174,8 +185,8 @@ public class CardObjectModule extends AbstractCardObject {
     }
 
     @Override
-    public void checkStatus(final Activity activity, final Project project) {
-        ExecutorService executor = loadInformationFromApplicationServer(activity, project);
+    public void detectCardStatus(final Activity activity, final Project project) {
+        ExecutorService executor = loadFromNetwork(activity, project);
         new AsyncTask<Object, Void, Object>() {
             @Override
             protected Object doInBackground(Object... objects) {
@@ -184,32 +195,22 @@ public class CardObjectModule extends AbstractCardObject {
 
             @Override
             protected void onPostExecute(Object o) {
-                if (project.getDefaultResponseApplicationConfig().getCode() != 200) {
+                if (project.getDefaultResponseApplicationConfig().getCode() != 200 || responseModuleList.isEmpty()) {
                     setStatus(ssi.ssn.com.ssi_service.model.data.source.Status.NOT_AVAILABLE, activity);
                     return;
                 }
 
-                boolean allModuleStatusOnline = responseModuleList.isEmpty() ? false : true;
-                if(!allModuleStatusOnline){
-                    setStatus(ssi.ssn.com.ssi_service.model.data.source.Status.NOT_AVAILABLE, activity);
-                    return;
-                }
-
+                ssi.ssn.com.ssi_service.model.data.source.Status overAllState = ssi.ssn.com.ssi_service.model.data.source.Status.OK;
                 for (ResponseModule responseModule : responseModuleList) {
                     String status = responseModule.getStatus();
                     if (!Boolean.valueOf(responseModule.getEnabled())) {
                         continue;
                     } else if (!status.equals(ssi.ssn.com.ssi_service.model.data.source.Status.RUNNING) &&
                             !status.equals(ssi.ssn.com.ssi_service.model.data.source.Status.UNKNOWN)) {
-                        allModuleStatusOnline = false;
+                        overAllState = ssi.ssn.com.ssi_service.model.data.source.Status.ERROR;
                     }
                 }
-
-                if (!allModuleStatusOnline) {
-                    setStatus(ssi.ssn.com.ssi_service.model.data.source.Status.ERROR, activity);
-                } else {
-                    setStatus(ssi.ssn.com.ssi_service.model.data.source.Status.OK, activity);
-                }
+                setStatus(overAllState, activity);
             }
         }.executeOnExecutor(executor);
     }

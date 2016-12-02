@@ -7,12 +7,14 @@ import android.view.View;
 import com.owlike.genson.annotation.JsonIgnore;
 
 import java.util.Date;
+import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import ssi.ssn.com.ssi_service.model.data.source.Project;
 import ssi.ssn.com.ssi_service.model.data.source.Status;
 import ssi.ssn.com.ssi_service.model.helper.FormatHelper;
+import ssi.ssn.com.ssi_service.model.network.response.AbstractResponse;
 
 public class AbstractCardObject {
 
@@ -22,8 +24,8 @@ public class AbstractCardObject {
     private int title;
     private int icon;
     private boolean observation;
-    @JsonIgnore
     private Status status;
+
     @JsonIgnore
     private View statusView;
     @JsonIgnore
@@ -70,6 +72,33 @@ public class AbstractCardObject {
         this.observation = observation;
     }
 
+    // ** Not in Json Object ******************************************************************** //
+
+    public void onClick(Activity activity, Project project) {
+    }
+
+    @JsonIgnore
+    public Status getStatus() {
+        return status;
+    }
+
+    @JsonIgnore
+    protected void setStatus(Status status, Activity activity) {
+        this.status = status;
+        if (statusView != null) {
+            statusView.setBackgroundColor(status.getColor(activity));
+            setLoadingViewVisible(false);
+        }
+    }
+
+    public void detectCardStatus(Activity activity, Project project) {
+    }
+
+    public void reloadStatus(Activity activity, Project project) {
+        lastStatusCheck = null;
+        detectCardStatus(activity, project);
+    }
+
     @JsonIgnore
     public View getLoadingView() {
         return loadingView;
@@ -93,45 +122,17 @@ public class AbstractCardObject {
     }
 
     @JsonIgnore
-    public View getStatusView() {
-        return statusView;
-    }
-
-    @JsonIgnore
-    public void setStatusView(View statusView) {
+    public void setStatusView(View statusView, Activity activity) {
         this.statusView = statusView;
-    }
-
-    public void onClick(Activity activity, Project project) {
-
-    }
-
-    @JsonIgnore
-    public ExecutorService loadInformationFromApplicationServer(Activity activity, Project project) {
-        return Executors.newSingleThreadExecutor();
-    }
-
-    @JsonIgnore
-    public Status getStatus() {
-        return status;
-    }
-
-    @JsonIgnore
-    protected void setStatus(Status status, Activity activity) {
-        this.status = status;
-        if (statusView != null) {
-            statusView.setBackgroundColor(status.getColor(activity));
+        if(this.status != null){
+            this.statusView.setBackgroundColor(this.status.getColor(activity));
             setLoadingViewVisible(false);
         }
     }
 
     @JsonIgnore
-    public void checkStatus(Activity activity, Project project) {
-    }
-
-    public void reloadStatus(Activity activity, Project project) {
-        lastStatusCheck = null;
-        checkStatus(activity, project);
+    public ExecutorService loadFromNetwork(Activity activity, Project project) {
+        return Executors.newSingleThreadExecutor();
     }
 
     boolean isOutOfTime(Project project) {
