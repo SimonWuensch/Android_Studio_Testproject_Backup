@@ -172,11 +172,11 @@ public class FragmentLaunchBoard extends AbstractFragment {
     }
 
     public void checkProjectState() {
-        ExecutorService executor = Executors.newSingleThreadExecutor();
+        RequestHandler requestHandler = ((MainActivity) getActivity()).getRequestHandler();
+        ExecutorService executor = requestHandler.getExecutor();
 
         boolean isOutOfTime = new Date().getTime() - project.getLastObservationTime() > project.getObservationInterval();
         if (project.getDefaultResponseApplication() == null || isOutOfTime) {
-            RequestHandler requestHandler = ((MainActivity) getActivity()).getRequestHandler();
             requestHandler.getRequestApplicationTask(project).executeOnExecutor(executor);
         }
 

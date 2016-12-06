@@ -81,7 +81,7 @@ public class FragmentCreateProject extends AbstractFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestHandler = ((MainActivity) getActivity()).getRequestHandler();
-        executor = Executors.newSingleThreadExecutor();
+        executor = requestHandler.getExecutor();
         loadArguments();
     }
 

@@ -75,8 +75,8 @@ public class ProjectStatusDetector {
     }
 
     public ExecutorService detectProjectStatus(final Activity activity, final View vProjectState) {
-        final ExecutorService executor = Executors.newSingleThreadExecutor();
         RequestHandler requestHandler = ((MainActivity) activity).getRequestHandler();
+        final ExecutorService executor = requestHandler.getExecutor();
 
         requestHandler.getRequestApplicationTask(project).executeOnExecutor(executor);
 
@@ -142,7 +142,7 @@ public class ProjectStatusDetector {
 
     //todo noch nicht fertig
     public ExecutorService detectCardObjectStatus(final Activity activity, final AbstractCardObject cardObject) {
-        final ExecutorService executor = Executors.newSingleThreadExecutor();
+        final ExecutorService executor = ((MainActivity)activity).getExecutor();
         new AsyncTask<Object, Void, Object>() {
             @Override
             protected Object doInBackground(Object... objects) {

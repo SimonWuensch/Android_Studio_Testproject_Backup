@@ -32,6 +32,8 @@ public class AbstractActivity extends Activity {
 
     public static String ACCEPTED_PROJECT_VERSION = "2.";
 
+    private ExecutorService executor;
+
     protected SQLiteHelper sqLiteHelper;
     protected RequestHandler requestHandler;
     protected Project currentProject;
@@ -40,8 +42,13 @@ public class AbstractActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        requestHandler = RequestHandler.initRequestHandler();
+        executor = Executors.newSingleThreadExecutor();
+        requestHandler = RequestHandler.initRequestHandler(executor);
         sqLiteHelper = new SQLiteHelper(this);
+    }
+
+    public ExecutorService getExecutor(){
+        return executor;
     }
 
     public SQLiteHelper getSQLiteHelper() {
@@ -115,8 +122,8 @@ public class AbstractActivity extends Activity {
     }
 
     public void showLaunchBoardFragment(final Project project, final List<AbstractCardObject> cardObjects) {
-        final ExecutorService executor = Executors.newSingleThreadExecutor();
-        requestHandler.addRequestLoginTaskToExecutor(executor, project);
+        requestHandler.addRequestLoginTaskToExecutor(project);
+        final ExecutorService executor = requestHandler.getExecutor();
         new AsyncTask<Object, Void, Object>(){
             @Override
             protected Object doInBackground(Object... objects) {

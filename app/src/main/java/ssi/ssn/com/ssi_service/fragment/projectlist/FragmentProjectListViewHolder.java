@@ -111,7 +111,6 @@ class FragmentProjectListViewHolder extends RecyclerView.ViewHolder {
                 loadingView.setVisibility(View.GONE);
             }
         }.executeOnExecutor(executor);
-        executor.shutdown();
     }
 
     private View.OnClickListener onClickCardViewProjectSettings(final Project project) {

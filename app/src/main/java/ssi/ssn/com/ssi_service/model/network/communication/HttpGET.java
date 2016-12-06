@@ -60,7 +60,6 @@ public class HttpGET {
             return new DefaultResponse(GET_COMMUNICATION_ERROR_TIMEOUT, e.getMessage());
         } catch (Throwable t) {
             Log.e(TAG, "[ERROR] GET Request. Address: [" + hostAddress + "]");
-            t.printStackTrace();
             return new DefaultResponse(GET_COMMUNICATION_ERROR, t.getMessage());
         } finally {
             if (urlConnection != null) {

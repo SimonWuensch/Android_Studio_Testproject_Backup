@@ -82,14 +82,14 @@ public class CardObjectModule extends AbstractCardObject {
     }
 
     @Override
-    public ExecutorService loadFromNetwork(final Activity activity, final Project project) {
+    public void loadFromNetwork(final Activity activity, final Project project) {
         if (!isOutOfTime(project)) {
-            return Executors.newSingleThreadExecutor();
+            return ;
         }
         setLoadingViewVisible(true);
-        final ExecutorService executor = Executors.newSingleThreadExecutor();
         final RequestHandler requestHandler = ((MainActivity) activity).getRequestHandler();
-        requestHandler.addRequestLoginTaskToExecutor(executor, project);
+        final ExecutorService executor = requestHandler.getExecutor();
+        requestHandler.addRequestLoginTaskToExecutor(project);
         requestHandler.getRequestApplicationConfigTask(project).executeOnExecutor(executor);
 
         final Map<String, String> enabledModuleList = new HashMap<>();
@@ -160,12 +160,12 @@ public class CardObjectModule extends AbstractCardObject {
                 }.executeOnExecutor(executor);
             }
         }.executeOnExecutor(executor);
-        return executor;
     }
 
     @Override
     public void onClick(final Activity activity, final Project project) {
-        ExecutorService executor = loadFromNetwork(activity, project);
+        loadFromNetwork(activity, project);
+        ExecutorService executor = ((MainActivity)activity).getExecutor();
         final AbstractCardObject cardObject = this;
         new AsyncTask<Object, Void, Object>() {
             @Override
@@ -186,7 +186,8 @@ public class CardObjectModule extends AbstractCardObject {
 
     @Override
     public void detectCardStatus(final Activity activity, final Project project) {
-        ExecutorService executor = loadFromNetwork(activity, project);
+        loadFromNetwork(activity, project);
+        ExecutorService executor = ((MainActivity)activity).getExecutor();
         new AsyncTask<Object, Void, Object>() {
             @Override
             protected Object doInBackground(Object... objects) {

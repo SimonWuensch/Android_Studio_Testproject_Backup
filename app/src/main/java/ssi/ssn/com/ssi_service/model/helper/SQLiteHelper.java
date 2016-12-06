@@ -19,7 +19,7 @@ public class SQLiteHelper extends SQLiteOpenHelper {
     private static final String TAG = SQLiteHelper.class.getSimpleName();
 
     private static final String DATABASE_NAME = "ssi_service.db";
-    private static final int DATABASE_VERSION = 10;
+    private static final int DATABASE_VERSION = 11;
 
     private static final String _ID = "_id";
     private static final String TABLE_PROJECT = "project";

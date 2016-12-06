@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import ssi.ssn.com.ssi_service.activity.MainActivity;
 import ssi.ssn.com.ssi_service.model.data.source.Project;
 import ssi.ssn.com.ssi_service.model.data.source.Status;
 import ssi.ssn.com.ssi_service.model.helper.FormatHelper;
@@ -79,6 +80,9 @@ public class AbstractCardObject {
 
     @JsonIgnore
     public Status getStatus() {
+        if(status == null){
+            return Status.NOT_AVAILABLE;
+        }
         return status;
     }
 
@@ -131,8 +135,7 @@ public class AbstractCardObject {
     }
 
     @JsonIgnore
-    public ExecutorService loadFromNetwork(Activity activity, Project project) {
-        return Executors.newSingleThreadExecutor();
+    public void loadFromNetwork(Activity activity, Project project) {
     }
 
     boolean isOutOfTime(Project project) {
