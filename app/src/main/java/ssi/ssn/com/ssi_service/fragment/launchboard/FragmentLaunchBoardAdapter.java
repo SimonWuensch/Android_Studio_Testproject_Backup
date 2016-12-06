@@ -24,13 +24,11 @@ class FragmentLaunchBoardAdapter extends RecyclerView.Adapter<FragmentLaunchBoar
     private CardView cardView;
 
     private List<AbstractCardObject> cardObjects;
-    private Activity activity;
     private Project project;
 
     FragmentLaunchBoardAdapter(int layoutCardView, final FragmentLaunchBoard fragment, Project project, List<AbstractCardObject> cardObjects) {
         this.layoutCardView = layoutCardView;
         this.fragment = fragment;
-        this.activity = fragment.getActivity();
         this.project = project;
         this.cardObjects = cardObjects;
     }

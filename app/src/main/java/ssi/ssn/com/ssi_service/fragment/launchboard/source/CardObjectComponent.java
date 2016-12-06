@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 import ssi.ssn.com.ssi_service.R;
 import ssi.ssn.com.ssi_service.activity.AbstractActivity;
@@ -32,6 +31,7 @@ public class CardObjectComponent extends AbstractCardObject {
     public static String XML_ATTRIBUTE_ENABLED = "enabled";
 
     private List<ResponseComponent> responseComponentList = new ArrayList<>();
+
     private List<XMLHelper.XMLObject> componentObjects;
 
     public CardObjectComponent(){
@@ -189,7 +189,7 @@ public class CardObjectComponent extends AbstractCardObject {
 
             @Override
             protected void onPostExecute(Object o) {
-                if (project.getDefaultResponseApplicationConfig().getCode() != 200 || responseComponentList.isEmpty()) {
+                if (responseComponentList.isEmpty()) {
                     setStatus(ssi.ssn.com.ssi_service.model.data.source.Status.NOT_AVAILABLE, activity);
                     return;
                 }

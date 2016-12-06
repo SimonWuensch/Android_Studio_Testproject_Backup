@@ -97,8 +97,9 @@ class FragmentProjectListViewHolder extends RecyclerView.ViewHolder {
         }
 
         loadingView.setVisibility(View.VISIBLE);
-        this.projectStatusDetector = new ProjectStatusDetector(project);
-        ExecutorService executor = projectStatusDetector.detectProjectStatus(activity, vProjectState);
+        this.projectStatusDetector = new ProjectStatusDetector(project, vProjectState);
+        projectStatusDetector.detectProjectStatus(activity);
+        ExecutorService executor = ((MainActivity)activity).getExecutor();
         new AsyncTask<Object, Void, Object>() {
             @Override
             protected Object doInBackground(Object... voids) {
@@ -127,12 +128,8 @@ class FragmentProjectListViewHolder extends RecyclerView.ViewHolder {
             @Override
             public void onClick(View v) {
                 if (loadingView.getVisibility() == View.GONE) {
-
-                    //TODO remove next line
-                    ((MainActivity) activity).showLaunchBoardFragment(project, projectStatusDetector.getCardObjects());
-
                     if (!project.getStatus().equals(ssi.ssn.com.ssi_service.model.data.source.Status.NOT_AVAILABLE)) {
-                        ((MainActivity) activity).showLaunchBoardFragment(project, projectStatusDetector.getCardObjects());
+                        ((MainActivity) activity).showLaunchBoardFragment(project);
                     } else {
                         Toast.makeText(activity, SourceHelper.getString(activity, R.string.fragment_project_list_error_project_not_available), Toast.LENGTH_SHORT).show();
                     }

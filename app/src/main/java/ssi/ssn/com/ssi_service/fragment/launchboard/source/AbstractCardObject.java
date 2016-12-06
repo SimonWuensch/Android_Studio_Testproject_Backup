@@ -7,15 +7,10 @@ import android.view.View;
 import com.owlike.genson.annotation.JsonIgnore;
 
 import java.util.Date;
-import java.util.List;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
-import ssi.ssn.com.ssi_service.activity.MainActivity;
 import ssi.ssn.com.ssi_service.model.data.source.Project;
 import ssi.ssn.com.ssi_service.model.data.source.Status;
 import ssi.ssn.com.ssi_service.model.helper.FormatHelper;
-import ssi.ssn.com.ssi_service.model.network.response.AbstractResponse;
 
 public class AbstractCardObject {
 
@@ -28,11 +23,13 @@ public class AbstractCardObject {
     private Status status;
 
     @JsonIgnore
-    private View statusView;
+    private View cardStatusView;
+    @JsonIgnore
+    private View projectStatusView;
     @JsonIgnore
     private View loadingView;
 
-    AbstractCardObject(int title, int icon, boolean observation) {
+    public AbstractCardObject(int title, int icon, boolean observation) {
         this.title = title;
         this.icon = icon;
         this.observation = observation;
@@ -78,20 +75,18 @@ public class AbstractCardObject {
     public void onClick(Activity activity, Project project) {
     }
 
-    @JsonIgnore
     public Status getStatus() {
-        if(status == null){
-            return Status.NOT_AVAILABLE;
-        }
         return status;
     }
 
-    @JsonIgnore
-    protected void setStatus(Status status, Activity activity) {
+    public void setStatus(Status status, Activity activity) {
         this.status = status;
-        if (statusView != null) {
-            statusView.setBackgroundColor(status.getColor(activity));
+        if (cardStatusView != null) {
+            cardStatusView.setBackgroundColor(status.getColor(activity));
             setLoadingViewVisible(false);
+        }
+        if (projectStatusView != null && !status.equals(Status.OK)){
+            projectStatusView.setBackgroundColor(Status.ERROR.getColor(activity));
         }
     }
 
@@ -127,11 +122,16 @@ public class AbstractCardObject {
 
     @JsonIgnore
     public void setStatusView(View statusView, Activity activity) {
-        this.statusView = statusView;
+        this.cardStatusView = statusView;
         if(this.status != null){
-            this.statusView.setBackgroundColor(this.status.getColor(activity));
+            this.cardStatusView.setBackgroundColor(this.status.getColor(activity));
             setLoadingViewVisible(false);
         }
+    }
+
+    @JsonIgnore
+    public void setProjectStatusView(View statusView){
+        this.projectStatusView = statusView;
     }
 
     @JsonIgnore

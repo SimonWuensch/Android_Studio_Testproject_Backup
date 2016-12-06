@@ -2,10 +2,14 @@ package ssi.ssn.com.ssi_service.model.helper;
 
 import com.owlike.genson.GenericType;
 import com.owlike.genson.Genson;
+import com.owlike.genson.GensonBuilder;
+import com.owlike.genson.convert.DefaultConverters;
 
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+
+import ssi.ssn.com.ssi_service.model.data.source.Status;
 
 public class JsonHelper {
 

@@ -6,7 +6,10 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 
+import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -39,6 +42,8 @@ public class AbstractActivity extends Activity {
     protected Project currentProject;
     protected View loadingView;
 
+    private Map<Long, List<AbstractCardObject>> projectCardObjectMap = new HashMap<>();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,21 +64,23 @@ public class AbstractActivity extends Activity {
         return requestHandler;
     }
 
-    public Project getCurrentProject() {
-        return currentProject;
-    }
-
-    public void setCurrentProject(Project project) {
-        if (currentProject != null) {
-            requestHandler.getRequestLogoutTask(project);
-        }
-
-        this.currentProject = project;
-        requestHandler.getRequestLoginTask(currentProject).execute();
-    }
-
     public void setLoadingViewVisible(boolean isVisible) {
         loadingView.setVisibility(isVisible ? View.VISIBLE : View.GONE);
+    }
+
+    public List<AbstractCardObject> getCardObjects(Project project){
+        if(projectCardObjectMap.containsKey(project.get_id())){
+            return projectCardObjectMap.get(project.get_id());
+        }
+        return new LinkedList<>();
+    }
+
+    public void addCardToMap(Project project, AbstractCardObject cardObject){
+        if(!projectCardObjectMap.containsKey(project.get_id())){
+            projectCardObjectMap.put(project.get_id(), new LinkedList<AbstractCardObject>());
+        }
+        List<AbstractCardObject> cardObjects = projectCardObjectMap.get(project.get_id());
+        cardObjects.add(cardObject);
     }
 
     // ** FRAGMENT ****************************************************************************** //
@@ -121,7 +128,7 @@ public class AbstractActivity extends Activity {
         Log.i(getClass().getSimpleName(), "Show Fragment [" + fragmentProjectList.TAG + "].");
     }
 
-    public void showLaunchBoardFragment(final Project project, final List<AbstractCardObject> cardObjects) {
+    public void showLaunchBoardFragment(final Project project) {
         requestHandler.addRequestLoginTaskToExecutor(project);
         final ExecutorService executor = requestHandler.getExecutor();
         new AsyncTask<Object, Void, Object>(){
@@ -132,12 +139,7 @@ public class AbstractActivity extends Activity {
 
             @Override
             protected void onPostExecute(Object o) {
-                FragmentLaunchBoard fragmentLaunchBoard = FragmentLaunchBoard.newInstance(project,
-                        (CardObjectModule) cardObjects.get(0),
-                        (CardObjectComponent) cardObjects.get(1),
-                        (CardObjectNotification) cardObjects.get(2),
-                        (CardObjectKPI) cardObjects.get(3));
-
+                FragmentLaunchBoard fragmentLaunchBoard = FragmentLaunchBoard.newInstance(project);
                 getFragmentManager()
                         .beginTransaction()
                         .replace(R.id.activity_main_fragment_container,

@@ -29,12 +29,10 @@ public class CookieHandler {
     }
 
     public void setCookieRequestProperty(HttpURLConnection urlConnection) {
-        Log.d(TAG, "Cookie request property setting...");
         if (cookieManager.getCookieStore().getCookies().size() > 0) {
             urlConnection.setRequestProperty("Cookie",
                     TextUtils.join(",", cookieManager.getCookieStore().getCookies()));
         }
-        Log.d(TAG, "Cookie request property set.");
     }
 
     public boolean isCookieManagerNull() {

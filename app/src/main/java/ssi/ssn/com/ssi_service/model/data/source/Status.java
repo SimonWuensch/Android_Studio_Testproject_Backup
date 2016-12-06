@@ -2,6 +2,8 @@ package ssi.ssn.com.ssi_service.model.data.source;
 
 import android.app.Activity;
 
+import com.owlike.genson.annotation.JsonDateFormat;
+
 import ssi.ssn.com.ssi_service.R;
 import ssi.ssn.com.ssi_service.model.helper.SourceHelper;
 
@@ -18,9 +20,6 @@ public enum Status {
     public static String TEXT_NOT_AVAILABLE = "NOT_AVAILABLE";
 
     private int color;
-
-    Status() {
-    }
 
     Status(int color) {
         this.color = color;

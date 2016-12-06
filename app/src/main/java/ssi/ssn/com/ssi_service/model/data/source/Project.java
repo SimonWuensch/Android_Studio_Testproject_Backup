@@ -1,5 +1,13 @@
 package ssi.ssn.com.ssi_service.model.data.source;
 
+import android.app.Activity;
+import android.view.View;
+
+import com.owlike.genson.annotation.JsonIgnore;
+
+import java.util.Date;
+
+import ssi.ssn.com.ssi_service.model.helper.FormatHelper;
 import ssi.ssn.com.ssi_service.model.helper.JsonHelper;
 import ssi.ssn.com.ssi_service.model.network.response.application.ResponseApplication;
 
@@ -18,7 +26,6 @@ public class Project extends NetworkProject {
 
     private Status status;
     private long lastObservationTime;
-
 
     public Project(String serverAddress, String userName, String password, long observationInterval) {
         this.serverAddress = serverAddress;
@@ -123,6 +130,10 @@ public class Project extends NetworkProject {
         this.projectName = responseApplication.getProject().getName();
         this.projectLocation = responseApplication.getProject().getLocation();
         this.projectOrderNr = responseApplication.getProject().getOrderNr();
+    }
+
+    public boolean isOutOfDate(){
+        return new Date().getTime() - lastObservationTime > observationInterval;
     }
 
     public String toString() {

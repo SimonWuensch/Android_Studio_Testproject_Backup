@@ -47,10 +47,6 @@ public class FragmentLaunchBoard extends AbstractFragment {
     private static int CARDVIEW = R.layout.fragment_launch_board_card_view;
 
     private static String PROJECT_JSON = TAG + "PROJECT_JSON";
-    private static String CARD_OBJECT_COMPONENT = TAG + "CARD_OBJECT_COMPONENT";
-    private static String CARD_OBJECT_MODULE = TAG + "CARD_OBJECT_MODULE";
-    private static String CARD_OBJECT_NOTIFICATION = TAG + "CARD_OBJECT_NOTIFICATION";
-    private static String CARD_OBJECT_KPI = TAG + "CARD_OBJECT_KPI";
 
     private View rootView;
     private RelativeLayout rlProjectStateBackground;
@@ -63,7 +59,7 @@ public class FragmentLaunchBoard extends AbstractFragment {
     private Project project;
     private List<AbstractCardObject> cardObjects;
 
-    public static FragmentLaunchBoard newInstance(Project project, CardObjectModule cardObjectModule,  CardObjectComponent cardObjectComponent, CardObjectNotification cardObjectNotification, CardObjectKPI cardObjectKPI) {
+    public static FragmentLaunchBoard newInstance(Project project) {
         if (project == null) {
             return new FragmentLaunchBoard();
         }
@@ -71,10 +67,6 @@ public class FragmentLaunchBoard extends AbstractFragment {
         FragmentLaunchBoard fragment = new FragmentLaunchBoard();
         Bundle bundle = new Bundle();
         bundle.putString(PROJECT_JSON, JsonHelper.toJson(project));
-        bundle.putString(CARD_OBJECT_MODULE, JsonHelper.toJson(cardObjectModule));
-        bundle.putString(CARD_OBJECT_COMPONENT, JsonHelper.toJson(cardObjectComponent));
-        bundle.putString(CARD_OBJECT_NOTIFICATION, JsonHelper.toJson(cardObjectNotification));
-        bundle.putString(CARD_OBJECT_KPI, JsonHelper.toJson(cardObjectKPI));
         fragment.setArguments(bundle);
         return fragment;
     }
@@ -86,24 +78,7 @@ public class FragmentLaunchBoard extends AbstractFragment {
 
         String projectJson = getArguments().getString(PROJECT_JSON);
         project = (Project) JsonHelper.fromJsonGeneric(Project.class, projectJson);
-
-        String cardObjectModuleJson = getArguments().getString(CARD_OBJECT_MODULE);
-        CardObjectModule cardObjectModule = (CardObjectModule) JsonHelper.fromJsonGeneric(CardObjectModule.class, cardObjectModuleJson);
-
-        String cardObjectComponentJson = getArguments().getString(CARD_OBJECT_COMPONENT);
-        CardObjectComponent cardObjectComponent = (CardObjectComponent) JsonHelper.fromJsonGeneric(CardObjectComponent.class, cardObjectComponentJson);
-
-        String cardObjectNotificationJson = getArguments().getString(CARD_OBJECT_NOTIFICATION);
-        CardObjectNotification cardObjectNotification = (CardObjectNotification) JsonHelper.fromJsonGeneric(CardObjectNotification.class, cardObjectNotificationJson);
-
-        String cardObjectKPIJson = getArguments().getString(CARD_OBJECT_KPI);
-        CardObjectKPI cardObjectKPI = (CardObjectKPI) JsonHelper.fromJsonGeneric(CardObjectKPI.class, cardObjectKPIJson);
-
-        cardObjects = new LinkedList<AbstractCardObject>();
-        cardObjects.add(cardObjectModule);
-        cardObjects.add(cardObjectComponent);
-        cardObjects.add(cardObjectNotification);
-        cardObjects.add(cardObjectKPI);
+        cardObjects = ((MainActivity)getActivity()).getCardObjects(project);
     }
 
     @Override
@@ -167,7 +142,6 @@ public class FragmentLaunchBoard extends AbstractFragment {
         tvProjectVersion = (TextView) rootView.findViewById(R.id.fragment_launch_board_project_state_text_view_project_version);
         rlLoadingView = (RelativeLayout) rootView.findViewById(R.id.fragment_launch_board_project_state_loading_view);
         rlLoadingView.setVisibility(View.GONE);
-
         checkProjectState();
     }
 
