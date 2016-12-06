@@ -77,34 +77,28 @@ public class CardObjectComponent extends AbstractCardObject {
 
     @Override
     public void loadFromNetwork(final Activity activity, final Project project) {
-        if (!isOutOfTime(project)) {
+
+        if(!isOutOfTime(project)){
             return;
         }
-
         setLoadingViewVisible(true);
         final List<String> notEnabledComponents = new ArrayList<>();
         final RequestHandler requestHandler = ((MainActivity) activity).getRequestHandler();
-        final ExecutorService executor = requestHandler.getExecutor();
-        requestHandler.addRequestLoginTaskToExecutor(project);
-        requestHandler.getRequestApplicationConfigTask(project).executeOnExecutor(executor);
-
-        new AsyncTask<Object, Void, Objects>() {
+        new AsyncTask<Object, Void, Object>(){
             @Override
-            protected Objects doInBackground(Object... objects) {
-                return null;
-            }
+            protected Object doInBackground(Object... objects) {
+                requestHandler.sendRequestLoginWithSessionCurrentCheck(project);
+                requestHandler.sendRequestApplicationConfig(project);
 
-            @Override
-            protected void onPostExecute(Objects objects) {
                 if (project.getDefaultResponseApplicationConfig().getCode() != 200) {
-                    return;
+                    return null;
                 }
 
                 List<XMLHelper.XMLObject> xmlObjects = searchObjectsInResponseXML(project.getDefaultResponseApplicationConfig().getResult());
                 for (XMLHelper.XMLObject xmlObject : xmlObjects) {
                     String tagName = xmlObject.getTagName();
                     String componentName = tagName.substring(0, tagName.indexOf("-"));
-                    requestHandler.getRequestComponentTask(project, componentName).executeOnExecutor(executor);
+                    requestHandler.sendRequestComponent(project, componentName);
 
                     if (xmlObject.getAttributes().containsKey(CardObjectComponent.XML_ATTRIBUTE_ENABLED)) {
                         String isEnabled = xmlObject.getAttributes().get(CardObjectComponent.XML_ATTRIBUTE_ENABLED);
@@ -114,45 +108,28 @@ public class CardObjectComponent extends AbstractCardObject {
                     }
                 }
 
-                new AsyncTask<Object, Void, Object>() {
-                    @Override
-                    protected Object doInBackground(Object... objects) {
-                        return null;
+                responseComponentList = new ArrayList<>();
+                for (DefaultResponse defaultResponse : project.getDefaultResponseComponentList()) {
+                    if (defaultResponse.getCode() != 200) {
+                        continue;
                     }
 
-                    @Override
-                    protected void onPostExecute(Object o) {
-                        responseComponentList = new ArrayList<>();
-                        for (DefaultResponse defaultResponse : project.getDefaultResponseComponentList()) {
-                            if (defaultResponse.getCode() != 200) {
-                                continue;
-                            }
-
-                            ResponseComponent responseComponent = (ResponseComponent) JsonHelper.fromJsonGeneric(ResponseComponent.class, defaultResponse.getResult());
-                            if (notEnabledComponents.contains(responseComponent.getName())) {
-                                responseComponent.getState().setEnabled(false);
-                            }
-                            responseComponentList.add(responseComponent);
-                        }
-                        Log.d(TAG, "ResponseComponentList size [" + responseComponentList.size() + "]");
-
+                    ResponseComponent responseComponent = (ResponseComponent) JsonHelper.fromJsonGeneric(ResponseComponent.class, defaultResponse.getResult());
+                    if (notEnabledComponents.contains(responseComponent.getName())) {
+                        responseComponent.getState().setEnabled(false);
                     }
-                }.executeOnExecutor(executor);
-
-                new AsyncTask<Object, Void, Objects>() {
-                    @Override
-                    protected Objects doInBackground(Object... objects) {
-                        return null;
-                    }
-
-                    @Override
-                    protected void onPostExecute(Objects objects) {
-                        setLoadingViewVisible(false);
-                        detectCardStatus(activity, project);
-                    }
-                }.executeOnExecutor(executor);
+                    responseComponentList.add(responseComponent);
+                }
+                Log.d(TAG, "ResponseComponentList size [" + responseComponentList.size() + "]");
+                return null;
             }
-        }.executeOnExecutor(executor);
+
+            @Override
+            protected void onPostExecute(Object o) {
+                setLoadingViewVisible(false);
+                detectCardStatus(activity, project);
+            }
+        }.execute();
     }
 
     @Override

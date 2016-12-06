@@ -16,8 +16,8 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.Objects;
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 import ssi.ssn.com.ssi_service.R;
 import ssi.ssn.com.ssi_service.activity.MainActivity;
@@ -51,7 +51,6 @@ public class FragmentCreateProject extends AbstractFragment {
     private Project project;
 
     private RequestHandler requestHandler;
-    private ExecutorService executor;
 
     public static FragmentCreateProject newInstance(Project project) {
         if (project == null) {
@@ -81,7 +80,6 @@ public class FragmentCreateProject extends AbstractFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestHandler = ((MainActivity) getActivity()).getRequestHandler();
-        executor = requestHandler.getExecutor();
         loadArguments();
     }
 
@@ -278,39 +276,41 @@ public class FragmentCreateProject extends AbstractFragment {
                 bShowApplicationInfo.setEnabled(false);
                 setLoadingViewVisible(true);
 
-                final ExtendedAsyncTask extendedAsyncTask = (ExtendedAsyncTask) HttpAddressExists.exists(project.getServerAddress()).executeOnExecutor(executor);
-                new AsyncTask<Object, Void, Object>() {
+                new AsyncTask<Object, Void, Long>() {
                     @Override
-                    protected Object doInBackground(Object[] objects) {
-                        return null;
+                    protected Long doInBackground(Object... objects) {
+                        return HttpAddressExists.exists(project.getServerAddress());
                     }
 
                     @Override
-                    protected void onPostExecute(Object o) {
-                        if (!extendedAsyncTask.getReturnValue().equals("200")) {
+                    protected void onPostExecute(Long responseCode) {
+                        if (responseCode != 200) {
                             Toast.makeText(getActivity(), SourceHelper.getString(getActivity(), R.string.fragment_create_project_message_server_address_not_correct), Toast.LENGTH_SHORT).show();
-                        } else {
-                            requestHandler.getRequestApplicationTask(project).executeOnExecutor(executor);
-                            new AsyncTask<Object, Void, Object>() {
-                                @Override
-                                protected Object doInBackground(Object[] objects) {
-                                    return null;
-                                }
-
-                                @Override
-                                protected void onPostExecute(Object o) {
-                                    if (project.getDefaultResponseApplication().getCode() == 200) {
-                                        ((MainActivity) getActivity()).showCustomListFragment(R.string.fragment_custom_list_application_info_title, FragmentCustomList.Type.APPLICATION, project.getDefaultResponseApplication().getResult());
-                                    } else {
-                                        Toast.makeText(getActivity(), SourceHelper.getString(getActivity(), R.string.fragment_create_project_message_server_address_is_no_valid_lighthouse_address), Toast.LENGTH_SHORT).show();
-                                    }
-                                }
-                            }.executeOnExecutor(executor);
+                            bShowApplicationInfo.setEnabled(true);
+                            setLoadingViewVisible(false);
+                            return;
                         }
-                        bShowApplicationInfo.setEnabled(true);
-                        setLoadingViewVisible(false);
+
+                        new AsyncTask<Object, Void, Object>(){
+                            @Override
+                            protected Object doInBackground(Object... objects) {
+                                requestHandler.sendRequestApplication(project);
+                                return null;
+                            }
+
+                            @Override
+                            protected void onPostExecute(Object o) {
+                                if (project.getDefaultResponseApplication() != null && project.getDefaultResponseApplication().getCode() == 200) {
+                                    ((MainActivity) getActivity()).showCustomListFragment(R.string.fragment_custom_list_application_info_title, FragmentCustomList.Type.APPLICATION, project.getDefaultResponseApplication().getResult());
+                                } else {
+                                    Toast.makeText(getActivity(), SourceHelper.getString(getActivity(), R.string.fragment_create_project_message_server_address_is_no_valid_lighthouse_address), Toast.LENGTH_SHORT).show();
+                                }
+                                bShowApplicationInfo.setEnabled(true);
+                                setLoadingViewVisible(false);
+                            }
+                        }.execute();
                     }
-                }.executeOnExecutor(executor);
+                }.execute();
             }
         };
     }
@@ -342,33 +342,28 @@ public class FragmentCreateProject extends AbstractFragment {
 
     public void onClickProjectAddUpdate(final Project project) {
         setLoadingViewVisible(true);
-
-        final ExtendedAsyncTask extendedAsyncTask = (ExtendedAsyncTask) HttpAddressExists.exists(project.getServerAddress()).executeOnExecutor(executor);
-        new AsyncTask<Object, Void, Object>() {
+        new AsyncTask<Object, Void, Long>(){
             @Override
-            protected Object doInBackground(Object[] objects) {
-                return null;
+            protected Long doInBackground(Object... objects) {
+                return HttpAddressExists.exists(project.getServerAddress());
             }
 
             @Override
-            protected void onPostExecute(Object o) {
-                if (!extendedAsyncTask.getReturnValue().equals("200")) {
+            protected void onPostExecute(Long responseCode) {
+                if (responseCode != 200) {
                     getAlertDialog().show();
+                    bShowApplicationInfo.setEnabled(true);
+                    setLoadingViewVisible(false);
                     return;
                 }
 
-                requestHandler.getRequestApplicationTask(project).executeOnExecutor(executor);
-                new AsyncTask<Object, Void, Object>() {
+                new AsyncTask<Object, Void, Object>(){
                     @Override
-                    protected Object doInBackground(Object[] objects) {
-                        return null;
-                    }
-
-                    @Override
-                    protected void onPostExecute(Object o) {
+                    protected Object doInBackground(Object... objects) {
+                        requestHandler.sendRequestApplication(project);
                         if (project.getDefaultResponseApplication().getCode() != 200) {
                             Toast.makeText(getActivity(), SourceHelper.getString(getActivity(), R.string.fragment_create_project_message_server_address_is_no_valid_lighthouse_address), Toast.LENGTH_SHORT).show();
-                            return;
+                            return null;
                         }
 
                         ResponseApplication responseApplication = (ResponseApplication) JsonHelper.fromJsonGeneric(ResponseApplication.class, project.getDefaultResponseApplication().getResult());
@@ -376,52 +371,36 @@ public class FragmentCreateProject extends AbstractFragment {
                             Toast.makeText(getActivity(),
                                     SourceHelper.getString(getActivity(), R.string.fragment_create_project_message_application_version_equals_not_2_0)
                                             + " - [" + responseApplication.getBuild().getVersion() + "]", Toast.LENGTH_SHORT).show();
-                            return;
+                            return null;
                         }
 
-                        requestHandler.getRequestLoginTask(project).executeOnExecutor(executor);
-                        new AsyncTask<Object, Void, Object>() {
-                            @Override
-                            protected Object doInBackground(Object... objects) {
-                                return null;
-                            }
-
-                            @Override
-                            protected void onPostExecute(Object o) {
-
-                                if (project.getDefaultResponseLogin().getCode() == 200) {
-                                    project.loadFromNetwork();
-                                    switch (fragmentStatus) {
-                                        case ADD:
-                                            getSQLiteHelper().addProject(project);
-                                            break;
-                                        case UPDATE:
-                                            getSQLiteHelper().updateProject(project);
-                                            break;
-                                    }
-                                    ((MainActivity) getActivity()).showProjectListFragment();
-                                    return;
-                                }
-                                Toast.makeText(getActivity(), SourceHelper.getString(getActivity(), R.string.fragment_create_project_message_login_data_not_correct), Toast.LENGTH_SHORT).show();
-                            }
-                        }.executeOnExecutor(executor);
+                        requestHandler.sendRequestLogin(project);
+                        return null;
                     }
-                }.executeOnExecutor(executor);
-            }
-        }.executeOnExecutor(executor);
-        new AsyncTask<Object, Void, Object>() {
-            @Override
-            protected Object doInBackground(Object... objects) {
-                return null;
-            }
 
-            @Override
-            protected void onPostExecute(Object o) {
-                bShowApplicationInfo.setEnabled(true);
-                setLoadingViewVisible(false);
-            }
-        }.executeOnExecutor(executor);
+                    @Override
+                    protected void onPostExecute(Object o) {
+                        if (project.getDefaultResponseLogin().getCode() != 200) {
+                            Toast.makeText(getActivity(), SourceHelper.getString(getActivity(), R.string.fragment_create_project_message_login_data_not_correct), Toast.LENGTH_SHORT).show();
+                        }else{
+                            project.loadFromNetwork();
+                            switch (fragmentStatus) {
+                                case ADD:
+                                    getSQLiteHelper().addProject(project);
+                                    break;
+                                case UPDATE:
+                                    getSQLiteHelper().updateProject(project);
+                                    break;
+                            }
+                            ((MainActivity) getActivity()).showProjectListFragment();
+                        }
 
+                        bShowApplicationInfo.setEnabled(true);
+                        setLoadingViewVisible(false);
+                    }
+                }.execute();
+            }
+        }.execute();
     }
 
     public enum Status {

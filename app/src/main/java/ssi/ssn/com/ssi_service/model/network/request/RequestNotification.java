@@ -30,16 +30,10 @@ public class RequestNotification {
         return project.getServerAddress() + ADDRESS + path.getUrl();
     }
 
-    public AsyncTask getTaskGET(final CookieHandler cookieHandler) {
-        return new AsyncTask() {
-            @Override
-            protected Object doInBackground(Object[] objects) {
-                HttpGET httpGET = new HttpGET(cookieHandler, getAddress());
-                DefaultResponse defaultResponse = httpGET.sendRequest(false);
-                project.setDefaultResponseNotification(defaultResponse);
-                return null;
-            }
-        };
+    public void getTaskGET(final CookieHandler cookieHandler) {
+        HttpGET httpGET = new HttpGET(cookieHandler, getAddress());
+        DefaultResponse defaultResponse = httpGET.sendRequest(false);
+        project.setDefaultResponseNotification(defaultResponse);
     }
 
 

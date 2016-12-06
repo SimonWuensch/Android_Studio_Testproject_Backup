@@ -47,54 +47,54 @@ public class RequestHandler {
     }
 
     //** Without Cookie ************************************************************************* //
-    public AsyncTask getRequestApplicationTask(Project project) {
-        return RequestApplication.init(project).getTaskGET(getCookieHandler(project));
+    public void sendRequestApplication(Project project) {
+        RequestApplication.init(project).getTaskGET(getCookieHandler(project));
     }
 
-    public AsyncTask getRequestSessionsCurrentTask(Project project) {
-        return RequestSessionsCurrent.init(project).getTaskGET(getCookieHandler(project));
+    public void sendRequestSessionsCurrent(Project project) {
+        RequestSessionsCurrent.init(project).getTaskGET(getCookieHandler(project));
     }
 
     // ** With Cookie *************************************************************************** //
     // *** Login  ******************************************************************************* //
-    public AsyncTask getRequestLoginTask(Project project) {
-        return RequestLogin.init(this, project).getTaskGET(getCookieHandler(project));
+    public void sendRequestLogin(Project project) {
+        RequestLogin.init(this, project).getTaskGET(getCookieHandler(project));
     }
 
-    public void addRequestLoginTaskToExecutor(Project project) {
+    public void sendRequestLoginWithSessionCurrentCheck(Project project) {
         RequestLogin.init(this, project).addTaskGETtoExecutor(executor, getCookieHandler(project));
     }
 
     // *** Application Config ******************************************************************* //
-    public AsyncTask getRequestApplicationConfigTask(Project project) {
-        return RequestApplicationConfig.init(project).getTaskGET(getCookieHandler(project));
+    public void sendRequestApplicationConfig(Project project) {
+        RequestApplicationConfig.init(project).getTaskGET(getCookieHandler(project));
     }
 
-    public AsyncTask getRequestComponentTask(Project project, String componentName) {
-        return RequestComponent.init(project, componentName).getTaskGET(getCookieHandler(project));
+    public void sendRequestComponent(Project project, String componentName) {
+        RequestComponent.init(project, componentName).getTaskGET(getCookieHandler(project));
     }
 
-    public AsyncTask getRequestModuleTask(Project project, String moduleName) {
-        return RequestModule.init(project, moduleName).getTaskGET(getCookieHandler(project));
+    public void sendRequestModule(Project project, String moduleName) {
+        RequestModule.init(project, moduleName).getTaskGET(getCookieHandler(project));
     }
 
     // *** OS *********************************************************************************** //
-    public AsyncTask getRequestOsTask(Project project) {
-        return RequestOs.init(project).getTaskGET(getCookieHandler(project));
+    public void sendRequestOs(Project project) {
+        RequestOs.init(project).getTaskGET(getCookieHandler(project));
     }
 
     // *** Notification ************************************************************************* //
-    public AsyncTask getRequestNotificationTask(Project project, RequestNotification.Path path) {
-        return RequestNotification.init(project, path).getTaskGET(getCookieHandler(project));
+    public void sendRequestNotification(Project project, RequestNotification.Path path) {
+        RequestNotification.init(project, path).getTaskGET(getCookieHandler(project));
     }
 
     // *** Scada ******************************************************************************** //
-    public AsyncTask getRequestScadaTask(Project project, RequestScada.Path path) {
-        return RequestScada.init(project, path).getTaskGET(getCookieHandler(project));
+    public void sendRequestScada(Project project, RequestScada.Path path) {
+        RequestScada.init(project, path).getTaskGET(getCookieHandler(project));
     }
 
     // *** Logout
-    public AsyncTask getRequestLogoutTask(Project project) {
-        return RequestLogout.init(project).getTaskGET(getCookieHandler(project));
+    public void sendRequestLogout(Project project) {
+        RequestLogout.init(project).getTaskGET(getCookieHandler(project));
     }
 }

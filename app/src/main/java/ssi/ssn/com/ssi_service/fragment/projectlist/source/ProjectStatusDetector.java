@@ -16,6 +16,7 @@ import ssi.ssn.com.ssi_service.fragment.launchboard.source.CardObjectKPI;
 import ssi.ssn.com.ssi_service.fragment.launchboard.source.CardObjectModule;
 import ssi.ssn.com.ssi_service.fragment.launchboard.source.CardObjectNotification;
 import ssi.ssn.com.ssi_service.model.data.source.Project;
+import ssi.ssn.com.ssi_service.model.data.source.Status;
 import ssi.ssn.com.ssi_service.model.helper.JsonHelper;
 import ssi.ssn.com.ssi_service.model.network.handler.RequestHandler;
 import ssi.ssn.com.ssi_service.model.network.response.application.ResponseApplication;
@@ -70,38 +71,30 @@ public class ProjectStatusDetector {
     }
 
     public void detectProjectStatus(final Activity activity) {
-        RequestHandler requestHandler = ((MainActivity) activity).getRequestHandler();
-        final ExecutorService executor = requestHandler.getExecutor();
-        requestHandler.getRequestApplicationTask(project).executeOnExecutor(executor);
-
-        new AsyncTask<Object, Void, Object>() {
+        final RequestHandler requestHandler = ((MainActivity) activity).getRequestHandler();
+        new AsyncTask<Object, Void, Status>() {
             @Override
-            protected Object doInBackground(Object... objects) {
+            protected ssi.ssn.com.ssi_service.model.data.source.Status doInBackground(Object... objects) {
+                requestHandler.sendRequestApplication(project);
                 if (project.getDefaultResponseApplication().getCode() != 200) {
-                    project.setStatus(ssi.ssn.com.ssi_service.model.data.source.Status.NOT_AVAILABLE);
-                    return null;
+                    return ssi.ssn.com.ssi_service.model.data.source.Status.NOT_AVAILABLE;
                 }
 
                 ResponseApplication responseApplication = (ResponseApplication) JsonHelper.fromJsonGeneric(ResponseApplication.class, project.getDefaultResponseApplication().getResult());
                 if (!responseApplication.getState().getStatus().equals(ssi.ssn.com.ssi_service.model.data.source.Status.RUNNING)) {
-                    project.setStatus(ssi.ssn.com.ssi_service.model.data.source.Status.ERROR);
-                    return null;
+                    return ssi.ssn.com.ssi_service.model.data.source.Status.ERROR;
                 }
-                project.setStatus(ssi.ssn.com.ssi_service.model.data.source.Status.OK);
-                return null;
+
+                return ssi.ssn.com.ssi_service.model.data.source.Status.OK;
             }
 
             @Override
-            protected void onPostExecute(Object o) {
-                vProjectStatus.setBackgroundColor(project.getStatus().getColor(activity));
-            }
-        }.executeOnExecutor(executor);
+            protected void onPostExecute(ssi.ssn.com.ssi_service.model.data.source.Status status) {
+                project.setStatus(status);
+                vProjectStatus.setBackgroundColor(status.getColor(activity));
 
-        new AsyncTask<Object, Void, Object>() {
-            @Override
-            protected Object doInBackground(Object... object) {
-                if (!project.getStatus().equals(ssi.ssn.com.ssi_service.model.data.source.Status.OK)) {
-                    return null;
+                if(!status.equals(ssi.ssn.com.ssi_service.model.data.source.Status.OK)) {
+                    return;
                 }
 
                 for (AbstractCardObject cardObject : cardObjects) {
@@ -110,8 +103,7 @@ public class ProjectStatusDetector {
                     cardObject.detectCardStatus(activity, project);
                     ((MainActivity) activity).addCardToMap(project, cardObject);
                 }
-                return null;
             }
-        }.executeOnExecutor(executor);
+        }.execute();
     }
 }

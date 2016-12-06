@@ -19,10 +19,6 @@ import ssi.ssn.com.ssi_service.fragment.createproject.FragmentCreateProject;
 import ssi.ssn.com.ssi_service.fragment.customlist.FragmentCustomList;
 import ssi.ssn.com.ssi_service.fragment.launchboard.FragmentLaunchBoard;
 import ssi.ssn.com.ssi_service.fragment.launchboard.source.AbstractCardObject;
-import ssi.ssn.com.ssi_service.fragment.launchboard.source.CardObjectComponent;
-import ssi.ssn.com.ssi_service.fragment.launchboard.source.CardObjectKPI;
-import ssi.ssn.com.ssi_service.fragment.launchboard.source.CardObjectModule;
-import ssi.ssn.com.ssi_service.fragment.launchboard.source.CardObjectNotification;
 import ssi.ssn.com.ssi_service.fragment.modulelist.FragmentModuleList;
 import ssi.ssn.com.ssi_service.fragment.projectlist.FragmentProjectList;
 import ssi.ssn.com.ssi_service.model.data.source.Project;
@@ -39,7 +35,6 @@ public class AbstractActivity extends Activity {
 
     protected SQLiteHelper sqLiteHelper;
     protected RequestHandler requestHandler;
-    protected Project currentProject;
     protected View loadingView;
 
     private Map<Long, List<AbstractCardObject>> projectCardObjectMap = new HashMap<>();
@@ -50,6 +45,22 @@ public class AbstractActivity extends Activity {
         executor = Executors.newSingleThreadExecutor();
         requestHandler = RequestHandler.initRequestHandler(executor);
         sqLiteHelper = new SQLiteHelper(this);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        for (final long projectID : projectCardObjectMap.keySet()) {
+            new AsyncTask<Object, Void, Object>() {
+                @Override
+                protected Object doInBackground(Object... objects) {
+                    Project project = sqLiteHelper.getProjectByID(projectID);
+                    getRequestHandler().sendRequestLogout(project);
+                    projectCardObjectMap.remove(projectID);
+                    return null;
+                }
+            }.execute();
+        }
     }
 
     public ExecutorService getExecutor(){
@@ -129,7 +140,7 @@ public class AbstractActivity extends Activity {
     }
 
     public void showLaunchBoardFragment(final Project project) {
-        requestHandler.addRequestLoginTaskToExecutor(project);
+        requestHandler.sendRequestLoginWithSessionCurrentCheck(project);
         final ExecutorService executor = requestHandler.getExecutor();
         new AsyncTask<Object, Void, Object>(){
             @Override

@@ -35,16 +35,10 @@ public class RequestModule {
                 .replace("{name}", name);
     }
 
-    public AsyncTask getTaskGET(final CookieHandler cookieHandler) {
-        return new AsyncTask() {
-            @Override
-            protected Object doInBackground(Object[] objects) {
-                HttpGET httpGET = new HttpGET(cookieHandler, getAddress());
-                DefaultResponse defaultResponse = httpGET.sendRequest(false);
-                defaultResponse.addAdditional(ADDITIONAL_MODULE_NAME, name);
-                project.addDefaultResponseModul(defaultResponse);
-                return null;
-            }
-        };
+    public void getTaskGET(final CookieHandler cookieHandler) {
+        HttpGET httpGET = new HttpGET(cookieHandler, getAddress());
+        DefaultResponse defaultResponse = httpGET.sendRequest(false);
+        defaultResponse.addAdditional(ADDITIONAL_MODULE_NAME, name);
+        project.addDefaultResponseModul(defaultResponse);
     }
 }

@@ -1,13 +1,11 @@
 package ssi.ssn.com.ssi_service.model.network.request;
 
-import android.os.AsyncTask;
-
 import ssi.ssn.com.ssi_service.model.data.source.Project;
 import ssi.ssn.com.ssi_service.model.network.DefaultResponse;
 import ssi.ssn.com.ssi_service.model.network.communication.HttpGET;
 import ssi.ssn.com.ssi_service.model.network.handler.CookieHandler;
 
-public class RequestApplication {
+public class RequestApplication{
 
     private static String TAG = RequestApplication.class.getSimpleName();
 
@@ -27,15 +25,9 @@ public class RequestApplication {
         return project.getServerAddress() + ADDRESS;
     }
 
-    public AsyncTask getTaskGET(final CookieHandler cookieHandler) {
-        return new AsyncTask() {
-            @Override
-            protected Object doInBackground(Object[] objects) {
-                HttpGET httpGET = new HttpGET(cookieHandler, getAddress());
-                DefaultResponse defaultResponse = httpGET.sendRequest(false);
-                project.setDefaultResponseApplication(defaultResponse);
-                return null;
-            }
-        };
+    public void getTaskGET(final CookieHandler cookieHandler) {
+        HttpGET httpGET = new HttpGET(cookieHandler, getAddress());
+        DefaultResponse defaultResponse = httpGET.sendRequest(false);
+        project.setDefaultResponseApplication(defaultResponse);
     }
 }

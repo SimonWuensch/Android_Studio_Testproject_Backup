@@ -12,10 +12,8 @@ import java.util.Objects;
 import java.util.concurrent.ExecutorService;
 
 import ssi.ssn.com.ssi_service.activity.MainActivity;
-import ssi.ssn.com.ssi_service.fragment.launchboard.source.AbstractCardObject;
 import ssi.ssn.com.ssi_service.fragment.launchboard.source.CardObjectModule;
 import ssi.ssn.com.ssi_service.model.data.source.Project;
-import ssi.ssn.com.ssi_service.model.data.source.Status;
 import ssi.ssn.com.ssi_service.model.helper.JsonHelper;
 import ssi.ssn.com.ssi_service.model.helper.XMLHelper;
 import ssi.ssn.com.ssi_service.model.network.DefaultResponse;
@@ -70,15 +68,15 @@ public class ModuleFinder {
     }
 
     public void loadFromNetwork(final Activity activity, final Project project) {
-        if (!project.isOutOfDate()) {
+        /*if (!project.isOutOfDate()) {
             return ;
         }
 
         final List<ResponseModule> responseList;
         final RequestHandler requestHandler = ((MainActivity) activity).getRequestHandler();
         final ExecutorService executor = requestHandler.getExecutor();
-        requestHandler.addRequestLoginTaskToExecutor(project);
-        requestHandler.getRequestApplicationConfigTask(project).executeOnExecutor(executor);
+        requestHandler.sendRequestLoginWithSessionCurrentCheck(project);
+        requestHandler.sendRequestApplicationConfig(project).executeOnExecutor(executor);
 
         final Map<String, String> enabledModuleList = new HashMap<>();
         new AsyncTask<Object, Void, Objects>() {
@@ -105,7 +103,7 @@ public class ModuleFinder {
                         String isEnabled = xmlObject.getAttributes().get(CardObjectModule.XML_ATTRIBUTE_ENABLED);
                         enabledModuleList.put(xmlModuleName, isEnabled);
                     }
-                    requestHandler.getRequestModuleTask(project, xmlModuleName).executeOnExecutor(executor);
+                    requestHandler.sendRequestModule(project, xmlModuleName).executeOnExecutor(executor);
                 }
 
                 new AsyncTask<Object, Void, Object>() {
@@ -136,6 +134,6 @@ public class ModuleFinder {
                     }
                 }.executeOnExecutor(executor);
             }
-        }.executeOnExecutor(executor);
+        }.executeOnExecutor(executor);*/
     }
 }

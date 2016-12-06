@@ -16,15 +16,9 @@ public class HttpAddressExists {
     private static int GET_COMMUNICATION_ERROR = 900;
     private static int GET_COMMUNICATION_ERROR_TIMEOUT = 901;
 
-    public static ExtendedAsyncTask exists(final String address) {
-        return new ExtendedAsyncTask<Object, Void, Object>() {
-            @Override
-            protected Integer doInBackground(Object... objects) {
-                int responseCode = sendRequest(address);
-                setReturnValue(responseCode + "");
-                return null;
-            }
-        };
+    public static long exists(final String address) {
+        int responseCode = sendRequest(address);
+        return responseCode;
     }
 
     private static int sendRequest(String serverAddress) {

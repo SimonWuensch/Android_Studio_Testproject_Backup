@@ -41,37 +41,26 @@ public class RequestLogin {
                 .replace("{password}", project.getPassword());
     }
 
-    public AsyncTask getTaskGET(final CookieHandler cookieHandler) {
-        return new AsyncTask<Object, Void, Object>() {
-            @Override
-            protected Object doInBackground(Object[] objects) {
-                HttpGET httpGET = new HttpGET(cookieHandler, getAddress());
-                DefaultResponse defaultResponse = httpGET.sendRequest(true);
-                project.setDefaultResponseLogin(defaultResponse);
-                return null;
-            }
-        };
+    public void getTaskGET(final CookieHandler cookieHandler) {
+        HttpGET httpGET = new HttpGET(cookieHandler, getAddress());
+        DefaultResponse defaultResponse = httpGET.sendRequest(true);
+        project.setDefaultResponseLogin(defaultResponse);
     }
 
     public void addTaskGETtoExecutor(ExecutorService executor, final CookieHandler cookieHandler) {
-        requestHandler.getRequestSessionsCurrentTask(project).executeOnExecutor(executor);
-        new AsyncTask<Object, Void, Object>() {
-            @Override
-            protected Object doInBackground(Object[] objects) {
-                if(project.getDefaultResponseSessionsCurrent().getCode() != 200){
-                    return null;
-                }else{
-                    ResponseSessionsCurrent responseSessionsCurrent = (ResponseSessionsCurrent) JsonHelper.fromJsonGeneric(ResponseSessionsCurrent.class, project.getDefaultResponseSessionsCurrent().getResult());
-                    if(responseSessionsCurrent.getStatus().equals(ResponseSessionsCurrent.STATUS_LOGGED_ID)){
-                        Log.d(TAG, "User is already logged in. [" + project + "]");
-                        return null;
-                    }
-                }
-                HttpGET httpGET = new HttpGET(cookieHandler, getAddress());
-                DefaultResponse defaultResponse = httpGET.sendRequest(true);
-                project.setDefaultResponseLogin(defaultResponse);
-                return null;
-            }
-        }.executeOnExecutor(executor);
+        requestHandler.sendRequestSessionsCurrent(project);
+        if (project.getDefaultResponseSessionsCurrent().getCode() != 200) {
+            return;
+        }
+
+        ResponseSessionsCurrent response = (ResponseSessionsCurrent) JsonHelper.fromJsonGeneric(ResponseSessionsCurrent.class, project.getDefaultResponseSessionsCurrent().getResult());
+        if (response.getStatus().equals(ResponseSessionsCurrent.STATUS_LOGGED_ID)) {
+            Log.d(TAG, "User is already logged in. [" + project + "]");
+            return;
+        }
+
+        HttpGET httpGET = new HttpGET(cookieHandler, getAddress());
+        DefaultResponse defaultResponse = httpGET.sendRequest(true);
+        project.setDefaultResponseLogin(defaultResponse);
     }
 }

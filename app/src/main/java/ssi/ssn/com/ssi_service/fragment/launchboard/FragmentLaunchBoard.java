@@ -12,31 +12,21 @@ import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.owlike.genson.GenericType;
-
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
 import ssi.ssn.com.ssi_service.R;
 import ssi.ssn.com.ssi_service.activity.MainActivity;
 import ssi.ssn.com.ssi_service.fragment.AbstractFragment;
 import ssi.ssn.com.ssi_service.fragment.launchboard.source.AbstractCardObject;
-import ssi.ssn.com.ssi_service.fragment.launchboard.source.CardObjectComponent;
-import ssi.ssn.com.ssi_service.fragment.launchboard.source.CardObjectKPI;
-import ssi.ssn.com.ssi_service.fragment.launchboard.source.CardObjectModule;
-import ssi.ssn.com.ssi_service.fragment.launchboard.source.CardObjectNotification;
 import ssi.ssn.com.ssi_service.model.data.source.Project;
 import ssi.ssn.com.ssi_service.model.helper.FormatHelper;
 import ssi.ssn.com.ssi_service.model.helper.JsonHelper;
 import ssi.ssn.com.ssi_service.model.helper.SourceHelper;
 import ssi.ssn.com.ssi_service.model.network.handler.RequestHandler;
 import ssi.ssn.com.ssi_service.model.network.response.application.ResponseApplication;
-import ssi.ssn.com.ssi_service.model.network.response.component.ResponseComponent;
 
 public class FragmentLaunchBoard extends AbstractFragment {
 
@@ -146,23 +136,24 @@ public class FragmentLaunchBoard extends AbstractFragment {
     }
 
     public void checkProjectState() {
-        RequestHandler requestHandler = ((MainActivity) getActivity()).getRequestHandler();
+        final RequestHandler requestHandler = ((MainActivity) getActivity()).getRequestHandler();
         ExecutorService executor = requestHandler.getExecutor();
 
-        boolean isOutOfTime = new Date().getTime() - project.getLastObservationTime() > project.getObservationInterval();
-        if (project.getDefaultResponseApplication() == null || isOutOfTime) {
-            requestHandler.getRequestApplicationTask(project).executeOnExecutor(executor);
-        }
 
-        rlLoadingView.setVisibility(View.VISIBLE);
-        new AsyncTask<Object, Void, Object>() {
+        new AsyncTask<Object, Void, Object>(){
             @Override
-            protected Object doInBackground(Object[] objects) {
+            protected Object doInBackground(Object... objects) {
+                boolean isOutOfTime = new Date().getTime() - project.getLastObservationTime() > project.getObservationInterval();
+                if (project.getDefaultResponseApplication() == null || isOutOfTime) {
+                    requestHandler.sendRequestApplication(project);
+                }
                 return null;
             }
 
             @Override
             protected void onPostExecute(Object o) {
+                rlLoadingView.setVisibility(View.VISIBLE);
+
                 if (project.getDefaultResponseApplication().getCode() == 200) {
                     ResponseApplication responseApplication = (ResponseApplication) JsonHelper.fromJsonGeneric(ResponseApplication.class, project.getDefaultResponseApplication().getResult());
                     String projectStatus = responseApplication.getState().getStatus();
@@ -190,7 +181,7 @@ public class FragmentLaunchBoard extends AbstractFragment {
                 }
                 rlLoadingView.setVisibility(View.GONE);
             }
-        }.executeOnExecutor(executor);
+        }.execute();
     }
 
     @Override
@@ -204,6 +195,5 @@ public class FragmentLaunchBoard extends AbstractFragment {
     @Override
     public void onDetach() {
         super.onDetach();
-        ((MainActivity) getActivity()).getRequestHandler().getRequestLogoutTask(project).execute();
     }
 }
