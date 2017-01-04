@@ -14,6 +14,7 @@ import ssi.ssn.com.ssi_service.R;
 import ssi.ssn.com.ssi_service.activity.AbstractActivity;
 import ssi.ssn.com.ssi_service.activity.MainActivity;
 import ssi.ssn.com.ssi_service.model.data.source.Project;
+import ssi.ssn.com.ssi_service.model.data.source.Status;
 import ssi.ssn.com.ssi_service.model.helper.JsonHelper;
 import ssi.ssn.com.ssi_service.model.helper.SourceHelper;
 import ssi.ssn.com.ssi_service.model.helper.XMLHelper;
@@ -174,8 +175,8 @@ public class CardObjectComponent extends AbstractCardObject {
                 ssi.ssn.com.ssi_service.model.data.source.Status overAllState = ssi.ssn.com.ssi_service.model.data.source.Status.OK;
                 for (ResponseComponent responseComponent : responseComponentList) {
                     String componentStatus = responseComponent.getState().getStatus();
-                    if (!componentStatus.equals(ssi.ssn.com.ssi_service.model.data.source.Status.ONLINE) &&
-                            !componentStatus.equals(ssi.ssn.com.ssi_service.model.data.source.Status.UNKNOWN)) {
+                    if (!componentStatus.equals(ssi.ssn.com.ssi_service.model.data.source.Status.TEXT_ONLINE) &&
+                            !componentStatus.equals(ssi.ssn.com.ssi_service.model.data.source.Status.TEXT_UNKNOWN)) {
                         overAllState = ssi.ssn.com.ssi_service.model.data.source.Status.ERROR;
                     }
                 }

@@ -2,6 +2,7 @@ package ssi.ssn.com.ssi_service.fragment.projectlist.source;
 
 import android.app.Activity;
 import android.os.AsyncTask;
+import android.util.Log;
 import android.view.View;
 
 import java.util.LinkedList;
@@ -82,7 +83,7 @@ public class ProjectStatusDetector {
                 }
 
                 ResponseApplication responseApplication = (ResponseApplication) JsonHelper.fromJsonGeneric(ResponseApplication.class, project.getDefaultResponseApplication().getResult());
-                if (!responseApplication.getState().getStatus().equals(ssi.ssn.com.ssi_service.model.data.source.Status.RUNNING)) {
+                if (!responseApplication.getState().getStatus().equals(ssi.ssn.com.ssi_service.model.data.source.Status.TEXT_RUNNING)) {
                     return ssi.ssn.com.ssi_service.model.data.source.Status.ERROR;
                 }
 
@@ -101,7 +102,7 @@ public class ProjectStatusDetector {
                 for (AbstractCardObject cardObject : cardObjects) {
                     cardObject.set_ProjectID(project.get_id());
                     cardObject.setProjectStatusView(vProjectStatus);
-                    cardObject.detectCardStatus(activity, project);
+                    cardObject.loadFromNetwork(activity, project);
                     ((MainActivity) activity).addCardToMap(project, cardObject);
                 }
             }

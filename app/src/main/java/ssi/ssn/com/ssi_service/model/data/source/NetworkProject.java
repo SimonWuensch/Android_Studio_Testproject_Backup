@@ -140,6 +140,5 @@ public class NetworkProject {
             defaultResponseModuleList = new ArrayList<>();
         }
         defaultResponseModuleList.add(defaultResponseModule);
-        Log.e(NetworkProject.class.getSimpleName(), "Add to defaultResponseModuleList: " + defaultResponseModule.getResult());
     }
 }

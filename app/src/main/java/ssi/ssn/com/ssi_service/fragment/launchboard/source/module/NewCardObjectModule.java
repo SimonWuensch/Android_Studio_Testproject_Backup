@@ -61,8 +61,8 @@ public class NewCardObjectModule extends AbstractCardObject {
             String status = responseModule.getStatus();
             if (!Boolean.valueOf(responseModule.getEnabled())) {
                 continue;
-            } else if (!status.equals(ssi.ssn.com.ssi_service.model.data.source.Status.RUNNING) &&
-                    !status.equals(ssi.ssn.com.ssi_service.model.data.source.Status.UNKNOWN)) {
+            } else if (!status.equals(ssi.ssn.com.ssi_service.model.data.source.Status.TEXT_RUNNING) &&
+                    !status.equals(ssi.ssn.com.ssi_service.model.data.source.Status.TEXT_UNKNOWN)) {
                 overAllStatus = ssi.ssn.com.ssi_service.model.data.source.Status.ERROR;
             }
         }

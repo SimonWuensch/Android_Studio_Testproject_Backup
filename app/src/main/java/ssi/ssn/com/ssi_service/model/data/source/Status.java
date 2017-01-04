@@ -14,9 +14,9 @@ public enum Status {
     WARNING(R.color.WARNING),
     NOT_AVAILABLE(R.color.NOT_AVAILABLE);
 
-    public static String RUNNING = "RUNNING";
-    public static String ONLINE = "ONLINE";
-    public static String UNKNOWN = "UNKNOWN";
+    public static String TEXT_RUNNING = "RUNNING";
+    public static String TEXT_ONLINE = "ONLINE";
+    public static String TEXT_UNKNOWN = "UNKNOWN";
     public static String TEXT_NOT_AVAILABLE = "NOT_AVAILABLE";
 
     private int color;

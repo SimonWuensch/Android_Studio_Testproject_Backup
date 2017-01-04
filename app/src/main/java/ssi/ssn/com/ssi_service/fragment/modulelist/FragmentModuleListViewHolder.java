@@ -41,9 +41,9 @@ class FragmentModuleListViewHolder extends RecyclerView.ViewHolder {
 
         if (!Boolean.valueOf(responseModule.getEnabled())) {
             rlNameBackground.setBackgroundColor(Status.NOT_AVAILABLE.getColor(activity));
-        } else if (responseModule.getStatus().equals(Status.RUNNING)) {
+        } else if (responseModule.getStatus().equals(Status.TEXT_RUNNING)) {
             rlNameBackground.setBackgroundColor(Status.OK.getColor(activity));
-        } else if (!responseModule.getStatus().equals(Status.RUNNING)) {
+        } else if (!responseModule.getStatus().equals(Status.TEXT_RUNNING)) {
             rlNameBackground.setBackgroundColor(Status.ERROR.getColor(activity));
         } else {
             rlNameBackground.setBackgroundColor(Status.NOT_AVAILABLE.getColor(activity));

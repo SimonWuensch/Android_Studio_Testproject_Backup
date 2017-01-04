@@ -80,12 +80,14 @@ public class AbstractCardObject {
     }
 
     public void setStatus(Status status, Activity activity) {
+        Log.e(AbstractCardObject.class.getSimpleName(), "Card: " + activity.getString(getTitle()) + " - Status: " + status);
         this.status = status;
         if (cardStatusView != null) {
             cardStatusView.setBackgroundColor(status.getColor(activity));
             setLoadingViewVisible(false);
         }
         if (projectStatusView != null && !status.equals(Status.OK)){
+
             projectStatusView.setBackgroundColor(Status.ERROR.getColor(activity));
         }
     }

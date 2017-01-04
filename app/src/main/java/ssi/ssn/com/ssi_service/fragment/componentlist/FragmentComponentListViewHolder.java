@@ -51,9 +51,9 @@ class FragmentComponentListViewHolder extends RecyclerView.ViewHolder {
             rlName.setBackgroundColor(Status.NOT_AVAILABLE.getColor(activity));
             llEnabled.setVisibility(View.VISIBLE);
             tvEnabled.setText(String.valueOf(state.isEnabled()));
-        } else if (state.getStatus().equals(Status.ONLINE)) {
+        } else if (state.getStatus().equals(Status.TEXT_ONLINE)) {
             rlName.setBackgroundColor(Status.OK.getColor(activity));
-        } else if (state.getStatus().equals(Status.UNKNOWN)) {
+        } else if (state.getStatus().equals(Status.TEXT_UNKNOWN)) {
             rlName.setBackgroundColor(Status.NOT_AVAILABLE.getColor(activity));
         } else {
             rlName.setBackgroundColor(Status.ERROR.getColor(activity));

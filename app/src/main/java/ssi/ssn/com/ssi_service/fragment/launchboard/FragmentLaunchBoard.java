@@ -158,7 +158,7 @@ public class FragmentLaunchBoard extends AbstractFragment {
                     ResponseApplication responseApplication = (ResponseApplication) JsonHelper.fromJsonGeneric(ResponseApplication.class, project.getDefaultResponseApplication().getResult());
                     String projectStatus = responseApplication.getState().getStatus();
                     tvProjectStatus.setText(projectStatus);
-                    if (projectStatus.equals(ssi.ssn.com.ssi_service.model.data.source.Status.RUNNING)) {
+                    if (projectStatus.equals(ssi.ssn.com.ssi_service.model.data.source.Status.TEXT_RUNNING)) {
                         rlProjectStateBackground.setBackgroundColor(ssi.ssn.com.ssi_service.model.data.source.Status.OK.getColor(getActivity()));
 
                         Date since = new Date(responseApplication.getState().getSince());

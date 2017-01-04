@@ -103,6 +103,4 @@ public class XMLHelper {
             attributes.put(attributeName, attributeValue);
         }
     }
-
-
 }

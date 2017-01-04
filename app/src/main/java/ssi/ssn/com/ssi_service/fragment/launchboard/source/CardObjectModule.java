@@ -110,19 +110,16 @@ public class CardObjectModule extends AbstractCardObject {
                         String isEnabled = xmlObject.getAttributes().get(CardObjectModule.XML_ATTRIBUTE_ENABLED);
                         enabledModuleList.put(xmlModuleName, isEnabled);
                     }
-                    Log.e(TAG, "SendRequestModule: " + xmlModuleName);
                     requestHandler.sendRequestModule(project, xmlModuleName);
                 }
 
                 responseModuleList = new ArrayList<>();
                 for (DefaultResponse defaultResponse : project.getDefaultResponseModuleList()) {
-                    Log.e(TAG, "defaultResponseModuleList: " + defaultResponse.getResult());
-
                     ResponseModule responseModule;
                     String xmlModuleName = defaultResponse.getAdditional().get(RequestModule.ADDITIONAL_MODULE_NAME);
                     if (defaultResponse.getCode() != 200) {
                         responseModule = new ResponseModule();
-                        responseModule.setStatus(ssi.ssn.com.ssi_service.model.data.source.Status.UNKNOWN);
+                        responseModule.setStatus(ssi.ssn.com.ssi_service.model.data.source.Status.TEXT_UNKNOWN);
                         responseModule.setName(xmlModuleName);
                     } else {
                         responseModule = (ResponseModule) JsonHelper.fromJsonGeneric(ResponseModule.class, defaultResponse.getResult());
@@ -187,8 +184,8 @@ public class CardObjectModule extends AbstractCardObject {
                     String status = responseModule.getStatus();
                     if (!Boolean.valueOf(responseModule.getEnabled())) {
                         continue;
-                    } else if (!status.equals(ssi.ssn.com.ssi_service.model.data.source.Status.RUNNING) &&
-                            !status.equals(ssi.ssn.com.ssi_service.model.data.source.Status.UNKNOWN)) {
+                    } else if (!status.equals(ssi.ssn.com.ssi_service.model.data.source.Status.TEXT_RUNNING) &&
+                            !status.equals(ssi.ssn.com.ssi_service.model.data.source.Status.TEXT_UNKNOWN)) {
                         overAllState = ssi.ssn.com.ssi_service.model.data.source.Status.ERROR;
                     }
                 }
