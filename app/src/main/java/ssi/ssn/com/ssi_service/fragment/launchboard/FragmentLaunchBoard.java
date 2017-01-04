@@ -113,7 +113,7 @@ public class FragmentLaunchBoard extends AbstractFragment {
                         }
                         Log.d(TAG, "Card objects still updating status...");
 
-                        if (isUpdating) {
+                        if (!isUpdating) {
                             for (AbstractCardObject cardObject : cardObjects) {
                                 cardObject.reloadStatus(getActivity(), project);
                             }
@@ -137,8 +137,6 @@ public class FragmentLaunchBoard extends AbstractFragment {
 
     public void checkProjectState() {
         final RequestHandler requestHandler = ((MainActivity) getActivity()).getRequestHandler();
-        ExecutorService executor = requestHandler.getExecutor();
-
 
         new AsyncTask<Object, Void, Object>(){
             @Override

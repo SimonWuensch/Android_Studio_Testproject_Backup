@@ -35,12 +35,6 @@ public class ProjectStatusDetector {
         this.vProjectStatus = vProjectStatus;
     }
 
-    public ProjectStatusDetector(Project project, List<AbstractCardObject> cardObjects) {
-        this.project = project;
-
-        this.cardObjects = cardObjects;
-    }
-
     public List<AbstractCardObject> getCardObjects() {
         return cardObjects;
     }

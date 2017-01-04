@@ -1,6 +1,7 @@
 package ssi.ssn.com.ssi_service.fragment.projectlist;
 
 import android.os.Bundle;
+import android.support.v7.util.SortedList;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -11,9 +12,12 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.util.List;
+
 import ssi.ssn.com.ssi_service.R;
 import ssi.ssn.com.ssi_service.activity.MainActivity;
 import ssi.ssn.com.ssi_service.fragment.AbstractFragment;
+import ssi.ssn.com.ssi_service.model.data.source.Project;
 import ssi.ssn.com.ssi_service.model.helper.SourceHelper;
 
 public class FragmentProjectList extends AbstractFragment {
@@ -24,8 +28,9 @@ public class FragmentProjectList extends AbstractFragment {
     private static int RECYCLERVIEW = R.id.fragment_project_list_recycler_view;
     private static int CARDVIEW = R.layout.fragment_project_list_card_view;
 
-    private View rootView;
+    private List<Project> projects;
 
+    private View rootView;
     public static FragmentProjectList newInstance() {
         FragmentProjectList fragment = new FragmentProjectList();
         return fragment;
@@ -40,7 +45,11 @@ public class FragmentProjectList extends AbstractFragment {
         bReload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ((MainActivity) getActivity()).reloadProjectListFragment(FragmentProjectList.this);
+                MainActivity activity = ((MainActivity)getActivity());
+                for(Project project : projects){
+                    activity.getCardObjects(project).clear();
+                }
+                activity.reloadProjectListFragment(FragmentProjectList.this);
             }
         });
 
@@ -64,7 +73,8 @@ public class FragmentProjectList extends AbstractFragment {
             rootView = inflater.inflate(FRAGMENT_LAYOUT, container, false);
             Log.d(TAG, "Fragment inflated [" + getActivity().getResources().getResourceName(FRAGMENT_LAYOUT) + "].");
 
-            RecyclerView.Adapter mAdapter = new FragmentProjectListAdapter(CARDVIEW, this);
+            projects = getSQLiteHelper().getProjectList();
+            RecyclerView.Adapter mAdapter = new FragmentProjectListAdapter(CARDVIEW, this, projects);
             Log.d(TAG, "Adapter [" + mAdapter.getClass().getSimpleName() + "] with CardView [" + getActivity().getResources().getResourceName(CARDVIEW) + "] initialized.");
 
             RecyclerView mRecyclerView = (RecyclerView) rootView.findViewById(RECYCLERVIEW);

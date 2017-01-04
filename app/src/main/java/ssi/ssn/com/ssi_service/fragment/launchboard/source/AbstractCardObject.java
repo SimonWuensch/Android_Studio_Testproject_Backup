@@ -80,7 +80,6 @@ public class AbstractCardObject {
     }
 
     public void setStatus(Status status, Activity activity) {
-        Log.e(AbstractCardObject.class.getSimpleName(), "Card: " + activity.getString(getTitle()) + " - Status: " + status);
         this.status = status;
         if (cardStatusView != null) {
             cardStatusView.setBackgroundColor(status.getColor(activity));
@@ -110,16 +109,11 @@ public class AbstractCardObject {
         this.loadingView = loadingView;
     }
 
-    public void setLoadingViewVisible(boolean visible) {
+    public void setLoadingViewVisible(boolean isVisible) {
         if (loadingView == null) {
             return;
         }
-
-        if (visible) {
-            loadingView.setVisibility(View.VISIBLE);
-        } else {
-            loadingView.setVisibility(View.GONE);
-        }
+        loadingView.setVisibility(isVisible ? View.VISIBLE : View.GONE);
     }
 
     @JsonIgnore

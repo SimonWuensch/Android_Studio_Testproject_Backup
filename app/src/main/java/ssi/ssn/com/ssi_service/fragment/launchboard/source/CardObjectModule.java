@@ -36,17 +36,6 @@ public class CardObjectModule extends AbstractCardObject {
     private List<ResponseModule> responseModuleList = new ArrayList<>();
     private List<XMLHelper.XMLObject> moduleObjects;
 
-    public CardObjectModule(){
-    }
-
-    public List<ResponseModule> getResponseModuleList() {
-        return responseModuleList;
-    }
-
-    public void setResponseModuleList(List<ResponseModule> responseModuleList) {
-        this.responseModuleList = responseModuleList;
-    }
-
     public CardObjectModule(int title, int icon, boolean observation) {
         super(title, icon, observation);
     }

@@ -32,19 +32,7 @@ public class CardObjectComponent extends AbstractCardObject {
     public static String XML_ATTRIBUTE_ENABLED = "enabled";
 
     private List<ResponseComponent> responseComponentList = new ArrayList<>();
-
     private List<XMLHelper.XMLObject> componentObjects;
-
-    public CardObjectComponent(){
-    }
-
-    public List<ResponseComponent> getResponseComponentList() {
-        return responseComponentList;
-    }
-
-    public void setResponseComponentList(List<ResponseComponent> responseComponentList) {
-        this.responseComponentList = responseComponentList;
-    }
 
     public CardObjectComponent(int title, int icon, boolean observation) {
         super(title, icon, observation);
