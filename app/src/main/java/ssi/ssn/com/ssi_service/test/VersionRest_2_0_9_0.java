@@ -25,7 +25,6 @@ public class VersionRest_2_0_9_0 extends TestRestResponse {
     private static String SESSIONSCURRENT_LOGGED_IN = "{\"id\":2824735,\"key\":\"h2tYOymJeFEqTivDWcvsYL_5sdpkaKl2EJYRZfkg\",\"status\":\"LOGGED_IN\",\"actor\":{\"key\":\"admin\"},\"rights\":[\"scada-write\",\"component-write\",\"notification-write\",\"security-read\",\"application-read\",\"smt-read\",\"security-write\",\"kpi-read\",\"notification-read\",\"kpi-write\",\"component-read\",\"scada-read\"],\"createdOn\":1483534612067,\"lastModifiedOn\":1483534921349,\"clientAddress\":\"10.245.0.94\",\"clientAgent\":\"Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2883.87 Safari/537.36\"}";
     private static String SESSIONSCURRENT_LOGGED_OUT = "{\"id\":2824735,\"key\":\"h2tYOymJeFEqTivDWcvsYL_5sdpkaKl2EJYRZfkg\",\"status\":\"LOGGED_OUT\",\"createdOn\":1483534612067,\"lastModifiedOn\":1483535346013,\"clientAddress\":\"10.245.0.94\",\"clientAgent\":\"Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2883.87 Safari/537.36\"}";
 
-
     public VersionRest_2_0_9_0() {
         super("2.0.9.0");
 

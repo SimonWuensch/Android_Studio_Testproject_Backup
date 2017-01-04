@@ -1,7 +1,5 @@
 package ssi.ssn.com.ssi_service.model.network.request;
 
-import android.os.AsyncTask;
-
 import ssi.ssn.com.ssi_service.model.data.source.Project;
 import ssi.ssn.com.ssi_service.model.network.DefaultResponse;
 import ssi.ssn.com.ssi_service.model.network.communication.HttpGET;
@@ -24,9 +22,6 @@ public class RequestModule {
     }
 
     public static RequestModule init(Project project, String name) {
-        if (project.getDefaultResponseModuleList() != null) {
-            project.getDefaultResponseModuleList().clear();
-        }
         return new RequestModule(project, name);
     }
 
@@ -39,6 +34,6 @@ public class RequestModule {
         HttpGET httpGET = new HttpGET(cookieHandler, getAddress());
         DefaultResponse defaultResponse = httpGET.sendRequest(false);
         defaultResponse.addAdditional(ADDITIONAL_MODULE_NAME, name);
-        project.addDefaultResponseModul(defaultResponse);
+        project.addDefaultResponseModule(defaultResponse);
     }
 }

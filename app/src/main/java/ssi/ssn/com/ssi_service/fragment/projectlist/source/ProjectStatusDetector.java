@@ -36,6 +36,7 @@ public class ProjectStatusDetector {
 
     public ProjectStatusDetector(Project project, List<AbstractCardObject> cardObjects) {
         this.project = project;
+
         this.cardObjects = cardObjects;
     }
 
@@ -56,7 +57,7 @@ public class ProjectStatusDetector {
                         R.drawable.icon_component,
                         true
                 ));
-                add(new CardObjectNotification(
+                /*add(new CardObjectNotification(
                         R.string.fragment_launch_board_card_notification,
                         R.drawable.icon_notification,
                         true
@@ -65,7 +66,7 @@ public class ProjectStatusDetector {
                         R.string.fragment_launch_board_card_kpi,
                         R.drawable.icon_kpi,
                         true
-                ));
+                ));*/
             }
         };
     }

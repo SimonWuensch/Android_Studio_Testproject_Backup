@@ -110,11 +110,14 @@ public class CardObjectModule extends AbstractCardObject {
                         String isEnabled = xmlObject.getAttributes().get(CardObjectModule.XML_ATTRIBUTE_ENABLED);
                         enabledModuleList.put(xmlModuleName, isEnabled);
                     }
+                    Log.e(TAG, "SendRequestModule: " + xmlModuleName);
                     requestHandler.sendRequestModule(project, xmlModuleName);
                 }
 
                 responseModuleList = new ArrayList<>();
                 for (DefaultResponse defaultResponse : project.getDefaultResponseModuleList()) {
+                    Log.e(TAG, "defaultResponseModuleList: " + defaultResponse.getResult());
+
                     ResponseModule responseModule;
                     String xmlModuleName = defaultResponse.getAdditional().get(RequestModule.ADDITIONAL_MODULE_NAME);
                     if (defaultResponse.getCode() != 200) {

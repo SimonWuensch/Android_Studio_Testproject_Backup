@@ -1,6 +1,5 @@
 package ssi.ssn.com.ssi_service.model.network.request;
 
-import android.os.AsyncTask;
 import android.util.Log;
 
 import java.util.concurrent.ExecutorService;

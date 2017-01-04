@@ -1,5 +1,7 @@
 package ssi.ssn.com.ssi_service.model.data.source;
 
+import android.util.Log;
+
 import com.owlike.genson.annotation.JsonIgnore;
 
 import java.util.ArrayList;
@@ -133,10 +135,11 @@ public class NetworkProject {
         this.defaultResponseModuleList = defaultResponseModuleList;
     }
 
-    public void addDefaultResponseModul(DefaultResponse defaultResponseModul) {
+    public void addDefaultResponseModule(DefaultResponse defaultResponseModule) {
         if (defaultResponseModuleList == null) {
             defaultResponseModuleList = new ArrayList<>();
         }
-        defaultResponseModuleList.add(defaultResponseModul);
+        defaultResponseModuleList.add(defaultResponseModule);
+        Log.e(NetworkProject.class.getSimpleName(), "Add to defaultResponseModuleList: " + defaultResponseModule.getResult());
     }
 }

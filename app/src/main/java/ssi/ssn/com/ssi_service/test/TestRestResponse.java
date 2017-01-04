@@ -32,7 +32,6 @@ public class TestRestResponse {
 
     public void addResponse(String address, String response){
         responseList.put(address, response);
-        Log.i(TAG, "[Version: \" + version + \"] Added TestResponse [address: \"" + address + "\"; response: " + response + "]");
     }
 
 }
