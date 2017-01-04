@@ -12,23 +12,16 @@ import ssi.ssn.com.ssi_service.model.helper.FormatHelper;
 import ssi.ssn.com.ssi_service.model.network.DefaultResponse;
 import ssi.ssn.com.ssi_service.model.network.handler.CookieHandler;
 
-public class HttpGET {
+public class HttpGET extends AbstractHttpCommunication{
 
     private static String TAG = HttpGET.class.getSimpleName();
-    private static String PROTOCOLL = "http://";
-    private static int READ_TIME_OUT_INTERVAL = 10000;
-    private static int GET_COMMUNICATION_ERROR = 900;
-    private static int GET_COMMUNICATION_ERROR_TIMEOUT = 901;
-
-    private CookieHandler cookieHandler;
-    private String address;
 
     public HttpGET(CookieHandler cookieHandler, String address) {
-        this.cookieHandler = cookieHandler;
-        this.address = address;
+        super(cookieHandler, address);
     }
 
-    public DefaultResponse sendRequest(boolean resetCookie) {
+    @Override
+    protected DefaultResponse send(boolean resetCookie) {
         String hostAddress = PROTOCOLL + address;
         HttpURLConnection urlConnection = null;
         try {

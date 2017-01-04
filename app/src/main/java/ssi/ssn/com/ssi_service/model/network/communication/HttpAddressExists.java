@@ -8,21 +8,17 @@ import java.net.URL;
 import ssi.ssn.com.ssi_service.model.extended.ExtendedAsyncTask;
 import ssi.ssn.com.ssi_service.model.helper.FormatHelper;
 
-public class HttpAddressExists {
+public class HttpAddressExists extends AbstractHttpCommunication{
 
     private static String TAG = HttpAddressExists.class.getSimpleName();
-    private static String PROTOCOLL = "http://";
-    private static int READ_TIME_OUT_INTERVAL = 3000;
-    private static int GET_COMMUNICATION_ERROR = 900;
-    private static int GET_COMMUNICATION_ERROR_TIMEOUT = 901;
 
-    public static long exists(final String address) {
-        int responseCode = sendRequest(address);
-        return responseCode;
+    public HttpAddressExists(String address){
+        super(address);
     }
 
-    private static int sendRequest(String serverAddress) {
-        String hostAddress = PROTOCOLL + serverAddress;
+    @Override
+    protected int send() {
+        String hostAddress = PROTOCOLL + address;
         HttpURLConnection urlConnection = null;
         try {
             String address = FormatHelper.getEncodeAddress(hostAddress);

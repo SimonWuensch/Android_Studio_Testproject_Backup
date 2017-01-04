@@ -16,15 +16,11 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.util.Objects;
-import java.util.concurrent.ExecutorService;
-
 import ssi.ssn.com.ssi_service.R;
 import ssi.ssn.com.ssi_service.activity.MainActivity;
 import ssi.ssn.com.ssi_service.fragment.AbstractFragment;
 import ssi.ssn.com.ssi_service.fragment.customlist.FragmentCustomList;
 import ssi.ssn.com.ssi_service.model.data.source.Project;
-import ssi.ssn.com.ssi_service.model.extended.ExtendedAsyncTask;
 import ssi.ssn.com.ssi_service.model.helper.AlertDialogHelper;
 import ssi.ssn.com.ssi_service.model.helper.FormatHelper;
 import ssi.ssn.com.ssi_service.model.helper.JsonHelper;
@@ -276,14 +272,15 @@ public class FragmentCreateProject extends AbstractFragment {
                 bShowApplicationInfo.setEnabled(false);
                 setLoadingViewVisible(true);
 
-                new AsyncTask<Object, Void, Long>() {
+                new AsyncTask<Object, Void, Integer>() {
                     @Override
-                    protected Long doInBackground(Object... objects) {
-                        return HttpAddressExists.exists(project.getServerAddress());
+                    protected Integer doInBackground(Object... objects) {
+                        HttpAddressExists httpAddressExists = new HttpAddressExists(project.getServerAddress());
+                        return httpAddressExists.exists();
                     }
 
                     @Override
-                    protected void onPostExecute(Long responseCode) {
+                    protected void onPostExecute(Integer responseCode) {
                         if (responseCode != 200) {
                             Toast.makeText(getActivity(), SourceHelper.getString(getActivity(), R.string.fragment_create_project_message_server_address_not_correct), Toast.LENGTH_SHORT).show();
                             bShowApplicationInfo.setEnabled(true);
@@ -342,14 +339,15 @@ public class FragmentCreateProject extends AbstractFragment {
 
     public void onClickProjectAddUpdate(final Project project) {
         setLoadingViewVisible(true);
-        new AsyncTask<Object, Void, Long>(){
+        new AsyncTask<Object, Void, Integer>(){
             @Override
-            protected Long doInBackground(Object... objects) {
-                return HttpAddressExists.exists(project.getServerAddress());
+            protected Integer doInBackground(Object... objects) {
+                HttpAddressExists httpAddressExists = new HttpAddressExists(project.getServerAddress());
+                return httpAddressExists.exists();
             }
 
             @Override
-            protected void onPostExecute(Long responseCode) {
+            protected void onPostExecute(Integer responseCode) {
                 if (responseCode != 200) {
                     getAlertDialog().show();
                     bShowApplicationInfo.setEnabled(true);
