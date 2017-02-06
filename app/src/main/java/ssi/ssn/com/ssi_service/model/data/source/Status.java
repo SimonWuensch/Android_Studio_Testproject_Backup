@@ -12,7 +12,8 @@ public enum Status {
     OK(R.color.OK),
     ERROR(R.color.ERROR),
     WARNING(R.color.WARNING),
-    NOT_AVAILABLE(R.color.NOT_AVAILABLE);
+    NOT_AVAILABLE(R.color.NOT_AVAILABLE),
+    NOT_OBSERVATION(R.color.lightGray);
 
     public static String TEXT_RUNNING = "RUNNING";
     public static String TEXT_ONLINE = "ONLINE";

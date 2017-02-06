@@ -24,6 +24,8 @@ import ssi.ssn.com.ssi_service.model.network.response.application.ResponseApplic
 
 public class ProjectStatusDetector {
 
+    private static String TAG = ProjectStatusDetector.class.getSimpleName();
+
     private Project project;
     private List<AbstractCardObject> cardObjects;
 
@@ -68,6 +70,7 @@ public class ProjectStatusDetector {
 
     public void detectProjectStatus(final Activity activity) {
         final RequestHandler requestHandler = ((MainActivity) activity).getRequestHandler();
+        ExecutorService executor = ((MainActivity) activity).getExecutor();
         new AsyncTask<Object, Void, Status>() {
             @Override
             protected ssi.ssn.com.ssi_service.model.data.source.Status doInBackground(Object... objects) {
@@ -87,6 +90,7 @@ public class ProjectStatusDetector {
             @Override
             protected void onPostExecute(ssi.ssn.com.ssi_service.model.data.source.Status status) {
                 project.setStatus(status);
+                Log.e(TAG + "-TEST", "Project: " + project.getProjectName() + " - Status: " + project.getStatus());
                 vProjectStatus.setBackgroundColor(status.getColor(activity));
 
                 if(!status.equals(ssi.ssn.com.ssi_service.model.data.source.Status.OK)) {
@@ -100,6 +104,6 @@ public class ProjectStatusDetector {
                     ((MainActivity) activity).addCardToMap(project, cardObject);
                 }
             }
-        }.execute();
+        }.executeOnExecutor(executor);
     }
 }

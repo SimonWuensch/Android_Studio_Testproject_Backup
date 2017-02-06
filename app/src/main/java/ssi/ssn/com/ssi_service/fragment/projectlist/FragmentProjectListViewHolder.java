@@ -3,6 +3,7 @@ package ssi.ssn.com.ssi_service.fragment.projectlist;
 import android.app.Activity;
 import android.os.AsyncTask;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -11,12 +12,15 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.Date;
+import java.util.List;
 import java.util.concurrent.ExecutorService;
 
 import ssi.ssn.com.ssi_service.R;
 import ssi.ssn.com.ssi_service.activity.MainActivity;
+import ssi.ssn.com.ssi_service.fragment.projectlist.source.ProjectListSorter;
 import ssi.ssn.com.ssi_service.fragment.projectlist.source.ProjectStatusDetector;
 import ssi.ssn.com.ssi_service.model.data.source.Project;
+import ssi.ssn.com.ssi_service.model.data.source.Status;
 import ssi.ssn.com.ssi_service.model.helper.SourceHelper;
 
 
@@ -25,6 +29,7 @@ class FragmentProjectListViewHolder extends RecyclerView.ViewHolder {
     private static String TAG = FragmentProjectListViewHolder.class.getSimpleName();
 
     private Activity activity;
+    private FragmentProjectListAdapter adapter;
     private ProjectStatusDetector projectStatusDetector;
     private View cardView;
 
@@ -36,9 +41,10 @@ class FragmentProjectListViewHolder extends RecyclerView.ViewHolder {
     private View vProjectState;
     private View loadingView;
 
-    FragmentProjectListViewHolder(Activity activity, View cardView) {
+    FragmentProjectListViewHolder(Activity activity, FragmentProjectListAdapter adapter, View cardView) {
         super(cardView);
         this.activity = activity;
+        this.adapter = adapter;
         this.cardView = cardView;
         initViewComponents();
     }
@@ -53,7 +59,7 @@ class FragmentProjectListViewHolder extends RecyclerView.ViewHolder {
         loadingView = cardView.findViewById(R.id.fragment_project_list_card_view_view_loading_view);
     }
 
-    protected void assignData(final Project project) {
+    protected void assignData(final Project project, boolean isLast) {
         String projectName = project.getProjectName();
         String projectLocation = project.getProjectLocation();
         String projectOrderNr = project.getProjectOrderNr();
@@ -73,11 +79,11 @@ class FragmentProjectListViewHolder extends RecyclerView.ViewHolder {
         ivProjectSettings.setOnClickListener(onClickCardViewProjectSettings(project));
 
         if (project.isProjectObservation()) {
-            detectProjectStatus(project);
+            detectProjectStatus(project, isLast);
         }
     }
 
-    private void detectProjectStatus(final Project project) {
+    private void detectProjectStatus(final Project project, final boolean isLast) {
         boolean isOutOfTime = new Date().getTime() - project.getLastObservationTime() > project.getObservationInterval();
         //TODO DB: Ändere nachfolgende IF-Klausel, Voraussetzung ist, dass CardObjects von der DB geladen werden.
         /*
@@ -99,7 +105,7 @@ class FragmentProjectListViewHolder extends RecyclerView.ViewHolder {
         loadingView.setVisibility(View.VISIBLE);
         this.projectStatusDetector = new ProjectStatusDetector(project, vProjectState);
         projectStatusDetector.detectProjectStatus(activity);
-        ExecutorService executor = ((MainActivity)activity).getExecutor();
+        ExecutorService executor = ((MainActivity) activity).getExecutor();
         new AsyncTask<Object, Void, Object>() {
             @Override
             protected Object doInBackground(Object... voids) {
@@ -110,6 +116,9 @@ class FragmentProjectListViewHolder extends RecyclerView.ViewHolder {
             protected void onPostExecute(Object o) {
                 cardView.setOnClickListener(onClickCardView(project));
                 loadingView.setVisibility(View.GONE);
+                if (isLast) {
+                    adapter.sort();
+                }
             }
         }.executeOnExecutor(executor);
     }
@@ -146,9 +155,15 @@ class FragmentProjectListViewHolder extends RecyclerView.ViewHolder {
                 if (!isChecked) {
                     cardView.setOnClickListener(null);
                     vProjectState.setBackgroundColor(SourceHelper.getColor(activity, R.color.lightGray));
+                    project.setProjectObservation(false);
+                    project.setStatus(Status.NOT_OBSERVATION);
+                    int from = getAdapterPosition();
+                    int to = adapter.getItemCount()-1;
+                    adapter.notifyItemMoved(from, to);
                     return;
                 }
-                detectProjectStatus(project);
+                project.setProjectObservation(isChecked);
+                detectProjectStatus(project, true);
             }
         };
     }
