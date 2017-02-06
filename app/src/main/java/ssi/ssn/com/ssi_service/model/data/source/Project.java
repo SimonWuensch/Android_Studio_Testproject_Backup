@@ -17,15 +17,15 @@ public class Project extends NetworkProject {
     private String serverAddress;
     private String userName;
     private String password;
+
+    private Status status;
     private long observationInterval;
+    private boolean projectObservation = true;
+    private long lastObservationTime;
 
     private String projectName;
     private String projectLocation;
     private String projectOrderNr;
-    private boolean projectObservation = true;
-
-    private Status status;
-    private long lastObservationTime;
 
     public Project(String serverAddress, String userName, String password, long observationInterval) {
         this.serverAddress = serverAddress;
