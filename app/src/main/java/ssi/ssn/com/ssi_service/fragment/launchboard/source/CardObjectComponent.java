@@ -1,20 +1,17 @@
 package ssi.ssn.com.ssi_service.fragment.launchboard.source;
 
-import android.app.Activity;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.concurrent.ExecutorService;
 
 import ssi.ssn.com.ssi_service.R;
 import ssi.ssn.com.ssi_service.activity.AbstractActivity;
 import ssi.ssn.com.ssi_service.activity.MainActivity;
 import ssi.ssn.com.ssi_service.model.data.source.Project;
-import ssi.ssn.com.ssi_service.model.data.source.Status;
 import ssi.ssn.com.ssi_service.model.helper.JsonHelper;
 import ssi.ssn.com.ssi_service.model.helper.SourceHelper;
 import ssi.ssn.com.ssi_service.model.helper.XMLHelper;
@@ -34,8 +31,8 @@ public class CardObjectComponent extends AbstractCardObject {
     private List<ResponseComponent> responseComponentList = new ArrayList<>();
     private List<XMLHelper.XMLObject> componentObjects;
 
-    public CardObjectComponent(int title, int icon, boolean observation) {
-        super(title, icon, observation);
+    public CardObjectComponent(MainActivity activity, Project project, int title, int icon, boolean observation) {
+        super(activity, project, title, icon, observation);
     }
 
     public List<XMLHelper.XMLObject> searchObjectsInResponseXML(String responseApplicationConfig) {
@@ -65,15 +62,14 @@ public class CardObjectComponent extends AbstractCardObject {
     }
 
     @Override
-    public void loadFromNetwork(final Activity activity, final Project project) {
-
-        if(!isOutOfTime(project)){
+    public void loadFromNetwork() {
+        if (!isOutOfTime()) {
             return;
         }
         setLoadingViewVisible(true);
         final List<String> notEnabledComponents = new ArrayList<>();
         final RequestHandler requestHandler = ((MainActivity) activity).getRequestHandler();
-        new AsyncTask<Object, Void, Object>(){
+        new AsyncTask<Object, Void, Object>() {
             @Override
             protected Object doInBackground(Object... objects) {
                 requestHandler.sendRequestLoginWithSessionCurrentCheck(project);
@@ -116,15 +112,15 @@ public class CardObjectComponent extends AbstractCardObject {
             @Override
             protected void onPostExecute(Object o) {
                 setLoadingViewVisible(false);
-                detectCardStatus(activity, project);
+                detectCardStatus();
             }
         }.execute();
     }
 
     @Override
-    public void onClick(final Activity activity, final Project project) {
-        loadFromNetwork(activity, project);
-        ExecutorService executor = ((MainActivity)activity).getExecutor();
+    public void onClick() {
+        loadFromNetwork();
+        ExecutorService executor = ((MainActivity) activity).getExecutor();
         final AbstractCardObject cardObject = this;
         new AsyncTask<Object, Void, Object>() {
             @Override
@@ -144,9 +140,9 @@ public class CardObjectComponent extends AbstractCardObject {
     }
 
     @Override
-    public void detectCardStatus(final Activity activity, final Project project) {
-        loadFromNetwork(activity, project);
-        ExecutorService executor = ((MainActivity)activity).getExecutor();
+    public void detectCardStatus() {
+        loadFromNetwork();
+        ExecutorService executor = ((MainActivity) activity).getExecutor();
         new AsyncTask<Object, Void, Object>() {
             @Override
             protected Object doInBackground(Object... objects) {

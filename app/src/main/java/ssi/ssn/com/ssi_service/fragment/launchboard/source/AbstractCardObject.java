@@ -8,13 +8,12 @@ import com.owlike.genson.annotation.JsonIgnore;
 
 import java.util.Date;
 
+import ssi.ssn.com.ssi_service.activity.MainActivity;
 import ssi.ssn.com.ssi_service.model.data.source.Project;
 import ssi.ssn.com.ssi_service.model.data.source.Status;
 import ssi.ssn.com.ssi_service.model.helper.FormatHelper;
 
 public class AbstractCardObject {
-
-    private Date lastStatusCheck;
 
     private long _ProjectID;
     private int title;
@@ -23,16 +22,24 @@ public class AbstractCardObject {
     private Status status;
 
     @JsonIgnore
+    protected MainActivity activity;
+    @JsonIgnore
+    protected Project project;
+
+    @JsonIgnore
     private View cardStatusView;
     @JsonIgnore
     private View projectStatusView;
     @JsonIgnore
     private View loadingView;
 
-    public AbstractCardObject(int title, int icon, boolean observation) {
+    public AbstractCardObject(MainActivity activty, Project project, int title, int icon, boolean observation) {
+        this._ProjectID = project.get_id();
         this.title = title;
         this.icon = icon;
         this.observation = observation;
+        this.activity = activty;
+        this.project = project;
     }
 
     public AbstractCardObject() {
@@ -72,7 +79,7 @@ public class AbstractCardObject {
 
     // ** Not in Json Object ******************************************************************** //
 
-    public void onClick(Activity activity, Project project) {
+    public void onClick() {
     }
 
     public Status getStatus() {
@@ -85,18 +92,23 @@ public class AbstractCardObject {
             cardStatusView.setBackgroundColor(status.getColor(activity));
             setLoadingViewVisible(false);
         }
-        if (projectStatusView != null && !status.equals(Status.OK)){
+        if (projectStatusView != null && !status.equals(Status.OK)) {
 
             projectStatusView.setBackgroundColor(Status.ERROR.getColor(activity));
         }
     }
 
-    public void detectCardStatus(Activity activity, Project project) {
+    public void detectCardStatus() {
+    }
+
+    public void setLastObservationTime(long millis){
+        project.setLastObservationTime(millis);
+        activity.getSQLiteHelper().updateLastObservationTime(project);
     }
 
     public void reloadStatus(Activity activity, Project project) {
-        lastStatusCheck = null;
-        detectCardStatus(activity, project);
+        setLastObservationTime(0);
+        detectCardStatus();
     }
 
     @JsonIgnore
@@ -119,37 +131,37 @@ public class AbstractCardObject {
     @JsonIgnore
     public void setStatusView(View statusView, Activity activity) {
         this.cardStatusView = statusView;
-        if(this.status != null){
+        if (this.status != null) {
             this.cardStatusView.setBackgroundColor(this.status.getColor(activity));
             setLoadingViewVisible(false);
         }
     }
 
     @JsonIgnore
-    public void setProjectStatusView(View statusView){
+    public void setProjectStatusView(View statusView) {
         this.projectStatusView = statusView;
     }
 
     @JsonIgnore
-    public void loadFromNetwork(Activity activity, Project project) {
+    public void loadFromNetwork() {
     }
 
-    boolean isOutOfTime(Project project) {
-        //TODO save lastStatusCheck in DB
-        if (lastStatusCheck == null) {
-            lastStatusCheck = new Date();
-            Log.d(getClass().getSimpleName(), "First status Check at [" + lastStatusCheck + "].");
+    boolean isOutOfTime() {
+        if (project.getLastObservationTime() == 0) {
+            Date newDate = new Date();
+            Log.d(getClass().getSimpleName(), "STATUS - FIRST CHECK: Project " + project.identity() + " at [" + newDate + "]");
+            setLastObservationTime(newDate.getTime());
             return true;
         } else {
-            long millis = new Date().getTime() - lastStatusCheck.getTime();
+            long millis = new Date().getTime() - project.getLastObservationTime();
             long minutes = FormatHelper.formatMillisecondsToMinutes(millis);
             long observationInterval = FormatHelper.formatMillisecondsToMinutes(project.getObservationInterval());
             if (minutes < observationInterval) {
-                Log.d(getClass().getSimpleName(), "Is not out of time. Last status check [" + minutes + "] minutes ago. Next status check in [" + (observationInterval - minutes) + "] minutes.");
+                Log.d(getClass().getSimpleName(), "NOT OUT OF TIME: Last status check [" + minutes + "] minutes ago. Next status check in [" + (observationInterval - minutes) + "] minutes.");
                 return false;
             } else {
-                lastStatusCheck = new Date();
-                Log.d(getClass().getSimpleName(), "Out of time. Last status check [" + minutes + "] minutes ago. Observation interval is [" + observationInterval + "] minutes.");
+                Log.d(getClass().getSimpleName(), "OUT OF TIME: Last status check [" + minutes + "] minutes ago. Observation interval is [" + observationInterval + "] minutes.");
+                setLastObservationTime(new Date().getTime());
                 return true;
             }
         }

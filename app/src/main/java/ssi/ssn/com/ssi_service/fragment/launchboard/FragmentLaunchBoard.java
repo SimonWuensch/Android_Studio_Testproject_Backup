@@ -186,7 +186,7 @@ public class FragmentLaunchBoard extends AbstractFragment {
     public void onResume() {
         super.onResume();
         for (AbstractCardObject cardObject : cardObjects) {
-            cardObject.detectCardStatus(getActivity(), project);
+            cardObject.detectCardStatus();
         }
     }
 

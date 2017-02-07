@@ -28,7 +28,7 @@ class FragmentProjectListViewHolder extends RecyclerView.ViewHolder {
 
     private static String TAG = FragmentProjectListViewHolder.class.getSimpleName();
 
-    private Activity activity;
+    private MainActivity activity;
     private FragmentProjectListAdapter adapter;
     private ProjectStatusDetector projectStatusDetector;
     private View cardView;
@@ -41,7 +41,7 @@ class FragmentProjectListViewHolder extends RecyclerView.ViewHolder {
     private View vProjectState;
     private View loadingView;
 
-    FragmentProjectListViewHolder(Activity activity, FragmentProjectListAdapter adapter, View cardView) {
+    FragmentProjectListViewHolder(MainActivity activity, FragmentProjectListAdapter adapter, View cardView) {
         super(cardView);
         this.activity = activity;
         this.adapter = adapter;
@@ -103,7 +103,7 @@ class FragmentProjectListViewHolder extends RecyclerView.ViewHolder {
         }
 
         loadingView.setVisibility(View.VISIBLE);
-        this.projectStatusDetector = new ProjectStatusDetector(project, vProjectState);
+        this.projectStatusDetector = new ProjectStatusDetector(activity, project, vProjectState);
         projectStatusDetector.detectProjectStatus(activity);
         ExecutorService executor = ((MainActivity) activity).getExecutor();
         new AsyncTask<Object, Void, Object>() {
@@ -151,18 +151,21 @@ class FragmentProjectListViewHolder extends RecyclerView.ViewHolder {
         return new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                //TODO DB: Sichere die Änderung der DB
+                project.setProjectObservation(isChecked);
+                activity.getSQLiteHelper().updateIsObservation(project);
+
                 if (!isChecked) {
                     cardView.setOnClickListener(null);
                     vProjectState.setBackgroundColor(SourceHelper.getColor(activity, R.color.lightGray));
-                    project.setProjectObservation(false);
+
                     project.setStatus(Status.NOT_OBSERVATION);
+                    activity.getSQLiteHelper().updateStatus(project);
+
                     int from = getAdapterPosition();
                     int to = adapter.getItemCount()-1;
                     adapter.notifyItemMoved(from, to);
                     return;
                 }
-                project.setProjectObservation(isChecked);
                 detectProjectStatus(project, true);
             }
         };

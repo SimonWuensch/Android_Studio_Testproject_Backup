@@ -1,7 +1,6 @@
 package ssi.ssn.com.ssi_service.fragment.projectlist;
 
 import android.os.Bundle;
-import android.support.v7.util.SortedList;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -48,6 +47,8 @@ public class FragmentProjectList extends AbstractFragment {
                 MainActivity activity = ((MainActivity)getActivity());
                 for(Project project : projects){
                     activity.getCardObjects(project).clear();
+                    project.setLastObservationTime(0);
+                    activity.getSQLiteHelper().updateLastObservationTime(project);
                 }
                 activity.reloadProjectListFragment(FragmentProjectList.this);
             }
@@ -73,7 +74,7 @@ public class FragmentProjectList extends AbstractFragment {
             rootView = inflater.inflate(FRAGMENT_LAYOUT, container, false);
             Log.d(TAG, "Fragment inflated [" + getActivity().getResources().getResourceName(FRAGMENT_LAYOUT) + "].");
 
-            projects = getSQLiteHelper().getProjectList();
+            projects = getSQLiteDB().getAllProjects();
             RecyclerView.Adapter mAdapter = new FragmentProjectListAdapter(CARDVIEW, this, projects);
             Log.d(TAG, "Adapter [" + mAdapter.getClass().getSimpleName() + "] with CardView [" + getActivity().getResources().getResourceName(CARDVIEW) + "] initialized.");
 

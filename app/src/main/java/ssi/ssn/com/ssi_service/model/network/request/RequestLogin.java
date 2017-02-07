@@ -54,7 +54,7 @@ public class RequestLogin {
 
         ResponseSessionsCurrent response = (ResponseSessionsCurrent) JsonHelper.fromJsonGeneric(ResponseSessionsCurrent.class, project.getDefaultResponseSessionsCurrent().getResult());
         if (response.getStatus().equals(ResponseSessionsCurrent.STATUS_LOGGED_ID)) {
-            Log.d(TAG, "User is already logged in. [" + project + "]");
+            Log.d(TAG, "User is already logged in. Project: [" + project + "]");
             return;
         }
 

@@ -1,13 +1,7 @@
 package ssi.ssn.com.ssi_service.model.data.source;
 
-import android.app.Activity;
-import android.view.View;
-
-import com.owlike.genson.annotation.JsonIgnore;
-
 import java.util.Date;
 
-import ssi.ssn.com.ssi_service.model.helper.FormatHelper;
 import ssi.ssn.com.ssi_service.model.helper.JsonHelper;
 import ssi.ssn.com.ssi_service.model.network.response.application.ResponseApplication;
 
@@ -132,11 +126,15 @@ public class Project extends NetworkProject {
         this.projectOrderNr = responseApplication.getProject().getOrderNr();
     }
 
-    public boolean isOutOfDate(){
+    public boolean isOutOfDate() {
         return new Date().getTime() - lastObservationTime > observationInterval;
     }
 
     public String toString() {
         return JsonHelper.toJson(this);
+    }
+
+    public String identity(){
+        return "[" + get_id() + ";" + getProjectName() + ";" + getProjectLocation() + ";" + getProjectOrderNr() + "]";
     }
 }

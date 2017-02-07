@@ -26,12 +26,14 @@ public class ProjectStatusDetector {
 
     private static String TAG = ProjectStatusDetector.class.getSimpleName();
 
+    private MainActivity activity;
     private Project project;
     private List<AbstractCardObject> cardObjects;
 
     private View vProjectStatus;
 
-    public ProjectStatusDetector(Project project, View vProjectStatus) {
+    public ProjectStatusDetector(MainActivity activity, Project project, View vProjectStatus) {
+        this.activity = activity;
         this.project = project;
         this.cardObjects = initDefaultInputs();
         this.vProjectStatus = vProjectStatus;
@@ -45,21 +47,29 @@ public class ProjectStatusDetector {
         return new LinkedList<AbstractCardObject>() {
             {
                 add(new CardObjectModule(
+                        activity,
+                        project,
                         R.string.fragment_launch_board_card_module,
                         R.drawable.icon_modul,
                         true
                 ));
-                add(new CardObjectComponent(
+                /*add(new CardObjectComponent(
+                        activity,
+                        project,
                         R.string.fragment_launch_board_card_component,
                         R.drawable.icon_component,
                         true
                 ));
-                /*add(new CardObjectNotification(
+                add(new CardObjectNotification(
+                        activity,
+                        project,
                         R.string.fragment_launch_board_card_notification,
                         R.drawable.icon_notification,
                         true
                 ));
                 add(new CardObjectKPI(
+                        activity,
+                        project,
                         R.string.fragment_launch_board_card_kpi,
                         R.drawable.icon_kpi,
                         true
@@ -90,7 +100,7 @@ public class ProjectStatusDetector {
             @Override
             protected void onPostExecute(ssi.ssn.com.ssi_service.model.data.source.Status status) {
                 project.setStatus(status);
-                Log.e(TAG + "-TEST", "Project: " + project.getProjectName() + " - Status: " + project.getStatus());
+                Log.d(TAG, "STATUS Project: " + project.identity() + " - Status: " + project.getStatus());
                 vProjectStatus.setBackgroundColor(status.getColor(activity));
 
                 if(!status.equals(ssi.ssn.com.ssi_service.model.data.source.Status.OK)) {
@@ -100,7 +110,7 @@ public class ProjectStatusDetector {
                 for (AbstractCardObject cardObject : cardObjects) {
                     cardObject.set_ProjectID(project.get_id());
                     cardObject.setProjectStatusView(vProjectStatus);
-                    cardObject.loadFromNetwork(activity, project);
+                    cardObject.loadFromNetwork();
                     ((MainActivity) activity).addCardToMap(project, cardObject);
                 }
             }

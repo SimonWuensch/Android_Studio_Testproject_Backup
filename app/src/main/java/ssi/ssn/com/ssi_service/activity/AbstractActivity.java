@@ -22,7 +22,7 @@ import ssi.ssn.com.ssi_service.fragment.launchboard.source.AbstractCardObject;
 import ssi.ssn.com.ssi_service.fragment.modulelist.FragmentModuleList;
 import ssi.ssn.com.ssi_service.fragment.projectlist.FragmentProjectList;
 import ssi.ssn.com.ssi_service.model.data.source.Project;
-import ssi.ssn.com.ssi_service.model.helper.SQLiteHelper;
+import ssi.ssn.com.ssi_service.model.database.SQLiteDB;
 import ssi.ssn.com.ssi_service.model.network.handler.RequestHandler;
 import ssi.ssn.com.ssi_service.model.network.response.component.ResponseComponent;
 import ssi.ssn.com.ssi_service.model.network.response.module.ResponseModule;
@@ -33,7 +33,7 @@ public class AbstractActivity extends Activity {
 
     private ExecutorService executor;
 
-    protected SQLiteHelper sqLiteHelper;
+    protected SQLiteDB sqLiteHelper;
     protected RequestHandler requestHandler;
     protected View loadingView;
 
@@ -44,7 +44,7 @@ public class AbstractActivity extends Activity {
         super.onCreate(savedInstanceState);
         executor = Executors.newSingleThreadExecutor();
         requestHandler = RequestHandler.initRequestHandler(executor);
-        sqLiteHelper = new SQLiteHelper(this);
+        sqLiteHelper = new SQLiteDB(this);
     }
 
     @Override
@@ -54,6 +54,7 @@ public class AbstractActivity extends Activity {
             new AsyncTask<Object, Void, Object>() {
                 @Override
                 protected Object doInBackground(Object... objects) {
+                    Log.e(getClass().getSimpleName(), "PROJECT ID: " + projectID);
                     Project project = sqLiteHelper.getProjectByID(projectID);
                     getRequestHandler().sendRequestLogout(project);
                     projectCardObjectMap.remove(projectID);
@@ -67,7 +68,7 @@ public class AbstractActivity extends Activity {
         return executor;
     }
 
-    public SQLiteHelper getSQLiteHelper() {
+    public SQLiteDB getSQLiteHelper() {
         return sqLiteHelper;
     }
 

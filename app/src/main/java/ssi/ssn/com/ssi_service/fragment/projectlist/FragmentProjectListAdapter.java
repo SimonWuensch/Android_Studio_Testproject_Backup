@@ -12,6 +12,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import ssi.ssn.com.ssi_service.activity.MainActivity;
 import ssi.ssn.com.ssi_service.fragment.projectlist.source.ProjectListSorter;
 import ssi.ssn.com.ssi_service.model.data.source.Project;
 
@@ -37,7 +38,7 @@ public class FragmentProjectListAdapter extends RecyclerView.Adapter<FragmentPro
     @Override
     public FragmentProjectListViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         cardView = (CardView) LayoutInflater.from(parent.getContext()).inflate(layoutCardView, parent, false);
-        FragmentProjectListViewHolder viewHolder = new FragmentProjectListViewHolder(fragment.getActivity(), this, cardView);
+        FragmentProjectListViewHolder viewHolder = new FragmentProjectListViewHolder((MainActivity) fragment.getActivity(), this, cardView);
 
         return viewHolder;
     }

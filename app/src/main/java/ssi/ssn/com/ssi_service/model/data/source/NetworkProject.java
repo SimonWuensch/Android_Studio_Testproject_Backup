@@ -11,6 +11,7 @@ import ssi.ssn.com.ssi_service.model.network.DefaultResponse;
 
 public class NetworkProject {
 
+    @JsonIgnore
     private DefaultResponse defaultResponseApplication;
     @JsonIgnore
     private DefaultResponse defaultResponseApplicationConfig;
@@ -34,10 +35,12 @@ public class NetworkProject {
     public NetworkProject() {
     }
 
+    @JsonIgnore
     public DefaultResponse getDefaultResponseApplication() {
         return defaultResponseApplication;
     }
 
+    @JsonIgnore
     public void setDefaultResponseApplication(DefaultResponse defaultResponseApplication) {
         this.defaultResponseApplication = defaultResponseApplication;
     }

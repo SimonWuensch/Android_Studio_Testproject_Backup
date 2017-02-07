@@ -28,8 +28,8 @@ public class NewCardObjectModule extends AbstractCardObject {
         moduleFinder = ModuleFinder.init();
     }
 
-    public NewCardObjectModule(int title, int icon, boolean observation) {
-        super(title, icon, observation);
+    public NewCardObjectModule(MainActivity activity, Project project, int title, int icon, boolean observation) {
+        super(activity, project, title, icon, observation);
         moduleFinder = ModuleFinder.init();
     }
 
@@ -46,11 +46,11 @@ public class NewCardObjectModule extends AbstractCardObject {
     }
 
     public void loadInfosFromSource(Activity activity, Project project) {
-        detectCardStatus(activity, project);
+        detectCardStatus();
     }
 
     @Override
-    public void detectCardStatus(Activity activity, Project project) {
+    public void detectCardStatus() {
         if (responseList.isEmpty()) {
             setStatus(ssi.ssn.com.ssi_service.model.data.source.Status.NOT_AVAILABLE, activity);
             return;
@@ -70,7 +70,7 @@ public class NewCardObjectModule extends AbstractCardObject {
     }
 
     @Override
-    public void onClick(final Activity activity, final Project project) {
+    public void onClick() {
         if (getStatus().equals(ssi.ssn.com.ssi_service.model.data.source.Status.NOT_AVAILABLE)) {
             Toast.makeText(activity, SourceHelper.getString(activity, R.string.fragment_launch_board_error_module), Toast.LENGTH_SHORT).show();
         } else {

@@ -1,4 +1,4 @@
-package ssi.ssn.com.ssi_service.model.helper;
+package ssi.ssn.com.ssi_service.model.database;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ssi.ssn.com.ssi_service.model.data.source.Project;
+import ssi.ssn.com.ssi_service.model.helper.JsonHelper;
 
 public class SQLiteHelper extends SQLiteOpenHelper {
 
@@ -143,7 +144,7 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         }
     }
 
-    public List<Project> getProjectList() {
+    public List<Project> getAllProjects() {
         List<Project> projects = new ArrayList<>();
         Cursor cursor = query();
 
