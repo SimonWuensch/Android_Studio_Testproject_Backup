@@ -155,42 +155,42 @@ public class SQLiteDB extends SQLiteOpenHelper {
         values.put(LAST_OBSERVATION_TIME, project.getLastObservationTime());
         values.put(STATUS, project.getStatus().getId());
         values.put(JSON_PROJECT, JsonHelper.toJson(project));
-        Log.d(TAG, "UPDATE - OVERALL: Project + [" + project + "]");
+        Log.d(TAG, "UPDATE - OVERALL: Project [" + project + "]");
         return updateValue(project, values);
     }
 
     public boolean updateObservationInterval(Project project) {
         ContentValues values = new ContentValues();
         values.put(OBSERVATION_INTERVAL, project.getObservationInterval());
-        Log.d(TAG, "UPDATE - OBSERVATION_INTERVAL: Project + [" + project + "]");
+        Log.d(TAG, "UPDATE - OBSERVATION_INTERVAL: Project [" + project + "]");
         return updateValue(project, values);
     }
 
     public boolean updateIsObservation(Project project) {
         ContentValues values = new ContentValues();
         values.put(IS_OBSERVATION, project.isProjectObservation());
-        Log.d(TAG, "UPDATE - IS_OBSERVATION: Project + [" + project + "]");
+        Log.d(TAG, "UPDATE - IS_OBSERVATION: Project [" + project + "]");
         return updateValue(project, values);
     }
 
     public boolean updateLastObservationTime(Project project) {
         ContentValues values = new ContentValues();
         values.put(LAST_OBSERVATION_TIME, project.getLastObservationTime());
-        Log.d(TAG, "UPDATE - LAST_OBSERVATION_TIME: Project + [" + project + "]");
+        Log.d(TAG, "UPDATE - LAST_OBSERVATION_TIME: Project [" + project + "]");
         return updateValue(project, values);
     }
 
     public boolean updateStatus(Project project) {
         ContentValues values = new ContentValues();
         values.put(STATUS, project.getStatus().getId());
-        Log.d(TAG, "UPDATE - STATUS: Project + [" + project + "]");
+        Log.d(TAG, "UPDATE - STATUS: Project [" + project + "]");
         return updateValue(project, values);
     }
 
     public boolean updateJsonProject(Project project) {
         ContentValues values = new ContentValues();
         values.put(JSON_PROJECT, JsonHelper.toJson(project));
-        Log.d(TAG, "UPDATE - JSON_PROJECT: Project + [" + project + "]");
+        Log.d(TAG, "UPDATE - JSON_PROJECT: Project [" + project + "]");
         return updateValue(project, values);
     }
 
@@ -202,14 +202,14 @@ public class SQLiteDB extends SQLiteOpenHelper {
             });
 
             if (affectedRows > 0) {
-                Log.i(TAG, "[OK] UPDATED PROJECT [" + project + "]");
+                Log.i(TAG, "[OK] UPDATE: Project [" + project + "]");
                 return true;
             } else {
-                Log.e(TAG, "[ERROR] UPDATE PROJECT - no projects being updated. Project: " + project);
+                Log.e(TAG, "[ERROR] UPDATE: Project [ Project: " + project);
                 return false;
             }
         } catch (SQLiteException ex) {
-            Log.e(TAG, "[ERROR] UPDATE PROJECT [" + project + "]");
+            Log.e(TAG, "[ERROR] UPDATE: Project [" + project + "]. \n" + ex.getMessage() + " \n" + ex.getStackTrace());
             return false;
         }
     }

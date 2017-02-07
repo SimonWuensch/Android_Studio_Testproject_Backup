@@ -131,7 +131,7 @@ public class NetworkProject {
     }
     @JsonIgnore
     public List<DefaultResponse> getDefaultResponseModuleList() {
-        return defaultResponseModuleList;
+        return defaultResponseModuleList == null ? new ArrayList<DefaultResponse>() : defaultResponseModuleList;
     }
     @JsonIgnore
     public void setDefaultResponseModuleList(List<DefaultResponse> defaultResponseModuleList) {

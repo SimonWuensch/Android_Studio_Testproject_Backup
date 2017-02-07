@@ -63,10 +63,11 @@ public class CardObjectComponent extends AbstractCardObject {
 
     @Override
     public void loadFromNetwork() {
-        if (!isOutOfTime()) {
+        if (!isOutOfTime() && project.getDefaultResponseApplicationConfig() != null) {
             return;
         }
         setLoadingViewVisible(true);
+        project.getDefaultResponseComponentList().clear();
         final List<String> notEnabledComponents = new ArrayList<>();
         final RequestHandler requestHandler = ((MainActivity) activity).getRequestHandler();
         new AsyncTask<Object, Void, Object>() {

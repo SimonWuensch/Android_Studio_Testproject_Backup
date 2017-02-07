@@ -73,8 +73,8 @@ public class CardObjectModule extends AbstractCardObject {
             return;
         }
         setLoadingViewVisible(true);
-
-        final RequestHandler requestHandler = ((MainActivity) activity).getRequestHandler();
+        project.getDefaultResponseModuleList().clear();
+        final RequestHandler requestHandler = activity.getRequestHandler();
         final Map<String, String> enabledModuleList = new HashMap<>();
         new AsyncTask<Object, Void, Object>() {
             @Override

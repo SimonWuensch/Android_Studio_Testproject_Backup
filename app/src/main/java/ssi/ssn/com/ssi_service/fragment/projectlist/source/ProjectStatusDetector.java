@@ -53,14 +53,14 @@ public class ProjectStatusDetector {
                         R.drawable.icon_modul,
                         true
                 ));
-                /*add(new CardObjectComponent(
+                add(new CardObjectComponent(
                         activity,
                         project,
                         R.string.fragment_launch_board_card_component,
                         R.drawable.icon_component,
                         true
                 ));
-                add(new CardObjectNotification(
+                /*add(new CardObjectNotification(
                         activity,
                         project,
                         R.string.fragment_launch_board_card_notification,
