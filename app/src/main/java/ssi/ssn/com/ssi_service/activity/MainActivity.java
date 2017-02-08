@@ -15,7 +15,7 @@ public class MainActivity extends AbstractActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        if (sqLiteHelper.getProjectCount() == 0) {
+        if (sqliteDB.project().getCount() == 0) {
             showCreateProjectFragment();
         } else {
             showProjectListFragment();
@@ -31,11 +31,11 @@ public class MainActivity extends AbstractActivity {
         //Project three = (Project) JsonHelper.fromJsonGeneric(Project.class, "{\"_id\":1,\"defaultResponseApplication\":{\"additional\":{},\"code\":200,\"result\":\"{\\\"state\\\":{\\\"since\\\":1482487804669,\\\"status\\\":\\\"RUNNING\\\"},\\\"enabledModules\\\":[\\\"Scada\\\",\\\"Kpi.UserCharts\\\",\\\"Kpi.UserDashboards\\\"],\\\"project\\\":{\\\"name\\\":\\\"TZ\\\",\\\"location\\\":\\\"Giebelstadt\\\",\\\"orderNr\\\":\\\"2x0\\\"},\\\"build\\\":{\\\"version\\\":\\\"2.0.9.0\\\",\\\"number\\\":\\\"8439\\\",\\\"builtBy\\\":\\\"WU-LIGHTHOUSE$\\\",\\\"builtOn\\\":1482487531909},\\\"time\\\":{\\\"stamp\\\":1483533997191,\\\"offset\\\":3600000}}\"},\"lastObservationTime\":0,\"observationInterval\":60000,\"outOfDate\":true,\"password\":\"admin\",\"projectLocation\":\"Rimpar\",\"projectName\":\"Beta\",\"projectObservation\":true,\"projectOrderNr\":\"2x0\",\"serverAddress\":\"172.26.26.16:8180\",\"userName\":\"admin\"}");
         //Project four = (Project) JsonHelper.fromJsonGeneric(Project.class, "{\"_id\":1,\"defaultResponseApplication\":{\"additional\":{},\"code\":200,\"result\":\"{\\\"state\\\":{\\\"since\\\":1482487804669,\\\"status\\\":\\\"RUNNING\\\"},\\\"enabledModules\\\":[\\\"Scada\\\",\\\"Kpi.UserCharts\\\",\\\"Kpi.UserDashboards\\\"],\\\"project\\\":{\\\"name\\\":\\\"TZ\\\",\\\"location\\\":\\\"Giebelstadt\\\",\\\"orderNr\\\":\\\"2x0\\\"},\\\"build\\\":{\\\"version\\\":\\\"2.0.9.0\\\",\\\"number\\\":\\\"8439\\\",\\\"builtBy\\\":\\\"WU-LIGHTHOUSE$\\\",\\\"builtOn\\\":1482487531909},\\\"time\\\":{\\\"stamp\\\":1483533997191,\\\"offset\\\":3600000}}\"},\"lastObservationTime\":0,\"observationInterval\":60000,\"outOfDate\":true,\"password\":\"admin\",\"projectLocation\":\"TestLocation\",\"projectName\":\"Juhu\",\"projectObservation\":true,\"projectOrderNr\":\"2x0\",\"serverAddress\":\"172.26.26.16:8180\",\"userName\":\"admin\"}");
         //Project five = (Project) JsonHelper.fromJsonGeneric(Project.class, "{\"_id\":1,\"defaultResponseApplication\":{\"additional\":{},\"code\":200,\"result\":\"{\\\"state\\\":{\\\"since\\\":1482487804669,\\\"status\\\":\\\"RUNNING\\\"},\\\"enabledModules\\\":[\\\"Scada\\\",\\\"Kpi.UserCharts\\\",\\\"Kpi.UserDashboards\\\"],\\\"project\\\":{\\\"name\\\":\\\"TZ\\\",\\\"location\\\":\\\"Giebelstadt\\\",\\\"orderNr\\\":\\\"2x0\\\"},\\\"build\\\":{\\\"version\\\":\\\"2.0.9.0\\\",\\\"number\\\":\\\"8439\\\",\\\"builtBy\\\":\\\"WU-LIGHTHOUSE$\\\",\\\"builtOn\\\":1482487531909},\\\"time\\\":{\\\"stamp\\\":1483533997191,\\\"offset\\\":3600000}}\"},\"lastObservationTime\":0,\"observationInterval\":60000,\"outOfDate\":true,\"password\":\"admin\",\"projectLocation\":\"ABC Dorf\",\"projectName\":\"Alpha\",\"projectObservation\":true,\"projectOrderNr\":\"2x0\",\"serverAddress\":\"172.26.26.16:8180\",\"userName\":\"admin\"}");
-        sqLiteHelper.addProject(one);
-        /*sqLiteHelper.addProject(two);
-        sqLiteHelper.addProject(three);
-        sqLiteHelper.addProject(four);
-        sqLiteHelper.addProject(five);
+        sqliteDB.project().add(one);
+        /*sqliteDB.add(two);
+        sqliteDB.add(three);
+        sqliteDB.add(four);
+        sqliteDB.add(five);
         */
     }
 }

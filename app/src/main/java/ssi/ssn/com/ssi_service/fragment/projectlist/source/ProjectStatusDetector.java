@@ -11,11 +11,9 @@ import java.util.concurrent.ExecutorService;
 
 import ssi.ssn.com.ssi_service.R;
 import ssi.ssn.com.ssi_service.activity.MainActivity;
-import ssi.ssn.com.ssi_service.fragment.launchboard.source.AbstractCardObject;
-import ssi.ssn.com.ssi_service.fragment.launchboard.source.CardObjectComponent;
-import ssi.ssn.com.ssi_service.fragment.launchboard.source.CardObjectKPI;
-import ssi.ssn.com.ssi_service.fragment.launchboard.source.CardObjectModule;
-import ssi.ssn.com.ssi_service.fragment.launchboard.source.CardObjectNotification;
+import ssi.ssn.com.ssi_service.fragment.launchboard.source.AbstractGenerator;
+import ssi.ssn.com.ssi_service.fragment.launchboard.source.GeneratorComponentList;
+import ssi.ssn.com.ssi_service.fragment.launchboard.source.GeneratorModuleList;
 import ssi.ssn.com.ssi_service.model.data.source.Project;
 import ssi.ssn.com.ssi_service.model.data.source.Status;
 import ssi.ssn.com.ssi_service.model.helper.JsonHelper;
@@ -28,7 +26,7 @@ public class ProjectStatusDetector {
 
     private MainActivity activity;
     private Project project;
-    private List<AbstractCardObject> cardObjects;
+    private List<AbstractGenerator> cardObjects;
 
     private View vProjectStatus;
 
@@ -39,35 +37,35 @@ public class ProjectStatusDetector {
         this.vProjectStatus = vProjectStatus;
     }
 
-    public List<AbstractCardObject> getCardObjects() {
+    public List<AbstractGenerator> getCardObjects() {
         return cardObjects;
     }
 
-    private List<AbstractCardObject> initDefaultInputs() {
-        return new LinkedList<AbstractCardObject>() {
+    private List<AbstractGenerator> initDefaultInputs() {
+        return new LinkedList<AbstractGenerator>() {
             {
-                add(new CardObjectModule(
+                add(new GeneratorModuleList(
                         activity,
                         project,
                         R.string.fragment_launch_board_card_module,
                         R.drawable.icon_modul,
                         true
                 ));
-                add(new CardObjectComponent(
+                add(new GeneratorComponentList(
                         activity,
                         project,
                         R.string.fragment_launch_board_card_component,
                         R.drawable.icon_component,
                         true
                 ));
-                /*add(new CardObjectNotification(
+                /*add(new GeneratorNotificationList(
                         activity,
                         project,
                         R.string.fragment_launch_board_card_notification,
                         R.drawable.icon_notification,
                         true
                 ));
-                add(new CardObjectKPI(
+                add(new GeneratorKPIList(
                         activity,
                         project,
                         R.string.fragment_launch_board_card_kpi,
@@ -107,7 +105,7 @@ public class ProjectStatusDetector {
                     return;
                 }
 
-                for (AbstractCardObject cardObject : cardObjects) {
+                for (AbstractGenerator cardObject : cardObjects) {
                     cardObject.set_ProjectID(project.get_id());
                     cardObject.setProjectStatusView(vProjectStatus);
                     cardObject.loadFromNetwork();

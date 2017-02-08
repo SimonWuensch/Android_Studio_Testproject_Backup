@@ -1,9 +1,7 @@
 package ssi.ssn.com.ssi_service.fragment.projectlist;
 
-import android.app.Activity;
 import android.os.AsyncTask;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -12,12 +10,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.Date;
-import java.util.List;
 import java.util.concurrent.ExecutorService;
 
 import ssi.ssn.com.ssi_service.R;
 import ssi.ssn.com.ssi_service.activity.MainActivity;
-import ssi.ssn.com.ssi_service.fragment.projectlist.source.ProjectListSorter;
 import ssi.ssn.com.ssi_service.fragment.projectlist.source.ProjectStatusDetector;
 import ssi.ssn.com.ssi_service.model.data.source.Project;
 import ssi.ssn.com.ssi_service.model.data.source.Status;
@@ -105,7 +101,7 @@ class FragmentProjectListViewHolder extends RecyclerView.ViewHolder {
         loadingView.setVisibility(View.VISIBLE);
         this.projectStatusDetector = new ProjectStatusDetector(activity, project, vProjectState);
         projectStatusDetector.detectProjectStatus(activity);
-        ExecutorService executor = ((MainActivity) activity).getExecutor();
+        ExecutorService executor = activity.getExecutor();
         new AsyncTask<Object, Void, Object>() {
             @Override
             protected Object doInBackground(Object... voids) {
@@ -127,7 +123,7 @@ class FragmentProjectListViewHolder extends RecyclerView.ViewHolder {
         return new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ((MainActivity) activity).showCreateProjectFragment(project);
+                activity.showCreateProjectFragment(project);
             }
         };
     }
@@ -152,14 +148,14 @@ class FragmentProjectListViewHolder extends RecyclerView.ViewHolder {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 project.setProjectObservation(isChecked);
-                activity.getSQLiteHelper().updateIsObservation(project);
+                activity.getSQLiteDB().project().updateIsObservation(project);
 
                 if (!isChecked) {
                     cardView.setOnClickListener(null);
                     vProjectState.setBackgroundColor(SourceHelper.getColor(activity, R.color.lightGray));
 
                     project.setStatus(Status.NOT_OBSERVATION);
-                    activity.getSQLiteHelper().updateStatus(project);
+                    activity.getSQLiteDB().project().updateStatus(project);
 
                     int from = getAdapterPosition();
                     int to = adapter.getItemCount()-1;

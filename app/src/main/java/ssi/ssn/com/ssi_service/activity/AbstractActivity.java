@@ -18,7 +18,7 @@ import ssi.ssn.com.ssi_service.fragment.componentlist.FragmentComponentList;
 import ssi.ssn.com.ssi_service.fragment.createproject.FragmentCreateProject;
 import ssi.ssn.com.ssi_service.fragment.customlist.FragmentCustomList;
 import ssi.ssn.com.ssi_service.fragment.launchboard.FragmentLaunchBoard;
-import ssi.ssn.com.ssi_service.fragment.launchboard.source.AbstractCardObject;
+import ssi.ssn.com.ssi_service.fragment.launchboard.source.AbstractGenerator;
 import ssi.ssn.com.ssi_service.fragment.modulelist.FragmentModuleList;
 import ssi.ssn.com.ssi_service.fragment.projectlist.FragmentProjectList;
 import ssi.ssn.com.ssi_service.model.data.source.Project;
@@ -33,18 +33,18 @@ public class AbstractActivity extends Activity {
 
     private ExecutorService executor;
 
-    protected SQLiteDB sqLiteHelper;
+    protected SQLiteDB sqliteDB;
     protected RequestHandler requestHandler;
     protected View loadingView;
 
-    private Map<Long, List<AbstractCardObject>> projectCardObjectMap = new HashMap<>();
+    private Map<Long, List<AbstractGenerator>> projectCardObjectMap = new HashMap<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         executor = Executors.newSingleThreadExecutor();
         requestHandler = RequestHandler.initRequestHandler(executor);
-        sqLiteHelper = new SQLiteDB(this);
+        sqliteDB = new SQLiteDB(this);
     }
 
     @Override
@@ -55,7 +55,7 @@ public class AbstractActivity extends Activity {
                 @Override
                 protected Object doInBackground(Object... objects) {
                     Log.e(getClass().getSimpleName(), "PROJECT ID: " + projectID);
-                    Project project = sqLiteHelper.getProjectByID(projectID);
+                    Project project = sqliteDB.project().getByID(projectID);
                     getRequestHandler().sendRequestLogout(project);
                     projectCardObjectMap.remove(projectID);
                     return null;
@@ -68,8 +68,8 @@ public class AbstractActivity extends Activity {
         return executor;
     }
 
-    public SQLiteDB getSQLiteHelper() {
-        return sqLiteHelper;
+    public SQLiteDB getSQLiteDB() {
+        return sqliteDB;
     }
 
     public RequestHandler getRequestHandler() {
@@ -80,18 +80,18 @@ public class AbstractActivity extends Activity {
         loadingView.setVisibility(isVisible ? View.VISIBLE : View.GONE);
     }
 
-    public List<AbstractCardObject> getCardObjects(Project project){
+    public List<AbstractGenerator> getCardObjects(Project project){
         if(projectCardObjectMap.containsKey(project.get_id())){
             return projectCardObjectMap.get(project.get_id());
         }
         return new LinkedList<>();
     }
 
-    public void addCardToMap(Project project, AbstractCardObject cardObject){
+    public void addCardToMap(Project project, AbstractGenerator cardObject){
         if(!projectCardObjectMap.containsKey(project.get_id())){
-            projectCardObjectMap.put(project.get_id(), new LinkedList<AbstractCardObject>());
+            projectCardObjectMap.put(project.get_id(), new LinkedList<AbstractGenerator>());
         }
-        List<AbstractCardObject> cardObjects = projectCardObjectMap.get(project.get_id());
+        List<AbstractGenerator> cardObjects = projectCardObjectMap.get(project.get_id());
         cardObjects.add(cardObject);
     }
 

@@ -13,7 +13,7 @@ import ssi.ssn.com.ssi_service.model.data.source.Project;
 import ssi.ssn.com.ssi_service.model.data.source.Status;
 import ssi.ssn.com.ssi_service.model.helper.FormatHelper;
 
-public class AbstractCardObject {
+public class AbstractGenerator {
 
     private long _ProjectID;
     private int title;
@@ -33,7 +33,7 @@ public class AbstractCardObject {
     @JsonIgnore
     private View loadingView;
 
-    public AbstractCardObject(MainActivity activty, Project project, int title, int icon, boolean observation) {
+    public AbstractGenerator(MainActivity activty, Project project, int title, int icon, boolean observation) {
         this._ProjectID = project.get_id();
         this.title = title;
         this.icon = icon;
@@ -42,7 +42,7 @@ public class AbstractCardObject {
         this.project = project;
     }
 
-    public AbstractCardObject() {
+    public AbstractGenerator() {
     }
 
     public long get_ProjectID() {
@@ -103,7 +103,7 @@ public class AbstractCardObject {
 
     public void setLastObservationTime(long millis){
         project.setLastObservationTime(millis);
-        activity.getSQLiteHelper().updateLastObservationTime(project);
+        activity.getSQLiteDB().project().updateLastObservationTime(project);
     }
 
     public void reloadStatus(Activity activity, Project project) {

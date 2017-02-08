@@ -1,9 +1,12 @@
 package ssi.ssn.com.ssi_service.model.data.source;
 
+import com.owlike.genson.annotation.JsonIgnore;
+
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
+import ssi.ssn.com.ssi_service.model.data.source.cardobject.CardObjectComponent;
+import ssi.ssn.com.ssi_service.model.data.source.cardobject.CardObjectModule;
 import ssi.ssn.com.ssi_service.model.helper.JsonHelper;
 import ssi.ssn.com.ssi_service.model.network.response.application.ResponseApplication;
 import ssi.ssn.com.ssi_service.model.network.response.component.ResponseComponent;
@@ -25,8 +28,11 @@ public class Project extends NetworkProject {
     private String projectLocation;
     private String projectOrderNr;
 
-    private List<ResponseModule> responseModuleList = new ArrayList<>();
-    private List<ResponseComponent> responseComponentList = new ArrayList<>();
+    @JsonIgnore
+    private CardObjectModule cardObjectModule;
+    @JsonIgnore
+    private CardObjectComponent cardObjectComponent;
+
 
     public Project(String serverAddress, String userName, String password, long observationInterval) {
         this.serverAddress = serverAddress;
@@ -134,23 +140,26 @@ public class Project extends NetworkProject {
         this.lastObservationTime = lastObservationTime;
     }
 
-    public List<ResponseModule> getResponseModuleList() {
-        return responseModuleList;
+    // ** ard Objects *************************************************************************** //
+
+    @JsonIgnore
+    public void setCardObjectModule(CardObjectModule cardObjectModule) {
+        this.cardObjectModule = cardObjectModule;
+    }
+    @JsonIgnore
+    public void setCardObjectComponent(CardObjectComponent cardObjectComponent) {
+        this.cardObjectComponent = cardObjectComponent;
+    }
+    @JsonIgnore
+    public CardObjectModule getCardObjectModule() {
+        return cardObjectModule;
+    }
+    @JsonIgnore
+    public CardObjectComponent getCardObjectComponent() {
+        return cardObjectComponent;
     }
 
-    public void setResponseModuleList(List<ResponseModule> responseModuleList) {
-        this.responseModuleList = responseModuleList;
-    }
-
-    public List<ResponseComponent> getResponseComponentList() {
-        return responseComponentList;
-    }
-
-    public void setResponseComponentList(List<ResponseComponent> responseComponentList) {
-        this.responseComponentList = responseComponentList;
-    }
-
-    // ** Others ***************************************************************************** //
+    // ** Others ******************************************************************************** //
 
     public void loadFromNetwork() {
         ResponseApplication responseApplication = (ResponseApplication) JsonHelper.fromJsonGeneric(ResponseApplication.class, getDefaultResponseApplication().getResult());
@@ -163,7 +172,7 @@ public class Project extends NetworkProject {
         return JsonHelper.toJson(this);
     }
 
-    public String identity(){
+    public String identity() {
         return "[" + get_id() + ";" + getProjectName() + ";" + getProjectLocation() + ";" + getProjectOrderNr() + "]";
     }
 }

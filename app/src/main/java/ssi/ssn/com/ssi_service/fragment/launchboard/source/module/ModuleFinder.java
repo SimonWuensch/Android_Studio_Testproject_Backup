@@ -1,25 +1,12 @@
 package ssi.ssn.com.ssi_service.fragment.launchboard.source.module;
 
 import android.app.Activity;
-import android.os.AsyncTask;
-import android.util.Log;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.concurrent.ExecutorService;
 
-import ssi.ssn.com.ssi_service.activity.MainActivity;
-import ssi.ssn.com.ssi_service.fragment.launchboard.source.CardObjectModule;
 import ssi.ssn.com.ssi_service.model.data.source.Project;
-import ssi.ssn.com.ssi_service.model.helper.JsonHelper;
 import ssi.ssn.com.ssi_service.model.helper.XMLHelper;
-import ssi.ssn.com.ssi_service.model.network.DefaultResponse;
-import ssi.ssn.com.ssi_service.model.network.handler.RequestHandler;
-import ssi.ssn.com.ssi_service.model.network.request.RequestModule;
-import ssi.ssn.com.ssi_service.model.network.response.module.ResponseModule;
 
 public class ModuleFinder {
 
@@ -99,8 +86,8 @@ public class ModuleFinder {
                     if (xmlModuleName.endsWith("s")) {
                         xmlModuleName = xmlModuleName.substring(0, xmlModuleName.length() - 1);
                     }
-                    if (xmlObject.getAttributes().containsKey(CardObjectModule.XML_ATTRIBUTE_ENABLED)) {
-                        String isEnabled = xmlObject.getAttributes().get(CardObjectModule.XML_ATTRIBUTE_ENABLED);
+                    if (xmlObject.getAttributes().containsKey(GeneratorModuleList.XML_ATTRIBUTE_ENABLED)) {
+                        String isEnabled = xmlObject.getAttributes().get(GeneratorModuleList.XML_ATTRIBUTE_ENABLED);
                         enabledModuleList.put(xmlModuleName, isEnabled);
                     }
                     requestHandler.sendRequestModule(project, xmlModuleName).executeOnExecutor(executor);

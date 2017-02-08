@@ -48,7 +48,7 @@ public class FragmentProjectList extends AbstractFragment {
                 for(Project project : projects){
                     activity.getCardObjects(project).clear();
                     project.setLastObservationTime(0);
-                    activity.getSQLiteHelper().updateLastObservationTime(project);
+                    activity.getSQLiteDB().project().updateLastObservationTime(project);
                 }
                 activity.reloadProjectListFragment(FragmentProjectList.this);
             }
@@ -74,7 +74,7 @@ public class FragmentProjectList extends AbstractFragment {
             rootView = inflater.inflate(FRAGMENT_LAYOUT, container, false);
             Log.d(TAG, "Fragment inflated [" + getActivity().getResources().getResourceName(FRAGMENT_LAYOUT) + "].");
 
-            projects = getSQLiteDB().getAllProjects();
+            projects = getSQLiteDB().project().getALL();
             RecyclerView.Adapter mAdapter = new FragmentProjectListAdapter(CARDVIEW, this, projects);
             Log.d(TAG, "Adapter [" + mAdapter.getClass().getSimpleName() + "] with CardView [" + getActivity().getResources().getResourceName(CARDVIEW) + "] initialized.");
 

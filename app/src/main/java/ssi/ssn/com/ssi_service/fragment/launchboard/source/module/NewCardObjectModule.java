@@ -1,25 +1,23 @@
 package ssi.ssn.com.ssi_service.fragment.launchboard.source.module;
 
 import android.app.Activity;
-import android.os.AsyncTask;
 import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ExecutorService;
 
 import ssi.ssn.com.ssi_service.R;
 import ssi.ssn.com.ssi_service.activity.AbstractActivity;
 import ssi.ssn.com.ssi_service.activity.MainActivity;
-import ssi.ssn.com.ssi_service.fragment.launchboard.source.AbstractCardObject;
-import ssi.ssn.com.ssi_service.fragment.launchboard.source.CardObjectModule;
+import ssi.ssn.com.ssi_service.fragment.launchboard.source.AbstractGenerator;
+import ssi.ssn.com.ssi_service.fragment.launchboard.source.GeneratorModuleList;
 import ssi.ssn.com.ssi_service.model.data.source.Project;
 import ssi.ssn.com.ssi_service.model.helper.SourceHelper;
 import ssi.ssn.com.ssi_service.model.network.response.module.ResponseModule;
 
-public class NewCardObjectModule extends AbstractCardObject {
+public class NewCardObjectModule extends AbstractGenerator {
 
-    private static String TAG = CardObjectModule.class.getSimpleName();
+    private static String TAG = GeneratorModuleList.class.getSimpleName();
 
     private List<ResponseModule> responseList = new ArrayList<>();
     private ModuleFinder moduleFinder;

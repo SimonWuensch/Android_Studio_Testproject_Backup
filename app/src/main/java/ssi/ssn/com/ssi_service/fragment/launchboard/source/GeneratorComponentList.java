@@ -19,9 +19,9 @@ import ssi.ssn.com.ssi_service.model.network.DefaultResponse;
 import ssi.ssn.com.ssi_service.model.network.handler.RequestHandler;
 import ssi.ssn.com.ssi_service.model.network.response.component.ResponseComponent;
 
-public class CardObjectComponent extends AbstractCardObject {
+public class GeneratorComponentList extends AbstractGenerator {
 
-    private static String TAG = CardObjectComponent.class.getSimpleName();
+    private static String TAG = GeneratorComponentList.class.getSimpleName();
 
     private static String XML_START_TAG_COMPONENTS_MODULE = "components-module";
     private static String XML_SEARCHED_TAG_SERVER = "server";
@@ -31,7 +31,7 @@ public class CardObjectComponent extends AbstractCardObject {
     private List<ResponseComponent> responseComponentList = new ArrayList<>();
     private List<XMLHelper.XMLObject> componentObjects;
 
-    public CardObjectComponent(MainActivity activity, Project project, int title, int icon, boolean observation) {
+    public GeneratorComponentList(MainActivity activity, Project project, int title, int icon, boolean observation) {
         super(activity, project, title, icon, observation);
     }
 
@@ -86,8 +86,8 @@ public class CardObjectComponent extends AbstractCardObject {
                     String componentName = tagName.substring(0, tagName.indexOf("-"));
                     requestHandler.sendRequestComponent(project, componentName);
 
-                    if (xmlObject.getAttributes().containsKey(CardObjectComponent.XML_ATTRIBUTE_ENABLED)) {
-                        String isEnabled = xmlObject.getAttributes().get(CardObjectComponent.XML_ATTRIBUTE_ENABLED);
+                    if (xmlObject.getAttributes().containsKey(GeneratorComponentList.XML_ATTRIBUTE_ENABLED)) {
+                        String isEnabled = xmlObject.getAttributes().get(GeneratorComponentList.XML_ATTRIBUTE_ENABLED);
                         if (!Boolean.valueOf(isEnabled)) {
                             notEnabledComponents.add(componentName);
                         }
@@ -122,7 +122,7 @@ public class CardObjectComponent extends AbstractCardObject {
     public void onClick() {
         loadFromNetwork();
         ExecutorService executor = ((MainActivity) activity).getExecutor();
-        final AbstractCardObject cardObject = this;
+        final AbstractGenerator cardObject = this;
         new AsyncTask<Object, Void, Object>() {
             @Override
             protected Object doInBackground(Object... objects) {

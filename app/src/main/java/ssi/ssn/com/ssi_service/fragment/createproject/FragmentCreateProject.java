@@ -247,10 +247,10 @@ public class FragmentCreateProject extends AbstractFragment {
             protected Object doInBackground(Object[] objects) {
                 switch (fragmentStatus) {
                     case ADD:
-                        getSQLiteDB().addProject(project);
+                        getSQLiteDB().project().add(project);
                         break;
                     case UPDATE:
-                        getSQLiteDB().updateProject(project);
+                        getSQLiteDB().project().update(project);
                         break;
                 }
                 return null;
@@ -333,7 +333,7 @@ public class FragmentCreateProject extends AbstractFragment {
     }
 
     public void onClickProjectDelete(final Project project) {
-        getSQLiteDB().deleteProject(project);
+        getSQLiteDB().project().delete(project);
         ((MainActivity) getActivity()).showProjectListFragment();
     }
 
@@ -384,10 +384,10 @@ public class FragmentCreateProject extends AbstractFragment {
                             project.loadFromNetwork();
                             switch (fragmentStatus) {
                                 case ADD:
-                                    getSQLiteDB().addProject(project);
+                                    getSQLiteDB().project().add(project);
                                     break;
                                 case UPDATE:
-                                    getSQLiteDB().updateProject(project);
+                                    getSQLiteDB().project().update(project);
                                     break;
                             }
                             ((MainActivity) getActivity()).showProjectListFragment();

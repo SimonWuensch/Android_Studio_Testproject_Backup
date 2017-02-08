@@ -11,7 +11,6 @@ import java.util.Map;
 import java.util.concurrent.ExecutorService;
 
 import ssi.ssn.com.ssi_service.R;
-import ssi.ssn.com.ssi_service.activity.AbstractActivity;
 import ssi.ssn.com.ssi_service.activity.MainActivity;
 import ssi.ssn.com.ssi_service.model.data.source.Project;
 import ssi.ssn.com.ssi_service.model.helper.JsonHelper;
@@ -22,9 +21,8 @@ import ssi.ssn.com.ssi_service.model.network.handler.RequestHandler;
 import ssi.ssn.com.ssi_service.model.network.request.RequestModule;
 import ssi.ssn.com.ssi_service.model.network.response.module.ResponseModule;
 
-public class CardObjectModule extends AbstractCardObject {
-
-    private static String TAG = CardObjectModule.class.getSimpleName();
+public class GeneratorModuleList extends AbstractGenerator {
+    private static String TAG = GeneratorModuleList.class.getSimpleName();
 
     private static String XML_START_TAG_PLATFORM_MODULES = "platform-modules";
     private static String XML_START_TAG_PLUGIN_MODULES = "plugin-modules";
@@ -34,7 +32,7 @@ public class CardObjectModule extends AbstractCardObject {
     private List<ResponseModule> responseModuleList = new ArrayList<>();
     private List<XMLHelper.XMLObject> moduleObjects;
 
-    public CardObjectModule(MainActivity activity, Project project, int title, int icon, boolean observation) {
+    public GeneratorModuleList(MainActivity activity, Project project, int title, int icon, boolean observation) {
         super(activity, project, title, icon, observation);
     }
 
@@ -93,8 +91,8 @@ public class CardObjectModule extends AbstractCardObject {
                     if (xmlModuleName.endsWith("s")) {
                         xmlModuleName = xmlModuleName.substring(0, xmlModuleName.length() - 1);
                     }
-                    if (xmlObject.getAttributes().containsKey(CardObjectModule.XML_ATTRIBUTE_ENABLED)) {
-                        String isEnabled = xmlObject.getAttributes().get(CardObjectModule.XML_ATTRIBUTE_ENABLED);
+                    if (xmlObject.getAttributes().containsKey(GeneratorModuleList.XML_ATTRIBUTE_ENABLED)) {
+                        String isEnabled = xmlObject.getAttributes().get(GeneratorModuleList.XML_ATTRIBUTE_ENABLED);
                         enabledModuleList.put(xmlModuleName, isEnabled);
                     }
                     requestHandler.sendRequestModule(project, xmlModuleName);
@@ -130,8 +128,8 @@ public class CardObjectModule extends AbstractCardObject {
     @Override
     public void onClick() {
         loadFromNetwork();
-        ExecutorService executor = ((MainActivity) activity).getExecutor();
-        final AbstractCardObject cardObject = this;
+        ExecutorService executor = activity.getExecutor();
+        final AbstractGenerator cardObject = this;
         new AsyncTask<Object, Void, Object>() {
             @Override
             protected Object doInBackground(Object... objects) {
@@ -143,7 +141,7 @@ public class CardObjectModule extends AbstractCardObject {
                 if (cardObject.getStatus().equals(ssi.ssn.com.ssi_service.model.data.source.Status.NOT_AVAILABLE)) {
                     Toast.makeText(activity, SourceHelper.getString(activity, R.string.fragment_launch_board_error_module), Toast.LENGTH_SHORT).show();
                 } else {
-                    ((AbstractActivity) activity).showModuleListFragment(project, responseModuleList);
+                    activity.showModuleListFragment(project, responseModuleList);
                 }
             }
         }.executeOnExecutor(executor);

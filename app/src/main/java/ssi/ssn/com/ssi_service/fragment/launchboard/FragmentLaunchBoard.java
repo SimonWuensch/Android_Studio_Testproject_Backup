@@ -14,13 +14,12 @@ import android.widget.TextView;
 
 import java.util.Date;
 import java.util.List;
-import java.util.concurrent.ExecutorService;
 import java.util.concurrent.TimeUnit;
 
 import ssi.ssn.com.ssi_service.R;
 import ssi.ssn.com.ssi_service.activity.MainActivity;
 import ssi.ssn.com.ssi_service.fragment.AbstractFragment;
-import ssi.ssn.com.ssi_service.fragment.launchboard.source.AbstractCardObject;
+import ssi.ssn.com.ssi_service.fragment.launchboard.source.AbstractGenerator;
 import ssi.ssn.com.ssi_service.model.data.source.Project;
 import ssi.ssn.com.ssi_service.model.helper.FormatHelper;
 import ssi.ssn.com.ssi_service.model.helper.JsonHelper;
@@ -47,7 +46,7 @@ public class FragmentLaunchBoard extends AbstractFragment {
     private FragmentLaunchBoardAdapter mAdapter;
 
     private Project project;
-    private List<AbstractCardObject> cardObjects;
+    private List<AbstractGenerator> cardObjects;
 
     public static FragmentLaunchBoard newInstance(Project project) {
         if (project == null) {
@@ -106,7 +105,7 @@ public class FragmentLaunchBoard extends AbstractFragment {
                     public void onClick(View view) {
                         checkProjectState();
                         boolean isUpdating = false;
-                        for (AbstractCardObject cardObject : cardObjects) {
+                        for (AbstractGenerator cardObject : cardObjects) {
                             if (cardObject.getLoadingView().getVisibility() == View.VISIBLE) {
                                 isUpdating = true;
                             }
@@ -114,7 +113,7 @@ public class FragmentLaunchBoard extends AbstractFragment {
                         Log.d(TAG, "Card objects still updating status...");
 
                         if (!isUpdating) {
-                            for (AbstractCardObject cardObject : cardObjects) {
+                            for (AbstractGenerator cardObject : cardObjects) {
                                 cardObject.reloadStatus(getActivity(), project);
                             }
                         }
@@ -185,7 +184,7 @@ public class FragmentLaunchBoard extends AbstractFragment {
     @Override
     public void onResume() {
         super.onResume();
-        for (AbstractCardObject cardObject : cardObjects) {
+        for (AbstractGenerator cardObject : cardObjects) {
             cardObject.detectCardStatus();
         }
     }

@@ -6,12 +6,13 @@ import android.text.TextWatcher;
 import android.widget.EditText;
 
 import ssi.ssn.com.ssi_service.activity.MainActivity;
+import ssi.ssn.com.ssi_service.model.database.DBProject;
 import ssi.ssn.com.ssi_service.model.database.SQLiteDB;
 
 public class AbstractFragment extends Fragment {
 
     public SQLiteDB getSQLiteDB() {
-        return ((MainActivity) getActivity()).getSQLiteHelper();
+        return ((MainActivity) getActivity()).getSQLiteDB();
     }
 
     public void setLoadingViewVisible(boolean isVisible) {

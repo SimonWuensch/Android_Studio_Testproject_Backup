@@ -26,8 +26,6 @@ public class FragmentProjectListAdapter extends RecyclerView.Adapter<FragmentPro
 
     private List<Project> projects = new ArrayList<>();
     private Map<Project, FragmentProjectListViewHolder> viewHolderMap = new HashMap<>();
-    private Activity activity;
-
 
     public FragmentProjectListAdapter(int layoutCardView, final FragmentProjectList fragment, List<Project> projects) {
         this.layoutCardView = layoutCardView;
@@ -39,7 +37,6 @@ public class FragmentProjectListAdapter extends RecyclerView.Adapter<FragmentPro
     public FragmentProjectListViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         cardView = (CardView) LayoutInflater.from(parent.getContext()).inflate(layoutCardView, parent, false);
         FragmentProjectListViewHolder viewHolder = new FragmentProjectListViewHolder((MainActivity) fragment.getActivity(), this, cardView);
-
         return viewHolder;
     }
 
@@ -57,17 +54,6 @@ public class FragmentProjectListAdapter extends RecyclerView.Adapter<FragmentPro
     @Override
     public int getItemCount() {
         return projects.size();
-    }
-
-    public void add(int position, Project project) {
-        projects.add(position, project);
-        notifyItemInserted(position);
-    }
-
-    public void remove(Project project) {
-        int position = projects.indexOf(project);
-        projects.remove(position);
-        notifyItemRemoved(position);
     }
 
     public void sort(){
