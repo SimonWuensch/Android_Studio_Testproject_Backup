@@ -74,9 +74,14 @@ class FragmentProjectListViewHolder extends RecyclerView.ViewHolder {
         cbObserveProject.setOnCheckedChangeListener(onCheckedChangeListener(project));
         ivProjectSettings.setOnClickListener(onClickCardViewProjectSettings(project));
 
-        if (project.isProjectObservation()) {
+        /*if (project.isProjectObservation()) {
             detectProjectStatus(project, isLast);
-        }
+        }*/
+    }
+
+    public void generateCardObjects(Project project) {
+        project.loadCardObjects(activity);
+        //TODO weiter hier ende war 08.02
     }
 
     private void detectProjectStatus(final Project project, final boolean isLast) {
@@ -158,7 +163,7 @@ class FragmentProjectListViewHolder extends RecyclerView.ViewHolder {
                     activity.getSQLiteDB().project().updateStatus(project);
 
                     int from = getAdapterPosition();
-                    int to = adapter.getItemCount()-1;
+                    int to = adapter.getItemCount() - 1;
                     adapter.notifyItemMoved(from, to);
                     return;
                 }

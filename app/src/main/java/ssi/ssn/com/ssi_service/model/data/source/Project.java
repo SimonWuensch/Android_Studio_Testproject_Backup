@@ -2,15 +2,13 @@ package ssi.ssn.com.ssi_service.model.data.source;
 
 import com.owlike.genson.annotation.JsonIgnore;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import ssi.ssn.com.ssi_service.activity.MainActivity;
+import ssi.ssn.com.ssi_service.model.data.source.cardobject.AbstractCardObject;
 import ssi.ssn.com.ssi_service.model.data.source.cardobject.CardObjectComponent;
 import ssi.ssn.com.ssi_service.model.data.source.cardobject.CardObjectModule;
+import ssi.ssn.com.ssi_service.model.database.DBCardObject;
 import ssi.ssn.com.ssi_service.model.helper.JsonHelper;
 import ssi.ssn.com.ssi_service.model.network.response.application.ResponseApplication;
-import ssi.ssn.com.ssi_service.model.network.response.component.ResponseComponent;
-import ssi.ssn.com.ssi_service.model.network.response.module.ResponseModule;
 
 public class Project extends NetworkProject {
 
@@ -140,23 +138,40 @@ public class Project extends NetworkProject {
         this.lastObservationTime = lastObservationTime;
     }
 
-    // ** ard Objects *************************************************************************** //
+    // ** Card Objects *************************************************************************** //
 
     @JsonIgnore
     public void setCardObjectModule(CardObjectModule cardObjectModule) {
         this.cardObjectModule = cardObjectModule;
     }
+
     @JsonIgnore
     public void setCardObjectComponent(CardObjectComponent cardObjectComponent) {
         this.cardObjectComponent = cardObjectComponent;
     }
+
     @JsonIgnore
     public CardObjectModule getCardObjectModule() {
         return cardObjectModule;
     }
+
     @JsonIgnore
     public CardObjectComponent getCardObjectComponent() {
         return cardObjectComponent;
+    }
+
+    public void loadCardObjects(MainActivity activity) {
+        generateCardObject(activity.getSQLiteDB().cardObjectModule(), cardObjectModule);
+        generateCardObject(activity.getSQLiteDB().cardObjectComponent(), cardObjectComponent);
+    }
+
+    private AbstractCardObject generateCardObject(DBCardObject dbCardObject, AbstractCardObject cardObject) {
+        if (dbCardObject.getCount(_id) == 0) {
+            cardObject = new AbstractCardObject(this);
+            dbCardObject.add(cardObject);
+            return cardObject;
+        }
+        return dbCardObject.getByProjectID(_id);
     }
 
     // ** Others ******************************************************************************** //

@@ -1,22 +1,23 @@
 package ssi.ssn.com.ssi_service.model.data.source.cardobject;
 
+import android.app.Activity;
+
+import ssi.ssn.com.ssi_service.activity.MainActivity;
 import ssi.ssn.com.ssi_service.model.data.source.Project;
 import ssi.ssn.com.ssi_service.model.data.source.Status;
 
 public class AbstractCardObject {
 
-    private long _id;
-    private long _id_project;
-    private int title;
-    private int icon;
+    protected long _id;
+    protected long _id_project;
+    protected int title;
+    protected int icon;
 
-    private Status status;
-    private boolean observation;
-    private long lastObservationTime;
+    protected Status status;
+    protected boolean observation = true;
+    protected long lastObservationTime;
 
-    public AbstractCardObject(Project project, int title, int icon) {
-        this.title = title;
-        this.icon = icon;
+    public AbstractCardObject(Project project) {
         this._id_project = project.get_id();
     }
 
@@ -78,4 +79,5 @@ public class AbstractCardObject {
     public void setLastObservationTime(long lastObservationTime) {
         this.lastObservationTime = lastObservationTime;
     }
+
 }

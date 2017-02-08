@@ -3,16 +3,18 @@ package ssi.ssn.com.ssi_service.model.database;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
 import ssi.ssn.com.ssi_service.model.data.source.Status;
+import ssi.ssn.com.ssi_service.model.data.source.cardobject.AbstractCardObject;
 import ssi.ssn.com.ssi_service.model.data.source.cardobject.CardObjectComponent;
 import ssi.ssn.com.ssi_service.model.helper.JsonHelper;
 
-public class DBCardObjectComponent extends SQLiteOpenHelper {
+public class DBCardObjectComponent extends SQLiteOpenHelper implements DBCardObject{
 
     private final String TAG = DBCardObjectComponent.class.getSimpleName();
 
@@ -56,7 +58,17 @@ public class DBCardObjectComponent extends SQLiteOpenHelper {
         this.onCreate(db);
     }
 
-    public void add(CardObjectComponent cardObject) {
+    @Override
+    public void add(AbstractCardObject cardObject) {
+        if(getCount(cardObject.get_id_project()) != 0){
+            try {
+                throw new Exception("Only one component per project may exist");
+            }catch (Throwable t){
+                t.printStackTrace();
+                return;
+            }
+        }
+
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
@@ -72,9 +84,17 @@ public class DBCardObjectComponent extends SQLiteOpenHelper {
         db.close();
     }
 
+    @Override
+    public long getCount(long projectID) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        long count = DatabaseUtils.queryNumEntries(db, TABLE_COMPONENT,
+                _ID_PROJECT + "=?", new String[]{String.valueOf(projectID)});
+        db.close();
+        return count;
+    }
     // ** GET *********************************************************************************** //
-
-    public CardObjectComponent getByID(long id) {
+    @Override
+    public CardObjectComponent getByProjectID(long id) {
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery("SELECT * " +
                 "FROM " + TABLE_COMPONENT + " " +
@@ -98,7 +118,8 @@ public class DBCardObjectComponent extends SQLiteOpenHelper {
     }
 
     // ** Update ******************************************************************************** //
-    public boolean update(CardObjectComponent cardObject) {
+    @Override
+    public boolean update(AbstractCardObject cardObject) {
         ContentValues values = new ContentValues();
         values.put(_ID_PROJECT, cardObject.get_id_project());
         values.put(IS_OBSERVATION, cardObject.isObservation());
@@ -109,35 +130,40 @@ public class DBCardObjectComponent extends SQLiteOpenHelper {
         return updateValue(cardObject, values);
     }
 
-    public boolean updateIsObservation(CardObjectComponent cardObject) {
+    @Override
+    public boolean updateIsObservation(AbstractCardObject cardObject) {
         ContentValues values = new ContentValues();
         values.put(IS_OBSERVATION, cardObject.isObservation());
         Log.d(TAG, "ID Project: " + cardObject.get_id_project() + "| UPDATE - IS_OBSERVATION: Card Object Component [" + cardObject + "]");
         return updateValue(cardObject, values);
     }
 
-    public boolean updateLastObservationTime(CardObjectComponent cardObject) {
+    @Override
+    public boolean updateLastObservationTime(AbstractCardObject cardObject) {
         ContentValues values = new ContentValues();
         values.put(LAST_OBSERVATION_TIME, cardObject.getLastObservationTime());
         Log.d(TAG, "ID Project: " + cardObject.get_id_project() + "| UPDATE - LAST_OBSERVATION_TIME: Card Object Component [" + cardObject + "]");
         return updateValue(cardObject, values);
     }
 
-    public boolean updateStatus(CardObjectComponent cardObject) {
+    @Override
+    public boolean updateStatus(AbstractCardObject cardObject) {
         ContentValues values = new ContentValues();
         values.put(STATUS, cardObject.getStatus().getId());
         Log.d(TAG, "ID Project: " + cardObject.get_id_project() + "| UPDATE - STATUS: Card Object Component [" + cardObject + "]");
         return updateValue(cardObject, values);
     }
 
-    public boolean updateJson(CardObjectComponent cardObject) {
+    @Override
+    public boolean updateJson(AbstractCardObject cardObject) {
         ContentValues values = new ContentValues();
         values.put(JSON_COMPONENT, JsonHelper.toJson(cardObject));
         Log.d(TAG, "ID Project: " + cardObject.get_id_project() + "| UPDATE - JSON_COMPONENT: Card Object Component [" + cardObject + "]");
         return updateValue(cardObject, values);
     }
 
-    private boolean updateValue(CardObjectComponent cardObject, ContentValues values) {
+    @Override
+    public boolean updateValue(AbstractCardObject cardObject, ContentValues values) {
         try {
             SQLiteDatabase db = getWritableDatabase();
             int affectedRows = db.update(TABLE_COMPONENT, values, _ID + " = ?", new String[]{
@@ -158,7 +184,8 @@ public class DBCardObjectComponent extends SQLiteOpenHelper {
     }
 
     // ** DELETE ******************************************************************************** //
-    public void delete(CardObjectComponent cardObject) {
+    @Override
+    public void delete(AbstractCardObject cardObject) {
         SQLiteDatabase db = this.getWritableDatabase();
         db.delete(TABLE_COMPONENT,
                 _ID + " = ?",
