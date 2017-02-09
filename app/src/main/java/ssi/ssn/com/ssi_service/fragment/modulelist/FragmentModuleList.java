@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ssi.ssn.com.ssi_service.R;
+import ssi.ssn.com.ssi_service.activity.MainActivity;
 import ssi.ssn.com.ssi_service.model.data.source.Project;
 import ssi.ssn.com.ssi_service.model.helper.JsonHelper;
 import ssi.ssn.com.ssi_service.model.helper.SourceHelper;
@@ -29,7 +30,7 @@ public class FragmentModuleList extends Fragment {
     private static int RECYCLERVIEW = R.id.fragment_module_list_recycler_view;
     private static int CARDVIEW = R.layout.fragment_module_list_card_view;
 
-    private static String PROJECT_JSON = TAG + "PROJECT_JSON";
+    private static String PROJECT_ID = TAG + "PROJECT_ID";
     private static String RESPONSE = TAG + "RESPONSE";
     private static String RESPONSE_MODULE_LIST = TAG + "RESPONSE_MODULE_LIST";
 
@@ -37,16 +38,14 @@ public class FragmentModuleList extends Fragment {
     private Project project;
     private List<ResponseModule> responseModuleList;
 
-    public static FragmentModuleList newInstance(Project project, List<ResponseModule> responseModuleList) {
+    public static FragmentModuleList newInstance(Project project) {
         if (project == null) {
             return new FragmentModuleList();
         }
 
         FragmentModuleList fragment = new FragmentModuleList();
         Bundle bundle = new Bundle();
-        bundle.putString(PROJECT_JSON, JsonHelper.toJson(project));
-        bundle.putString(RESPONSE, project.getDefaultResponseApplicationConfig().getResult());
-        bundle.putSerializable(RESPONSE_MODULE_LIST, JsonHelper.toJson(responseModuleList));
+        bundle.putLong(PROJECT_ID, project.get_id());
         fragment.setArguments(bundle);
         return fragment;
     }
@@ -56,11 +55,10 @@ public class FragmentModuleList extends Fragment {
             return;
         }
 
-        String projectJson = getArguments().getString(PROJECT_JSON);
-        project = (Project) JsonHelper.fromJsonGeneric(Project.class, projectJson);
-        String jsonResponseModuleList = getArguments().getString(RESPONSE_MODULE_LIST);
-        responseModuleList = (ArrayList<ResponseModule>) JsonHelper.fromJsonGeneric(new GenericType<List<ResponseModule>>() {
-        }, jsonResponseModuleList);
+        long projectID = getArguments().getLong(PROJECT_ID);
+        project = ((MainActivity) getActivity()).getSQLiteDB().project().getByID(projectID);
+        project.initCardObjectModule((MainActivity) getActivity());
+        responseModuleList = project.getCardObjectModule().getResponseModuleList();
     }
 
     @Override

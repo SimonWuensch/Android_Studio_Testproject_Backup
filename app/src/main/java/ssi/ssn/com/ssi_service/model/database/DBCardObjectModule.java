@@ -89,7 +89,7 @@ public class DBCardObjectModule extends SQLiteOpenHelper implements DBCardObject
         SQLiteDatabase db = this.getReadableDatabase();
         long count = DatabaseUtils.queryNumEntries(db, TABLE_MODULE,
                 _ID_PROJECT + "=?", new String[]{String.valueOf(projectID)});
-        db.close();
+        //db.close();
 
         return count;
     }

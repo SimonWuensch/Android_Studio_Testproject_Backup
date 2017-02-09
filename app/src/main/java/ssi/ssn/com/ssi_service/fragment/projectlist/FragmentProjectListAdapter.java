@@ -63,7 +63,5 @@ public class FragmentProjectListAdapter extends RecyclerView.Adapter<FragmentPro
             int to = sortedList.indexOf(project);
             notifyItemMoved(from, to);
         }
-
     }
-
 }

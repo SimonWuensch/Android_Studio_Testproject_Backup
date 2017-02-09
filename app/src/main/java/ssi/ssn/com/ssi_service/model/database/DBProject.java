@@ -97,7 +97,6 @@ public class DBProject extends SQLiteOpenHelper {
         Status status = Status.getStatusByID(cursor.getInt(cursor.getColumnIndex(STATUS)));
         project.setStatus(status);
 
-        //log
         Log.d(TAG, "GET: Project [" + project + "]");
         return project;
     }
@@ -133,7 +132,7 @@ public class DBProject extends SQLiteOpenHelper {
     public long getCount() {
         SQLiteDatabase db = this.getReadableDatabase();
         long cnt = DatabaseUtils.queryNumEntries(db, TABLE_PROJECT);
-        db.close();
+        //db.close();
         Log.i(TAG, "PROJECT COUNT [" + cnt + "].");
         return cnt;
     }

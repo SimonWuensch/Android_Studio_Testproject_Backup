@@ -9,12 +9,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.util.Date;
-import java.util.concurrent.ExecutorService;
-
 import ssi.ssn.com.ssi_service.R;
 import ssi.ssn.com.ssi_service.activity.MainActivity;
-import ssi.ssn.com.ssi_service.fragment.projectlist.source.ProjectStatusDetector;
 import ssi.ssn.com.ssi_service.model.data.source.Project;
 import ssi.ssn.com.ssi_service.model.data.source.Status;
 import ssi.ssn.com.ssi_service.model.helper.ObservationHelper;
@@ -27,7 +23,6 @@ class FragmentProjectListViewHolder extends RecyclerView.ViewHolder {
 
     private MainActivity activity;
     private FragmentProjectListAdapter adapter;
-    private ProjectStatusDetector projectStatusDetector;
     private View cardView;
 
     private CheckBox cbObserveProject;
@@ -81,15 +76,17 @@ class FragmentProjectListViewHolder extends RecyclerView.ViewHolder {
     }
 
     public void detectProjectStatus(final Project project, final boolean isLast) {
-        boolean isProjectOutOfDate = ObservationHelper.isProjectOutOfDate(project);
-        if (!isProjectOutOfDate) {
-            project.initCardObjects(activity);
-            return;
-        }
+
         loadingView.setVisibility(View.VISIBLE);
         new AsyncTask<Object, Void, Object>() {
             @Override
             protected Object doInBackground(Object... objects) {
+                boolean isProjectOutOfDate = ObservationHelper.isProjectOutOfDate(project);
+                if (!isProjectOutOfDate) {
+                    project.initCardObjects(activity);
+                    return null;
+                }
+
                 project.detectProjectStatus(activity);
                 return null;
             }
@@ -106,6 +103,7 @@ class FragmentProjectListViewHolder extends RecyclerView.ViewHolder {
             }
         }.execute();
     }
+
 
     /*private void detectProjectStatus(final Project project, final boolean isLast) {
         boolean isOutOfTime = new Date().getTime() - project.getLastObservationTime() > project.getObservationInterval();

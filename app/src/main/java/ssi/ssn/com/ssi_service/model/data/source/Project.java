@@ -11,6 +11,7 @@ import ssi.ssn.com.ssi_service.model.data.source.cardobject.AbstractCardObject;
 import ssi.ssn.com.ssi_service.model.data.source.cardobject.CardObjectComponent;
 import ssi.ssn.com.ssi_service.model.data.source.cardobject.CardObjectModule;
 import ssi.ssn.com.ssi_service.model.database.DBCardObject;
+import ssi.ssn.com.ssi_service.model.database.DBCardObjectModule;
 import ssi.ssn.com.ssi_service.model.helper.JsonHelper;
 import ssi.ssn.com.ssi_service.model.network.response.application.ResponseApplication;
 
@@ -182,18 +183,38 @@ public class Project extends NetworkProject {
     }
 
     public void initCardObjects(MainActivity activity) {
-        if (cardObjectModule == null)
-            generateCardObject(activity.getSQLiteDB().cardObjectModule(), cardObjectModule);
+        if (cardObjectModule == null){
+            DBCardObjectModule dbCardObject = activity.getSQLiteDB().cardObjectModule();
+            if (dbCardObject.getCount(_id) == 0) {
+                cardObjectModule = new CardObjectModule(this);
+                dbCardObject.add(cardObjectModule);
+            }else{
+                cardObjectModule = dbCardObject.getByProjectID(_id);
+            }
+        }
         //if(cardObjectComponent == null)
         //generateCardObject(activity.getSQLiteDB().cardObjectComponent(), cardObjectComponent);
     }
 
-    private void generateCardObject(DBCardObject dbCardObject, AbstractCardObject cardObject) {
-        if (dbCardObject.getCount(_id) == 0) {
-            cardObject = new AbstractCardObject(this);
-            dbCardObject.add(cardObject);
+    public void initCardObjectModule(MainActivity activity){
+        if (cardObjectModule == null){
+            DBCardObjectModule dbCardObject = activity.getSQLiteDB().cardObjectModule();
+            if (dbCardObject.getCount(_id) == 0) {
+                cardObjectModule = new CardObjectModule(this);
+                dbCardObject.add(cardObjectModule);
+            }else{
+                cardObjectModule = dbCardObject.getByProjectID(_id);
+            }
         }
-        cardObject = dbCardObject.getByProjectID(_id);
+    }
+
+    private AbstractCardObject generateCardObject(DBCardObject dbCardObject) {
+        if (dbCardObject.getCount(_id) == 0) {
+            AbstractCardObject cardObject = new AbstractCardObject(this);
+            dbCardObject.add(cardObject);
+            return cardObject;
+        }
+        return dbCardObject.getByProjectID(_id);
     }
 
     // ** Others ******************************************************************************** //

@@ -89,7 +89,7 @@ public class DBCardObjectComponent extends SQLiteOpenHelper implements DBCardObj
         SQLiteDatabase db = this.getReadableDatabase();
         long count = DatabaseUtils.queryNumEntries(db, TABLE_COMPONENT,
                 _ID_PROJECT + "=?", new String[]{String.valueOf(projectID)});
-        db.close();
+        //db.close();
         return count;
     }
     // ** GET *********************************************************************************** //

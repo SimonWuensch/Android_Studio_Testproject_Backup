@@ -8,6 +8,7 @@ import ssi.ssn.com.ssi_service.activity.MainActivity;
 import ssi.ssn.com.ssi_service.model.data.source.Project;
 import ssi.ssn.com.ssi_service.model.data.source.Status;
 import ssi.ssn.com.ssi_service.model.database.DBCardObject;
+import ssi.ssn.com.ssi_service.model.helper.JsonHelper;
 
 public class AbstractCardObject {
 
@@ -103,4 +104,7 @@ public class AbstractCardObject {
         throw new NullPointerException("No on click settings specified");
     }
 
+    public String toString() {
+        return JsonHelper.toJson(this);
+    }
 }

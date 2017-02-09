@@ -67,7 +67,7 @@ public class CardObjectModule extends AbstractCardObject{
         if (getStatus().equals(ssi.ssn.com.ssi_service.model.data.source.Status.NOT_AVAILABLE)) {
             Toast.makeText(activity, SourceHelper.getString(activity, R.string.fragment_launch_board_error_module), Toast.LENGTH_SHORT).show();
         } else {
-            activity.showModuleListFragment(project, getResponseModuleList());
+            activity.showModuleListFragment(project);
         }
     }
 }

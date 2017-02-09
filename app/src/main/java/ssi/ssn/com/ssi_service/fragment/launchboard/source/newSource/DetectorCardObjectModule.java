@@ -1,21 +1,17 @@
 package ssi.ssn.com.ssi_service.fragment.launchboard.source.newSource;
 
 import android.util.Log;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import ssi.ssn.com.ssi_service.R;
 import ssi.ssn.com.ssi_service.activity.MainActivity;
-import ssi.ssn.com.ssi_service.fragment.launchboard.source.GeneratorModuleList;
 import ssi.ssn.com.ssi_service.model.data.source.Project;
 import ssi.ssn.com.ssi_service.model.data.source.Status;
 import ssi.ssn.com.ssi_service.model.data.source.cardobject.CardObjectModule;
 import ssi.ssn.com.ssi_service.model.helper.JsonHelper;
-import ssi.ssn.com.ssi_service.model.helper.SourceHelper;
 import ssi.ssn.com.ssi_service.model.helper.XMLHelper;
 import ssi.ssn.com.ssi_service.model.network.DefaultResponse;
 import ssi.ssn.com.ssi_service.model.network.handler.RequestHandler;
@@ -24,7 +20,7 @@ import ssi.ssn.com.ssi_service.model.network.response.module.ResponseModule;
 
 public class DetectorCardObjectModule {
 
-    private static String TAG = GeneratorModuleList.class.getSimpleName();
+    private static String TAG = DetectorCardObjectModule.class.getSimpleName();
 
     private static String XML_START_TAG_PLATFORM_MODULES = "platform-modules";
     private static String XML_START_TAG_PLUGIN_MODULES = "plugin-modules";
@@ -73,8 +69,8 @@ public class DetectorCardObjectModule {
             String tagName = xmlObject.getTagName();
             String xmlModuleName = tagName.substring(0, tagName.indexOf("-"));
             xmlModuleName = xmlModuleName.substring(0, xmlModuleName.length() - (xmlModuleName.endsWith("s") ? 1 : 0));
-            if (xmlObject.getAttributes().containsKey(GeneratorModuleList.XML_ATTRIBUTE_ENABLED)) {
-                String isEnabled = xmlObject.getAttributes().get(GeneratorModuleList.XML_ATTRIBUTE_ENABLED);
+            if (xmlObject.getAttributes().containsKey(XML_ATTRIBUTE_ENABLED)) {
+                String isEnabled = xmlObject.getAttributes().get(XML_ATTRIBUTE_ENABLED);
                 enabledModuleList.put(xmlModuleName, isEnabled);
             }
             requestHandler.sendRequestModule(project, xmlModuleName);

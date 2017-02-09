@@ -169,8 +169,8 @@ public class AbstractActivity extends Activity {
         }.executeOnExecutor(executor);
     }
 
-    public void showModuleListFragment(Project project, List<ResponseModule> responseModuleList) {
-        FragmentModuleList fragmentModuleList = FragmentModuleList.newInstance(project, responseModuleList);
+    public void showModuleListFragment(Project project) {
+        FragmentModuleList fragmentModuleList = FragmentModuleList.newInstance(project);
         getFragmentManager()
                 .beginTransaction()
                 .replace(R.id.activity_main_fragment_container,
