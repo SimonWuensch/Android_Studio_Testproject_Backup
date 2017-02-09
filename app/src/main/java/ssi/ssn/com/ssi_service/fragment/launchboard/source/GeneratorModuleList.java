@@ -150,7 +150,7 @@ public class GeneratorModuleList extends AbstractGenerator {
     @Override
     public void detectCardStatus() {
         loadFromNetwork();
-        ExecutorService executor = ((MainActivity) activity).getExecutor();
+        ExecutorService executor = activity.getExecutor();
         new AsyncTask<Object, Void, Object>() {
             @Override
             protected Object doInBackground(Object... objects) {

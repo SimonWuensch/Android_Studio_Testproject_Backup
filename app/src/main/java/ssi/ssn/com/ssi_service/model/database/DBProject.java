@@ -30,9 +30,7 @@ public class DBProject extends SQLiteOpenHelper {
     private static final String STATUS = "status";
     private static final String JSON_PROJECT = "jsonProject";
 
-    private static final String[] COLUMNS = {_ID, OBSERVATION_INTERVAL, LAST_OBSERVATION_TIME, IS_OBSERVATION, STATUS, JSON_PROJECT};
-
-    private static final String CREATE_TABLE_PROJECT = //
+    public static final String CREATE_TABLE_PROJECT = //
             "CREATE TABLE "//
                     + TABLE_PROJECT + "("
                     + _ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " //
@@ -43,7 +41,7 @@ public class DBProject extends SQLiteOpenHelper {
                     + JSON_PROJECT + " TEXT" +
                     ");";
 
-    private static final String DROP_TABLE_PROJECT = //
+    public static final String DROP_TABLE_PROJECT = //
             "DROP TABLE IF EXISTS " + TABLE_PROJECT;
 
     public DBProject(int version, Context context) {

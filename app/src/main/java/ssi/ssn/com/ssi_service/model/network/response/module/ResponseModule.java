@@ -1,6 +1,8 @@
 package ssi.ssn.com.ssi_service.model.network.response.module;
 
-public class ResponseModule {
+import ssi.ssn.com.ssi_service.model.network.response.AbstractResponse;
+
+public class ResponseModule extends AbstractResponse {
 
     private String name;
     private String status;

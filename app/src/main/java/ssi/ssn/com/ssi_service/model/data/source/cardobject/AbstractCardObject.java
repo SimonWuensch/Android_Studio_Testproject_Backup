@@ -1,10 +1,13 @@
 package ssi.ssn.com.ssi_service.model.data.source.cardobject;
 
-import android.app.Activity;
+import android.view.View;
+
+import com.owlike.genson.annotation.JsonIgnore;
 
 import ssi.ssn.com.ssi_service.activity.MainActivity;
 import ssi.ssn.com.ssi_service.model.data.source.Project;
 import ssi.ssn.com.ssi_service.model.data.source.Status;
+import ssi.ssn.com.ssi_service.model.database.DBCardObject;
 
 public class AbstractCardObject {
 
@@ -78,6 +81,26 @@ public class AbstractCardObject {
 
     public void setLastObservationTime(long lastObservationTime) {
         this.lastObservationTime = lastObservationTime;
+    }
+
+    @JsonIgnore
+    public DBCardObject getDBSQLiteCardObject(MainActivity activity) {
+        throw new NullPointerException("No database specified");
+    }
+
+    @JsonIgnore
+    public void loadFromNetwork(MainActivity activity, Project project) {
+        throw new NullPointerException("No network settings specified");
+    }
+
+    @JsonIgnore
+    public void detectCardStatus(MainActivity activity) {
+        throw new NullPointerException("No detection settings specified");
+    }
+
+    @JsonIgnore
+    public void onClick(final MainActivity activity, final Project project) {
+        throw new NullPointerException("No on click settings specified");
     }
 
 }

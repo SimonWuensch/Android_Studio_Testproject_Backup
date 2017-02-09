@@ -28,7 +28,7 @@ public class DBCardObjectModule extends SQLiteOpenHelper implements DBCardObject
     private static final String STATUS = "status";
     private static final String JSON_MODULE = "jsonCardObjectModule";
 
-    private static final String CREATE_TABLE = //
+    public static final String CREATE_TABLE_CARD_OBJECT_MODULE = //
             "CREATE TABLE "//
                     + TABLE_MODULE + "("
                     + _ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " //
@@ -39,7 +39,7 @@ public class DBCardObjectModule extends SQLiteOpenHelper implements DBCardObject
                     + JSON_MODULE + " TEXT" +
                     ");";
 
-    private static final String DROP_TABLE = //
+    public static final String DROP_TABLE_CARD_OBJECT_MODULE = //
             "DROP TABLE IF EXISTS " + TABLE_MODULE;
 
     public DBCardObjectModule(int version, Context context) {
@@ -48,13 +48,13 @@ public class DBCardObjectModule extends SQLiteOpenHelper implements DBCardObject
 
     @Override
     public void onCreate(android.database.sqlite.SQLiteDatabase db) {
-        db.execSQL(CREATE_TABLE);
+        db.execSQL(CREATE_TABLE_CARD_OBJECT_MODULE);
     }
 
     @Override
     public void onUpgrade(android.database.sqlite.SQLiteDatabase db, int oldVersion, int newVersion) {
         Log.w(TAG, "DB UPGRADE: From version " + oldVersion + " to " + newVersion + ".");
-        db.execSQL(DROP_TABLE);
+        db.execSQL(DROP_TABLE_CARD_OBJECT_MODULE);
         this.onCreate(db);
     }
 
@@ -68,7 +68,6 @@ public class DBCardObjectModule extends SQLiteOpenHelper implements DBCardObject
                 return;
             }
         }
-
 
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -89,8 +88,9 @@ public class DBCardObjectModule extends SQLiteOpenHelper implements DBCardObject
     public long getCount(long projectID) {
         SQLiteDatabase db = this.getReadableDatabase();
         long count = DatabaseUtils.queryNumEntries(db, TABLE_MODULE,
-                _ID_PROJECT + "=?", new String[] {String.valueOf(projectID)});
+                _ID_PROJECT + "=?", new String[]{String.valueOf(projectID)});
         db.close();
+
         return count;
     }
 

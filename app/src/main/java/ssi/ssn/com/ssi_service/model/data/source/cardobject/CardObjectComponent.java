@@ -1,13 +1,17 @@
 package ssi.ssn.com.ssi_service.model.data.source.cardobject;
 
+import android.app.Activity;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import ssi.ssn.com.ssi_service.R;
+import ssi.ssn.com.ssi_service.activity.MainActivity;
 import ssi.ssn.com.ssi_service.model.data.source.Project;
+import ssi.ssn.com.ssi_service.model.database.DBCardObject;
 import ssi.ssn.com.ssi_service.model.network.response.component.ResponseComponent;
 
-public class CardObjectComponent extends AbstractCardObject {
+public class CardObjectComponent extends AbstractCardObject{
 
     private List<ResponseComponent> responseComponentList = new ArrayList<>();
 
@@ -26,5 +30,10 @@ public class CardObjectComponent extends AbstractCardObject {
 
     public void setResponseComponentList(List<ResponseComponent> responseComponentList) {
         this.responseComponentList = responseComponentList;
+    }
+
+    @Override
+    public DBCardObject getDBSQLiteCardObject(MainActivity activity){
+        return activity.getSQLiteDB().cardObjectComponent();
     }
 }

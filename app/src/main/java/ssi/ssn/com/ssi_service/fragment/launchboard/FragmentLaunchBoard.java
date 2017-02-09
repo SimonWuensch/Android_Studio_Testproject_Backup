@@ -19,10 +19,11 @@ import java.util.concurrent.TimeUnit;
 import ssi.ssn.com.ssi_service.R;
 import ssi.ssn.com.ssi_service.activity.MainActivity;
 import ssi.ssn.com.ssi_service.fragment.AbstractFragment;
-import ssi.ssn.com.ssi_service.fragment.launchboard.source.AbstractGenerator;
 import ssi.ssn.com.ssi_service.model.data.source.Project;
+import ssi.ssn.com.ssi_service.model.data.source.cardobject.AbstractCardObject;
 import ssi.ssn.com.ssi_service.model.helper.FormatHelper;
 import ssi.ssn.com.ssi_service.model.helper.JsonHelper;
+import ssi.ssn.com.ssi_service.model.helper.ObservationHelper;
 import ssi.ssn.com.ssi_service.model.helper.SourceHelper;
 import ssi.ssn.com.ssi_service.model.network.handler.RequestHandler;
 import ssi.ssn.com.ssi_service.model.network.response.application.ResponseApplication;
@@ -35,7 +36,7 @@ public class FragmentLaunchBoard extends AbstractFragment {
     private static int RECYCLERVIEW = R.id.fragment_launch_board_recycler_view;
     private static int CARDVIEW = R.layout.fragment_launch_board_card_view;
 
-    private static String PROJECT_JSON = TAG + "PROJECT_JSON";
+    private static String PROJECT_ID = TAG + "PROJECT_ID";
 
     private View rootView;
     private RelativeLayout rlProjectStateBackground;
@@ -46,7 +47,7 @@ public class FragmentLaunchBoard extends AbstractFragment {
     private FragmentLaunchBoardAdapter mAdapter;
 
     private Project project;
-    private List<AbstractGenerator> cardObjects;
+    private List<AbstractCardObject> cardObjects;
 
     public static FragmentLaunchBoard newInstance(Project project) {
         if (project == null) {
@@ -55,7 +56,7 @@ public class FragmentLaunchBoard extends AbstractFragment {
 
         FragmentLaunchBoard fragment = new FragmentLaunchBoard();
         Bundle bundle = new Bundle();
-        bundle.putString(PROJECT_JSON, JsonHelper.toJson(project));
+        bundle.putLong(PROJECT_ID, project.get_id());
         fragment.setArguments(bundle);
         return fragment;
     }
@@ -65,9 +66,10 @@ public class FragmentLaunchBoard extends AbstractFragment {
             return;
         }
 
-        String projectJson = getArguments().getString(PROJECT_JSON);
-        project = (Project) JsonHelper.fromJsonGeneric(Project.class, projectJson);
-        cardObjects = ((MainActivity)getActivity()).getCardObjects(project);
+        Long projectID = getArguments().getLong(PROJECT_ID);
+        project = ((MainActivity) getActivity()).getSQLiteDB().project().getByID(projectID);
+        project.initCardObjects((MainActivity) getActivity());
+        cardObjects = project.getAllCardObjects();
     }
 
     @Override
@@ -103,20 +105,14 @@ public class FragmentLaunchBoard extends AbstractFragment {
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        checkProjectState();
-                        boolean isUpdating = false;
-                        for (AbstractGenerator cardObject : cardObjects) {
-                            if (cardObject.getLoadingView().getVisibility() == View.VISIBLE) {
-                                isUpdating = true;
+                        new AsyncTask<Object, Void, Object>() {
+                            @Override
+                            protected Object doInBackground(Object... objects) {
+                                project.detectProjectStatus((MainActivity) getActivity());
+                                ((MainActivity) getActivity()).reloadLaunchBoardFragment(FragmentLaunchBoard.this, project);
+                                return null;
                             }
-                        }
-                        Log.d(TAG, "Card objects still updating status...");
-
-                        if (!isUpdating) {
-                            for (AbstractGenerator cardObject : cardObjects) {
-                                cardObject.reloadStatus(getActivity(), project);
-                            }
-                        }
+                        };
                     }
                 }
         );
@@ -131,17 +127,18 @@ public class FragmentLaunchBoard extends AbstractFragment {
         tvProjectVersion = (TextView) rootView.findViewById(R.id.fragment_launch_board_project_state_text_view_project_version);
         rlLoadingView = (RelativeLayout) rootView.findViewById(R.id.fragment_launch_board_project_state_loading_view);
         rlLoadingView.setVisibility(View.GONE);
-        checkProjectState();
+        updateProjectStatusView();
     }
 
-    public void checkProjectState() {
+    public void updateProjectStatusView() {
         final RequestHandler requestHandler = ((MainActivity) getActivity()).getRequestHandler();
 
-        new AsyncTask<Object, Void, Object>(){
+        rlLoadingView.setVisibility(View.VISIBLE);
+        new AsyncTask<Object, Void, Object>() {
             @Override
             protected Object doInBackground(Object... objects) {
-                boolean isOutOfTime = new Date().getTime() - project.getLastObservationTime() > project.getObservationInterval();
-                if (project.getDefaultResponseApplication() == null || isOutOfTime) {
+                boolean isProjectOutOfDate = ObservationHelper.isProjectOutOfDate(project);
+                if (isProjectOutOfDate || project.getDefaultResponseApplication() == null) {
                     requestHandler.sendRequestApplication(project);
                 }
                 return null;
@@ -149,32 +146,29 @@ public class FragmentLaunchBoard extends AbstractFragment {
 
             @Override
             protected void onPostExecute(Object o) {
-                rlLoadingView.setVisibility(View.VISIBLE);
-
-                if (project.getDefaultResponseApplication().getCode() == 200) {
+                if (project.getDefaultResponseApplication().getCode() != 200) {
+                    tvProjectStatus.setText(SourceHelper.getString(getActivity(), R.string.fragment_launch_board_state_not_available));
+                    rlProjectStateBackground.setBackgroundColor(ssi.ssn.com.ssi_service.model.data.source.Status.NOT_AVAILABLE.getColor(getActivity()));
+                    tvProjectLifeTime.setText(SourceHelper.getString(getActivity(), R.string.fragment_launch_board_server_address_not_available));
+                    tvProjectVersion.setText("-");
+                } else {
                     ResponseApplication responseApplication = (ResponseApplication) JsonHelper.fromJsonGeneric(ResponseApplication.class, project.getDefaultResponseApplication().getResult());
                     String projectStatus = responseApplication.getState().getStatus();
                     tvProjectStatus.setText(projectStatus);
                     if (projectStatus.equals(ssi.ssn.com.ssi_service.model.data.source.Status.TEXT_RUNNING)) {
-                        rlProjectStateBackground.setBackgroundColor(ssi.ssn.com.ssi_service.model.data.source.Status.OK.getColor(getActivity()));
-
                         Date since = new Date(responseApplication.getState().getSince());
                         String dateString = FormatHelper.formatDate(since);
                         long lifeTimeHour = new Date().getTime() - since.getTime();
                         int days = (int) TimeUnit.MILLISECONDS.toDays(lifeTimeHour);
                         long hours = TimeUnit.MILLISECONDS.toHours(lifeTimeHour) - TimeUnit.DAYS.toHours(days);
                         String lifeTime = days + " " + SourceHelper.getString(getActivity(), R.string.days) + " " + hours + " " + SourceHelper.getString(getActivity(), R.string.hours);
-                        tvProjectLifeTime.setText(dateString + " (" + lifeTime + ")");
 
+                        rlProjectStateBackground.setBackgroundColor(ssi.ssn.com.ssi_service.model.data.source.Status.OK.getColor(getActivity()));
+                        tvProjectLifeTime.setText(dateString + " (" + lifeTime + ")");
                         tvProjectVersion.setText(responseApplication.getBuild().getVersion());
                     } else {
                         rlProjectStateBackground.setBackgroundColor(ssi.ssn.com.ssi_service.model.data.source.Status.ERROR.getColor(getActivity()));
                     }
-                } else {
-                    tvProjectStatus.setText(SourceHelper.getString(getActivity(), R.string.fragment_launch_board_state_not_available));
-                    rlProjectStateBackground.setBackgroundColor(ssi.ssn.com.ssi_service.model.data.source.Status.NOT_AVAILABLE.getColor(getActivity()));
-                    tvProjectLifeTime.setText(SourceHelper.getString(getActivity(), R.string.fragment_launch_board_server_address_not_available));
-                    tvProjectVersion.setText("-");
                 }
                 rlLoadingView.setVisibility(View.GONE);
             }
@@ -184,9 +178,9 @@ public class FragmentLaunchBoard extends AbstractFragment {
     @Override
     public void onResume() {
         super.onResume();
-        for (AbstractGenerator cardObject : cardObjects) {
+        /*for (AbstractGenerator cardObject : cardObjects) {
             cardObject.detectCardStatus();
-        }
+        }*/
     }
 
     @Override

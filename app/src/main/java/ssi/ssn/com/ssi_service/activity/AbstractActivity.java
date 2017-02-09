@@ -140,6 +140,11 @@ public class AbstractActivity extends Activity {
         Log.i(getClass().getSimpleName(), "Show Fragment [" + fragmentProjectList.TAG + "].");
     }
 
+    public void reloadLaunchBoardFragment(FragmentLaunchBoard fragmentLaunchBoard, Project project) {
+        getFragmentManager().beginTransaction().remove(fragmentLaunchBoard).commit();
+        showLaunchBoardFragment(project);
+    }
+
     public void showLaunchBoardFragment(final Project project) {
         requestHandler.sendRequestLoginWithSessionCurrentCheck(project);
         final ExecutorService executor = requestHandler.getExecutor();

@@ -7,8 +7,10 @@ import android.view.ViewGroup;
 
 import java.util.List;
 
+import ssi.ssn.com.ssi_service.activity.MainActivity;
 import ssi.ssn.com.ssi_service.fragment.launchboard.source.AbstractGenerator;
 import ssi.ssn.com.ssi_service.model.data.source.Project;
+import ssi.ssn.com.ssi_service.model.data.source.cardobject.AbstractCardObject;
 
 class FragmentLaunchBoardAdapter extends RecyclerView.Adapter<FragmentLaunchBoardViewHolder> {
 
@@ -18,10 +20,10 @@ class FragmentLaunchBoardAdapter extends RecyclerView.Adapter<FragmentLaunchBoar
     private final FragmentLaunchBoard fragment;
     private CardView cardView;
 
-    private List<AbstractGenerator> cardObjects;
+    private List<AbstractCardObject> cardObjects;
     private Project project;
 
-    FragmentLaunchBoardAdapter(int layoutCardView, final FragmentLaunchBoard fragment, Project project, List<AbstractGenerator> cardObjects) {
+    FragmentLaunchBoardAdapter(int layoutCardView, final FragmentLaunchBoard fragment, Project project, List<AbstractCardObject> cardObjects) {
         this.layoutCardView = layoutCardView;
         this.fragment = fragment;
         this.project = project;
@@ -31,7 +33,7 @@ class FragmentLaunchBoardAdapter extends RecyclerView.Adapter<FragmentLaunchBoar
     @Override
     public FragmentLaunchBoardViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         cardView = (CardView) LayoutInflater.from(parent.getContext()).inflate(layoutCardView, parent, false);
-        return new FragmentLaunchBoardViewHolder(fragment.getActivity(), cardView);
+        return new FragmentLaunchBoardViewHolder((MainActivity) fragment.getActivity(), cardView);
     }
 
     @Override

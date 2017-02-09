@@ -17,6 +17,7 @@ import ssi.ssn.com.ssi_service.activity.MainActivity;
 import ssi.ssn.com.ssi_service.fragment.projectlist.source.ProjectStatusDetector;
 import ssi.ssn.com.ssi_service.model.data.source.Project;
 import ssi.ssn.com.ssi_service.model.data.source.Status;
+import ssi.ssn.com.ssi_service.model.helper.ObservationHelper;
 import ssi.ssn.com.ssi_service.model.helper.SourceHelper;
 
 
@@ -34,7 +35,7 @@ class FragmentProjectListViewHolder extends RecyclerView.ViewHolder {
     private TextView tvProjectLocation;
     private TextView tvProjectOrderNr;
     private ImageView ivProjectSettings;
-    private View vProjectState;
+    private View vProjectStatus;
     private View loadingView;
 
     FragmentProjectListViewHolder(MainActivity activity, FragmentProjectListAdapter adapter, View cardView) {
@@ -51,7 +52,7 @@ class FragmentProjectListViewHolder extends RecyclerView.ViewHolder {
         tvProjectLocation = (TextView) cardView.findViewById(R.id.fragment_project_list_card_view_text_view_project_location);
         tvProjectOrderNr = (TextView) cardView.findViewById(R.id.fragment_project_list_card_view_text_view_project_order_nr);
         ivProjectSettings = (ImageView) cardView.findViewById(R.id.fragment_project_list_card_view_image_settings);
-        vProjectState = cardView.findViewById(R.id.fragment_project_list_card_view_view_project_status);
+        vProjectStatus = cardView.findViewById(R.id.fragment_project_list_card_view_view_project_status);
         loadingView = cardView.findViewById(R.id.fragment_project_list_card_view_view_loading_view);
     }
 
@@ -74,37 +75,50 @@ class FragmentProjectListViewHolder extends RecyclerView.ViewHolder {
         cbObserveProject.setOnCheckedChangeListener(onCheckedChangeListener(project));
         ivProjectSettings.setOnClickListener(onClickCardViewProjectSettings(project));
 
-        /*if (project.isProjectObservation()) {
+        if (project.isProjectObservation()) {
             detectProjectStatus(project, isLast);
-        }*/
+        }
     }
 
-    public void generateCardObjects(Project project) {
-        project.loadCardObjects(activity);
-        //TODO weiter hier ende war 08.02
-    }
-
-    private void detectProjectStatus(final Project project, final boolean isLast) {
-        boolean isOutOfTime = new Date().getTime() - project.getLastObservationTime() > project.getObservationInterval();
-        //TODO DB: Ändere nachfolgende IF-Klausel, Voraussetzung ist, dass CardObjects von der DB geladen werden.
-        /*
-        if (!isOutOfTime) {
-            if(projectStatusDetector == null){
-                this.projectStatusDetector = new ProjectStatusDetector(project, Database.loadCardObjectsFromProject(project));
-            }
-            cardView.setOnClickListener(onClickCardView(project));
-            vProjectState.setBackgroundColor(project.getStatus().getColor(activity));
+    public void detectProjectStatus(final Project project, final boolean isLast) {
+        boolean isProjectOutOfDate = ObservationHelper.isProjectOutOfDate(project);
+        if (!isProjectOutOfDate) {
+            project.initCardObjects(activity);
             return;
         }
-        */
+        loadingView.setVisibility(View.VISIBLE);
+        new AsyncTask<Object, Void, Object>() {
+            @Override
+            protected Object doInBackground(Object... objects) {
+                project.detectProjectStatus(activity);
+                return null;
+            }
+
+            @Override
+            protected void onPostExecute(Object o) {
+                loadingView.setVisibility(View.GONE);
+                vProjectStatus.setBackgroundColor(project.getStatus().getColor(activity));
+                cardView.setOnClickListener(onClickCardView(project));
+
+                if (isLast) {
+                    adapter.sort();
+                }
+            }
+        }.execute();
+    }
+
+    /*private void detectProjectStatus(final Project project, final boolean isLast) {
+        boolean isOutOfTime = new Date().getTime() - project.getLastObservationTime() > project.getObservationInterval();
+        //TODO DB: Ändere nachfolgende IF-Klausel, Voraussetzung ist, dass CardObjects von der DB geladen werden.
+
         if (projectStatusDetector != null && !isOutOfTime) {
             cardView.setOnClickListener(onClickCardView(project));
-            vProjectState.setBackgroundColor(project.getStatus().getColor(activity));
+            vProjectStatus.setBackgroundColor(project.getStatus().getColor(activity));
             return;
         }
 
         loadingView.setVisibility(View.VISIBLE);
-        this.projectStatusDetector = new ProjectStatusDetector(activity, project, vProjectState);
+        this.projectStatusDetector = new ProjectStatusDetector(activity, project, vProjectStatus);
         projectStatusDetector.detectProjectStatus(activity);
         ExecutorService executor = activity.getExecutor();
         new AsyncTask<Object, Void, Object>() {
@@ -122,7 +136,7 @@ class FragmentProjectListViewHolder extends RecyclerView.ViewHolder {
                 }
             }
         }.executeOnExecutor(executor);
-    }
+    }*/
 
     private View.OnClickListener onClickCardViewProjectSettings(final Project project) {
         return new View.OnClickListener() {
@@ -139,7 +153,7 @@ class FragmentProjectListViewHolder extends RecyclerView.ViewHolder {
             public void onClick(View v) {
                 if (loadingView.getVisibility() == View.GONE) {
                     if (!project.getStatus().equals(ssi.ssn.com.ssi_service.model.data.source.Status.NOT_AVAILABLE)) {
-                        ((MainActivity) activity).showLaunchBoardFragment(project);
+                        activity.showLaunchBoardFragment(project);
                     } else {
                         Toast.makeText(activity, SourceHelper.getString(activity, R.string.fragment_project_list_error_project_not_available), Toast.LENGTH_SHORT).show();
                     }
@@ -157,7 +171,7 @@ class FragmentProjectListViewHolder extends RecyclerView.ViewHolder {
 
                 if (!isChecked) {
                     cardView.setOnClickListener(null);
-                    vProjectState.setBackgroundColor(SourceHelper.getColor(activity, R.color.lightGray));
+                    vProjectStatus.setBackgroundColor(SourceHelper.getColor(activity, R.color.lightGray));
 
                     project.setStatus(Status.NOT_OBSERVATION);
                     activity.getSQLiteDB().project().updateStatus(project);

@@ -28,7 +28,7 @@ public class DBCardObjectComponent extends SQLiteOpenHelper implements DBCardObj
     private static final String STATUS = "status";
     private static final String JSON_COMPONENT = "jsonCardObjectComponent";
 
-    private static final String CREATE_TABLE = //
+    public static final String CREATE_TABLE_CARD_OBJECT_COMPONENT = //
             "CREATE TABLE "//
                     + TABLE_COMPONENT + "("
                     + _ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " //
@@ -39,7 +39,7 @@ public class DBCardObjectComponent extends SQLiteOpenHelper implements DBCardObj
                     + JSON_COMPONENT + " TEXT" +
                     ");";
 
-    private static final String DROP_TABLE = //
+    private static final String DROP_TABLE_CARD_OBJECT_COMPONENT = //
             "DROP TABLE IF EXISTS " + TABLE_COMPONENT;
 
     public DBCardObjectComponent(int version, Context context) {
@@ -48,13 +48,13 @@ public class DBCardObjectComponent extends SQLiteOpenHelper implements DBCardObj
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL(CREATE_TABLE);
+        db.execSQL(CREATE_TABLE_CARD_OBJECT_COMPONENT);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         Log.w(TAG, "DB UPGRADE: From version " + oldVersion + " to " + newVersion + ".");
-        db.execSQL(DROP_TABLE);
+        db.execSQL(DROP_TABLE_CARD_OBJECT_COMPONENT);
         this.onCreate(db);
     }
 

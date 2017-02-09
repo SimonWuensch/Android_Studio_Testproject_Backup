@@ -8,8 +8,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import ssi.ssn.com.ssi_service.R;
+import ssi.ssn.com.ssi_service.activity.MainActivity;
 import ssi.ssn.com.ssi_service.fragment.launchboard.source.AbstractGenerator;
 import ssi.ssn.com.ssi_service.model.data.source.Project;
+import ssi.ssn.com.ssi_service.model.data.source.cardobject.AbstractCardObject;
 import ssi.ssn.com.ssi_service.model.helper.SourceHelper;
 
 
@@ -17,7 +19,7 @@ class FragmentLaunchBoardViewHolder extends RecyclerView.ViewHolder {
 
     private static String TAG = FragmentLaunchBoardViewHolder.class.getSimpleName();
 
-    private Activity activity;
+    private MainActivity activity;
     private View cardView;
 
     private ImageView image;
@@ -27,7 +29,7 @@ class FragmentLaunchBoardViewHolder extends RecyclerView.ViewHolder {
     private View loadingView;
 
 
-    FragmentLaunchBoardViewHolder(Activity activity, View cardView) {
+    FragmentLaunchBoardViewHolder(MainActivity activity, View cardView) {
         super(cardView);
         this.activity = activity;
         this.cardView = cardView;
@@ -39,18 +41,18 @@ class FragmentLaunchBoardViewHolder extends RecyclerView.ViewHolder {
         loadingView = cardView.findViewById(R.id.fragment_launch_board_card_view_view_loading_view);
     }
 
-    protected void assignData(final AbstractGenerator cardObject, final Project project) {
+    protected void assignData(final AbstractCardObject cardObject, final Project project) {
         image.setImageResource(cardObject.getIcon());
         tvTitle.setText(SourceHelper.getString(activity, cardObject.getTitle()));
         cbObservation.setChecked(cardObject.isObservation());
-        cardObject.setStatusView(vStatus, activity);
-        cardObject.setLoadingView(loadingView);
+        //cardObject.setStatusView(vStatus, activity);
+        //cardObject.setLoadingView(loadingView);
 
         cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (loadingView.getVisibility() != View.VISIBLE) {
-                    cardObject.onClick();
+                    cardObject.onClick(activity, project);
                 }
             }
         });

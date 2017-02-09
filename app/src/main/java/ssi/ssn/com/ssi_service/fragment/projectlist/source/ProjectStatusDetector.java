@@ -76,6 +76,8 @@ public class ProjectStatusDetector {
         };
     }
 
+
+
     public void detectProjectStatus(final Activity activity) {
         final RequestHandler requestHandler = ((MainActivity) activity).getRequestHandler();
         ExecutorService executor = ((MainActivity) activity).getExecutor();
