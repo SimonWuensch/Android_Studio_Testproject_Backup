@@ -35,7 +35,6 @@ public class Project extends NetworkProject {
     @JsonIgnore
     private CardObjectComponent cardObjectComponent;
 
-
     public Project(String serverAddress, String userName, String password, long observationInterval) {
         this.serverAddress = serverAddress;
         this.userName = userName;

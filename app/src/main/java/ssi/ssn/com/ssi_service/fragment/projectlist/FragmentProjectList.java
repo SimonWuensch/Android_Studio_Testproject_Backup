@@ -18,6 +18,7 @@ import ssi.ssn.com.ssi_service.activity.MainActivity;
 import ssi.ssn.com.ssi_service.fragment.AbstractFragment;
 import ssi.ssn.com.ssi_service.model.data.source.Project;
 import ssi.ssn.com.ssi_service.model.data.source.cardobject.AbstractCardObject;
+import ssi.ssn.com.ssi_service.model.helper.AndroidNotificationHelper;
 import ssi.ssn.com.ssi_service.model.helper.ObservationHelper;
 import ssi.ssn.com.ssi_service.model.helper.SourceHelper;
 
@@ -48,6 +49,10 @@ public class FragmentProjectList extends AbstractFragment {
             @Override
             public void onClick(View view) {
                 mAdapter.reloadCardViews();
+
+                //TODO delete after testing
+                AndroidNotificationHelper notificationHelper = new AndroidNotificationHelper();
+                notificationHelper.throwNotification(getActivity());
             }
         });
 

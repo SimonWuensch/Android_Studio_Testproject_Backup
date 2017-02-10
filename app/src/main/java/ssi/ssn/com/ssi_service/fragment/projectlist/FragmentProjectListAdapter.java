@@ -66,9 +66,6 @@ public class FragmentProjectListAdapter extends RecyclerView.Adapter<FragmentPro
             FragmentProjectListViewHolder viewHolder = viewHolderMap.get(project);
             boolean isLast = project.equals(viewHolderMap.keySet().toArray()[viewHolderMap.keySet().size()-1]);
             viewHolder.assignData(project, isLast);
-            if(isLast){
-                Log.e(TAG + "-TEST", "Last Project: " + project.identity());
-            }
         }
     }
 
@@ -80,5 +77,4 @@ public class FragmentProjectListAdapter extends RecyclerView.Adapter<FragmentPro
             notifyItemMoved(from, to);
         }
     }
-
 }
