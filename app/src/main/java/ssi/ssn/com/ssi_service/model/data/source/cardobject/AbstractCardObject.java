@@ -1,5 +1,6 @@
 package ssi.ssn.com.ssi_service.model.data.source.cardobject;
 
+import android.app.Activity;
 import android.view.View;
 
 import com.owlike.genson.annotation.JsonIgnore;
@@ -26,6 +27,10 @@ public class AbstractCardObject {
     }
 
     public AbstractCardObject() {
+    }
+
+    public static void init(MainActivity activity, Project project){
+        throw new NullPointerException("No initialization settings specified");
     }
 
     public long get_id() {

@@ -12,6 +12,7 @@ import android.util.Log;
 import ssi.ssn.com.ssi_service.model.data.source.Status;
 import ssi.ssn.com.ssi_service.model.data.source.cardobject.AbstractCardObject;
 import ssi.ssn.com.ssi_service.model.data.source.cardobject.CardObjectComponent;
+import ssi.ssn.com.ssi_service.model.data.source.cardobject.CardObjectModule;
 import ssi.ssn.com.ssi_service.model.helper.JsonHelper;
 
 public class DBCardObjectComponent extends SQLiteOpenHelper implements DBCardObject{
@@ -93,6 +94,7 @@ public class DBCardObjectComponent extends SQLiteOpenHelper implements DBCardObj
         //db.close();
         return count;
     }
+
     // ** GET *********************************************************************************** //
     @Override
     public CardObjectComponent getByProjectID(long id) {
@@ -104,18 +106,18 @@ public class DBCardObjectComponent extends SQLiteOpenHelper implements DBCardObj
         if (cursor != null)
             cursor.moveToFirst();
 
-        String json = cursor.getString(cursor.getColumnIndex(JSON_COMPONENT));
-        CardObjectComponent cardObject = (CardObjectComponent) JsonHelper.fromJsonGeneric(CardObjectComponent.class, json);
-        cardObject.set_id(cursor.getInt(cursor.getColumnIndex(_ID)));
-        cardObject.set_id_project(cursor.getInt(cursor.getColumnIndex(_ID_PROJECT)));
-        cardObject.setObservation(cursor.getInt(cursor.getColumnIndex(IS_OBSERVATION)) == 1 ? true : false);
-        cardObject.setLastObservationTime(cursor.getLong(cursor.getColumnIndex(LAST_OBSERVATION_TIME)));
+            String json = cursor.getString(cursor.getColumnIndex(JSON_COMPONENT));
+            CardObjectComponent cardObject = (CardObjectComponent) JsonHelper.fromJsonGeneric(CardObjectComponent.class, json);
+            cardObject.set_id(cursor.getInt(cursor.getColumnIndex(_ID)));
+            cardObject.set_id_project(cursor.getInt(cursor.getColumnIndex(_ID_PROJECT)));
+            cardObject.setObservation(cursor.getInt(cursor.getColumnIndex(IS_OBSERVATION)) == 1 ? true : false);
+            cardObject.setLastObservationTime(cursor.getLong(cursor.getColumnIndex(LAST_OBSERVATION_TIME)));
 
-        Status status = Status.getStatusByID(cursor.getInt(cursor.getColumnIndex(STATUS)));
-        cardObject.setStatus(status);
+            Status status = Status.getStatusByID(cursor.getInt(cursor.getColumnIndex(STATUS)));
+            cardObject.setStatus(status);
 
-        Log.d(TAG, "ID Project: " + cardObject.get_id_project() + "| GET: Card Object Component [" + cardObject + "]");
-        return cardObject;
+            Log.d(TAG, "ID Project: " + cardObject.get_id_project() + "| GET: Card Object Component [" + cardObject + "]");
+            return cardObject;
     }
 
     // ** Update ******************************************************************************** //

@@ -10,7 +10,9 @@ import ssi.ssn.com.ssi_service.R;
 import ssi.ssn.com.ssi_service.activity.MainActivity;
 import ssi.ssn.com.ssi_service.fragment.launchboard.source.newSource.DetectorCardObjectModule;
 import ssi.ssn.com.ssi_service.model.data.source.Project;
+import ssi.ssn.com.ssi_service.model.data.source.Status;
 import ssi.ssn.com.ssi_service.model.database.DBCardObject;
+import ssi.ssn.com.ssi_service.model.database.DBCardObjectModule;
 import ssi.ssn.com.ssi_service.model.helper.SourceHelper;
 import ssi.ssn.com.ssi_service.model.network.response.module.ResponseModule;
 
@@ -27,6 +29,19 @@ public class CardObjectModule extends AbstractCardObject{
     public CardObjectModule() {
     }
 
+    public static void init(MainActivity activity, Project project){
+        if (project.getCardObjectModule() == null){
+            DBCardObjectModule dbCardObject = activity.getSQLiteDB().cardObjectModule();
+            if (dbCardObject.getCount(project.get_id()) == 0) {
+                CardObjectModule cardObject = new CardObjectModule(project);
+                project.setCardObjectModule(cardObject);
+                dbCardObject.add(cardObject);
+            }else{
+                project.setCardObjectModule(dbCardObject.getByProjectID(project.get_id()));
+            }
+        }
+    }
+
     public List<ResponseModule> getResponseModuleList() {
         return responseModuleList;
     }
@@ -37,14 +52,6 @@ public class CardObjectModule extends AbstractCardObject{
 
     public void addResponseModule(ResponseModule responseModule){
         responseModuleList.add(responseModule);
-    }
-
-    public void resetResponseModuleList(){
-        responseModuleList = new ArrayList<>();
-    }
-
-    public static AbstractCardObject generate(Activity activity) {
-        return new CardObjectModule();
     }
 
     @Override
@@ -64,7 +71,7 @@ public class CardObjectModule extends AbstractCardObject{
 
     @Override
     public void onClick(final MainActivity activity, final Project project) {
-        if (getStatus().equals(ssi.ssn.com.ssi_service.model.data.source.Status.NOT_AVAILABLE) || getResponseModuleList().isEmpty()) {
+        if (getStatus().equals(Status.NOT_AVAILABLE) || getResponseModuleList().isEmpty()) {
             Toast.makeText(activity, SourceHelper.getString(activity, R.string.fragment_launch_board_error_module), Toast.LENGTH_SHORT).show();
         } else {
             activity.showModuleListFragment(project);

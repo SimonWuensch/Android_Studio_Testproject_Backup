@@ -10,15 +10,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.owlike.genson.GenericType;
-
-import java.util.ArrayList;
 import java.util.List;
 
 import ssi.ssn.com.ssi_service.R;
 import ssi.ssn.com.ssi_service.activity.MainActivity;
 import ssi.ssn.com.ssi_service.model.data.source.Project;
-import ssi.ssn.com.ssi_service.model.helper.JsonHelper;
+import ssi.ssn.com.ssi_service.model.data.source.cardobject.CardObjectModule;
 import ssi.ssn.com.ssi_service.model.helper.SourceHelper;
 import ssi.ssn.com.ssi_service.model.network.response.module.ResponseModule;
 
@@ -31,8 +28,6 @@ public class FragmentModuleList extends Fragment {
     private static int CARDVIEW = R.layout.fragment_module_list_card_view;
 
     private static String PROJECT_ID = TAG + "PROJECT_ID";
-    private static String RESPONSE = TAG + "RESPONSE";
-    private static String RESPONSE_MODULE_LIST = TAG + "RESPONSE_MODULE_LIST";
 
     private View rootView;
     private Project project;
@@ -57,7 +52,7 @@ public class FragmentModuleList extends Fragment {
 
         long projectID = getArguments().getLong(PROJECT_ID);
         project = ((MainActivity) getActivity()).getSQLiteDB().project().getByID(projectID);
-        project.initCardObjectModule((MainActivity) getActivity());
+        CardObjectModule.init((MainActivity) getActivity(), project);
         responseModuleList = project.getCardObjectModule().getResponseModuleList();
     }
 

@@ -21,7 +21,7 @@ import ssi.ssn.com.ssi_service.model.network.response.component.ResponseComponen
 
 public class GeneratorComponentList extends AbstractGenerator {
 
-    private static String TAG = GeneratorComponentList.class.getSimpleName();
+    /*private static String TAG = GeneratorComponentList.class.getSimpleName();
 
     private static String XML_START_TAG_COMPONENTS_MODULE = "components-module";
     private static String XML_SEARCHED_TAG_SERVER = "server";
@@ -134,7 +134,7 @@ public class GeneratorComponentList extends AbstractGenerator {
                 if (cardObject.getStatus().equals(ssi.ssn.com.ssi_service.model.data.source.Status.NOT_AVAILABLE)) {
                     Toast.makeText(activity, SourceHelper.getString(activity, R.string.fragment_launch_board_error_component), Toast.LENGTH_SHORT).show();
                 } else {
-                    ((AbstractActivity) activity).showComponentListFragment(project, responseComponentList);
+                    activity.showComponentListFragment(project);
                 }
             }
         }.executeOnExecutor(executor);
@@ -168,5 +168,5 @@ public class GeneratorComponentList extends AbstractGenerator {
                 setStatus(overAllState, activity);
             }
         }.executeOnExecutor(executor);
-    }
+    }*/
 }

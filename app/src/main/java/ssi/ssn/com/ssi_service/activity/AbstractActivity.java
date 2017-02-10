@@ -181,8 +181,8 @@ public class AbstractActivity extends Activity {
         Log.i(getClass().getSimpleName(), "Show Fragment [" + fragmentModuleList.TAG + "].");
     }
 
-    public void showComponentListFragment(Project project, List<ResponseComponent> responseComponentList) {
-        FragmentComponentList fragmentComponentList = FragmentComponentList.newInstance(project, responseComponentList);
+    public void showComponentListFragment(Project project) {
+        FragmentComponentList fragmentComponentList = FragmentComponentList.newInstance(project);
         getFragmentManager()
                 .beginTransaction()
                 .replace(R.id.activity_main_fragment_container,

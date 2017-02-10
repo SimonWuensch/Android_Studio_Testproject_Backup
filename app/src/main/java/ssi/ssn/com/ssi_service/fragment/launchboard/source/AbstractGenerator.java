@@ -15,7 +15,7 @@ import ssi.ssn.com.ssi_service.model.helper.FormatHelper;
 
 public class AbstractGenerator {
 
-    private long _ProjectID;
+    /*private long _ProjectID;
     private int title;
     private int icon;
     private boolean observation;
@@ -165,5 +165,5 @@ public class AbstractGenerator {
                 return true;
             }
         }
-    }
+    }*/
 }

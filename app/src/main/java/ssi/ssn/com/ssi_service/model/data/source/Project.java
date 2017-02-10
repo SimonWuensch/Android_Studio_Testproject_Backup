@@ -177,34 +177,14 @@ public class Project extends NetworkProject {
         return new LinkedList<AbstractCardObject>() {
             {
                 add(cardObjectModule);
-                //add(cardObjectComponent);
+                add(cardObjectComponent);
             }
         };
     }
 
     public void initCardObjects(MainActivity activity) {
-        initCardObjectModule(activity);
-    }
-
-    public void initCardObjectModule(MainActivity activity){
-        if (cardObjectModule == null){
-            DBCardObjectModule dbCardObject = activity.getSQLiteDB().cardObjectModule();
-            if (dbCardObject.getCount(_id) == 0) {
-                cardObjectModule = new CardObjectModule(this);
-                dbCardObject.add(cardObjectModule);
-            }else{
-                cardObjectModule = dbCardObject.getByProjectID(_id);
-            }
-        }
-    }
-
-    private AbstractCardObject generateCardObject(DBCardObject dbCardObject) {
-        if (dbCardObject.getCount(_id) == 0) {
-            AbstractCardObject cardObject = new AbstractCardObject(this);
-            dbCardObject.add(cardObject);
-            return cardObject;
-        }
-        return dbCardObject.getByProjectID(_id);
+        CardObjectModule.init(activity, this);
+        CardObjectComponent.init(activity, this);
     }
 
     // ** Others ******************************************************************************** //

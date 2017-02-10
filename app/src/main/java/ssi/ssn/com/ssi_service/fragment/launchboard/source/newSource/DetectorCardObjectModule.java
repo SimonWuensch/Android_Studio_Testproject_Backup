@@ -52,8 +52,8 @@ public class DetectorCardObjectModule {
         return moduleObjects;
     }
 
-    public static void loadFromNetwork(final MainActivity activity, final Project project, final CardObjectModule cardObject) {
-        Log.d(TAG + " Project ID: " + cardObject.get_id_project(), "Start load ard object module information from network...");
+    public static void loadFromNetwork(MainActivity activity, Project project, CardObjectModule cardObject) {
+        Log.d(TAG + " Project ID: " + cardObject.get_id_project(), cardObject.getClass().getSimpleName() + " start load ard object module information from network...");
         project.getDefaultResponseModuleList().clear();
         final RequestHandler requestHandler = activity.getRequestHandler();
         final Map<String, String> enabledModuleList = new HashMap<>();
@@ -93,11 +93,11 @@ public class DetectorCardObjectModule {
             responseModuleList.add(responseModule);
         }
         cardObject.setResponseModuleList(responseModuleList);
-        Log.d(TAG, "Response module list size is [" + responseModuleList.size() + "], [" + cardObject.getResponseModuleList() + "]");
+        Log.d(TAG + " Project ID: " + cardObject.get_id_project(), "Response module list size is [" + cardObject.getResponseModuleList().size() + "], [" + cardObject.getResponseModuleList() + "]");
     }
 
     public static void detectCardStatus(MainActivity activity, CardObjectModule cardObject) {
-        Log.d(TAG + " Project ID: " + cardObject.get_id_project(), "Start detecting card object module status..." );
+        Log.d(TAG + " Project ID: " + cardObject.get_id_project(), cardObject.getClass().getSimpleName() + " start detecting card object module status..." );
         Status overAllState = Status.OK;
         List<ResponseModule> responseModuleList = cardObject.getResponseModuleList();
         if (responseModuleList.isEmpty()) {

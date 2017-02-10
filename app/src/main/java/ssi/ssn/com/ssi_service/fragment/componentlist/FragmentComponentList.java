@@ -10,14 +10,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.owlike.genson.GenericType;
-
-import java.util.ArrayList;
 import java.util.List;
 
 import ssi.ssn.com.ssi_service.R;
+import ssi.ssn.com.ssi_service.activity.MainActivity;
 import ssi.ssn.com.ssi_service.model.data.source.Project;
-import ssi.ssn.com.ssi_service.model.helper.JsonHelper;
+import ssi.ssn.com.ssi_service.model.data.source.cardobject.CardObjectComponent;
 import ssi.ssn.com.ssi_service.model.helper.SourceHelper;
 import ssi.ssn.com.ssi_service.model.network.response.component.ResponseComponent;
 
@@ -29,24 +27,20 @@ public class FragmentComponentList extends Fragment {
     private static int RECYCLERVIEW = R.id.fragment_component_list_recycler_view;
     private static int CARDVIEW = R.layout.fragment_component_list_card_view;
 
-    private static String PROJECT_JSON = TAG + "PROJECT_JSON";
-    private static String RESPONSE = TAG + "RESPONSE";
-    private static String RESPONSE_COMPONENT_LIST = TAG + "RESPONSE_COMPONENT_LIST";
+    private static String PROJECT_ID = TAG + "PROJECT_ID";
 
     private View rootView;
     private Project project;
     private List<ResponseComponent> responseComponentList;
 
-    public static FragmentComponentList newInstance(Project project, List<ResponseComponent> responseComponentList) {
+    public static FragmentComponentList newInstance(Project project) {
         if (project == null) {
             return new FragmentComponentList();
         }
 
         FragmentComponentList fragment = new FragmentComponentList();
         Bundle bundle = new Bundle();
-        bundle.putString(PROJECT_JSON, JsonHelper.toJson(project));
-        bundle.putString(RESPONSE, project.getDefaultResponseApplicationConfig().getResult());
-        bundle.putSerializable(RESPONSE_COMPONENT_LIST, JsonHelper.toJson(responseComponentList));
+        bundle.putLong(PROJECT_ID, project.get_id());
         fragment.setArguments(bundle);
         return fragment;
 
@@ -56,11 +50,10 @@ public class FragmentComponentList extends Fragment {
         if (getArguments() == null) {
             return;
         }
-        String projectJson = getArguments().getString(PROJECT_JSON);
-        project = (Project) JsonHelper.fromJsonGeneric(Project.class, projectJson);
-        String jsonResponseComponentList = getArguments().getString(RESPONSE_COMPONENT_LIST);
-        responseComponentList = (ArrayList<ResponseComponent>) JsonHelper.fromJsonGeneric(new GenericType<List<ResponseComponent>>() {
-        }, jsonResponseComponentList);
+        long projectID = getArguments().getLong(PROJECT_ID);
+        project = ((MainActivity) getActivity()).getSQLiteDB().project().getByID(projectID);
+        CardObjectComponent.init((MainActivity) getActivity(), project);
+        responseComponentList = project.getCardObjectComponent().getResponseComponentList();
     }
 
     @Override
