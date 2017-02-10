@@ -53,6 +53,7 @@ public class DetectorCardObjectModule {
     }
 
     public static void loadFromNetwork(final MainActivity activity, final Project project, final CardObjectModule cardObject) {
+        Log.d(TAG + " Project ID: " + cardObject.get_id_project(), "Start load ard object module information from network...");
         project.getDefaultResponseModuleList().clear();
         final RequestHandler requestHandler = activity.getRequestHandler();
         final Map<String, String> enabledModuleList = new HashMap<>();
@@ -91,11 +92,12 @@ public class DetectorCardObjectModule {
             responseModule.setEnabled(enabledModuleList.containsKey(xmlModuleName) ? enabledModuleList.get(xmlModuleName) : "true");
             responseModuleList.add(responseModule);
         }
-        Log.d(TAG, "Response module list size is [" + responseModuleList.size() + "]");
         cardObject.setResponseModuleList(responseModuleList);
+        Log.d(TAG, "Response module list size is [" + responseModuleList.size() + "], [" + cardObject.getResponseModuleList() + "]");
     }
 
     public static void detectCardStatus(MainActivity activity, CardObjectModule cardObject) {
+        Log.d(TAG + " Project ID: " + cardObject.get_id_project(), "Start detecting card object module status..." );
         Status overAllState = Status.OK;
         List<ResponseModule> responseModuleList = cardObject.getResponseModuleList();
         if (responseModuleList.isEmpty()) {
@@ -112,7 +114,14 @@ public class DetectorCardObjectModule {
             }
         }
         cardObject.setStatus(overAllState);
-        cardObject.getDBSQLiteCardObject(activity).update(cardObject);
+        boolean isSuccessful = cardObject.getDBSQLiteCardObject(activity).update(cardObject);
+        if(!isSuccessful){
+            isSuccessful = cardObject.getDBSQLiteCardObject(activity).update(cardObject);
+            if(!isSuccessful){
+                throw new NullPointerException("Can not update " + cardObject.getClass().getSimpleName() + " [" + cardObject + "]");
+            }
+        }
+        Log.i(TAG + " Project ID: " + cardObject.get_id_project(),  cardObject.getClass().getSimpleName() + " status: " + cardObject.getStatus());
     }
 }
 

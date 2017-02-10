@@ -16,6 +16,9 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import ssi.ssn.com.ssi_service.R;
 import ssi.ssn.com.ssi_service.activity.MainActivity;
 import ssi.ssn.com.ssi_service.fragment.AbstractFragment;
@@ -47,6 +50,8 @@ public class FragmentCreateProject extends AbstractFragment {
     private Project project;
 
     private RequestHandler requestHandler;
+
+    private List<AsyncTask> asyncTaskList = new ArrayList<>();
 
     public static FragmentCreateProject newInstance(Project project) {
         if (project == null) {
@@ -96,6 +101,12 @@ public class FragmentCreateProject extends AbstractFragment {
     @Override
     public void onStop() {
         super.onStop();
+        for(AsyncTask task : asyncTaskList) {
+            if(task.getStatus().equals(AsyncTask.Status.RUNNING)){
+                task.cancel(true);
+            }
+        }
+        setLoadingViewVisible(false);
     }
 
     public void initViewComponents() {
@@ -272,7 +283,7 @@ public class FragmentCreateProject extends AbstractFragment {
                 bShowApplicationInfo.setEnabled(false);
                 setLoadingViewVisible(true);
 
-                new AsyncTask<Object, Void, Integer>() {
+                asyncTaskList.add(new AsyncTask<Object, Void, Integer>() {
                     @Override
                     protected Integer doInBackground(Object... objects) {
                         HttpAddressExists httpAddressExists = new HttpAddressExists(project.getServerAddress());
@@ -307,7 +318,7 @@ public class FragmentCreateProject extends AbstractFragment {
                             }
                         }.execute();
                     }
-                }.execute();
+                }.execute());
             }
         };
     }
@@ -339,7 +350,7 @@ public class FragmentCreateProject extends AbstractFragment {
 
     public void onClickProjectAddUpdate(final Project project) {
         setLoadingViewVisible(true);
-        new AsyncTask<Object, Void, Integer>(){
+        asyncTaskList.add(new AsyncTask<Object, Void, Integer>(){
             @Override
             protected Integer doInBackground(Object... objects) {
                 HttpAddressExists httpAddressExists = new HttpAddressExists(project.getServerAddress());
@@ -348,14 +359,24 @@ public class FragmentCreateProject extends AbstractFragment {
 
             @Override
             protected void onPostExecute(Integer responseCode) {
+                if (etServerAddress.getText().toString().isEmpty() ||
+                        etUserName.getText().toString().isEmpty() ||
+                        etPassword.getText().toString().isEmpty() ||
+                        etObservationInterval.getText().toString().isEmpty()) {
+                    setLoadingViewVisible(false);
+                    Toast.makeText(getActivity(), SourceHelper.getString(getActivity(), R.string.fragment_create_project_message_please_insert_all_information_in_the_input_field), Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
                 if (responseCode != 200) {
+
                     getAlertDialog().show();
                     bShowApplicationInfo.setEnabled(true);
                     setLoadingViewVisible(false);
                     return;
                 }
 
-                new AsyncTask<Object, Void, Object>(){
+                asyncTaskList.add(new AsyncTask<Object, Void, Object>(){
                     @Override
                     protected Object doInBackground(Object... objects) {
                         requestHandler.sendRequestApplication(project);
@@ -396,9 +417,9 @@ public class FragmentCreateProject extends AbstractFragment {
                         bShowApplicationInfo.setEnabled(true);
                         setLoadingViewVisible(false);
                     }
-                }.execute();
+                }.execute());
             }
-        }.execute();
+        }.execute());
     }
 
     public enum Status {

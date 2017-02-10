@@ -51,12 +51,16 @@ public class DBProject extends SQLiteOpenHelper {
     @Override
     public void onCreate(android.database.sqlite.SQLiteDatabase db) {
         db.execSQL(CREATE_TABLE_PROJECT);
+        db.execSQL(DBCardObjectModule.CREATE_TABLE_CARD_OBJECT_MODULE);
+        db.execSQL(DBCardObjectComponent.CREATE_TABLE_CARD_OBJECT_COMPONENT);
     }
 
     @Override
     public void onUpgrade(android.database.sqlite.SQLiteDatabase db, int oldVersion, int newVersion) {
         Log.w(TAG, "DB UPGRADE: From version " + oldVersion + " to " + newVersion + ".");
         db.execSQL(DROP_TABLE_PROJECT);
+        db.execSQL(DBCardObjectModule.DROP_TABLE_CARD_OBJECT_MODULE);
+        db.execSQL(DBCardObjectComponent.DROP_TABLE_CARD_OBJECT_COMPONENT);
         this.onCreate(db);
     }
 

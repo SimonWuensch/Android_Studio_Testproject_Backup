@@ -76,9 +76,11 @@ public class DBCardObjectModule extends SQLiteOpenHelper implements DBCardObject
         values.put(IS_OBSERVATION, cardObject.isObservation());
         values.put(JSON_MODULE, JsonHelper.toJson(cardObject));
 
-        db.insert(TABLE_MODULE,
+        long id = db.insert(TABLE_MODULE,
                 null,
                 values);
+
+        cardObject.set_id(id);
 
         Log.d(TAG, "ID Project: " + cardObject.get_id_project() + "| ADD: Card Object Module [" + cardObject + "]");
         db.close();

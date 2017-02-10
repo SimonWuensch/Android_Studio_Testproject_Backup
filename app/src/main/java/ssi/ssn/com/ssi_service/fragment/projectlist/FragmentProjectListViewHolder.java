@@ -76,17 +76,10 @@ class FragmentProjectListViewHolder extends RecyclerView.ViewHolder {
     }
 
     public void detectProjectStatus(final Project project, final boolean isLast) {
-
         loadingView.setVisibility(View.VISIBLE);
         new AsyncTask<Object, Void, Object>() {
             @Override
             protected Object doInBackground(Object... objects) {
-                boolean isProjectOutOfDate = ObservationHelper.isProjectOutOfDate(project);
-                if (!isProjectOutOfDate) {
-                    project.initCardObjects(activity);
-                    return null;
-                }
-
                 project.detectProjectStatus(activity);
                 return null;
             }
@@ -96,7 +89,6 @@ class FragmentProjectListViewHolder extends RecyclerView.ViewHolder {
                 loadingView.setVisibility(View.GONE);
                 vProjectStatus.setBackgroundColor(project.getStatus().getColor(activity));
                 cardView.setOnClickListener(onClickCardView(project));
-
                 if (isLast) {
                     adapter.sort();
                 }
@@ -164,22 +156,23 @@ class FragmentProjectListViewHolder extends RecyclerView.ViewHolder {
         return new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                project.setProjectObservation(isChecked);
-                activity.getSQLiteDB().project().updateIsObservation(project);
 
                 if (!isChecked) {
                     cardView.setOnClickListener(null);
                     vProjectStatus.setBackgroundColor(SourceHelper.getColor(activity, R.color.lightGray));
 
-                    project.setStatus(Status.NOT_OBSERVATION);
-                    activity.getSQLiteDB().project().updateStatus(project);
+                    project.setProjectObservation(false);
+                    activity.getSQLiteDB().project().updateIsObservation(project);
 
                     int from = getAdapterPosition();
                     int to = adapter.getItemCount() - 1;
                     adapter.notifyItemMoved(from, to);
                     return;
                 }
-                detectProjectStatus(project, true);
+                project.setProjectObservation(true);
+                activity.getSQLiteDB().project().updateIsObservation(project);
+                assignData(project, true);
+
             }
         };
     }

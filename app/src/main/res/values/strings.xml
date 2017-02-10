@@ -24,6 +24,7 @@
     <string name="fragment_create_project_button_update_project">aktualisieren</string>
     <string name="fragment_create_project_message_server_address_not_correct">Serveradresse ist nicht korrekt.</string>
     <string name="fragment_create_project_message_server_address_is_no_valid_lighthouse_address">Serveradresse ist keine valide Lighthouse Adresse</string>
+    <string name="fragment_create_project_message_please_insert_all_information_in_the_input_field">Bitte befüllen Sie alle Eingabefelder</string>
     <string name="fragment_create_project_message_login_data_not_correct">Logindaten sind nicht korrekt.</string>
     <string name="fragment_create_project_message_server_address_not_correct_anyhow_add">Serveradresse ist nicht korrekt. Projekt dennoch hinzufügen?</string>
     <string name="fragment_create_project_message_server_address_not_correct_anyhow_update">Serveradresse ist nicht korrekt. Projekt dennoch aktualisieren?</string>

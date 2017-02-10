@@ -17,6 +17,8 @@ import ssi.ssn.com.ssi_service.R;
 import ssi.ssn.com.ssi_service.activity.MainActivity;
 import ssi.ssn.com.ssi_service.fragment.AbstractFragment;
 import ssi.ssn.com.ssi_service.model.data.source.Project;
+import ssi.ssn.com.ssi_service.model.data.source.cardobject.AbstractCardObject;
+import ssi.ssn.com.ssi_service.model.helper.ObservationHelper;
 import ssi.ssn.com.ssi_service.model.helper.SourceHelper;
 
 public class FragmentProjectList extends AbstractFragment {
@@ -47,7 +49,7 @@ public class FragmentProjectList extends AbstractFragment {
                 MainActivity activity = ((MainActivity)getActivity());
                 for(Project project : projects){
                     activity.getCardObjects(project).clear();
-                    project.setLastObservationTime(0);
+                    ObservationHelper.setLastObservationTimeToOLD(activity, project);
                     activity.getSQLiteDB().project().updateLastObservationTime(project);
                 }
                 activity.reloadProjectListFragment(FragmentProjectList.this);

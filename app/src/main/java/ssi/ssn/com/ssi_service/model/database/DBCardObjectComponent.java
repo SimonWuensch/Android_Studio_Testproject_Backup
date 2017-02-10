@@ -39,7 +39,7 @@ public class DBCardObjectComponent extends SQLiteOpenHelper implements DBCardObj
                     + JSON_COMPONENT + " TEXT" +
                     ");";
 
-    private static final String DROP_TABLE_CARD_OBJECT_COMPONENT = //
+    public static final String DROP_TABLE_CARD_OBJECT_COMPONENT = //
             "DROP TABLE IF EXISTS " + TABLE_COMPONENT;
 
     public DBCardObjectComponent(int version, Context context) {
@@ -76,10 +76,11 @@ public class DBCardObjectComponent extends SQLiteOpenHelper implements DBCardObj
         values.put(IS_OBSERVATION, cardObject.isObservation());
         values.put(JSON_COMPONENT, JsonHelper.toJson(cardObject));
 
-        db.insert(TABLE_COMPONENT,
+        long id = db.insert(TABLE_COMPONENT,
                 null,
                 values);
 
+        cardObject.set_id(id);
         Log.d(TAG, "ID Project: " + cardObject.get_id_project() + "| ADD: Card Object Component [" + cardObject + "]");
         db.close();
     }

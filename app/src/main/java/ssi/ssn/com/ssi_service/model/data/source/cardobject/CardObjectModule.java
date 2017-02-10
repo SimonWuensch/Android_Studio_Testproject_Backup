@@ -64,7 +64,7 @@ public class CardObjectModule extends AbstractCardObject{
 
     @Override
     public void onClick(final MainActivity activity, final Project project) {
-        if (getStatus().equals(ssi.ssn.com.ssi_service.model.data.source.Status.NOT_AVAILABLE)) {
+        if (getStatus().equals(ssi.ssn.com.ssi_service.model.data.source.Status.NOT_AVAILABLE) || getResponseModuleList().isEmpty()) {
             Toast.makeText(activity, SourceHelper.getString(activity, R.string.fragment_launch_board_error_module), Toast.LENGTH_SHORT).show();
         } else {
             activity.showModuleListFragment(project);

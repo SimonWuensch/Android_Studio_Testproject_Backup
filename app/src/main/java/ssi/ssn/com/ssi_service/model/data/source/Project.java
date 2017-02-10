@@ -183,17 +183,7 @@ public class Project extends NetworkProject {
     }
 
     public void initCardObjects(MainActivity activity) {
-        if (cardObjectModule == null){
-            DBCardObjectModule dbCardObject = activity.getSQLiteDB().cardObjectModule();
-            if (dbCardObject.getCount(_id) == 0) {
-                cardObjectModule = new CardObjectModule(this);
-                dbCardObject.add(cardObjectModule);
-            }else{
-                cardObjectModule = dbCardObject.getByProjectID(_id);
-            }
-        }
-        //if(cardObjectComponent == null)
-        //generateCardObject(activity.getSQLiteDB().cardObjectComponent(), cardObjectComponent);
+        initCardObjectModule(activity);
     }
 
     public void initCardObjectModule(MainActivity activity){
