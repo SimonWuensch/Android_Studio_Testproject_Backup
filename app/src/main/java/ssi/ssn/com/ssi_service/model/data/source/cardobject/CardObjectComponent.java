@@ -7,7 +7,7 @@ import java.util.List;
 
 import ssi.ssn.com.ssi_service.R;
 import ssi.ssn.com.ssi_service.activity.MainActivity;
-import ssi.ssn.com.ssi_service.fragment.launchboard.source.newSource.DetectorCardObjectComponent;
+import ssi.ssn.com.ssi_service.fragment.launchboard.source.DetectorCardObjectComponent;
 import ssi.ssn.com.ssi_service.model.data.source.Project;
 import ssi.ssn.com.ssi_service.model.data.source.Status;
 import ssi.ssn.com.ssi_service.model.database.DBCardObject;

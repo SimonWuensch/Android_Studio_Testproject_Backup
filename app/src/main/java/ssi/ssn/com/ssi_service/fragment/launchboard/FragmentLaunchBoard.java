@@ -99,27 +99,21 @@ public class FragmentLaunchBoard extends AbstractFragment {
     }
 
     public void initViewComponents() {
+        TextView tvHeadLine = (TextView) rootView.findViewById(R.id.default_action_bar_text_view_headline);
+        String headLineText = project.getProjectName() + " " + project.getProjectLocation() + " " + project.getProjectOrderNr();
+        tvHeadLine.setText(headLineText);
+
         ImageButton bReload = (ImageButton) rootView.findViewById(R.id.default_action_bar_button_reload);
         bReload.setVisibility(View.VISIBLE);
         bReload.setOnClickListener(
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        new AsyncTask<Object, Void, Object>() {
-                            @Override
-                            protected Object doInBackground(Object... objects) {
-                                project.detectProjectStatus((MainActivity) getActivity());
-                                ((MainActivity) getActivity()).reloadLaunchBoardFragment(FragmentLaunchBoard.this, project);
-                                return null;
-                            }
-                        };
+                        updateProjectStatusView();
+                        mAdapter.reloadCardViews();
                     }
                 }
         );
-
-        TextView tvHeadLine = (TextView) rootView.findViewById(R.id.default_action_bar_text_view_headline);
-        String headLineText = project.getProjectName() + " " + project.getProjectLocation() + " " + project.getProjectOrderNr();
-        tvHeadLine.setText(headLineText);
 
         rlProjectStateBackground = (RelativeLayout) rootView.findViewById(R.id.fragment_launch_board_relative_layout_project_state_background);
         tvProjectStatus = (TextView) rootView.findViewById(R.id.fragment_launch_board_project_state_text_view_project_status);

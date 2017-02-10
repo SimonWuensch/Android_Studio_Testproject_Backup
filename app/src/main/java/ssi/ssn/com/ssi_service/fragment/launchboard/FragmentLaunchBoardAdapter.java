@@ -5,12 +5,14 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import ssi.ssn.com.ssi_service.activity.MainActivity;
-import ssi.ssn.com.ssi_service.fragment.launchboard.source.AbstractGenerator;
 import ssi.ssn.com.ssi_service.model.data.source.Project;
 import ssi.ssn.com.ssi_service.model.data.source.cardobject.AbstractCardObject;
+import ssi.ssn.com.ssi_service.model.helper.ObservationHelper;
 
 class FragmentLaunchBoardAdapter extends RecyclerView.Adapter<FragmentLaunchBoardViewHolder> {
 
@@ -22,6 +24,8 @@ class FragmentLaunchBoardAdapter extends RecyclerView.Adapter<FragmentLaunchBoar
 
     private List<AbstractCardObject> cardObjects;
     private Project project;
+
+    private Map<FragmentLaunchBoardViewHolder, AbstractCardObject> viewHolderMap = new HashMap<>();
 
     FragmentLaunchBoardAdapter(int layoutCardView, final FragmentLaunchBoard fragment, Project project, List<AbstractCardObject> cardObjects) {
         this.layoutCardView = layoutCardView;
@@ -38,7 +42,8 @@ class FragmentLaunchBoardAdapter extends RecyclerView.Adapter<FragmentLaunchBoar
 
     @Override
     public void onBindViewHolder(FragmentLaunchBoardViewHolder viewHolder, int position) {
-        viewHolder.assignData(cardObjects.get(position), project);
+        viewHolder.assignData(project, cardObjects.get(position));
+        viewHolderMap.put(viewHolder, cardObjects.get(position));
     }
 
     @Override
@@ -49,6 +54,13 @@ class FragmentLaunchBoardAdapter extends RecyclerView.Adapter<FragmentLaunchBoar
     @Override
     public int getItemCount() {
         return cardObjects.size();
+    }
+
+    public void reloadCardViews(){
+        ObservationHelper.setLastObservationTimeToOLD((MainActivity) fragment.getActivity(), project);
+        for(FragmentLaunchBoardViewHolder viewHolder : viewHolderMap.keySet()){
+            viewHolder.assignData(project, viewHolderMap.get(viewHolder));
+        }
     }
 
 }

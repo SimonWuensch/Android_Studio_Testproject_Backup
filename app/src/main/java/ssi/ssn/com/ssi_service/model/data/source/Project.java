@@ -6,12 +6,10 @@ import java.util.LinkedList;
 import java.util.List;
 
 import ssi.ssn.com.ssi_service.activity.MainActivity;
-import ssi.ssn.com.ssi_service.fragment.launchboard.source.newSource.DetectorProject;
+import ssi.ssn.com.ssi_service.fragment.launchboard.source.DetectorProject;
 import ssi.ssn.com.ssi_service.model.data.source.cardobject.AbstractCardObject;
 import ssi.ssn.com.ssi_service.model.data.source.cardobject.CardObjectComponent;
 import ssi.ssn.com.ssi_service.model.data.source.cardobject.CardObjectModule;
-import ssi.ssn.com.ssi_service.model.database.DBCardObject;
-import ssi.ssn.com.ssi_service.model.database.DBCardObjectModule;
 import ssi.ssn.com.ssi_service.model.helper.JsonHelper;
 import ssi.ssn.com.ssi_service.model.network.response.application.ResponseApplication;
 

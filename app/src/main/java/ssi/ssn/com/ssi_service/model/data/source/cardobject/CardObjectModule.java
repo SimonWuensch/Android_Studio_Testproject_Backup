@@ -1,6 +1,5 @@
 package ssi.ssn.com.ssi_service.model.data.source.cardobject;
 
-import android.app.Activity;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -8,7 +7,7 @@ import java.util.List;
 
 import ssi.ssn.com.ssi_service.R;
 import ssi.ssn.com.ssi_service.activity.MainActivity;
-import ssi.ssn.com.ssi_service.fragment.launchboard.source.newSource.DetectorCardObjectModule;
+import ssi.ssn.com.ssi_service.fragment.launchboard.source.DetectorCardObjectModule;
 import ssi.ssn.com.ssi_service.model.data.source.Project;
 import ssi.ssn.com.ssi_service.model.data.source.Status;
 import ssi.ssn.com.ssi_service.model.database.DBCardObject;

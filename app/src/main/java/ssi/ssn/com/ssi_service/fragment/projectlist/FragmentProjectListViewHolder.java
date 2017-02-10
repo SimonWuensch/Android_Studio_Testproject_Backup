@@ -96,38 +96,6 @@ class FragmentProjectListViewHolder extends RecyclerView.ViewHolder {
         }.execute();
     }
 
-
-    /*private void detectProjectStatus(final Project project, final boolean isLast) {
-        boolean isOutOfTime = new Date().getTime() - project.getLastObservationTime() > project.getObservationInterval();
-        //TODO DB: Ändere nachfolgende IF-Klausel, Voraussetzung ist, dass CardObjects von der DB geladen werden.
-
-        if (projectStatusDetector != null && !isOutOfTime) {
-            cardView.setOnClickListener(onClickCardView(project));
-            vProjectStatus.setBackgroundColor(project.getStatus().getColor(activity));
-            return;
-        }
-
-        loadingView.setVisibility(View.VISIBLE);
-        this.projectStatusDetector = new ProjectStatusDetector(activity, project, vProjectStatus);
-        projectStatusDetector.detectProjectStatus(activity);
-        ExecutorService executor = activity.getExecutor();
-        new AsyncTask<Object, Void, Object>() {
-            @Override
-            protected Object doInBackground(Object... voids) {
-                return null;
-            }
-
-            @Override
-            protected void onPostExecute(Object o) {
-                cardView.setOnClickListener(onClickCardView(project));
-                loadingView.setVisibility(View.GONE);
-                if (isLast) {
-                    adapter.sort();
-                }
-            }
-        }.executeOnExecutor(executor);
-    }*/
-
     private View.OnClickListener onClickCardViewProjectSettings(final Project project) {
         return new View.OnClickListener() {
             @Override

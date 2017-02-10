@@ -9,12 +9,14 @@ import android.view.ViewGroup;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
 import ssi.ssn.com.ssi_service.activity.MainActivity;
 import ssi.ssn.com.ssi_service.fragment.projectlist.source.ProjectListSorter;
 import ssi.ssn.com.ssi_service.model.data.source.Project;
+import ssi.ssn.com.ssi_service.model.helper.ObservationHelper;
 
 public class FragmentProjectListAdapter extends RecyclerView.Adapter<FragmentProjectListViewHolder> {
 
@@ -56,6 +58,20 @@ public class FragmentProjectListAdapter extends RecyclerView.Adapter<FragmentPro
         return projects.size();
     }
 
+    public void reloadCardViews(){
+        for(Project project : viewHolderMap.keySet()){
+            ObservationHelper.setLastObservationTimeToOLD((MainActivity) fragment.getActivity(), project);
+            ((MainActivity) fragment.getActivity()).getSQLiteDB().project().updateLastObservationTime(project);
+
+            FragmentProjectListViewHolder viewHolder = viewHolderMap.get(project);
+            boolean isLast = project.equals(viewHolderMap.keySet().toArray()[viewHolderMap.keySet().size()-1]);
+            viewHolder.assignData(project, isLast);
+            if(isLast){
+                Log.e(TAG + "-TEST", "Last Project: " + project.identity());
+            }
+        }
+    }
+
     public void sort(){
         List<Project> sortedList = ProjectListSorter.sortProjectsByStatus(projects);
         for(Project project : sortedList){
@@ -64,4 +80,5 @@ public class FragmentProjectListAdapter extends RecyclerView.Adapter<FragmentPro
             notifyItemMoved(from, to);
         }
     }
+
 }

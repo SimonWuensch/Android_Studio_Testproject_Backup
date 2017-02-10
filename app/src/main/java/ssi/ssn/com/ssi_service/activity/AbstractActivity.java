@@ -6,10 +6,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 
-import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -18,16 +15,15 @@ import ssi.ssn.com.ssi_service.fragment.componentlist.FragmentComponentList;
 import ssi.ssn.com.ssi_service.fragment.createproject.FragmentCreateProject;
 import ssi.ssn.com.ssi_service.fragment.customlist.FragmentCustomList;
 import ssi.ssn.com.ssi_service.fragment.launchboard.FragmentLaunchBoard;
-import ssi.ssn.com.ssi_service.fragment.launchboard.source.AbstractGenerator;
 import ssi.ssn.com.ssi_service.fragment.modulelist.FragmentModuleList;
 import ssi.ssn.com.ssi_service.fragment.projectlist.FragmentProjectList;
 import ssi.ssn.com.ssi_service.model.data.source.Project;
 import ssi.ssn.com.ssi_service.model.database.SQLiteDB;
 import ssi.ssn.com.ssi_service.model.network.handler.RequestHandler;
-import ssi.ssn.com.ssi_service.model.network.response.component.ResponseComponent;
-import ssi.ssn.com.ssi_service.model.network.response.module.ResponseModule;
 
 public class AbstractActivity extends Activity {
+
+    public static String TAG = AbstractActivity.class.getSimpleName();
 
     public static String ACCEPTED_PROJECT_VERSION = "2.";
 
@@ -36,8 +32,6 @@ public class AbstractActivity extends Activity {
     protected SQLiteDB sqliteDB;
     protected RequestHandler requestHandler;
     protected View loadingView;
-
-    private Map<Long, List<AbstractGenerator>> projectCardObjectMap = new HashMap<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,18 +44,16 @@ public class AbstractActivity extends Activity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        for (final long projectID : projectCardObjectMap.keySet()) {
             new AsyncTask<Object, Void, Object>() {
                 @Override
                 protected Object doInBackground(Object... objects) {
-                    Log.e(getClass().getSimpleName(), "PROJECT ID: " + projectID);
-                    Project project = sqliteDB.project().getByID(projectID);
+                    List<Project> projects = getSQLiteDB().project().getALL();
+                    Log.d(TAG, "Start sending request logout for [" + projects.size() + "]");
+                    for (Project project : projects)
                     getRequestHandler().sendRequestLogout(project);
-                    projectCardObjectMap.remove(projectID);
                     return null;
                 }
             }.execute();
-        }
     }
 
     public ExecutorService getExecutor(){
@@ -78,21 +70,6 @@ public class AbstractActivity extends Activity {
 
     public void setLoadingViewVisible(boolean isVisible) {
         loadingView.setVisibility(isVisible ? View.VISIBLE : View.GONE);
-    }
-
-    public List<AbstractGenerator> getCardObjects(Project project){
-        if(projectCardObjectMap.containsKey(project.get_id())){
-            return projectCardObjectMap.get(project.get_id());
-        }
-        return new LinkedList<>();
-    }
-
-    public void addCardToMap(Project project, AbstractGenerator cardObject){
-        if(!projectCardObjectMap.containsKey(project.get_id())){
-            projectCardObjectMap.put(project.get_id(), new LinkedList<AbstractGenerator>());
-        }
-        List<AbstractGenerator> cardObjects = projectCardObjectMap.get(project.get_id());
-        cardObjects.add(cardObject);
     }
 
     // ** FRAGMENT ****************************************************************************** //
@@ -124,11 +101,6 @@ public class AbstractActivity extends Activity {
         Log.i(getClass().getSimpleName(), "Show Fragment [" + fragmentCustomList.TAG + "].");
     }
 
-    public void reloadProjectListFragment(FragmentProjectList fragmentProjectList) {
-        getFragmentManager().beginTransaction().remove(fragmentProjectList).commit();
-        showProjectListFragment();
-    }
-
     public void showProjectListFragment() {
         FragmentProjectList fragmentProjectList = FragmentProjectList.newInstance();
         getFragmentManager()
@@ -138,11 +110,6 @@ public class AbstractActivity extends Activity {
                         fragmentProjectList.TAG)
                 .commit();
         Log.i(getClass().getSimpleName(), "Show Fragment [" + fragmentProjectList.TAG + "].");
-    }
-
-    public void reloadLaunchBoardFragment(FragmentLaunchBoard fragmentLaunchBoard, Project project) {
-        getFragmentManager().beginTransaction().remove(fragmentLaunchBoard).commit();
-        showLaunchBoardFragment(project);
     }
 
     public void showLaunchBoardFragment(final Project project) {
@@ -162,7 +129,7 @@ public class AbstractActivity extends Activity {
                         .replace(R.id.activity_main_fragment_container,
                                 fragmentLaunchBoard,
                                 fragmentLaunchBoard.TAG)
-                        .addToBackStack(fragmentLaunchBoard.TAG)
+                        .addToBackStack(FragmentLaunchBoard.TAG)
                         .commit();
                 Log.i(getClass().getSimpleName(), "Show Fragment [" + fragmentLaunchBoard.TAG + "].");
             }

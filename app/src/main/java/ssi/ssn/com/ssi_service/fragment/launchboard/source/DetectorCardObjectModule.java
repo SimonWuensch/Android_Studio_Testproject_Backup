@@ -1,4 +1,4 @@
-package ssi.ssn.com.ssi_service.fragment.launchboard.source.newSource;
+package ssi.ssn.com.ssi_service.fragment.launchboard.source;
 
 import android.util.Log;
 

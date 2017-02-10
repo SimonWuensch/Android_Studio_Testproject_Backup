@@ -30,6 +30,7 @@ public class FragmentProjectList extends AbstractFragment {
     private static int CARDVIEW = R.layout.fragment_project_list_card_view;
 
     private List<Project> projects;
+    private FragmentProjectListAdapter mAdapter;
 
     private View rootView;
     public static FragmentProjectList newInstance() {
@@ -46,13 +47,7 @@ public class FragmentProjectList extends AbstractFragment {
         bReload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                MainActivity activity = ((MainActivity)getActivity());
-                for(Project project : projects){
-                    activity.getCardObjects(project).clear();
-                    ObservationHelper.setLastObservationTimeToOLD(activity, project);
-                    activity.getSQLiteDB().project().updateLastObservationTime(project);
-                }
-                activity.reloadProjectListFragment(FragmentProjectList.this);
+                mAdapter.reloadCardViews();
             }
         });
 
@@ -77,7 +72,7 @@ public class FragmentProjectList extends AbstractFragment {
             Log.d(TAG, "Fragment inflated [" + getActivity().getResources().getResourceName(FRAGMENT_LAYOUT) + "].");
 
             projects = getSQLiteDB().project().getALL();
-            RecyclerView.Adapter mAdapter = new FragmentProjectListAdapter(CARDVIEW, this, projects);
+            mAdapter = new FragmentProjectListAdapter(CARDVIEW, this, projects);
             Log.d(TAG, "Adapter [" + mAdapter.getClass().getSimpleName() + "] with CardView [" + getActivity().getResources().getResourceName(CARDVIEW) + "] initialized.");
 
             RecyclerView mRecyclerView = (RecyclerView) rootView.findViewById(RECYCLERVIEW);

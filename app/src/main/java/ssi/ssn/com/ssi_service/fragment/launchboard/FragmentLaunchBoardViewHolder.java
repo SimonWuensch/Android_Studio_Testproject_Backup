@@ -1,16 +1,17 @@
 package ssi.ssn.com.ssi_service.fragment.launchboard;
 
-import android.app.Activity;
+import android.os.AsyncTask;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import ssi.ssn.com.ssi_service.R;
 import ssi.ssn.com.ssi_service.activity.MainActivity;
-import ssi.ssn.com.ssi_service.fragment.launchboard.source.AbstractGenerator;
 import ssi.ssn.com.ssi_service.model.data.source.Project;
+import ssi.ssn.com.ssi_service.model.data.source.Status;
 import ssi.ssn.com.ssi_service.model.data.source.cardobject.AbstractCardObject;
 import ssi.ssn.com.ssi_service.model.helper.SourceHelper;
 
@@ -28,7 +29,6 @@ class FragmentLaunchBoardViewHolder extends RecyclerView.ViewHolder {
     private View vStatus;
     private View loadingView;
 
-
     FragmentLaunchBoardViewHolder(MainActivity activity, View cardView) {
         super(cardView);
         this.activity = activity;
@@ -41,12 +41,11 @@ class FragmentLaunchBoardViewHolder extends RecyclerView.ViewHolder {
         loadingView = cardView.findViewById(R.id.fragment_launch_board_card_view_view_loading_view);
     }
 
-    protected void assignData(final AbstractCardObject cardObject, final Project project) {
+    protected void assignData(final Project project, final AbstractCardObject cardObject) {
         image.setImageResource(cardObject.getIcon());
         tvTitle.setText(SourceHelper.getString(activity, cardObject.getTitle()));
         cbObservation.setChecked(cardObject.isObservation());
-        //cardObject.setStatusView(vStatus, activity);
-        //cardObject.setLoadingView(loadingView);
+        cbObservation.setOnCheckedChangeListener(onCheckedChangeListener(project, cardObject));
         loadingView.setVisibility(View.GONE);
 
         cardView.setOnClickListener(new View.OnClickListener() {
@@ -57,5 +56,45 @@ class FragmentLaunchBoardViewHolder extends RecyclerView.ViewHolder {
                 }
             }
         });
+
+        if(cardObject.isObservation()) {
+            detectCardObjectStatus(project, cardObject);
+        }
+    }
+
+    public void detectCardObjectStatus(final Project project, final AbstractCardObject cardObject) {
+        loadingView.setVisibility(View.VISIBLE);
+        new AsyncTask<Object, Void, Object>() {
+            @Override
+            protected Object doInBackground(Object... objects) {
+                project.detectProjectStatus(activity);
+                return null;
+            }
+
+            @Override
+            protected void onPostExecute(Object o) {
+                loadingView.setVisibility(View.GONE);
+                vStatus.setBackgroundColor(cardObject.getStatus().getColor(activity));
+            }
+        }.execute();
+    }
+
+    private CompoundButton.OnCheckedChangeListener onCheckedChangeListener(final Project project, final AbstractCardObject cardObject) {
+        return new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (!isChecked) {
+                    cardView.setOnClickListener(null);
+                    vStatus.setBackgroundColor(SourceHelper.getColor(activity, R.color.lightGray));
+
+                    cardObject.setObservation(false);
+                    cardObject.getDBSQLiteCardObject(activity).updateIsObservation(cardObject);
+                    return;
+                }
+                cardObject.setObservation(true);
+                cardObject.getDBSQLiteCardObject(activity).updateIsObservation(cardObject);
+                assignData(project, cardObject);
+            }
+        };
     }
 }

@@ -1,4 +1,4 @@
-package ssi.ssn.com.ssi_service.fragment.launchboard.source.newSource;
+package ssi.ssn.com.ssi_service.fragment.launchboard.source;
 
 import android.util.Log;
 
@@ -51,10 +51,12 @@ public class DetectorProject {
         }
 
         for (AbstractCardObject cardObject : project.getAllCardObjects()) {
-            if (!cardObject.isObservation() || !ObservationHelper.isCardObjectOutOfDate(project, cardObject)) {
-                if(cardObject.getStatus() == null){
-                    throw new NullPointerException("Card object status may not be null");
-                }
+            if (!cardObject.isObservation()) {
+                Log.d(TAG + " - " + project.identity(), cardObject.getClass().getSimpleName() + " observation is disabled");
+                continue;
+            }
+
+            if(!ObservationHelper.isCardObjectOutOfDate(project, cardObject)){
                 Log.d(TAG + " - " + project.identity(), cardObject.getClass().getSimpleName() + " status [" + cardObject.getStatus() + "]");
                 continue;
             }
@@ -65,6 +67,10 @@ public class DetectorProject {
 
         Status overAllStatus = Status.OK;
         for (AbstractCardObject cardObject : project.getAllCardObjects()) {
+            if(!cardObject.isObservation()){
+                continue;
+            }
+
             if(cardObject.getStatus().equals(Status.ERROR) ||
                     cardObject.getStatus().equals(Status.NOT_AVAILABLE)){
                 overAllStatus = Status.ERROR;
