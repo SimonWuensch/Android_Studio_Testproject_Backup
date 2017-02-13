@@ -29,7 +29,7 @@ public class CardObjectModule extends AbstractCardObject{
     }
 
     public static void init(MainActivity activity, Project project){
-        if (project.getCardObjectModule() == null){
+        //if (project.getCardObjectModule() == null){
             DBCardObjectModule dbCardObject = activity.getSQLiteDB().cardObjectModule();
             if (dbCardObject.getCount(project.get_id()) == 0) {
                 CardObjectModule cardObject = new CardObjectModule(project);
@@ -38,7 +38,7 @@ public class CardObjectModule extends AbstractCardObject{
             }else{
                 project.setCardObjectModule(dbCardObject.getByProjectID(project.get_id()));
             }
-        }
+        //}
     }
 
     public List<ResponseModule> getResponseModuleList() {

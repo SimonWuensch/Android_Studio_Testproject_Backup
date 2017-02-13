@@ -60,8 +60,8 @@ public class FragmentProjectListAdapter extends RecyclerView.Adapter<FragmentPro
 
     public void reloadCardViews(){
         for(Project project : viewHolderMap.keySet()){
+            project.initCardObjects((MainActivity)fragment.getActivity());
             ObservationHelper.setLastObservationTimeToOLD((MainActivity) fragment.getActivity(), project);
-            ((MainActivity) fragment.getActivity()).getSQLiteDB().project().updateLastObservationTime(project);
 
             FragmentProjectListViewHolder viewHolder = viewHolderMap.get(project);
             boolean isLast = project.equals(viewHolderMap.keySet().toArray()[viewHolderMap.keySet().size()-1]);

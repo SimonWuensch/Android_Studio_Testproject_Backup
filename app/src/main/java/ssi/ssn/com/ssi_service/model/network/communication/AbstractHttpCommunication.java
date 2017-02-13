@@ -1,5 +1,7 @@
 package ssi.ssn.com.ssi_service.model.network.communication;
 
+import android.util.Log;
+
 import ssi.ssn.com.ssi_service.model.network.DefaultResponse;
 import ssi.ssn.com.ssi_service.model.network.handler.CookieHandler;
 import ssi.ssn.com.ssi_service.test.TestRestResponse;
@@ -15,7 +17,7 @@ public class AbstractHttpCommunication {
     protected CookieHandler cookieHandler;
     protected String address;
 
-    private boolean isTestVersion = false;
+    private boolean isTestVersion = true;
     private TestRestResponse testRestResponse = new VersionRest_2_0_9_0();
 
     public AbstractHttpCommunication(CookieHandler cookieHandler, String address) {
@@ -29,6 +31,7 @@ public class AbstractHttpCommunication {
 
     public DefaultResponse sendRequest(boolean resetCookie) {
         if(isTestVersion){
+            Log.wtf("TEST" + " " + getClass().getSimpleName(), "[GET DefaultResponse] Address: [" + address + "], Result: [" + testRestResponse.getResponseByAddress(address) + "]");
             String testResponse = testRestResponse.getResponseByAddress(address);
             return new DefaultResponse(200, testResponse);
         }
@@ -37,6 +40,7 @@ public class AbstractHttpCommunication {
 
     public int exists() {
         if(isTestVersion){
+            Log.wtf("TEST" + " " + getClass().getSimpleName(), "[GET URL EXISTS] Address: [" + address + "], Code: [" + 200 + "]");
             return 200;
         }
         return send();

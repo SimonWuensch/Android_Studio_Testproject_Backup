@@ -29,7 +29,7 @@ public class CardObjectComponent extends AbstractCardObject{
     }
 
     public static void init(MainActivity activity, Project project) {
-        if (project.getCardObjectComponent() == null) {
+        //if (project.getCardObjectComponent() == null) {
             DBCardObjectComponent dbCardObject = activity.getSQLiteDB().cardObjectComponent();
             if (dbCardObject.getCount(project.get_id()) == 0) {
                 CardObjectComponent cardObject = new CardObjectComponent(project);
@@ -38,7 +38,7 @@ public class CardObjectComponent extends AbstractCardObject{
             } else {
                 project.setCardObjectComponent(dbCardObject.getByProjectID(project.get_id()));
             }
-        }
+        //}
     }
 
     public List<ResponseComponent> getResponseComponentList() {
