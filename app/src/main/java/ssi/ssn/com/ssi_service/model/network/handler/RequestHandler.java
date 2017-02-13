@@ -1,11 +1,8 @@
 package ssi.ssn.com.ssi_service.model.network.handler;
 
-import android.os.AsyncTask;
-
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 import ssi.ssn.com.ssi_service.model.data.source.Project;
 import ssi.ssn.com.ssi_service.model.network.request.RequestApplication;
@@ -35,12 +32,12 @@ public class RequestHandler {
         return new RequestHandler(executor);
     }
 
-    public ExecutorService getExecutor(){
+    public ExecutorService getExecutor() {
         return executor;
     }
 
-    private CookieHandler getCookieHandler(Project project){
-        if(!cookieHandlerMap.containsKey(project.get_id())){
+    private CookieHandler getCookieHandler(Project project) {
+        if (!cookieHandlerMap.containsKey(project.get_id())) {
             cookieHandlerMap.put(project.get_id(), new CookieHandler());
         }
         return cookieHandlerMap.get(project.get_id());

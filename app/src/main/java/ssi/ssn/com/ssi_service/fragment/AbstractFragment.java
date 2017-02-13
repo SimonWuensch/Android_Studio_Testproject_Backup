@@ -6,7 +6,6 @@ import android.text.TextWatcher;
 import android.widget.EditText;
 
 import ssi.ssn.com.ssi_service.activity.MainActivity;
-import ssi.ssn.com.ssi_service.model.database.DBProject;
 import ssi.ssn.com.ssi_service.model.database.SQLiteDB;
 
 public class AbstractFragment extends Fragment {

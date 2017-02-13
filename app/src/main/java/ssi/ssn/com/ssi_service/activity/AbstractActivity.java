@@ -20,18 +20,18 @@ import ssi.ssn.com.ssi_service.fragment.projectlist.FragmentProjectList;
 import ssi.ssn.com.ssi_service.model.data.source.Project;
 import ssi.ssn.com.ssi_service.model.database.SQLiteDB;
 import ssi.ssn.com.ssi_service.model.network.handler.RequestHandler;
+import ssi.ssn.com.ssi_service.model.notification.AndroidNotificationHelper;
 
 public class AbstractActivity extends Activity {
 
     public static String TAG = AbstractActivity.class.getSimpleName();
 
     public static String ACCEPTED_PROJECT_VERSION = "2.";
-
-    private ExecutorService executor;
-
     protected SQLiteDB sqliteDB;
     protected RequestHandler requestHandler;
+    protected AndroidNotificationHelper androidNotificationHelper;
     protected View loadingView;
+    private ExecutorService executor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,24 +39,25 @@ public class AbstractActivity extends Activity {
         executor = Executors.newSingleThreadExecutor();
         requestHandler = RequestHandler.initRequestHandler(executor);
         sqliteDB = new SQLiteDB(this);
+        androidNotificationHelper = new AndroidNotificationHelper(this);
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-            new AsyncTask<Object, Void, Object>() {
-                @Override
-                protected Object doInBackground(Object... objects) {
-                    List<Project> projects = getSQLiteDB().project().getALL();
-                    Log.d(TAG, "Start sending request logout for [" + projects.size() + "]");
-                    for (Project project : projects)
+        new AsyncTask<Object, Void, Object>() {
+            @Override
+            protected Object doInBackground(Object... objects) {
+                List<Project> projects = getSQLiteDB().project().getALL();
+                Log.d(TAG, "Start sending request logout for [" + projects.size() + "]");
+                for (Project project : projects)
                     getRequestHandler().sendRequestLogout(project);
-                    return null;
-                }
-            }.execute();
+                return null;
+            }
+        }.execute();
     }
 
-    public ExecutorService getExecutor(){
+    public ExecutorService getExecutor() {
         return executor;
     }
 
@@ -66,6 +67,10 @@ public class AbstractActivity extends Activity {
 
     public RequestHandler getRequestHandler() {
         return requestHandler;
+    }
+
+    public AndroidNotificationHelper getAndroidNotificationHelper() {
+        return androidNotificationHelper;
     }
 
     public void setLoadingViewVisible(boolean isVisible) {
@@ -112,32 +117,20 @@ public class AbstractActivity extends Activity {
         Log.i(getClass().getSimpleName(), "Show Fragment [" + fragmentProjectList.TAG + "].");
     }
 
-    public void showLaunchBoardFragment(final Project project) {
-        requestHandler.sendRequestLoginWithSessionCurrentCheck(project);
-        final ExecutorService executor = requestHandler.getExecutor();
-        new AsyncTask<Object, Void, Object>(){
-            @Override
-            protected Object doInBackground(Object... objects) {
-                return null;
-            }
-
-            @Override
-            protected void onPostExecute(Object o) {
-                FragmentLaunchBoard fragmentLaunchBoard = FragmentLaunchBoard.newInstance(project);
-                getFragmentManager()
-                        .beginTransaction()
-                        .replace(R.id.activity_main_fragment_container,
-                                fragmentLaunchBoard,
-                                fragmentLaunchBoard.TAG)
-                        .addToBackStack(FragmentLaunchBoard.TAG)
-                        .commit();
-                Log.i(getClass().getSimpleName(), "Show Fragment [" + fragmentLaunchBoard.TAG + "].");
-            }
-        }.executeOnExecutor(executor);
+    public void showLaunchBoardFragment(long projectID) {
+        FragmentLaunchBoard fragmentLaunchBoard = FragmentLaunchBoard.newInstance(projectID);
+        getFragmentManager()
+                .beginTransaction()
+                .replace(R.id.activity_main_fragment_container,
+                        fragmentLaunchBoard,
+                        fragmentLaunchBoard.TAG)
+                .addToBackStack(FragmentLaunchBoard.TAG)
+                .commit();
+        Log.i(getClass().getSimpleName(), "Show Fragment [" + fragmentLaunchBoard.TAG + "].");
     }
 
-    public void showModuleListFragment(Project project) {
-        FragmentModuleList fragmentModuleList = FragmentModuleList.newInstance(project);
+    public void showModuleListFragment(long projectID) {
+        FragmentModuleList fragmentModuleList = FragmentModuleList.newInstance(projectID);
         getFragmentManager()
                 .beginTransaction()
                 .replace(R.id.activity_main_fragment_container,
@@ -148,8 +141,8 @@ public class AbstractActivity extends Activity {
         Log.i(getClass().getSimpleName(), "Show Fragment [" + fragmentModuleList.TAG + "].");
     }
 
-    public void showComponentListFragment(Project project) {
-        FragmentComponentList fragmentComponentList = FragmentComponentList.newInstance(project);
+    public void showComponentListFragment(long projectID) {
+        FragmentComponentList fragmentComponentList = FragmentComponentList.newInstance(projectID);
         getFragmentManager()
                 .beginTransaction()
                 .replace(R.id.activity_main_fragment_container,

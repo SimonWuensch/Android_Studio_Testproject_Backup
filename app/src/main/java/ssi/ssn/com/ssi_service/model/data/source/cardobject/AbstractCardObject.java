@@ -1,8 +1,5 @@
 package ssi.ssn.com.ssi_service.model.data.source.cardobject;
 
-import android.app.Activity;
-import android.view.View;
-
 import com.owlike.genson.annotation.JsonIgnore;
 
 import ssi.ssn.com.ssi_service.activity.MainActivity;
@@ -29,7 +26,7 @@ public class AbstractCardObject {
     public AbstractCardObject() {
     }
 
-    public static void init(MainActivity activity, Project project){
+    public static void init(MainActivity activity, Project project) {
         throw new NullPointerException("No initialization settings specified");
     }
 

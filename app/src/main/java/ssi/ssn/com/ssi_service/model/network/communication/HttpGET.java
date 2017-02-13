@@ -12,7 +12,7 @@ import ssi.ssn.com.ssi_service.model.helper.FormatHelper;
 import ssi.ssn.com.ssi_service.model.network.DefaultResponse;
 import ssi.ssn.com.ssi_service.model.network.handler.CookieHandler;
 
-public class HttpGET extends AbstractHttpCommunication{
+public class HttpGET extends AbstractHttpCommunication {
 
     private static String TAG = HttpGET.class.getSimpleName();
 

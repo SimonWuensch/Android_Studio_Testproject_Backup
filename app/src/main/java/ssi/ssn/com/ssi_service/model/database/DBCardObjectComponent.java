@@ -12,16 +12,14 @@ import android.util.Log;
 import ssi.ssn.com.ssi_service.model.data.source.Status;
 import ssi.ssn.com.ssi_service.model.data.source.cardobject.AbstractCardObject;
 import ssi.ssn.com.ssi_service.model.data.source.cardobject.CardObjectComponent;
-import ssi.ssn.com.ssi_service.model.data.source.cardobject.CardObjectModule;
 import ssi.ssn.com.ssi_service.model.helper.JsonHelper;
 
-public class DBCardObjectComponent extends SQLiteOpenHelper implements DBCardObject{
-
-    private final String TAG = DBCardObjectComponent.class.getSimpleName();
+public class DBCardObjectComponent extends SQLiteOpenHelper implements DBCardObject {
 
     private static final String DATABASE_NAME = "service_ssi.db";
-
     private static final String TABLE_COMPONENT = "cardObjectComponent";
+    public static final String DROP_TABLE_CARD_OBJECT_COMPONENT = //
+            "DROP TABLE IF EXISTS " + TABLE_COMPONENT;
     private static final String _ID = "_id";
     private static final String _ID_PROJECT = "_id_project";
     private static final String LAST_OBSERVATION_TIME = "lastObservationTime";
@@ -39,9 +37,7 @@ public class DBCardObjectComponent extends SQLiteOpenHelper implements DBCardObj
                     + STATUS + " NUMERIC, " //
                     + JSON_COMPONENT + " TEXT" +
                     ");";
-
-    public static final String DROP_TABLE_CARD_OBJECT_COMPONENT = //
-            "DROP TABLE IF EXISTS " + TABLE_COMPONENT;
+    private final String TAG = DBCardObjectComponent.class.getSimpleName();
 
     public DBCardObjectComponent(int version, Context context) {
         super(context, DATABASE_NAME, null, version);
@@ -61,10 +57,10 @@ public class DBCardObjectComponent extends SQLiteOpenHelper implements DBCardObj
 
     @Override
     public void add(AbstractCardObject cardObject) {
-        if(getCount(cardObject.get_id_project()) != 0){
+        if (getCount(cardObject.get_id_project()) != 0) {
             try {
                 throw new Exception("Only one component per project may exist");
-            }catch (Throwable t){
+            } catch (Throwable t) {
                 t.printStackTrace();
                 return;
             }
@@ -106,18 +102,18 @@ public class DBCardObjectComponent extends SQLiteOpenHelper implements DBCardObj
         if (cursor != null)
             cursor.moveToFirst();
 
-            String json = cursor.getString(cursor.getColumnIndex(JSON_COMPONENT));
-            CardObjectComponent cardObject = (CardObjectComponent) JsonHelper.fromJsonGeneric(CardObjectComponent.class, json);
-            cardObject.set_id(cursor.getInt(cursor.getColumnIndex(_ID)));
-            cardObject.set_id_project(cursor.getInt(cursor.getColumnIndex(_ID_PROJECT)));
-            cardObject.setObservation(cursor.getInt(cursor.getColumnIndex(IS_OBSERVATION)) == 1 ? true : false);
-            cardObject.setLastObservationTime(cursor.getLong(cursor.getColumnIndex(LAST_OBSERVATION_TIME)));
+        String json = cursor.getString(cursor.getColumnIndex(JSON_COMPONENT));
+        CardObjectComponent cardObject = (CardObjectComponent) JsonHelper.fromJsonGeneric(CardObjectComponent.class, json);
+        cardObject.set_id(cursor.getInt(cursor.getColumnIndex(_ID)));
+        cardObject.set_id_project(cursor.getInt(cursor.getColumnIndex(_ID_PROJECT)));
+        cardObject.setObservation(cursor.getInt(cursor.getColumnIndex(IS_OBSERVATION)) == 1 ? true : false);
+        cardObject.setLastObservationTime(cursor.getLong(cursor.getColumnIndex(LAST_OBSERVATION_TIME)));
 
-            Status status = Status.getStatusByID(cursor.getInt(cursor.getColumnIndex(STATUS)));
-            cardObject.setStatus(status);
+        Status status = Status.getStatusByID(cursor.getInt(cursor.getColumnIndex(STATUS)));
+        cardObject.setStatus(status);
 
-            Log.d(TAG, "ID Project: " + cardObject.get_id_project() + "| GET: Card Object Component [" + cardObject + "]");
-            return cardObject;
+        Log.d(TAG, "ID Project: " + cardObject.get_id_project() + "| GET: Card Object Component [" + cardObject + "]");
+        return cardObject;
     }
 
     // ** Update ******************************************************************************** //

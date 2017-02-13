@@ -17,12 +17,11 @@ import ssi.ssn.com.ssi_service.model.network.response.component.ResponseComponen
 
 public class DetectorCardObjectComponent {
 
-    private static String TAG = DetectorCardObjectComponent.class.getSimpleName();
-
-    private static String XML_START_TAG_COMPONENTS_MODULE = "components-module";
-    private static String XML_SEARCHED_TAG_SERVER = "server";
     public static String XML_ATTRIBUTE_MANAGE = "manage";
     public static String XML_ATTRIBUTE_ENABLED = "enabled";
+    private static String TAG = DetectorCardObjectComponent.class.getSimpleName();
+    private static String XML_START_TAG_COMPONENTS_MODULE = "components-module";
+    private static String XML_SEARCHED_TAG_SERVER = "server";
 
     public static List<XMLHelper.XMLObject> searchObjectsInResponseXML(String responseApplicationConfig) {
         XMLHelper xmlHelper = new XMLHelper(XML_START_TAG_COMPONENTS_MODULE,
@@ -105,9 +104,9 @@ public class DetectorCardObjectComponent {
         }
         cardObject.setStatus(overAllState);
         boolean isSuccessful = cardObject.getDBSQLiteCardObject(activity).update(cardObject);
-        if(!isSuccessful){
+        if (!isSuccessful) {
             isSuccessful = cardObject.getDBSQLiteCardObject(activity).update(cardObject);
-            if(!isSuccessful){
+            if (!isSuccessful) {
                 throw new NullPointerException("Can not update " + cardObject.getClass().getSimpleName() + " [" + cardObject + "]");
             }
         }

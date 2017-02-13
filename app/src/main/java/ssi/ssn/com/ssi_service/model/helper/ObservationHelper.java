@@ -46,7 +46,7 @@ public class ObservationHelper {
         return true;
     }
 
-    public static void setLastObservationTimeToNOW(MainActivity activity, Project project){
+    public static void setLastObservationTimeToNOW(MainActivity activity, Project project) {
         setLastObservationTime(activity, project, new Date().getTime());
     }
 

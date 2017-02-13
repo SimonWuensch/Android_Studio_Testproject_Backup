@@ -1,5 +1,7 @@
 package ssi.ssn.com.ssi_service.fragment.projectlist;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -16,11 +18,11 @@ import java.util.List;
 import ssi.ssn.com.ssi_service.R;
 import ssi.ssn.com.ssi_service.activity.MainActivity;
 import ssi.ssn.com.ssi_service.fragment.AbstractFragment;
+import ssi.ssn.com.ssi_service.fragment.modulelist.FragmentModuleList;
+import ssi.ssn.com.ssi_service.fragment.modulelist.FragmentModuleListNotification;
 import ssi.ssn.com.ssi_service.model.data.source.Project;
-import ssi.ssn.com.ssi_service.model.data.source.cardobject.AbstractCardObject;
-import ssi.ssn.com.ssi_service.model.helper.AndroidNotificationHelper;
-import ssi.ssn.com.ssi_service.model.helper.ObservationHelper;
 import ssi.ssn.com.ssi_service.model.helper.SourceHelper;
+import ssi.ssn.com.ssi_service.model.notification.AndroidNotificationHelper;
 
 public class FragmentProjectList extends AbstractFragment {
 
@@ -34,6 +36,7 @@ public class FragmentProjectList extends AbstractFragment {
     private FragmentProjectListAdapter mAdapter;
 
     private View rootView;
+
     public static FragmentProjectList newInstance() {
         FragmentProjectList fragment = new FragmentProjectList();
         return fragment;
@@ -51,8 +54,13 @@ public class FragmentProjectList extends AbstractFragment {
                 mAdapter.reloadCardViews();
 
                 //TODO delete after testing
-                AndroidNotificationHelper notificationHelper = new AndroidNotificationHelper();
-                notificationHelper.throwNotification(getActivity());
+                ((MainActivity)getActivity()).getAndroidNotificationHelper().throwNotification(
+                        getActivity(),
+                        new FragmentModuleListNotification().createResultIntent(getActivity(), projects.get(0).get_id()),
+                        R.drawable.icon_project,
+                        "Content Title",
+                        "Content Text",
+                        "Ticker....");
             }
         });
 

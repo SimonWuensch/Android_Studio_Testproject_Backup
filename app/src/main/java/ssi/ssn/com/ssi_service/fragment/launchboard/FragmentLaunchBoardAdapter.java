@@ -56,9 +56,9 @@ class FragmentLaunchBoardAdapter extends RecyclerView.Adapter<FragmentLaunchBoar
         return cardObjects.size();
     }
 
-    public void reloadCardViews(){
+    public void reloadCardViews() {
         ObservationHelper.setLastObservationTimeToOLD((MainActivity) fragment.getActivity(), project);
-        for(FragmentLaunchBoardViewHolder viewHolder : viewHolderMap.keySet()){
+        for (FragmentLaunchBoardViewHolder viewHolder : viewHolderMap.keySet()) {
             viewHolder.assignData(project, viewHolderMap.get(viewHolder));
         }
     }

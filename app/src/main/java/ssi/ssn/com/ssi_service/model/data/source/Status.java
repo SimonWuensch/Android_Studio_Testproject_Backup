@@ -29,14 +29,6 @@ public enum Status {
         this.color = color;
     }
 
-    public int getColor(Activity activity) {
-        return SourceHelper.getColor(activity, color);
-    }
-
-    public int getId() {
-        return id;
-    }
-
     public static Status getStatusByID(int id) {
         Map<Integer, Status> statusMap = new HashMap<Integer, Status>() {
             {
@@ -48,5 +40,13 @@ public enum Status {
             }
         };
         return statusMap.get(id);
+    }
+
+    public int getColor(Activity activity) {
+        return SourceHelper.getColor(activity, color);
+    }
+
+    public int getId() {
+        return id;
     }
 }

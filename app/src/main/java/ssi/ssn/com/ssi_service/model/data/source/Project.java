@@ -150,23 +150,23 @@ public class Project extends NetworkProject {
     // ** Card Objects *************************************************************************** //
 
     @JsonIgnore
-    public void setCardObjectModule(CardObjectModule cardObjectModule) {
-        this.cardObjectModule = cardObjectModule;
-    }
-
-    @JsonIgnore
-    public void setCardObjectComponent(CardObjectComponent cardObjectComponent) {
-        this.cardObjectComponent = cardObjectComponent;
-    }
-
-    @JsonIgnore
     public CardObjectModule getCardObjectModule() {
         return cardObjectModule;
     }
 
     @JsonIgnore
+    public void setCardObjectModule(CardObjectModule cardObjectModule) {
+        this.cardObjectModule = cardObjectModule;
+    }
+
+    @JsonIgnore
     public CardObjectComponent getCardObjectComponent() {
         return cardObjectComponent;
+    }
+
+    @JsonIgnore
+    public void setCardObjectComponent(CardObjectComponent cardObjectComponent) {
+        this.cardObjectComponent = cardObjectComponent;
     }
 
     @JsonIgnore

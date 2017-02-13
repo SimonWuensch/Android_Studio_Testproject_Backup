@@ -5,7 +5,7 @@ import ssi.ssn.com.ssi_service.model.network.DefaultResponse;
 import ssi.ssn.com.ssi_service.model.network.communication.HttpGET;
 import ssi.ssn.com.ssi_service.model.network.handler.CookieHandler;
 
-public class RequestApplication{
+public class RequestApplication {
 
     private static String TAG = RequestApplication.class.getSimpleName();
 

@@ -1,6 +1,8 @@
 package ssi.ssn.com.ssi_service.fragment.modulelist;
 
+import android.app.Activity;
 import android.app.Fragment;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -18,29 +20,27 @@ import ssi.ssn.com.ssi_service.model.data.source.Project;
 import ssi.ssn.com.ssi_service.model.data.source.cardobject.CardObjectModule;
 import ssi.ssn.com.ssi_service.model.helper.SourceHelper;
 import ssi.ssn.com.ssi_service.model.network.response.module.ResponseModule;
+import ssi.ssn.com.ssi_service.model.notification.AndroidNotificationHelper;
 
 public class FragmentModuleList extends Fragment {
 
     public static String TAG = FragmentModuleList.class.getSimpleName();
-
+    protected static String PROJECT_ID = TAG + "PROJECT_ID";
     private static int FRAGMENT_LAYOUT = R.layout.fragment_module_list;
     private static int RECYCLERVIEW = R.id.fragment_module_list_recycler_view;
     private static int CARDVIEW = R.layout.fragment_module_list_card_view;
-
-    private static String PROJECT_ID = TAG + "PROJECT_ID";
-
     private View rootView;
     private Project project;
     private List<ResponseModule> responseModuleList;
 
-    public static FragmentModuleList newInstance(Project project) {
-        if (project == null) {
+    public static FragmentModuleList newInstance(long projectID) {
+        if (projectID <= 0) {
             return new FragmentModuleList();
         }
 
         FragmentModuleList fragment = new FragmentModuleList();
         Bundle bundle = new Bundle();
-        bundle.putLong(PROJECT_ID, project.get_id());
+        bundle.putLong(PROJECT_ID, projectID);
         fragment.setArguments(bundle);
         return fragment;
     }

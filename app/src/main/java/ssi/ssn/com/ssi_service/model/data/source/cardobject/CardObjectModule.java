@@ -15,7 +15,7 @@ import ssi.ssn.com.ssi_service.model.database.DBCardObjectModule;
 import ssi.ssn.com.ssi_service.model.helper.SourceHelper;
 import ssi.ssn.com.ssi_service.model.network.response.module.ResponseModule;
 
-public class CardObjectModule extends AbstractCardObject{
+public class CardObjectModule extends AbstractCardObject {
 
     private List<ResponseModule> responseModuleList = new ArrayList<>();
 
@@ -28,16 +28,16 @@ public class CardObjectModule extends AbstractCardObject{
     public CardObjectModule() {
     }
 
-    public static void init(MainActivity activity, Project project){
+    public static void init(MainActivity activity, Project project) {
         //if (project.getCardObjectModule() == null){
-            DBCardObjectModule dbCardObject = activity.getSQLiteDB().cardObjectModule();
-            if (dbCardObject.getCount(project.get_id()) == 0) {
-                CardObjectModule cardObject = new CardObjectModule(project);
-                project.setCardObjectModule(cardObject);
-                dbCardObject.add(cardObject);
-            }else{
-                project.setCardObjectModule(dbCardObject.getByProjectID(project.get_id()));
-            }
+        DBCardObjectModule dbCardObject = activity.getSQLiteDB().cardObjectModule();
+        if (dbCardObject.getCount(project.get_id()) == 0) {
+            CardObjectModule cardObject = new CardObjectModule(project);
+            project.setCardObjectModule(cardObject);
+            dbCardObject.add(cardObject);
+        } else {
+            project.setCardObjectModule(dbCardObject.getByProjectID(project.get_id()));
+        }
         //}
     }
 
@@ -49,22 +49,22 @@ public class CardObjectModule extends AbstractCardObject{
         this.responseModuleList = responseModuleList;
     }
 
-    public void addResponseModule(ResponseModule responseModule){
+    public void addResponseModule(ResponseModule responseModule) {
         responseModuleList.add(responseModule);
     }
 
     @Override
-    public DBCardObject getDBSQLiteCardObject(MainActivity activity){
+    public DBCardObject getDBSQLiteCardObject(MainActivity activity) {
         return activity.getSQLiteDB().cardObjectModule();
     }
 
     @Override
-    public void loadFromNetwork(MainActivity activity, Project project){
+    public void loadFromNetwork(MainActivity activity, Project project) {
         DetectorCardObjectModule.loadFromNetwork(activity, project, this);
     }
 
     @Override
-    public void detectCardStatus(MainActivity activity){
+    public void detectCardStatus(MainActivity activity) {
         DetectorCardObjectModule.detectCardStatus(activity, this);
     }
 
@@ -73,7 +73,7 @@ public class CardObjectModule extends AbstractCardObject{
         if (getStatus().equals(Status.NOT_AVAILABLE) || getResponseModuleList().isEmpty()) {
             Toast.makeText(activity, SourceHelper.getString(activity, R.string.fragment_launch_board_error_module), Toast.LENGTH_SHORT).show();
         } else {
-            activity.showModuleListFragment(project);
+            activity.showModuleListFragment(project.get_id());
         }
     }
 }

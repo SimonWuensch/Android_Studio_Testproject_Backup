@@ -5,14 +5,13 @@ import android.util.Log;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-import ssi.ssn.com.ssi_service.model.extended.ExtendedAsyncTask;
 import ssi.ssn.com.ssi_service.model.helper.FormatHelper;
 
-public class HttpAddressExists extends AbstractHttpCommunication{
+public class HttpAddressExists extends AbstractHttpCommunication {
 
     private static String TAG = HttpAddressExists.class.getSimpleName();
 
-    public HttpAddressExists(String address){
+    public HttpAddressExists(String address) {
         super(address);
     }
 

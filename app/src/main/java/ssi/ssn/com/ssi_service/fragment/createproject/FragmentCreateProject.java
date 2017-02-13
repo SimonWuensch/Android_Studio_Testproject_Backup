@@ -101,8 +101,8 @@ public class FragmentCreateProject extends AbstractFragment {
     @Override
     public void onStop() {
         super.onStop();
-        for(AsyncTask task : asyncTaskList) {
-            if(task.getStatus().equals(AsyncTask.Status.RUNNING)){
+        for (AsyncTask task : asyncTaskList) {
+            if (task.getStatus().equals(AsyncTask.Status.RUNNING)) {
                 task.cancel(true);
             }
         }
@@ -299,7 +299,7 @@ public class FragmentCreateProject extends AbstractFragment {
                             return;
                         }
 
-                        new AsyncTask<Object, Void, Object>(){
+                        new AsyncTask<Object, Void, Object>() {
                             @Override
                             protected Object doInBackground(Object... objects) {
                                 requestHandler.sendRequestApplication(project);
@@ -350,7 +350,7 @@ public class FragmentCreateProject extends AbstractFragment {
 
     public void onClickProjectAddUpdate(final Project project) {
         setLoadingViewVisible(true);
-        asyncTaskList.add(new AsyncTask<Object, Void, Integer>(){
+        asyncTaskList.add(new AsyncTask<Object, Void, Integer>() {
             @Override
             protected Integer doInBackground(Object... objects) {
                 HttpAddressExists httpAddressExists = new HttpAddressExists(project.getServerAddress());
@@ -376,7 +376,7 @@ public class FragmentCreateProject extends AbstractFragment {
                     return;
                 }
 
-                asyncTaskList.add(new AsyncTask<Object, Void, Object>(){
+                asyncTaskList.add(new AsyncTask<Object, Void, Object>() {
                     @Override
                     protected Object doInBackground(Object... objects) {
                         requestHandler.sendRequestApplication(project);
@@ -401,7 +401,7 @@ public class FragmentCreateProject extends AbstractFragment {
                     protected void onPostExecute(Object o) {
                         if (project.getDefaultResponseLogin().getCode() != 200) {
                             Toast.makeText(getActivity(), SourceHelper.getString(getActivity(), R.string.fragment_create_project_message_login_data_not_correct), Toast.LENGTH_SHORT).show();
-                        }else{
+                        } else {
                             project.loadFromNetwork();
                             switch (fragmentStatus) {
                                 case ADD:

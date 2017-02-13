@@ -14,13 +14,12 @@ import ssi.ssn.com.ssi_service.model.data.source.cardobject.AbstractCardObject;
 import ssi.ssn.com.ssi_service.model.data.source.cardobject.CardObjectModule;
 import ssi.ssn.com.ssi_service.model.helper.JsonHelper;
 
-public class DBCardObjectModule extends SQLiteOpenHelper implements DBCardObject{
-
-    private final String TAG = DBCardObjectModule.class.getSimpleName();
+public class DBCardObjectModule extends SQLiteOpenHelper implements DBCardObject {
 
     private static final String DATABASE_NAME = "service_ssi.db";
-
     private static final String TABLE_MODULE = "cardObjectModule";
+    public static final String DROP_TABLE_CARD_OBJECT_MODULE = //
+            "DROP TABLE IF EXISTS " + TABLE_MODULE;
     private static final String _ID = "_id";
     private static final String _ID_PROJECT = "_id_project";
     private static final String LAST_OBSERVATION_TIME = "lastObservationTime";
@@ -38,9 +37,7 @@ public class DBCardObjectModule extends SQLiteOpenHelper implements DBCardObject
                     + STATUS + " NUMERIC, " //
                     + JSON_MODULE + " TEXT" +
                     ");";
-
-    public static final String DROP_TABLE_CARD_OBJECT_MODULE = //
-            "DROP TABLE IF EXISTS " + TABLE_MODULE;
+    private final String TAG = DBCardObjectModule.class.getSimpleName();
 
     public DBCardObjectModule(int version, Context context) {
         super(context, DATABASE_NAME, null, version);
@@ -60,10 +57,10 @@ public class DBCardObjectModule extends SQLiteOpenHelper implements DBCardObject
 
     @Override
     public void add(AbstractCardObject cardObject) {
-        if(getCount(cardObject.get_id_project()) != 0){
+        if (getCount(cardObject.get_id_project()) != 0) {
             try {
                 throw new Exception("Only one module per project may exist");
-            }catch (Throwable t){
+            } catch (Throwable t) {
                 t.printStackTrace();
                 return;
             }

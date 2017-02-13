@@ -8,11 +8,8 @@ import ssi.ssn.com.ssi_service.model.network.handler.CookieHandler;
 public class RequestModule {
 
     private static String TAG = RequestOs.class.getSimpleName();
-
-    private static String ADDRESS = "/services/{name}/state";
-
     public static String ADDITIONAL_MODULE_NAME = TAG + "ADDITIONAL_MODULE_NAME";
-
+    private static String ADDRESS = "/services/{name}/state";
     private Project project;
     private String name;
 

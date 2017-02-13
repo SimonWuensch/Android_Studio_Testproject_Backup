@@ -12,8 +12,6 @@ import android.widget.Toast;
 import ssi.ssn.com.ssi_service.R;
 import ssi.ssn.com.ssi_service.activity.MainActivity;
 import ssi.ssn.com.ssi_service.model.data.source.Project;
-import ssi.ssn.com.ssi_service.model.data.source.Status;
-import ssi.ssn.com.ssi_service.model.helper.ObservationHelper;
 import ssi.ssn.com.ssi_service.model.helper.SourceHelper;
 
 
@@ -111,7 +109,7 @@ class FragmentProjectListViewHolder extends RecyclerView.ViewHolder {
             public void onClick(View v) {
                 if (loadingView.getVisibility() == View.GONE) {
                     if (!project.getStatus().equals(ssi.ssn.com.ssi_service.model.data.source.Status.NOT_AVAILABLE)) {
-                        activity.showLaunchBoardFragment(project);
+                        activity.showLaunchBoardFragment(project.get_id());
                     } else {
                         Toast.makeText(activity, SourceHelper.getString(activity, R.string.fragment_project_list_error_project_not_available), Toast.LENGTH_SHORT).show();
                     }

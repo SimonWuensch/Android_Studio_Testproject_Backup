@@ -8,18 +8,18 @@ public class SourceHelper {
 
     private static String LOADING_ERROR = "LOADING_ERROR";
 
-    public static String getString(Activity activity, int source){
-        try{
+    public static String getString(Activity activity, int source) {
+        try {
             return activity.getString(source);
-        }catch (Throwable t){
+        } catch (Throwable t) {
             return LOADING_ERROR;
         }
     }
 
-    public static int getColor(Activity activity, int source){
-        try{
+    public static int getColor(Activity activity, int source) {
+        try {
             return ContextCompat.getColor(activity, source);
-        }catch (Throwable t){
+        } catch (Throwable t) {
             return Color.LTGRAY;
         }
     }

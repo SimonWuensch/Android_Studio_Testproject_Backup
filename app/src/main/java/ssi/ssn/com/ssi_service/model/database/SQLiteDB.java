@@ -16,15 +16,15 @@ public class SQLiteDB {
         dbCardObjectComponent = new DBCardObjectComponent(DATABASE_VERSION, context);
     }
 
-    public DBProject project(){
+    public DBProject project() {
         return dbProject;
     }
 
-    public DBCardObjectModule cardObjectModule(){
+    public DBCardObjectModule cardObjectModule() {
         return dbCardObjectModule;
     }
 
-    public DBCardObjectComponent cardObjectComponent(){
+    public DBCardObjectComponent cardObjectComponent() {
         return dbCardObjectComponent;
     }
 }

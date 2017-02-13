@@ -25,12 +25,12 @@ public class AbstractHttpCommunication {
         this.address = address;
     }
 
-    public AbstractHttpCommunication(String address){
+    public AbstractHttpCommunication(String address) {
         this.address = address;
     }
 
     public DefaultResponse sendRequest(boolean resetCookie) {
-        if(isTestVersion){
+        if (isTestVersion) {
             Log.wtf("TEST" + " " + getClass().getSimpleName(), "[GET DefaultResponse] Address: [" + address + "], Result: [" + testRestResponse.getResponseByAddress(address) + "]");
             String testResponse = testRestResponse.getResponseByAddress(address);
             return new DefaultResponse(200, testResponse);
@@ -39,18 +39,18 @@ public class AbstractHttpCommunication {
     }
 
     public int exists() {
-        if(isTestVersion){
+        if (isTestVersion) {
             Log.wtf("TEST" + " " + getClass().getSimpleName(), "[GET URL EXISTS] Address: [" + address + "], Code: [" + 200 + "]");
             return 200;
         }
         return send();
     }
 
-    protected DefaultResponse send(boolean resetCookie){
+    protected DefaultResponse send(boolean resetCookie) {
         throw new NullPointerException("No request settings found...");
     }
 
-    protected int send(){
+    protected int send() {
         throw new NullPointerException("No request settings found...");
     }
 

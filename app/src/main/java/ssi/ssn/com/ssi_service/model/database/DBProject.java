@@ -23,13 +23,14 @@ public class DBProject extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "service_ssi.db";
 
     private static final String TABLE_PROJECT = "project";
+    public static final String DROP_TABLE_PROJECT = //
+            "DROP TABLE IF EXISTS " + TABLE_PROJECT;
     private static final String _ID = "_id";
     private static final String OBSERVATION_INTERVAL = "observationInterval";
     private static final String LAST_OBSERVATION_TIME = "lastObservationTime";
     private static final String IS_OBSERVATION = "isObservation";
     private static final String STATUS = "status";
     private static final String JSON_PROJECT = "jsonProject";
-
     public static final String CREATE_TABLE_PROJECT = //
             "CREATE TABLE "//
                     + TABLE_PROJECT + "("
@@ -40,9 +41,6 @@ public class DBProject extends SQLiteOpenHelper {
                     + STATUS + " NUMERIC, " //
                     + JSON_PROJECT + " TEXT" +
                     ");";
-
-    public static final String DROP_TABLE_PROJECT = //
-            "DROP TABLE IF EXISTS " + TABLE_PROJECT;
 
     public DBProject(int version, Context context) {
         super(context, DATABASE_NAME, null, version);

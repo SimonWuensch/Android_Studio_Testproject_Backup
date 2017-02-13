@@ -1,7 +1,5 @@
 package ssi.ssn.com.ssi_service.model.data.source;
 
-import android.util.Log;
-
 import com.owlike.genson.annotation.JsonIgnore;
 
 import java.util.ArrayList;
@@ -114,10 +112,12 @@ public class NetworkProject {
     public void setDefaultResponseSessionsCurrent(DefaultResponse defaultResponseSessionsCurrent) {
         this.defaultResponseSessionsCurrent = defaultResponseSessionsCurrent;
     }
+
     @JsonIgnore
     public List<DefaultResponse> getDefaultResponseComponentList() {
         return defaultResponseComponentList == null ? new ArrayList<DefaultResponse>() : defaultResponseComponentList;
     }
+
     @JsonIgnore
     public void setDefaultResponseComponentList(List<DefaultResponse> defaultResponseComponentList) {
         this.defaultResponseComponentList = defaultResponseComponentList;
@@ -129,10 +129,12 @@ public class NetworkProject {
         }
         defaultResponseComponentList.add(defaultResponseComponent);
     }
+
     @JsonIgnore
     public List<DefaultResponse> getDefaultResponseModuleList() {
         return defaultResponseModuleList == null ? new ArrayList<DefaultResponse>() : defaultResponseModuleList;
     }
+
     @JsonIgnore
     public void setDefaultResponseModuleList(List<DefaultResponse> defaultResponseModuleList) {
         this.defaultResponseModuleList = defaultResponseModuleList;

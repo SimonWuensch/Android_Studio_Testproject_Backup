@@ -35,12 +35,12 @@ public class DetectorProject {
         project.setApplicationStatus(ssi.ssn.com.ssi_service.model.data.source.Status.OK);
     }
 
-    public static void detectProjectStatus(MainActivity activity, Project project){
+    public static void detectProjectStatus(MainActivity activity, Project project) {
         Log.d(TAG, "Start detecting project status...");
         project.initCardObjects(activity);
 
         project.detectApplicationStatus(activity);
-        if(!project.getApplicationStatus().equals(Status.OK)){
+        if (!project.getApplicationStatus().equals(Status.OK)) {
             project.setStatus(project.getApplicationStatus());
             activity.getSQLiteDB().project().update(project);
             for (AbstractCardObject cardObject : project.getAllCardObjects()) {
@@ -56,7 +56,7 @@ public class DetectorProject {
                 continue;
             }
 
-            if(!ObservationHelper.isCardObjectOutOfDate(project, cardObject)){
+            if (!ObservationHelper.isCardObjectOutOfDate(project, cardObject)) {
                 Log.d(TAG + " - " + project.identity(), cardObject.getClass().getSimpleName() + " status [" + cardObject.getStatus() + "]");
                 continue;
             }
@@ -67,12 +67,12 @@ public class DetectorProject {
 
         Status overAllStatus = Status.OK;
         for (AbstractCardObject cardObject : project.getAllCardObjects()) {
-            if(!cardObject.isObservation()){
+            if (!cardObject.isObservation()) {
                 continue;
             }
 
-            if(cardObject.getStatus().equals(Status.ERROR) ||
-                    cardObject.getStatus().equals(Status.NOT_AVAILABLE)){
+            if (cardObject.getStatus().equals(Status.ERROR) ||
+                    cardObject.getStatus().equals(Status.NOT_AVAILABLE)) {
                 overAllStatus = Status.ERROR;
             }
         }

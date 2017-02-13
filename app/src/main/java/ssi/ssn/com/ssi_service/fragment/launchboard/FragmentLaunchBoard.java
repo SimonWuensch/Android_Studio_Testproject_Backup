@@ -1,5 +1,7 @@
 package ssi.ssn.com.ssi_service.fragment.launchboard;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -27,17 +29,15 @@ import ssi.ssn.com.ssi_service.model.helper.ObservationHelper;
 import ssi.ssn.com.ssi_service.model.helper.SourceHelper;
 import ssi.ssn.com.ssi_service.model.network.handler.RequestHandler;
 import ssi.ssn.com.ssi_service.model.network.response.application.ResponseApplication;
+import ssi.ssn.com.ssi_service.model.notification.AndroidNotificationHelper;
 
-public class FragmentLaunchBoard extends AbstractFragment {
+public class FragmentLaunchBoard extends AbstractFragment{
 
     public static String TAG = FragmentLaunchBoard.class.getSimpleName();
-
+    protected static String PROJECT_ID = TAG + "PROJECT_ID";
     private static int FRAGMENT_LAYOUT = R.layout.fragment_launch_board;
     private static int RECYCLERVIEW = R.id.fragment_launch_board_recycler_view;
     private static int CARDVIEW = R.layout.fragment_launch_board_card_view;
-
-    private static String PROJECT_ID = TAG + "PROJECT_ID";
-
     private View rootView;
     private RelativeLayout rlProjectStateBackground;
     private TextView tvProjectStatus;
@@ -49,14 +49,14 @@ public class FragmentLaunchBoard extends AbstractFragment {
     private Project project;
     private List<AbstractCardObject> cardObjects;
 
-    public static FragmentLaunchBoard newInstance(Project project) {
-        if (project == null) {
+    public static FragmentLaunchBoard newInstance(long projectID) {
+        if (projectID <= 0) {
             return new FragmentLaunchBoard();
         }
 
         FragmentLaunchBoard fragment = new FragmentLaunchBoard();
         Bundle bundle = new Bundle();
-        bundle.putLong(PROJECT_ID, project.get_id());
+        bundle.putLong(PROJECT_ID, projectID);
         fragment.setArguments(bundle);
         return fragment;
     }
@@ -70,6 +70,7 @@ public class FragmentLaunchBoard extends AbstractFragment {
         project = ((MainActivity) getActivity()).getSQLiteDB().project().getByID(projectID);
         project.initCardObjects((MainActivity) getActivity());
         cardObjects = project.getAllCardObjects();
+        ((MainActivity) getActivity()).getRequestHandler().sendRequestLoginWithSessionCurrentCheck(project);
     }
 
     @Override
@@ -167,18 +168,5 @@ public class FragmentLaunchBoard extends AbstractFragment {
                 rlLoadingView.setVisibility(View.GONE);
             }
         }.execute();
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        /*for (AbstractGenerator cardObject : cardObjects) {
-            cardObject.detectCardStatus();
-        }*/
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
     }
 }

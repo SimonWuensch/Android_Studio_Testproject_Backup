@@ -33,8 +33,8 @@ public class DefaultResponse {
         this.result = result;
     }
 
-    public void addAdditional(String key, String value){
-        if (additional == null){
+    public void addAdditional(String key, String value) {
+        if (additional == null) {
             additional = new HashMap<>();
         }
         additional.put(key, value);

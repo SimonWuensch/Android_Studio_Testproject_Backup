@@ -97,7 +97,7 @@ public class DetectorCardObjectModule {
     }
 
     public static void detectCardStatus(MainActivity activity, CardObjectModule cardObject) {
-        Log.d(TAG + " Project ID: " + cardObject.get_id_project(), cardObject.getClass().getSimpleName() + " start detecting card object module status..." );
+        Log.d(TAG + " Project ID: " + cardObject.get_id_project(), cardObject.getClass().getSimpleName() + " start detecting card object module status...");
         Status overAllState = Status.OK;
         List<ResponseModule> responseModuleList = cardObject.getResponseModuleList();
         if (responseModuleList.isEmpty()) {
@@ -115,13 +115,13 @@ public class DetectorCardObjectModule {
         }
         cardObject.setStatus(overAllState);
         boolean isSuccessful = cardObject.getDBSQLiteCardObject(activity).update(cardObject);
-        if(!isSuccessful){
+        if (!isSuccessful) {
             isSuccessful = cardObject.getDBSQLiteCardObject(activity).update(cardObject);
-            if(!isSuccessful){
+            if (!isSuccessful) {
                 throw new NullPointerException("Can not update " + cardObject.getClass().getSimpleName() + " [" + cardObject + "]");
             }
         }
-        Log.i(TAG + " Project ID: " + cardObject.get_id_project(),  cardObject.getClass().getSimpleName() + " status: " + cardObject.getStatus());
+        Log.i(TAG + " Project ID: " + cardObject.get_id_project(), cardObject.getClass().getSimpleName() + " status: " + cardObject.getStatus());
     }
 }
 

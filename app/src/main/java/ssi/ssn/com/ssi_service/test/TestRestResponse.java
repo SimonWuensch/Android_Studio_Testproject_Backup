@@ -1,9 +1,5 @@
 package ssi.ssn.com.ssi_service.test;
 
-import android.util.Log;
-
-import junit.framework.Test;
-
 import java.util.HashMap;
 import java.util.Map;
 
@@ -14,23 +10,23 @@ public class TestRestResponse {
     private String version;
     private Map<String, String> responseList = new HashMap<>();
 
-    public TestRestResponse(String version){
+    public TestRestResponse(String version) {
         this.version = version;
     }
 
-    public String getVersion(){
+    public String getVersion() {
         return version;
     }
 
-    public String getResponseByAddress(String address){
+    public String getResponseByAddress(String address) {
         String url = "/services" + address.split("/services")[1];
-        if(!responseList.containsKey(url)){
+        if (!responseList.containsKey(url)) {
             throw new NullPointerException("[Version: " + version + "] No response found for address [" + address + "]");
         }
         return responseList.get(url);
     }
 
-    public void addResponse(String address, String response){
+    public void addResponse(String address, String response) {
         responseList.put(address, response);
     }
 

@@ -15,7 +15,7 @@ import ssi.ssn.com.ssi_service.model.database.DBCardObjectComponent;
 import ssi.ssn.com.ssi_service.model.helper.SourceHelper;
 import ssi.ssn.com.ssi_service.model.network.response.component.ResponseComponent;
 
-public class CardObjectComponent extends AbstractCardObject{
+public class CardObjectComponent extends AbstractCardObject {
 
     private List<ResponseComponent> responseComponentList = new ArrayList<>();
 
@@ -30,14 +30,14 @@ public class CardObjectComponent extends AbstractCardObject{
 
     public static void init(MainActivity activity, Project project) {
         //if (project.getCardObjectComponent() == null) {
-            DBCardObjectComponent dbCardObject = activity.getSQLiteDB().cardObjectComponent();
-            if (dbCardObject.getCount(project.get_id()) == 0) {
-                CardObjectComponent cardObject = new CardObjectComponent(project);
-                project.setCardObjectComponent(cardObject);
-                dbCardObject.add(cardObject);
-            } else {
-                project.setCardObjectComponent(dbCardObject.getByProjectID(project.get_id()));
-            }
+        DBCardObjectComponent dbCardObject = activity.getSQLiteDB().cardObjectComponent();
+        if (dbCardObject.getCount(project.get_id()) == 0) {
+            CardObjectComponent cardObject = new CardObjectComponent(project);
+            project.setCardObjectComponent(cardObject);
+            dbCardObject.add(cardObject);
+        } else {
+            project.setCardObjectComponent(dbCardObject.getByProjectID(project.get_id()));
+        }
         //}
     }
 
@@ -50,7 +50,7 @@ public class CardObjectComponent extends AbstractCardObject{
     }
 
     @Override
-    public DBCardObject getDBSQLiteCardObject(MainActivity activity){
+    public DBCardObject getDBSQLiteCardObject(MainActivity activity) {
         return activity.getSQLiteDB().cardObjectComponent();
     }
 
@@ -69,7 +69,7 @@ public class CardObjectComponent extends AbstractCardObject{
         if (getStatus().equals(Status.NOT_AVAILABLE) || getResponseComponentList().isEmpty()) {
             Toast.makeText(activity, SourceHelper.getString(activity, R.string.fragment_launch_board_error_component), Toast.LENGTH_SHORT).show();
         } else {
-            activity.showComponentListFragment(project);
+            activity.showComponentListFragment(project.get_id());
         }
     }
 }

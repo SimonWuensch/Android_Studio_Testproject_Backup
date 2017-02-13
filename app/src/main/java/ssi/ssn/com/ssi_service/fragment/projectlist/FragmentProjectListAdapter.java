@@ -1,15 +1,12 @@
 package ssi.ssn.com.ssi_service.fragment.projectlist;
 
-import android.app.Activity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -44,7 +41,7 @@ public class FragmentProjectListAdapter extends RecyclerView.Adapter<FragmentPro
 
     @Override
     public void onBindViewHolder(FragmentProjectListViewHolder viewHolder, int position) {
-        viewHolder.assignData(projects.get(position), projects.size() -1 == position);
+        viewHolder.assignData(projects.get(position), projects.size() - 1 == position);
         viewHolderMap.put(projects.get(position), viewHolder);
     }
 
@@ -58,20 +55,20 @@ public class FragmentProjectListAdapter extends RecyclerView.Adapter<FragmentPro
         return projects.size();
     }
 
-    public void reloadCardViews(){
-        for(Project project : viewHolderMap.keySet()){
-            project.initCardObjects((MainActivity)fragment.getActivity());
+    public void reloadCardViews() {
+        for (Project project : viewHolderMap.keySet()) {
+            project.initCardObjects((MainActivity) fragment.getActivity());
             ObservationHelper.setLastObservationTimeToOLD((MainActivity) fragment.getActivity(), project);
 
             FragmentProjectListViewHolder viewHolder = viewHolderMap.get(project);
-            boolean isLast = project.equals(viewHolderMap.keySet().toArray()[viewHolderMap.keySet().size()-1]);
+            boolean isLast = project.equals(viewHolderMap.keySet().toArray()[viewHolderMap.keySet().size() - 1]);
             viewHolder.assignData(project, isLast);
         }
     }
 
-    public void sort(){
+    public void sort() {
         List<Project> sortedList = ProjectListSorter.sortProjectsByStatus(projects);
-        for(Project project : sortedList){
+        for (Project project : sortedList) {
             int from = viewHolderMap.get(project).getAdapterPosition();
             int to = sortedList.indexOf(project);
             notifyItemMoved(from, to);

@@ -11,7 +11,6 @@ import android.widget.TextView;
 import ssi.ssn.com.ssi_service.R;
 import ssi.ssn.com.ssi_service.activity.MainActivity;
 import ssi.ssn.com.ssi_service.model.data.source.Project;
-import ssi.ssn.com.ssi_service.model.data.source.Status;
 import ssi.ssn.com.ssi_service.model.data.source.cardobject.AbstractCardObject;
 import ssi.ssn.com.ssi_service.model.helper.SourceHelper;
 
@@ -57,7 +56,7 @@ class FragmentLaunchBoardViewHolder extends RecyclerView.ViewHolder {
             }
         });
 
-        if(cardObject.isObservation()) {
+        if (cardObject.isObservation()) {
             detectCardObjectStatus(project, cardObject);
         }
     }
