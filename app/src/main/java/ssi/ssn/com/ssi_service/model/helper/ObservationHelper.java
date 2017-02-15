@@ -7,6 +7,7 @@ import java.util.Date;
 import ssi.ssn.com.ssi_service.activity.MainActivity;
 import ssi.ssn.com.ssi_service.model.data.source.Project;
 import ssi.ssn.com.ssi_service.model.data.source.cardobject.AbstractCardObject;
+import ssi.ssn.com.ssi_service.model.database.SQLiteDB;
 
 public class ObservationHelper {
 
@@ -46,27 +47,27 @@ public class ObservationHelper {
         return true;
     }
 
-    public static void setLastObservationTimeToNOW(MainActivity activity, Project project) {
-        setLastObservationTime(activity, project, new Date().getTime());
+    public static void setLastObservationTimeToNOW(SQLiteDB sqLiteDB, Project project) {
+        setLastObservationTime(sqLiteDB, project, new Date().getTime());
     }
 
-    public static void setLastObservationTimeToOLD(MainActivity activity, Project project) {
-        setLastObservationTime(activity, project, 0);
+    public static void setLastObservationTimeToOLD(SQLiteDB sqLiteDB, Project project) {
+        setLastObservationTime(sqLiteDB, project, 0);
     }
 
-    private static void setLastObservationTime(MainActivity activity, Project project, long millis) {
+    private static void setLastObservationTime(SQLiteDB sqLiteDB, Project project, long millis) {
         if (!project.isProjectObservation()) {
             return;
         }
 
         project.setLastObservationTime(millis);
-        activity.getSQLiteDB().project().updateLastObservationTime(project);
+        sqLiteDB.project().updateLastObservationTime(project);
         for (AbstractCardObject cardObject : project.getAllCardObjects()) {
             if (!cardObject.isObservation()) {
                 continue;
             }
             cardObject.setLastObservationTime(millis);
-            cardObject.getDBSQLiteCardObject(activity).updateLastObservationTime(cardObject);
+            cardObject.getDBSQLiteCardObject(sqLiteDB).updateLastObservationTime(cardObject);
         }
     }
 }

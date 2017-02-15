@@ -66,7 +66,7 @@ class FragmentLaunchBoardViewHolder extends RecyclerView.ViewHolder {
         new AsyncTask<Object, Void, Object>() {
             @Override
             protected Object doInBackground(Object... objects) {
-                project.detectProjectStatus(activity);
+                project.detectProjectStatus(activity.getSQLiteDB(), activity.getRequestHandler());
                 return null;
             }
 
@@ -87,11 +87,11 @@ class FragmentLaunchBoardViewHolder extends RecyclerView.ViewHolder {
                     vStatus.setBackgroundColor(SourceHelper.getColor(activity, R.color.lightGray));
 
                     cardObject.setObservation(false);
-                    cardObject.getDBSQLiteCardObject(activity).updateIsObservation(cardObject);
+                    cardObject.getDBSQLiteCardObject(activity.getSQLiteDB()).updateIsObservation(cardObject);
                     return;
                 }
                 cardObject.setObservation(true);
-                cardObject.getDBSQLiteCardObject(activity).updateIsObservation(cardObject);
+                cardObject.getDBSQLiteCardObject(activity.getSQLiteDB()).updateIsObservation(cardObject);
                 assignData(project, cardObject);
             }
         };

@@ -1,6 +1,5 @@
 package ssi.ssn.com.ssi_service.fragment.projectlist;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -13,16 +12,16 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import ssi.ssn.com.ssi_service.R;
 import ssi.ssn.com.ssi_service.activity.MainActivity;
 import ssi.ssn.com.ssi_service.fragment.AbstractFragment;
-import ssi.ssn.com.ssi_service.fragment.modulelist.FragmentModuleList;
-import ssi.ssn.com.ssi_service.fragment.modulelist.FragmentModuleListNotification;
 import ssi.ssn.com.ssi_service.model.data.source.Project;
+import ssi.ssn.com.ssi_service.model.helper.JsonHelper;
 import ssi.ssn.com.ssi_service.model.helper.SourceHelper;
-import ssi.ssn.com.ssi_service.model.notification.AndroidNotificationHelper;
+import ssi.ssn.com.ssi_service.service.UpdateService;
 
 public class FragmentProjectList extends AbstractFragment {
 
@@ -37,13 +36,15 @@ public class FragmentProjectList extends AbstractFragment {
 
     private View rootView;
 
+    boolean isServicesStarted = false;
+
     public static FragmentProjectList newInstance() {
         FragmentProjectList fragment = new FragmentProjectList();
         return fragment;
     }
 
     public void initViewComponents() {
-        TextView tvHeadLine = (TextView) rootView.findViewById(R.id.default_action_bar_text_view_headline);
+        final TextView tvHeadLine = (TextView) rootView.findViewById(R.id.default_action_bar_text_view_headline);
         tvHeadLine.setText(SourceHelper.getString(getActivity(), R.string.fragment_project_list_title));
 
         ImageButton bReload = (ImageButton) rootView.findViewById(R.id.default_action_bar_button_reload);
@@ -53,14 +54,22 @@ public class FragmentProjectList extends AbstractFragment {
             public void onClick(View view) {
                 mAdapter.reloadCardViews();
 
-                //TODO delete after testing
-                ((MainActivity)getActivity()).getAndroidNotificationHelper().throwNotification(
-                        getActivity(),
-                        new FragmentModuleListNotification().createResultIntent(getActivity(), projects.get(0).get_id()),
-                        R.drawable.icon_project,
-                        "Content Title",
-                        "Content Text",
-                        "Ticker....");
+
+
+                /*if(!isServicesStarted){
+                    Intent startIntent = new Intent(getActivity().getBaseContext(), UpdateService.class);
+                    ArrayList<String> jsonProjects = new ArrayList<>();
+                    for(Project project : projects){
+                        jsonProjects.add(JsonHelper.toJson(project));
+                    }
+                    startIntent.putStringArrayListExtra(UpdateService.JSON_PROJECT_LIST, jsonProjects);
+                    getActivity().startService(startIntent);
+                    isServicesStarted = true;
+                }else{
+                    getActivity().stopService(new Intent(getActivity().getBaseContext(), UpdateService.class));
+                    isServicesStarted = false;
+                }*/
+
             }
         });
 

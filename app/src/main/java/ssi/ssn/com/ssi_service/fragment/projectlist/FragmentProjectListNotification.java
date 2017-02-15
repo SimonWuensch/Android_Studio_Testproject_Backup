@@ -1,11 +1,12 @@
 package ssi.ssn.com.ssi_service.fragment.projectlist;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 
 import ssi.ssn.com.ssi_service.activity.MainActivity;
-import ssi.ssn.com.ssi_service.model.notification.AbstractAndroidNotification;
-import ssi.ssn.com.ssi_service.model.notification.AndroidNotificationHelper;
+import ssi.ssn.com.ssi_service.notification.AbstractAndroidNotification;
+import ssi.ssn.com.ssi_service.notification.AndroidNotificationHelper;
 
 
 public class FragmentProjectListNotification extends AbstractAndroidNotification {
@@ -20,8 +21,8 @@ public class FragmentProjectListNotification extends AbstractAndroidNotification
     }
 
     @Override
-    public Intent createResultIntent(Activity activity, long projectID) {
-        Intent resultIntent = new Intent(activity, MainActivity.class);
+    public Intent createResultIntent(Context context, long projectID) {
+        Intent resultIntent = new Intent(context, MainActivity.class);
         resultIntent.putExtra(AndroidNotificationHelper.TAG_FRAGMENT, FragmentProjectList.TAG);
 
         return resultIntent;

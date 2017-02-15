@@ -9,6 +9,7 @@ import ssi.ssn.com.ssi_service.activity.MainActivity;
 import ssi.ssn.com.ssi_service.model.data.source.Project;
 import ssi.ssn.com.ssi_service.model.data.source.Status;
 import ssi.ssn.com.ssi_service.model.data.source.cardobject.CardObjectComponent;
+import ssi.ssn.com.ssi_service.model.database.SQLiteDB;
 import ssi.ssn.com.ssi_service.model.helper.JsonHelper;
 import ssi.ssn.com.ssi_service.model.helper.XMLHelper;
 import ssi.ssn.com.ssi_service.model.network.DefaultResponse;
@@ -45,11 +46,10 @@ public class DetectorCardObjectComponent {
         return componentObjects;
     }
 
-    public static void loadFromNetwork(MainActivity activity, Project project, CardObjectComponent cardObject) {
+    public static void loadFromNetwork(RequestHandler requestHandler, Project project, CardObjectComponent cardObject) {
         Log.d(TAG + " Project ID: " + cardObject.get_id_project(), cardObject.getClass().getSimpleName() + " start load card object component information from network...");
         project.getDefaultResponseComponentList().clear();
         final List<String> notEnabledComponents = new ArrayList<>();
-        final RequestHandler requestHandler = activity.getRequestHandler();
         requestHandler.sendRequestLoginWithSessionCurrentCheck(project);
         requestHandler.sendRequestApplicationConfig(project);
 
@@ -88,7 +88,7 @@ public class DetectorCardObjectComponent {
         Log.d(TAG + " Project ID: " + cardObject.get_id_project(), "Response component list size is [" + cardObject.getResponseComponentList().size() + "], [" + cardObject.getResponseComponentList() + "]");
     }
 
-    public static void detectCardStatus(MainActivity activity, CardObjectComponent cardObject) {
+    public static void detectCardStatus(SQLiteDB sqLiteDB, CardObjectComponent cardObject) {
         Log.d(TAG + " Project ID: " + cardObject.get_id_project(), cardObject.getClass().getSimpleName() + " start detecting card object component status...");
         Status overAllState = Status.OK;
         if (cardObject.getResponseComponentList().isEmpty()) {
@@ -96,16 +96,16 @@ public class DetectorCardObjectComponent {
         } else {
             for (ResponseComponent responseComponent : cardObject.getResponseComponentList()) {
                 String componentStatus = responseComponent.getState().getStatus();
-                if (!componentStatus.equals(ssi.ssn.com.ssi_service.model.data.source.Status.TEXT_ONLINE) &&
-                        !componentStatus.equals(ssi.ssn.com.ssi_service.model.data.source.Status.TEXT_UNKNOWN)) {
-                    overAllState = ssi.ssn.com.ssi_service.model.data.source.Status.ERROR;
+                if (!componentStatus.equals(Status.TEXT_ONLINE) &&
+                        !componentStatus.equals(Status.TEXT_UNKNOWN)) {
+                    overAllState = Status.ERROR;
                 }
             }
         }
         cardObject.setStatus(overAllState);
-        boolean isSuccessful = cardObject.getDBSQLiteCardObject(activity).update(cardObject);
+        boolean isSuccessful = cardObject.getDBSQLiteCardObject(sqLiteDB).update(cardObject);
         if (!isSuccessful) {
-            isSuccessful = cardObject.getDBSQLiteCardObject(activity).update(cardObject);
+            isSuccessful = cardObject.getDBSQLiteCardObject(sqLiteDB).update(cardObject);
             if (!isSuccessful) {
                 throw new NullPointerException("Can not update " + cardObject.getClass().getSimpleName() + " [" + cardObject + "]");
             }

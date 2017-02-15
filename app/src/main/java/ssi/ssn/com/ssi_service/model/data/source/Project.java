@@ -10,7 +10,9 @@ import ssi.ssn.com.ssi_service.fragment.launchboard.source.DetectorProject;
 import ssi.ssn.com.ssi_service.model.data.source.cardobject.AbstractCardObject;
 import ssi.ssn.com.ssi_service.model.data.source.cardobject.CardObjectComponent;
 import ssi.ssn.com.ssi_service.model.data.source.cardobject.CardObjectModule;
+import ssi.ssn.com.ssi_service.model.database.SQLiteDB;
 import ssi.ssn.com.ssi_service.model.helper.JsonHelper;
+import ssi.ssn.com.ssi_service.model.network.handler.RequestHandler;
 import ssi.ssn.com.ssi_service.model.network.response.application.ResponseApplication;
 
 public class Project extends NetworkProject {
@@ -179,9 +181,9 @@ public class Project extends NetworkProject {
         };
     }
 
-    public void initCardObjects(MainActivity activity) {
-        CardObjectModule.init(activity, this);
-        CardObjectComponent.init(activity, this);
+    public void initCardObjects(SQLiteDB sqLiteDB) {
+        CardObjectModule.init(sqLiteDB, this);
+        CardObjectComponent.init(sqLiteDB, this);
     }
 
     // ** Others ******************************************************************************** //
@@ -193,12 +195,12 @@ public class Project extends NetworkProject {
         this.projectOrderNr = responseApplication.getProject().getOrderNr();
     }
 
-    public void detectApplicationStatus(MainActivity activity) {
-        DetectorProject.detectApplicationStatus(activity, this);
+    public void detectApplicationStatus(RequestHandler requestHandler) {
+        DetectorProject.detectApplicationStatus(requestHandler, this);
     }
 
-    public void detectProjectStatus(MainActivity activity) {
-        DetectorProject.detectProjectStatus(activity, this);
+    public void detectProjectStatus(SQLiteDB sqLiteDB, RequestHandler requestHandler) {
+        DetectorProject.detectProjectStatus(sqLiteDB, requestHandler, this);
     }
 
     public String toString() {
@@ -207,5 +209,9 @@ public class Project extends NetworkProject {
 
     public String identity() {
         return "[" + get_id() + ";" + getProjectName() + ";" + getProjectLocation() + ";" + getProjectOrderNr() + "]";
+    }
+
+    public String designation(){
+        return getProjectName() + " - " + getProjectLocation() + " - " + getProjectOrderNr() + "\n" + "IP: " + getServerAddress();
     }
 }

@@ -6,6 +6,7 @@ import ssi.ssn.com.ssi_service.activity.MainActivity;
 import ssi.ssn.com.ssi_service.model.data.source.Project;
 import ssi.ssn.com.ssi_service.model.data.source.Status;
 import ssi.ssn.com.ssi_service.model.data.source.cardobject.AbstractCardObject;
+import ssi.ssn.com.ssi_service.model.database.SQLiteDB;
 import ssi.ssn.com.ssi_service.model.helper.JsonHelper;
 import ssi.ssn.com.ssi_service.model.helper.ObservationHelper;
 import ssi.ssn.com.ssi_service.model.network.handler.RequestHandler;
@@ -15,12 +16,11 @@ public class DetectorProject {
 
     public static String TAG = DetectorProject.class.getSimpleName();
 
-    public static void detectApplicationStatus(MainActivity activity, Project project) {
+    public static void detectApplicationStatus(RequestHandler requestHandler, Project project) {
         if (!ObservationHelper.isProjectOutOfDate(project) && project.getApplicationStatus() != null) {
             return;
         }
 
-        final RequestHandler requestHandler = activity.getRequestHandler();
         requestHandler.sendRequestApplication(project);
         if (project.getDefaultResponseApplication().getCode() != 200) {
             project.setApplicationStatus(ssi.ssn.com.ssi_service.model.data.source.Status.NOT_AVAILABLE);
@@ -35,17 +35,17 @@ public class DetectorProject {
         project.setApplicationStatus(ssi.ssn.com.ssi_service.model.data.source.Status.OK);
     }
 
-    public static void detectProjectStatus(MainActivity activity, Project project) {
+    public static void detectProjectStatus(SQLiteDB sqLiteDB, RequestHandler requestHandler, Project project) {
         Log.d(TAG, "Start detecting project status...");
-        project.initCardObjects(activity);
+        project.initCardObjects(sqLiteDB);
 
-        project.detectApplicationStatus(activity);
+        project.detectApplicationStatus(requestHandler);
         if (!project.getApplicationStatus().equals(Status.OK)) {
             project.setStatus(project.getApplicationStatus());
-            activity.getSQLiteDB().project().update(project);
+            sqLiteDB.project().update(project);
             for (AbstractCardObject cardObject : project.getAllCardObjects()) {
                 cardObject.setStatus(Status.NOT_AVAILABLE);
-                cardObject.getDBSQLiteCardObject(activity).update(cardObject);
+                cardObject.getDBSQLiteCardObject(sqLiteDB).update(cardObject);
             }
             return;
         }
@@ -61,8 +61,8 @@ public class DetectorProject {
                 continue;
             }
 
-            cardObject.loadFromNetwork(activity, project);
-            cardObject.detectCardStatus(activity);
+            cardObject.loadFromNetwork(requestHandler, project);
+            cardObject.detectCardStatus(sqLiteDB);
         }
 
         Status overAllStatus = Status.OK;
@@ -77,8 +77,8 @@ public class DetectorProject {
             }
         }
         project.setStatus(overAllStatus);
-        activity.getSQLiteDB().project().update(project);
-        ObservationHelper.setLastObservationTimeToNOW(activity, project);
+        sqLiteDB.project().update(project);
+        ObservationHelper.setLastObservationTimeToNOW(sqLiteDB, project);
         Log.i(TAG, "Project status detected. [" + project.getStatus() + "]");
     }
 }

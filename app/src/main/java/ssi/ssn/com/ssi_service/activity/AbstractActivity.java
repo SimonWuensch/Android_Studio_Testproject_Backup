@@ -1,11 +1,13 @@
 package ssi.ssn.com.ssi_service.activity;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -19,8 +21,10 @@ import ssi.ssn.com.ssi_service.fragment.modulelist.FragmentModuleList;
 import ssi.ssn.com.ssi_service.fragment.projectlist.FragmentProjectList;
 import ssi.ssn.com.ssi_service.model.data.source.Project;
 import ssi.ssn.com.ssi_service.model.database.SQLiteDB;
+import ssi.ssn.com.ssi_service.model.helper.JsonHelper;
 import ssi.ssn.com.ssi_service.model.network.handler.RequestHandler;
-import ssi.ssn.com.ssi_service.model.notification.AndroidNotificationHelper;
+import ssi.ssn.com.ssi_service.notification.AndroidNotificationHelper;
+import ssi.ssn.com.ssi_service.service.UpdateService;
 
 public class AbstractActivity extends Activity {
 
@@ -31,15 +35,31 @@ public class AbstractActivity extends Activity {
     protected RequestHandler requestHandler;
     protected AndroidNotificationHelper androidNotificationHelper;
     protected View loadingView;
-    private ExecutorService executor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        executor = Executors.newSingleThreadExecutor();
-        requestHandler = RequestHandler.initRequestHandler(executor);
         sqliteDB = new SQLiteDB(this);
-        androidNotificationHelper = new AndroidNotificationHelper(this);
+        requestHandler = RequestHandler.initRequestHandler(Executors.newSingleThreadExecutor());
+        androidNotificationHelper = new AndroidNotificationHelper(getBaseContext());
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        stopService(new Intent(getBaseContext(), UpdateService.class));
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        Intent startIntent = new Intent(getBaseContext(), UpdateService.class);
+        ArrayList<String> jsonProjects = new ArrayList<>();
+        for(Project project : sqliteDB.project().getALL()){
+            jsonProjects.add(JsonHelper.toJson(project));
+        }
+        startIntent.putStringArrayListExtra(UpdateService.JSON_PROJECT_LIST, jsonProjects);
+        startService(startIntent);
     }
 
     @Override
@@ -48,17 +68,13 @@ public class AbstractActivity extends Activity {
         new AsyncTask<Object, Void, Object>() {
             @Override
             protected Object doInBackground(Object... objects) {
-                List<Project> projects = getSQLiteDB().project().getALL();
+                List<Project> projects = sqliteDB.project().getALL();
                 Log.d(TAG, "Start sending request logout for [" + projects.size() + "]");
                 for (Project project : projects)
                     getRequestHandler().sendRequestLogout(project);
                 return null;
             }
         }.execute();
-    }
-
-    public ExecutorService getExecutor() {
-        return executor;
     }
 
     public SQLiteDB getSQLiteDB() {

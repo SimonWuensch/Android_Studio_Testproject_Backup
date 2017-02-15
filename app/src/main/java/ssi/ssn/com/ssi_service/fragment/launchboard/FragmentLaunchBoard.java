@@ -21,6 +21,7 @@ import ssi.ssn.com.ssi_service.activity.MainActivity;
 import ssi.ssn.com.ssi_service.fragment.AbstractFragment;
 import ssi.ssn.com.ssi_service.model.data.source.Project;
 import ssi.ssn.com.ssi_service.model.data.source.cardobject.AbstractCardObject;
+import ssi.ssn.com.ssi_service.model.database.SQLiteDB;
 import ssi.ssn.com.ssi_service.model.helper.FormatHelper;
 import ssi.ssn.com.ssi_service.model.helper.JsonHelper;
 import ssi.ssn.com.ssi_service.model.helper.ObservationHelper;
@@ -64,8 +65,9 @@ public class FragmentLaunchBoard extends AbstractFragment {
         }
 
         Long projectID = getArguments().getLong(PROJECT_ID);
-        project = ((MainActivity) getActivity()).getSQLiteDB().project().getByID(projectID);
-        project.initCardObjects((MainActivity) getActivity());
+        SQLiteDB sqLiteDB = ((MainActivity) getActivity()).getSQLiteDB();
+        project = sqLiteDB.project().getByID(projectID);
+        project.initCardObjects(sqLiteDB);
         cardObjects = project.getAllCardObjects();
 
         new AsyncTask<Object, Void, Object>() {
@@ -80,11 +82,11 @@ public class FragmentLaunchBoard extends AbstractFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        loadArguments();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        loadArguments();
         if (rootView == null) {
             rootView = inflater.inflate(FRAGMENT_LAYOUT, container, false);
             Log.d(TAG, "Fragment inflated [" + getActivity().getResources().getResourceName(FRAGMENT_LAYOUT) + "].");

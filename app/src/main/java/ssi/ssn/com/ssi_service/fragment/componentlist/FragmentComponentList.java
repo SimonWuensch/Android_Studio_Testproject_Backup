@@ -1,8 +1,6 @@
 package ssi.ssn.com.ssi_service.fragment.componentlist;
 
-import android.app.Activity;
 import android.app.Fragment;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -18,9 +16,9 @@ import ssi.ssn.com.ssi_service.R;
 import ssi.ssn.com.ssi_service.activity.MainActivity;
 import ssi.ssn.com.ssi_service.model.data.source.Project;
 import ssi.ssn.com.ssi_service.model.data.source.cardobject.CardObjectComponent;
+import ssi.ssn.com.ssi_service.model.database.SQLiteDB;
 import ssi.ssn.com.ssi_service.model.helper.SourceHelper;
 import ssi.ssn.com.ssi_service.model.network.response.component.ResponseComponent;
-import ssi.ssn.com.ssi_service.model.notification.AndroidNotificationHelper;
 
 public class FragmentComponentList extends Fragment{
 
@@ -50,8 +48,9 @@ public class FragmentComponentList extends Fragment{
             return;
         }
         long projectID = getArguments().getLong(PROJECT_ID);
-        project = ((MainActivity) getActivity()).getSQLiteDB().project().getByID(projectID);
-        CardObjectComponent.init((MainActivity) getActivity(), project);
+        SQLiteDB sqLiteDB = ((MainActivity) getActivity()).getSQLiteDB();
+        project = sqLiteDB.project().getByID(projectID);
+        CardObjectComponent.init(sqLiteDB, project);
         responseComponentList = project.getCardObjectComponent().getResponseComponentList();
     }
 

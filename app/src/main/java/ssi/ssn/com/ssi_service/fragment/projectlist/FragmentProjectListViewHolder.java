@@ -1,5 +1,6 @@
 package ssi.ssn.com.ssi_service.fragment.projectlist;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -14,6 +15,7 @@ import ssi.ssn.com.ssi_service.activity.MainActivity;
 import ssi.ssn.com.ssi_service.model.data.source.Project;
 import ssi.ssn.com.ssi_service.model.data.source.Status;
 import ssi.ssn.com.ssi_service.model.helper.SourceHelper;
+import ssi.ssn.com.ssi_service.service.UpdateService;
 
 
 class FragmentProjectListViewHolder extends RecyclerView.ViewHolder {
@@ -80,7 +82,7 @@ class FragmentProjectListViewHolder extends RecyclerView.ViewHolder {
         new AsyncTask<Object, Void, Object>() {
             @Override
             protected Object doInBackground(Object... objects) {
-                project.detectProjectStatus(activity);
+                project.detectProjectStatus(activity.getSQLiteDB(), activity.getRequestHandler());
                 return null;
             }
 

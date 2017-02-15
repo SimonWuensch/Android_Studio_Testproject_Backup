@@ -1,4 +1,4 @@
-package ssi.ssn.com.ssi_service.model.notification;
+package ssi.ssn.com.ssi_service.notification;
 
 import android.app.Activity;
 import android.app.NotificationManager;
@@ -7,33 +7,38 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.TaskStackBuilder;
+import android.app.Notification;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import ssi.ssn.com.ssi_service.activity.MainActivity;
-import ssi.ssn.com.ssi_service.fragment.componentlist.FragmentComponentList;
 import ssi.ssn.com.ssi_service.fragment.componentlist.FragmentComponentListNotification;
-import ssi.ssn.com.ssi_service.fragment.launchboard.FragmentLaunchBoard;
-import ssi.ssn.com.ssi_service.fragment.modulelist.FragmentModuleList;
 import ssi.ssn.com.ssi_service.fragment.modulelist.FragmentModuleListNotification;
-import ssi.ssn.com.ssi_service.fragment.projectlist.FragmentProjectList;
 import ssi.ssn.com.ssi_service.fragment.projectlist.FragmentProjectListNotification;
 
 public class AndroidNotificationHelper {
 
     public static String TAG_FRAGMENT = "TAG_FRAGMENT";
-    private int NOTIFICATION_ID_ONE = 111;
+    private int NOTIFICATION = 111;
 
+    NotificationManager mNotifyMgr;
+    private Set<Integer> notificationKeySet = new HashSet<>();
 
-    private Activity activity;
-    private int number = 0;
-
-    public AndroidNotificationHelper(Activity activity) {
-        this.activity = activity;
+    public AndroidNotificationHelper(Context context) {
+        this.mNotifyMgr =
+                (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
     }
 
-    public void handleNotificationClick(Intent intent) {
+    public void cancelAllNotifications(){
+        for(int id : notificationKeySet){
+            mNotifyMgr.cancel(id);
+        }
+    }
+
+    public void handleNotificationClick(Activity activity, Intent intent) {
         List<AbstractAndroidNotification> notificationToFragmentList = new ArrayList<AbstractAndroidNotification>() {
             {
                 add(new FragmentProjectListNotification());
@@ -48,16 +53,17 @@ public class AndroidNotificationHelper {
         }
     }
 
-    public void throwNotification(Activity activity, Intent resultIntent, int smallIcon, String contentTitle, String contentText, String ticker) {
+    public void throwNotification(Context context, long projectID, Intent resultIntent, int color, int smallIcon, String contentTitle, String contentText, String ticker) {
         NotificationCompat.Builder mBuilder =
-                new NotificationCompat.Builder(activity)
+                new NotificationCompat.Builder(context)
+                        .setColor(color)
                         .setSmallIcon(smallIcon)
                         .setContentTitle(contentTitle)
+                        .setStyle(new NotificationCompat.BigTextStyle().bigText(contentText))
                         .setContentText(contentText)
-                        .setTicker(ticker)
-                        .setNumber(++number);
+                        .setTicker(ticker);
 
-        TaskStackBuilder stackBuilder = TaskStackBuilder.create(activity);
+        TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
         stackBuilder.addParentStack(MainActivity.class);
         stackBuilder.addNextIntent(resultIntent);
 
@@ -67,8 +73,15 @@ public class AndroidNotificationHelper {
 
         mBuilder.setContentIntent(resultPendingIntent);
 
-        NotificationManager mNotifyMgr =
-                (NotificationManager) activity.getSystemService(Context.NOTIFICATION_SERVICE);
-        mNotifyMgr.notify(NOTIFICATION_ID_ONE, mBuilder.build());
+        mNotifyMgr.notify(NOTIFICATION + safeLongToInt(projectID), mBuilder.build());
+        notificationKeySet.add(NOTIFICATION + safeLongToInt(projectID));
+    }
+
+    public static int safeLongToInt(long l) {
+        if (l < Integer.MIN_VALUE || l > Integer.MAX_VALUE) {
+            throw new IllegalArgumentException
+                    (l + " cannot be cast to int without changing its value.");
+        }
+        return (int) l;
     }
 }

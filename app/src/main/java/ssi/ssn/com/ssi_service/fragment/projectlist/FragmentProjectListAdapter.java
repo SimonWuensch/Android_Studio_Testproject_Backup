@@ -13,6 +13,7 @@ import java.util.Map;
 import ssi.ssn.com.ssi_service.activity.MainActivity;
 import ssi.ssn.com.ssi_service.fragment.projectlist.source.ProjectListSorter;
 import ssi.ssn.com.ssi_service.model.data.source.Project;
+import ssi.ssn.com.ssi_service.model.database.SQLiteDB;
 import ssi.ssn.com.ssi_service.model.helper.ObservationHelper;
 
 public class FragmentProjectListAdapter extends RecyclerView.Adapter<FragmentProjectListViewHolder> {
@@ -57,8 +58,9 @@ public class FragmentProjectListAdapter extends RecyclerView.Adapter<FragmentPro
 
     public void reloadCardViews() {
         for (Project project : viewHolderMap.keySet()) {
-            project.initCardObjects((MainActivity) fragment.getActivity());
-            ObservationHelper.setLastObservationTimeToOLD((MainActivity) fragment.getActivity(), project);
+            SQLiteDB sqLiteDB = ((MainActivity) fragment.getActivity()).getSQLiteDB();
+            project.initCardObjects(sqLiteDB);
+            ObservationHelper.setLastObservationTimeToOLD(sqLiteDB, project);
 
             FragmentProjectListViewHolder viewHolder = viewHolderMap.get(project);
             boolean isLast = project.equals(viewHolderMap.keySet().toArray()[viewHolderMap.keySet().size() - 1]);

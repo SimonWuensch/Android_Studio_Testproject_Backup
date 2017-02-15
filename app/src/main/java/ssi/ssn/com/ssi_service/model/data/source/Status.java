@@ -1,6 +1,7 @@
 package ssi.ssn.com.ssi_service.model.data.source;
 
 import android.app.Activity;
+import android.content.Context;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -42,8 +43,8 @@ public enum Status {
         return statusMap.get(id);
     }
 
-    public int getColor(Activity activity) {
-        return SourceHelper.getColor(activity, color);
+    public int getColor(Context context) {
+        return SourceHelper.getColor(context, color);
     }
 
     public int getId() {

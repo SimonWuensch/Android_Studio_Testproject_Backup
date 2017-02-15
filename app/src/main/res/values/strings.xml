@@ -4,6 +4,8 @@
     <string name="app_version">V 1.0</string>
 
     <!-- DEFAULT -->
+    <string name="project_status">Projekt Status: </string>
+    <string name="status">Status</string>
     <string name="days">Tage</string>
     <string name="hours">Stunden</string>
     <string name="yes">Ja</string>
@@ -87,5 +89,11 @@
     <string name="fragment_component_list_card_view_managed">Verwaltet</string>
     <string name="fragment_component_list_card_view_status">Status</string>
     <string name="fragment_component_list_card_view_enabled">Freigegeben</string>
+
+    <!-- Android Notification -->
+    <string name="notification_project_is_not_available">Das Projekt ist nicht verfügbar.</string>
+    <string name="notification_project_application_status_is_not_running">Der Status der Projekt Application ist nicht "Running".</string>
+    <string name="notification_not_available">konnten nicht geladen werden.</string>
+    <string name="notification_includes_errors">beinhaltet Fehler.</string>
 
 </resources>

@@ -12,6 +12,7 @@ import java.util.Map;
 import ssi.ssn.com.ssi_service.activity.MainActivity;
 import ssi.ssn.com.ssi_service.model.data.source.Project;
 import ssi.ssn.com.ssi_service.model.data.source.cardobject.AbstractCardObject;
+import ssi.ssn.com.ssi_service.model.database.SQLiteDB;
 import ssi.ssn.com.ssi_service.model.helper.ObservationHelper;
 
 class FragmentLaunchBoardAdapter extends RecyclerView.Adapter<FragmentLaunchBoardViewHolder> {
@@ -57,7 +58,8 @@ class FragmentLaunchBoardAdapter extends RecyclerView.Adapter<FragmentLaunchBoar
     }
 
     public void reloadCardViews() {
-        ObservationHelper.setLastObservationTimeToOLD((MainActivity) fragment.getActivity(), project);
+        SQLiteDB sqLiteDB = ((MainActivity) fragment.getActivity()).getSQLiteDB();
+        ObservationHelper.setLastObservationTimeToOLD(sqLiteDB, project);
         for (FragmentLaunchBoardViewHolder viewHolder : viewHolderMap.keySet()) {
             viewHolder.assignData(project, viewHolderMap.get(viewHolder));
         }

@@ -11,6 +11,7 @@ import ssi.ssn.com.ssi_service.activity.MainActivity;
 import ssi.ssn.com.ssi_service.model.data.source.Project;
 import ssi.ssn.com.ssi_service.model.data.source.Status;
 import ssi.ssn.com.ssi_service.model.data.source.cardobject.CardObjectModule;
+import ssi.ssn.com.ssi_service.model.database.SQLiteDB;
 import ssi.ssn.com.ssi_service.model.helper.JsonHelper;
 import ssi.ssn.com.ssi_service.model.helper.XMLHelper;
 import ssi.ssn.com.ssi_service.model.network.DefaultResponse;
@@ -52,10 +53,9 @@ public class DetectorCardObjectModule {
         return moduleObjects;
     }
 
-    public static void loadFromNetwork(MainActivity activity, Project project, CardObjectModule cardObject) {
+    public static void loadFromNetwork(RequestHandler requestHandler, Project project, CardObjectModule cardObject) {
         Log.d(TAG + " Project ID: " + cardObject.get_id_project(), cardObject.getClass().getSimpleName() + " start load ard object module information from network...");
         project.getDefaultResponseModuleList().clear();
-        final RequestHandler requestHandler = activity.getRequestHandler();
         final Map<String, String> enabledModuleList = new HashMap<>();
         requestHandler.sendRequestLoginWithSessionCurrentCheck(project);
         requestHandler.sendRequestApplicationConfig(project);
@@ -96,7 +96,7 @@ public class DetectorCardObjectModule {
         Log.d(TAG + " Project ID: " + cardObject.get_id_project(), "Response module list size is [" + cardObject.getResponseModuleList().size() + "], [" + cardObject.getResponseModuleList() + "]");
     }
 
-    public static void detectCardStatus(MainActivity activity, CardObjectModule cardObject) {
+    public static void detectCardStatus(SQLiteDB sqLiteDB, CardObjectModule cardObject) {
         Log.d(TAG + " Project ID: " + cardObject.get_id_project(), cardObject.getClass().getSimpleName() + " start detecting card object module status...");
         Status overAllState = Status.OK;
         List<ResponseModule> responseModuleList = cardObject.getResponseModuleList();
@@ -114,9 +114,9 @@ public class DetectorCardObjectModule {
             }
         }
         cardObject.setStatus(overAllState);
-        boolean isSuccessful = cardObject.getDBSQLiteCardObject(activity).update(cardObject);
+        boolean isSuccessful = cardObject.getDBSQLiteCardObject(sqLiteDB).update(cardObject);
         if (!isSuccessful) {
-            isSuccessful = cardObject.getDBSQLiteCardObject(activity).update(cardObject);
+            isSuccessful = cardObject.getDBSQLiteCardObject(sqLiteDB).update(cardObject);
             if (!isSuccessful) {
                 throw new NullPointerException("Can not update " + cardObject.getClass().getSimpleName() + " [" + cardObject + "]");
             }

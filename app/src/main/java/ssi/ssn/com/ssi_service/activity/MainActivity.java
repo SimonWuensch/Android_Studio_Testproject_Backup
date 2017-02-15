@@ -5,7 +5,7 @@ import android.os.Bundle;
 import ssi.ssn.com.ssi_service.R;
 import ssi.ssn.com.ssi_service.model.data.source.Project;
 import ssi.ssn.com.ssi_service.model.helper.JsonHelper;
-import ssi.ssn.com.ssi_service.model.notification.AndroidNotificationHelper;
+import ssi.ssn.com.ssi_service.notification.AndroidNotificationHelper;
 
 public class MainActivity extends AbstractActivity {
 
@@ -18,7 +18,7 @@ public class MainActivity extends AbstractActivity {
 
         String fragmentTag = getIntent().getStringExtra(AndroidNotificationHelper.TAG_FRAGMENT);
         if (fragmentTag != null) {
-            androidNotificationHelper.handleNotificationClick(getIntent());
+            androidNotificationHelper.handleNotificationClick(this, getIntent());
         } else if (sqliteDB.project().getCount() == 0) {
             showCreateProjectFragment();
         } else {

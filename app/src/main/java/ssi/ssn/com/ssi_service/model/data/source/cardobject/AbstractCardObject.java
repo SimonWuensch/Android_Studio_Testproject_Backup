@@ -1,12 +1,19 @@
 package ssi.ssn.com.ssi_service.model.data.source.cardobject;
 
+import android.content.Context;
+
 import com.owlike.genson.annotation.JsonIgnore;
+
+import java.util.List;
 
 import ssi.ssn.com.ssi_service.activity.MainActivity;
 import ssi.ssn.com.ssi_service.model.data.source.Project;
 import ssi.ssn.com.ssi_service.model.data.source.Status;
 import ssi.ssn.com.ssi_service.model.database.DBCardObject;
+import ssi.ssn.com.ssi_service.model.database.SQLiteDB;
 import ssi.ssn.com.ssi_service.model.helper.JsonHelper;
+import ssi.ssn.com.ssi_service.model.network.handler.RequestHandler;
+import ssi.ssn.com.ssi_service.notification.AbstractAndroidNotification;
 
 public class AbstractCardObject {
 
@@ -26,7 +33,7 @@ public class AbstractCardObject {
     public AbstractCardObject() {
     }
 
-    public static void init(MainActivity activity, Project project) {
+    public static void init(SQLiteDB sqLiteDB, Project project) {
         throw new NullPointerException("No initialization settings specified");
     }
 
@@ -87,17 +94,17 @@ public class AbstractCardObject {
     }
 
     @JsonIgnore
-    public DBCardObject getDBSQLiteCardObject(MainActivity activity) {
+    public DBCardObject getDBSQLiteCardObject(SQLiteDB sqLiteDB) {
         throw new NullPointerException("No database specified");
     }
 
     @JsonIgnore
-    public void loadFromNetwork(MainActivity activity, Project project) {
+    public void loadFromNetwork(RequestHandler requestHandler, Project project) {
         throw new NullPointerException("No network settings specified");
     }
 
     @JsonIgnore
-    public void detectCardStatus(MainActivity activity) {
+    public void detectCardStatus(SQLiteDB sqLiteDB) {
         throw new NullPointerException("No detection settings specified");
     }
 
@@ -105,6 +112,20 @@ public class AbstractCardObject {
     public void onClick(final MainActivity activity, final Project project) {
         throw new NullPointerException("No on click settings specified");
     }
+
+    // ** Notification settings ***************************************************************** //
+
+    @JsonIgnore
+    public AbstractAndroidNotification getNotificationClass(){
+        throw new NullPointerException("No notification class specified");
+    }
+
+    @JsonIgnore
+    public List<String> getNotificationMessages(Context context){
+        throw new NullPointerException("No notification message specified");
+    }
+
+    // ** Default ******************************************************************************* //
 
     public String toString() {
         return JsonHelper.toJson(this);
