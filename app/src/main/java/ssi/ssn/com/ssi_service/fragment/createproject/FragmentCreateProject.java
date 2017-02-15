@@ -380,6 +380,7 @@ public class FragmentCreateProject extends AbstractFragment {
                     @Override
                     protected Object doInBackground(Object... objects) {
                         requestHandler.sendRequestApplication(project);
+                        getSQLiteDB().project().update(project);
                         if (project.getDefaultResponseApplication().getCode() != 200) {
                             Toast.makeText(getActivity(), SourceHelper.getString(getActivity(), R.string.fragment_create_project_message_server_address_is_no_valid_lighthouse_address), Toast.LENGTH_SHORT).show();
                             return null;

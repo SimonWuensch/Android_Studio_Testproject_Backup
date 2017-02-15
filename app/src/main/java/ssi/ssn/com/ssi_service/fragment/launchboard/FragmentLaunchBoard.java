@@ -1,7 +1,5 @@
 package ssi.ssn.com.ssi_service.fragment.launchboard;
 
-import android.app.Activity;
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -29,9 +27,8 @@ import ssi.ssn.com.ssi_service.model.helper.ObservationHelper;
 import ssi.ssn.com.ssi_service.model.helper.SourceHelper;
 import ssi.ssn.com.ssi_service.model.network.handler.RequestHandler;
 import ssi.ssn.com.ssi_service.model.network.response.application.ResponseApplication;
-import ssi.ssn.com.ssi_service.model.notification.AndroidNotificationHelper;
 
-public class FragmentLaunchBoard extends AbstractFragment{
+public class FragmentLaunchBoard extends AbstractFragment {
 
     public static String TAG = FragmentLaunchBoard.class.getSimpleName();
     protected static String PROJECT_ID = TAG + "PROJECT_ID";
@@ -70,7 +67,14 @@ public class FragmentLaunchBoard extends AbstractFragment{
         project = ((MainActivity) getActivity()).getSQLiteDB().project().getByID(projectID);
         project.initCardObjects((MainActivity) getActivity());
         cardObjects = project.getAllCardObjects();
-        ((MainActivity) getActivity()).getRequestHandler().sendRequestLoginWithSessionCurrentCheck(project);
+
+        new AsyncTask<Object, Void, Object>() {
+            @Override
+            protected Object doInBackground(Object... objects) {
+                ((MainActivity) getActivity()).getRequestHandler().sendRequestLoginWithSessionCurrentCheck(project);
+                return null;
+            }
+        }.execute();
     }
 
     @Override
@@ -135,6 +139,7 @@ public class FragmentLaunchBoard extends AbstractFragment{
                 boolean isProjectOutOfDate = ObservationHelper.isProjectOutOfDate(project);
                 if (isProjectOutOfDate || project.getDefaultResponseApplication() == null) {
                     requestHandler.sendRequestApplication(project);
+                    getSQLiteDB().project().update(project);
                 }
                 return null;
             }

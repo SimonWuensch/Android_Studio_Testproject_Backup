@@ -12,6 +12,7 @@ import android.widget.Toast;
 import ssi.ssn.com.ssi_service.R;
 import ssi.ssn.com.ssi_service.activity.MainActivity;
 import ssi.ssn.com.ssi_service.model.data.source.Project;
+import ssi.ssn.com.ssi_service.model.data.source.Status;
 import ssi.ssn.com.ssi_service.model.helper.SourceHelper;
 
 
@@ -53,6 +54,7 @@ class FragmentProjectListViewHolder extends RecyclerView.ViewHolder {
         String projectName = project.getProjectName();
         String projectLocation = project.getProjectLocation();
         String projectOrderNr = project.getProjectOrderNr();
+        vProjectStatus.setBackgroundColor(Status.NOT_OBSERVATION.getColor(activity));
 
         if (projectName == null || projectLocation == null || projectOrderNr == null) {
             tvProjectName.setText(project.getServerAddress());
