@@ -79,6 +79,6 @@ public class DetectorProject {
         project.setStatus(overAllStatus);
         sqLiteDB.project().update(project);
         ObservationHelper.setLastObservationTimeToNOW(sqLiteDB, project);
-        Log.i(TAG, "Project status detected. [" + project.getStatus() + "]");
+        Log.i(TAG, "Project status detected - [" + project.getStatus() + "].");
     }
 }

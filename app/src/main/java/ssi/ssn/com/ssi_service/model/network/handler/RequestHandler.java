@@ -20,7 +20,7 @@ public class RequestHandler {
 
     private static String TAG = RequestHandler.class.getSimpleName();
 
-    private Map<Long, CookieHandler> cookieHandlerMap = new HashMap<>();
+    private Map<Integer, CookieHandler> cookieHandlerMap = new HashMap<>();
 
     private ExecutorService executor;
 

@@ -3,18 +3,14 @@ package ssi.ssn.com.ssi_service.service;
 import android.app.Service;
 import android.content.Intent;
 import android.os.AsyncTask;
-import android.os.Binder;
 import android.os.Handler;
 import android.os.IBinder;
-import android.util.ArraySet;
 import android.util.Log;
 import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import java.util.TimerTask;
 import java.util.concurrent.Executors;
 
@@ -34,21 +30,20 @@ public class UpdateService extends Service {
 
     private static String TAG = UpdateService.class.getSimpleName();
 
-    public static String JSON_PROJECT_LIST = TAG + "JSON_PROJECT_LIST";
-
-    private final IBinder mBinder = new LocalBinder();
+    private final IBinder mBinder = new Binder();
     private int startID;
-
-    private boolean isDelayRunning = true;
-    private AndroidNotificationHelper androidNotificationHelper;
 
     protected SQLiteDB sqliteDB;
     protected RequestHandler requestHandler;
+    private AndroidNotificationHelper androidNotificationHelper;
+    private boolean isDelayRunning = true;
 
     private List<Project> projects = new ArrayList<>();
 
-    public class LocalBinder extends Binder {
-        UpdateService getService() {
+    private int clickedNotificationID;
+
+    public class Binder extends android.os.Binder {
+        public UpdateService getService() {
             return UpdateService.this;
         }
     }
@@ -67,14 +62,15 @@ public class UpdateService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+        this.startID = startId;
+        if(startId != 1){
+            return START_STICKY;
+        }
+
         Toast.makeText(this, "Services Started", Toast.LENGTH_LONG).show();
         Log.i(TAG, "Received start id " + startId + ": " + intent);
-        this.startID = startId;
 
-        List<String> jsonProjects = intent.getStringArrayListExtra(JSON_PROJECT_LIST);
-        for (String jsonProject : jsonProjects) {
-            projects.add((Project) JsonHelper.fromJsonGeneric(Project.class, jsonProject));
-        }
+        projects = sqliteDB.project().getALL();
 
         Log.d(TAG, "Project list size is [" + projects.size() + "]");
         startDelay();
@@ -104,6 +100,7 @@ public class UpdateService extends Service {
                     if (!isDelayRunning) {
                         return;
                     }
+                    Log.i(TAG, "Interval ended. Interval is [" + FormatHelper.formatMillisecondsToMinutes(interval) + "] minute. Project: [" + project + "]");
                     detectStatusAndNotify(project);
                     handler.postDelayed(this, interval);
                 }
@@ -129,9 +126,10 @@ public class UpdateService extends Service {
 
                 switch (project.getApplicationStatus()) {
                     case NOT_AVAILABLE:
+                        Log.w(TAG, "Throw notification - Project Status: [" + project.getApplicationStatus() + "]. Project: [" + project + "]");
                         androidNotificationHelper.throwNotification(
                                 getBaseContext(),
-                                project.get_id(),
+                                project.get_id() * 1000,
                                 new FragmentProjectListNotification().createResultIntent(getBaseContext(), project.get_id()),
                                 project.getStatus().getColor(getBaseContext()),
                                 R.drawable.icon_project,
@@ -140,9 +138,10 @@ public class UpdateService extends Service {
                                 SourceHelper.getString(getApplicationContext(), R.string.project_status) + " " + project.getStatus());
                         return;
                     case ERROR:
+                        Log.w(TAG, "Throw notification - Project Status: [" + project.getApplicationStatus() + "]. Project: [" + project + "]");
                         androidNotificationHelper.throwNotification(
                                 getBaseContext(),
-                                project.get_id(),
+                                project.get_id() * 1000,
                                 new FragmentProjectListNotification().createResultIntent(getBaseContext(), project.get_id()),
                                 project.getStatus().getColor(getBaseContext()),
                                 R.drawable.icon_project,
@@ -154,16 +153,20 @@ public class UpdateService extends Service {
 
                 if (project.getStatus().equals(ssi.ssn.com.ssi_service.model.data.source.Status.ERROR)) {
                     for (AbstractCardObject cardObject : project.getAllCardObjects()) {
+                        if(!cardObject.isObservation()){
+                            continue;
+                        }
                         switch (cardObject.getStatus()) {
                             case NOT_AVAILABLE:
+                                Log.w(TAG, "Throw notification - Project Status: [" + project.getStatus() + "]. " + cardObject.getTitle() + " Status: [" + cardObject.getStatus() + "]. Project: [" + project + "]");
                                 androidNotificationHelper.throwNotification(
                                         getBaseContext(),
-                                        project.get_id(),
+                                        project.get_id() * 1000 + cardObject.getNotificationID(),
                                         cardObject.getNotificationClass().createResultIntent(getBaseContext(), project.get_id()),
                                         cardObject.getStatus().getColor(getBaseContext()),
                                         cardObject.getIcon(),
                                         SourceHelper.getString(getApplicationContext(), cardObject.getTitle()) + " " + SourceHelper.getString(getApplicationContext(), R.string.status) + ": " + cardObject.getStatus().name(),
-                                        SourceHelper.getString(getApplicationContext(), cardObject.getTitle()) + " " + SourceHelper.getString(getApplicationContext(), R.string.notification_not_available) + " \n" + project.designation(),
+                                        project.designation() + "\n" + SourceHelper.getString(getApplicationContext(), cardObject.getTitle()) + " " + SourceHelper.getString(getApplicationContext(), R.string.notification_not_available) + " \n" + project.designation(),
                                         SourceHelper.getString(getApplicationContext(), R.string.project_status) + " " + project.getStatus());
                                 break;
                             case ERROR:
@@ -173,15 +176,16 @@ public class UpdateService extends Service {
                                     notificationMessageBuilder.append(message).append("\n");
                                 }
                                 String notificationMessage = notificationMessageBuilder.toString();
+                                Log.w(TAG, "Throw notification - Project Status: [" + project.getStatus() + "]. " + SourceHelper.getString(getBaseContext(), cardObject.getTitle()) + " Status: [" + cardObject.getStatus() + "]. Project: [" + project + "]. Message: " + notificationMessage);
 
                                 androidNotificationHelper.throwNotification(
                                         getBaseContext(),
-                                        project.get_id(),
+                                        project.get_id() * 1000 + cardObject.getNotificationID(),
                                         cardObject.getNotificationClass().createResultIntent(getBaseContext(), project.get_id()),
                                         cardObject.getStatus().getColor(getBaseContext()),
                                         cardObject.getIcon(),
                                         SourceHelper.getString(getApplicationContext(), cardObject.getTitle()) + " " + SourceHelper.getString(getApplicationContext(), R.string.status) + ": " + cardObject.getStatus().name(),
-                                        notificationMessage,
+                                        project.designation() + "\n" + notificationMessage,
                                         SourceHelper.getString(getApplicationContext(), cardObject.getTitle()) + " " + SourceHelper.getString(getApplicationContext(), R.string.notification_includes_errors) + " [" + messages.size() + "]");
                                 break;
                         }
@@ -195,7 +199,6 @@ public class UpdateService extends Service {
     public void onDestroy() {
         Toast.makeText(this, "Services Stopped", Toast.LENGTH_LONG).show();
         Log.i(TAG, "Services Stopped. Start id: " + startID);
-        androidNotificationHelper.cancelAllNotifications();
         stopDelay();
     }
 

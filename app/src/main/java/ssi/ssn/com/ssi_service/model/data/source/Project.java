@@ -5,7 +5,6 @@ import com.owlike.genson.annotation.JsonIgnore;
 import java.util.LinkedList;
 import java.util.List;
 
-import ssi.ssn.com.ssi_service.activity.MainActivity;
 import ssi.ssn.com.ssi_service.fragment.launchboard.source.DetectorProject;
 import ssi.ssn.com.ssi_service.model.data.source.cardobject.AbstractCardObject;
 import ssi.ssn.com.ssi_service.model.data.source.cardobject.CardObjectComponent;
@@ -17,7 +16,7 @@ import ssi.ssn.com.ssi_service.model.network.response.application.ResponseApplic
 
 public class Project extends NetworkProject {
 
-    private long _id;
+    private int _id;
     private String serverAddress;
     private String userName;
     private String password;
@@ -49,11 +48,11 @@ public class Project extends NetworkProject {
 
     // ** User Settings ************************************************************************* //
 
-    public long get_id() {
+    public int get_id() {
         return _id;
     }
 
-    public void set_id(long _id) {
+    public void set_id(int _id) {
         this._id = _id;
     }
 
@@ -211,7 +210,7 @@ public class Project extends NetworkProject {
         return "[" + get_id() + ";" + getProjectName() + ";" + getProjectLocation() + ";" + getProjectOrderNr() + "]";
     }
 
-    public String designation(){
+    public String designation() {
         return getProjectName() + " - " + getProjectLocation() + " - " + getProjectOrderNr() + "\n" + "IP: " + getServerAddress();
     }
 }

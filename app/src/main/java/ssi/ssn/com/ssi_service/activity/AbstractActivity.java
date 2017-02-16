@@ -45,24 +45,6 @@ public class AbstractActivity extends Activity {
     }
 
     @Override
-    protected void onStart() {
-        super.onStart();
-        stopService(new Intent(getBaseContext(), UpdateService.class));
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        Intent startIntent = new Intent(getBaseContext(), UpdateService.class);
-        ArrayList<String> jsonProjects = new ArrayList<>();
-        for(Project project : sqliteDB.project().getALL()){
-            jsonProjects.add(JsonHelper.toJson(project));
-        }
-        startIntent.putStringArrayListExtra(UpdateService.JSON_PROJECT_LIST, jsonProjects);
-        startService(startIntent);
-    }
-
-    @Override
     protected void onDestroy() {
         super.onDestroy();
         new AsyncTask<Object, Void, Object>() {
@@ -104,10 +86,10 @@ public class AbstractActivity extends Activity {
                 .beginTransaction()
                 .replace(R.id.activity_main_fragment_container,
                         fragmentCreateProject,
-                        fragmentCreateProject.TAG)
-                .addToBackStack(fragmentCreateProject.TAG)
+                        FragmentCreateProject.TAG)
+                .addToBackStack(FragmentCreateProject.TAG)
                 .commit();
-        Log.i(getClass().getSimpleName(), "Show Fragment [" + fragmentCreateProject.TAG + "].");
+        Log.i(getClass().getSimpleName(), "Show Fragment [" + FragmentCreateProject.TAG + "].");
     }
 
     public void showCustomListFragment(int headlineStringID, FragmentCustomList.Type type, String jsonResponse) {
@@ -116,10 +98,10 @@ public class AbstractActivity extends Activity {
                 .beginTransaction()
                 .replace(R.id.activity_main_fragment_container,
                         fragmentCustomList,
-                        fragmentCustomList.TAG)
-                .addToBackStack(fragmentCustomList.TAG)
+                        FragmentCustomList.TAG)
+                .addToBackStack(FragmentCustomList.TAG)
                 .commit();
-        Log.i(getClass().getSimpleName(), "Show Fragment [" + fragmentCustomList.TAG + "].");
+        Log.i(getClass().getSimpleName(), "Show Fragment [" + FragmentCustomList.TAG + "].");
     }
 
     public void showProjectListFragment() {
@@ -128,9 +110,9 @@ public class AbstractActivity extends Activity {
                 .beginTransaction()
                 .replace(R.id.activity_main_fragment_container,
                         fragmentProjectList,
-                        fragmentProjectList.TAG)
+                        FragmentProjectList.TAG)
                 .commit();
-        Log.i(getClass().getSimpleName(), "Show Fragment [" + fragmentProjectList.TAG + "].");
+        Log.i(getClass().getSimpleName(), "Show Fragment [" + FragmentProjectList.TAG + "].");
     }
 
     public void showLaunchBoardFragment(long projectID) {
@@ -139,10 +121,10 @@ public class AbstractActivity extends Activity {
                 .beginTransaction()
                 .replace(R.id.activity_main_fragment_container,
                         fragmentLaunchBoard,
-                        fragmentLaunchBoard.TAG)
+                        FragmentLaunchBoard.TAG)
                 .addToBackStack(FragmentLaunchBoard.TAG)
                 .commit();
-        Log.i(getClass().getSimpleName(), "Show Fragment [" + fragmentLaunchBoard.TAG + "].");
+        Log.i(getClass().getSimpleName(), "Show Fragment [" + FragmentLaunchBoard.TAG + "].");
     }
 
     public void showModuleListFragment(long projectID) {
@@ -151,10 +133,10 @@ public class AbstractActivity extends Activity {
                 .beginTransaction()
                 .replace(R.id.activity_main_fragment_container,
                         fragmentModuleList,
-                        fragmentModuleList.TAG)
-                .addToBackStack(fragmentModuleList.TAG)
+                        FragmentModuleList.TAG)
+                .addToBackStack(FragmentModuleList.TAG)
                 .commit();
-        Log.i(getClass().getSimpleName(), "Show Fragment [" + fragmentModuleList.TAG + "].");
+        Log.i(getClass().getSimpleName(), "Show Fragment [" + FragmentModuleList.TAG + "].");
     }
 
     public void showComponentListFragment(long projectID) {
@@ -163,9 +145,9 @@ public class AbstractActivity extends Activity {
                 .beginTransaction()
                 .replace(R.id.activity_main_fragment_container,
                         fragmentComponentList,
-                        fragmentComponentList.TAG)
-                .addToBackStack(fragmentComponentList.TAG)
+                        FragmentComponentList.TAG)
+                .addToBackStack(FragmentComponentList.TAG)
                 .commit();
-        Log.i(getClass().getSimpleName(), "Show Fragment [" + fragmentComponentList.TAG + "].");
+        Log.i(getClass().getSimpleName(), "Show Fragment [" + FragmentComponentList.TAG + "].");
     }
 }

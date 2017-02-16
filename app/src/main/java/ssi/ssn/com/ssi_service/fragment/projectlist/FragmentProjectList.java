@@ -53,23 +53,6 @@ public class FragmentProjectList extends AbstractFragment {
             @Override
             public void onClick(View view) {
                 mAdapter.reloadCardViews();
-
-
-
-                /*if(!isServicesStarted){
-                    Intent startIntent = new Intent(getActivity().getBaseContext(), UpdateService.class);
-                    ArrayList<String> jsonProjects = new ArrayList<>();
-                    for(Project project : projects){
-                        jsonProjects.add(JsonHelper.toJson(project));
-                    }
-                    startIntent.putStringArrayListExtra(UpdateService.JSON_PROJECT_LIST, jsonProjects);
-                    getActivity().startService(startIntent);
-                    isServicesStarted = true;
-                }else{
-                    getActivity().stopService(new Intent(getActivity().getBaseContext(), UpdateService.class));
-                    isServicesStarted = false;
-                }*/
-
             }
         });
 

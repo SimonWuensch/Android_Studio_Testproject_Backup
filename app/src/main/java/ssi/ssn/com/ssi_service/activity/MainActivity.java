@@ -1,11 +1,16 @@
 package ssi.ssn.com.ssi_service.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+
+import java.util.TimerTask;
 
 import ssi.ssn.com.ssi_service.R;
 import ssi.ssn.com.ssi_service.model.data.source.Project;
 import ssi.ssn.com.ssi_service.model.helper.JsonHelper;
 import ssi.ssn.com.ssi_service.notification.AndroidNotificationHelper;
+import ssi.ssn.com.ssi_service.service.UpdateService;
 
 public class MainActivity extends AbstractActivity {
 
@@ -28,6 +33,27 @@ public class MainActivity extends AbstractActivity {
         loadingView = findViewById(R.id.activity_main_view_loading);
         setLoadingViewVisible(false);
         //addTestProjects();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        TimerTask timerTask = new TimerTask() {
+            @Override
+            public void run() {
+                Intent intent = new Intent(MainActivity.this, UpdateService.class);
+                stopService(intent);
+            }
+        };
+        final Handler handler = new Handler();
+        handler.postDelayed(timerTask, 3000);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        Intent startIntent = new Intent(getBaseContext(), UpdateService.class);
+        startService(startIntent);
     }
 
     private void addTestProjects() {

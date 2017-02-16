@@ -56,6 +56,7 @@ public class ObservationHelper {
     }
 
     private static void setLastObservationTime(SQLiteDB sqLiteDB, Project project, long millis) {
+        project.initCardObjects(sqLiteDB);
         if (!project.isProjectObservation()) {
             return;
         }

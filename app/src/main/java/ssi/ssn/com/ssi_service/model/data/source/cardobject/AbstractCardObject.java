@@ -17,14 +17,14 @@ import ssi.ssn.com.ssi_service.notification.AbstractAndroidNotification;
 
 public class AbstractCardObject {
 
-    protected long _id;
-    protected long _id_project;
+    private long _id;
+    private long _id_project;
     protected int title;
     protected int icon;
 
     protected Status status;
-    protected boolean observation = true;
-    protected long lastObservationTime;
+    private boolean observation = true;
+    private long lastObservationTime;
 
     public AbstractCardObject(Project project) {
         this._id_project = project.get_id();
@@ -114,6 +114,11 @@ public class AbstractCardObject {
     }
 
     // ** Notification settings ***************************************************************** //
+
+    @JsonIgnore
+    public int getNotificationID(){
+        throw new NullPointerException("No notification id specified");
+    }
 
     @JsonIgnore
     public AbstractAndroidNotification getNotificationClass(){

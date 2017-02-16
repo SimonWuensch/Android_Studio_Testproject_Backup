@@ -58,12 +58,14 @@ public class FragmentProjectListAdapter extends RecyclerView.Adapter<FragmentPro
 
     public void reloadCardViews() {
         for (Project project : viewHolderMap.keySet()) {
-            SQLiteDB sqLiteDB = ((MainActivity) fragment.getActivity()).getSQLiteDB();
-            project.initCardObjects(sqLiteDB);
-            ObservationHelper.setLastObservationTimeToOLD(sqLiteDB, project);
+            if(project.isProjectObservation()){
+                SQLiteDB sqLiteDB = ((MainActivity) fragment.getActivity()).getSQLiteDB();
+                project.initCardObjects(sqLiteDB);
+                ObservationHelper.setLastObservationTimeToOLD(sqLiteDB, project);
+            }
 
-            FragmentProjectListViewHolder viewHolder = viewHolderMap.get(project);
             boolean isLast = project.equals(viewHolderMap.keySet().toArray()[viewHolderMap.keySet().size() - 1]);
+            FragmentProjectListViewHolder viewHolder = viewHolderMap.get(project);
             viewHolder.assignData(project, isLast);
         }
     }

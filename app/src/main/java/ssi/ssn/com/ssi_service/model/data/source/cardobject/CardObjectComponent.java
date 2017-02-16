@@ -25,6 +25,8 @@ import ssi.ssn.com.ssi_service.notification.AbstractAndroidNotification;
 
 public class CardObjectComponent extends AbstractCardObject {
 
+    private static int NOTIFICATION_ID = 2;
+
     private List<ResponseComponent> responseComponentList = new ArrayList<>();
 
     public CardObjectComponent(Project project) {
@@ -83,6 +85,12 @@ public class CardObjectComponent extends AbstractCardObject {
     // ** Notification settings ***************************************************************** //
     @Override
     @JsonIgnore
+    public int getNotificationID(){
+        return NOTIFICATION_ID;
+    }
+
+    @Override
+    @JsonIgnore
     public AbstractAndroidNotification getNotificationClass(){
         return new FragmentComponentListNotification();
     }
@@ -95,7 +103,7 @@ public class CardObjectComponent extends AbstractCardObject {
             String status = responseComponent.getState().getStatus();
             if (!status.equals(Status.TEXT_ONLINE) &&
                     !status.equals(Status.TEXT_UNKNOWN)) {
-                messages.add(responseComponent.getName() + " " + SourceHelper.getString(context, R.string.status) + ": " + status);
+                messages.add(responseComponent.getState().getName() + " " + SourceHelper.getString(context, R.string.status) + ": " + status);
             }
         }
         return  messages;

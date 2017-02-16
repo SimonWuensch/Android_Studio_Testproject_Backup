@@ -14,8 +14,8 @@ public class VersionRest_2_0_9_0 extends TestRestResponse {
     private static String COMPONENT_WEBMI = "{\"name\":\"webmi\",\"config\":{\"home\":\"${RUNTIME_HOME}/components/webmi\",\"address\":\"http://localhost:7120\",\"manage\":false,\"startTimeout\":10000,\"stopTimeout\":10000,\"overwatch\":60},\"state\":{\"name\":\"WebMi\",\"managed\":false,\"status\":\"UNKNOWN\",\"since\":1482487800032}}";
     private static String MODULE_APPLICATION_STATE = "{\"name\":\"Application\",\"status\":\"RUNNING\",\"since\":1482487804669}";
     private static String MODULE_SECURITY_STATE = "{\"name\":\"Security\",\"status\":\"RUNNING\",\"since\":1482487804568}";
-    private static String MODULE_COMPONENT_STATE = "{\"name\":\"Component\",\"status\":\"RUNNING\",\"since\":1482487804560}";
-    //private static String MODULE_COMPONENT_STATE = "{\"name\":\"Component\",\"status\":\"NOT_RUNNING\",\"since\":1482487804560}";
+    //private static String MODULE_COMPONENT_STATE = "{\"name\":\"Component\",\"status\":\"RUNNING\",\"since\":1482487804560}";
+    private static String MODULE_COMPONENT_STATE = "{\"name\":\"Component\",\"status\":\"NOT_RUNNING\",\"since\":1482487804560}";
     private static String MODULE_NOTIFICATION_STATE = "{\"name\":\"Notification\",\"status\":\"RUNNING\",\"since\":1482487804601}";
     private static String MODULE_KPI_STATE = "{\"name\":\"Kpi\",\"status\":\"RUNNING\",\"since\":1482487804584}";
     private static String MODULE_SCADA_STATE = "{\"name\":\"Scada\",\"status\":\"RUNNING\",\"since\":1482487804668}";

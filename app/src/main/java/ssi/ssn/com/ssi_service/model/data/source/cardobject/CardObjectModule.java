@@ -25,6 +25,8 @@ import ssi.ssn.com.ssi_service.notification.AbstractAndroidNotification;
 
 public class CardObjectModule extends AbstractCardObject {
 
+    private static int NOTIFICATION_ID = 1;
+
     private List<ResponseModule> responseModuleList = new ArrayList<>();
 
     public CardObjectModule(Project project) {
@@ -85,6 +87,12 @@ public class CardObjectModule extends AbstractCardObject {
     }
 
     // ** Notification settings ***************************************************************** //
+    @Override
+    @JsonIgnore
+    public int getNotificationID(){
+        return NOTIFICATION_ID;
+    }
+
     @Override
     @JsonIgnore
     public AbstractAndroidNotification getNotificationClass(){

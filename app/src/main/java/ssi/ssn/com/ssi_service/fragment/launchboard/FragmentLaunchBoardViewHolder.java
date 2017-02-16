@@ -12,6 +12,7 @@ import ssi.ssn.com.ssi_service.R;
 import ssi.ssn.com.ssi_service.activity.MainActivity;
 import ssi.ssn.com.ssi_service.model.data.source.Project;
 import ssi.ssn.com.ssi_service.model.data.source.cardobject.AbstractCardObject;
+import ssi.ssn.com.ssi_service.model.helper.ObservationHelper;
 import ssi.ssn.com.ssi_service.model.helper.SourceHelper;
 
 
@@ -45,19 +46,23 @@ class FragmentLaunchBoardViewHolder extends RecyclerView.ViewHolder {
         tvTitle.setText(SourceHelper.getString(activity, cardObject.getTitle()));
         cbObservation.setChecked(cardObject.isObservation());
         cbObservation.setOnCheckedChangeListener(onCheckedChangeListener(project, cardObject));
+        vStatus.setBackgroundColor(SourceHelper.getColor(activity, R.color.lightGray));
         loadingView.setVisibility(View.GONE);
 
-        cardView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (loadingView.getVisibility() != View.VISIBLE) {
-                    cardObject.onClick(activity, project);
-                }
-            }
-        });
-
         if (cardObject.isObservation()) {
-            detectCardObjectStatus(project, cardObject);
+            if (ObservationHelper.isCardObjectOutOfDate(project, cardObject)) {
+                detectCardObjectStatus(project, cardObject);
+            }else{
+                vStatus.setBackgroundColor(cardObject.getStatus().getColor(activity));
+            }
+            cardView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (loadingView.getVisibility() != View.VISIBLE) {
+                        cardObject.onClick(activity, project);
+                    }
+                }
+            });
         }
     }
 
