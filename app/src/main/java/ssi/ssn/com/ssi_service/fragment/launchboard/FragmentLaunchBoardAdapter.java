@@ -5,9 +5,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
-import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 
 import ssi.ssn.com.ssi_service.activity.MainActivity;
 import ssi.ssn.com.ssi_service.model.data.source.Project;
@@ -26,7 +25,7 @@ class FragmentLaunchBoardAdapter extends RecyclerView.Adapter<FragmentLaunchBoar
     private List<AbstractCardObject> cardObjects;
     private Project project;
 
-    private Map<FragmentLaunchBoardViewHolder, AbstractCardObject> viewHolderMap = new HashMap<>();
+    private List<FragmentLaunchBoardViewHolder> viewHolderList = new LinkedList<>();
 
     FragmentLaunchBoardAdapter(int layoutCardView, final FragmentLaunchBoard fragment, Project project, List<AbstractCardObject> cardObjects) {
         this.layoutCardView = layoutCardView;
@@ -44,7 +43,7 @@ class FragmentLaunchBoardAdapter extends RecyclerView.Adapter<FragmentLaunchBoar
     @Override
     public void onBindViewHolder(FragmentLaunchBoardViewHolder viewHolder, int position) {
         viewHolder.assignData(project, cardObjects.get(position));
-        viewHolderMap.put(viewHolder, cardObjects.get(position));
+        viewHolderList.add(viewHolder);
     }
 
     @Override
@@ -60,9 +59,9 @@ class FragmentLaunchBoardAdapter extends RecyclerView.Adapter<FragmentLaunchBoar
     public void reloadCardViews() {
         SQLiteDB sqLiteDB = ((MainActivity) fragment.getActivity()).getSQLiteDB();
         ObservationHelper.setLastObservationTimeToOLD(sqLiteDB, project);
-        for (FragmentLaunchBoardViewHolder viewHolder : viewHolderMap.keySet()) {
-            viewHolder.assignData(project, viewHolderMap.get(viewHolder));
+        for (int i = 0; i < viewHolderList.size(); i++) {
+            FragmentLaunchBoardViewHolder viewHolder = viewHolderList.get(i);
+            viewHolder.assignData(project, project.getAllCardObjects().get(i));
         }
     }
-
 }

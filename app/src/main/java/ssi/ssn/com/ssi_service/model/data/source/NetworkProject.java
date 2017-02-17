@@ -19,6 +19,8 @@ public class NetworkProject {
     @JsonIgnore
     private DefaultResponse defaultResponseNotification;
     @JsonIgnore
+    private DefaultResponse defaultResponseNotificationCount;
+    @JsonIgnore
     private DefaultResponse defaultResponseOs;
     @JsonIgnore
     private DefaultResponse defaultResponseScada;
@@ -78,6 +80,16 @@ public class NetworkProject {
     @JsonIgnore
     public void setDefaultResponseNotification(DefaultResponse defaultResponseNotification) {
         this.defaultResponseNotification = defaultResponseNotification;
+    }
+
+    @JsonIgnore
+    public DefaultResponse getDefaultResponseNotificationCount() {
+        return defaultResponseNotificationCount;
+    }
+
+    @JsonIgnore
+    public void setDefaultResponseNotificationCount(DefaultResponse defaultResponseNotificationCount) {
+        this.defaultResponseNotificationCount = defaultResponseNotificationCount;
     }
 
     @JsonIgnore

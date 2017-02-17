@@ -1,4 +1,4 @@
-package ssi.ssn.com.ssi_service.notification;
+package ssi.ssn.com.ssi_service.notification_android;
 
 import android.app.Activity;
 import android.content.Context;

@@ -56,11 +56,11 @@ public class ObservationHelper {
     }
 
     private static void setLastObservationTime(SQLiteDB sqLiteDB, Project project, long millis) {
-        project.initCardObjects(sqLiteDB);
         if (!project.isProjectObservation()) {
             return;
         }
 
+        project.initCardObjects(sqLiteDB);
         project.setLastObservationTime(millis);
         sqLiteDB.project().updateLastObservationTime(project);
         for (AbstractCardObject cardObject : project.getAllCardObjects()) {

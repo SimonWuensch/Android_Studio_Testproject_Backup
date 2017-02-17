@@ -51,6 +51,7 @@ public class DBProject extends SQLiteOpenHelper {
         db.execSQL(CREATE_TABLE_PROJECT);
         db.execSQL(DBCardObjectModule.CREATE_TABLE_CARD_OBJECT_MODULE);
         db.execSQL(DBCardObjectComponent.CREATE_TABLE_CARD_OBJECT_COMPONENT);
+        db.execSQL(DBCardObjectNotification.CREATE_TABLE_CARD_OBJECT_NOTIFICATION);
     }
 
     @Override
@@ -59,6 +60,7 @@ public class DBProject extends SQLiteOpenHelper {
         db.execSQL(DROP_TABLE_PROJECT);
         db.execSQL(DBCardObjectModule.DROP_TABLE_CARD_OBJECT_MODULE);
         db.execSQL(DBCardObjectComponent.DROP_TABLE_CARD_OBJECT_COMPONENT);
+        db.execSQL(DBCardObjectNotification.DROP_TABLE_CARD_OBJECT_NOTIFICATION);
         this.onCreate(db);
     }
 

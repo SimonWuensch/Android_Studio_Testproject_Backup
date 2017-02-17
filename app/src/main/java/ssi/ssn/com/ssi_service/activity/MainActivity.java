@@ -9,7 +9,7 @@ import java.util.TimerTask;
 import ssi.ssn.com.ssi_service.R;
 import ssi.ssn.com.ssi_service.model.data.source.Project;
 import ssi.ssn.com.ssi_service.model.helper.JsonHelper;
-import ssi.ssn.com.ssi_service.notification.AndroidNotificationHelper;
+import ssi.ssn.com.ssi_service.notification_android.AndroidNotificationHelper;
 import ssi.ssn.com.ssi_service.service.UpdateService;
 
 public class MainActivity extends AbstractActivity {

@@ -4,16 +4,18 @@ import android.content.Context;
 
 public class SQLiteDB {
 
-    private static int DATABASE_VERSION = 9;
+    private static int DATABASE_VERSION = 4;
 
     private DBProject dbProject;
     private DBCardObjectModule dbCardObjectModule;
     private DBCardObjectComponent dbCardObjectComponent;
+    private DBCardObjectNotification dbCardObjectNotification;
 
     public SQLiteDB(Context context) {
         dbProject = new DBProject(DATABASE_VERSION, context);
         dbCardObjectModule = new DBCardObjectModule(DATABASE_VERSION, context);
         dbCardObjectComponent = new DBCardObjectComponent(DATABASE_VERSION, context);
+        dbCardObjectNotification = new DBCardObjectNotification(DATABASE_VERSION, context);
     }
 
     public DBProject project() {
@@ -26,5 +28,9 @@ public class SQLiteDB {
 
     public DBCardObjectComponent cardObjectComponent() {
         return dbCardObjectComponent;
+    }
+
+    public DBCardObjectNotification cardObjectNotification(){
+        return dbCardObjectNotification;
     }
 }

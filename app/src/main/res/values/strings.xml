@@ -78,6 +78,7 @@
 
     <string name="fragment_launch_board_error_module">"Die Platform und Plugin Module konnten nicht geladen werden."</string>
     <string name="fragment_launch_board_error_component">"Die Komponenten konnten nicht geladen werden."</string>
+    <string name="fragment_launch_board_error_notification">"Die Meldungen konnten nicht geladen werden."</string>
 
     <!-- Fragment Module List -->
     <string name="fragment_module_list_title">Module</string>
@@ -89,6 +90,9 @@
     <string name="fragment_component_list_card_view_managed">Verwaltet</string>
     <string name="fragment_component_list_card_view_status">Status</string>
     <string name="fragment_component_list_card_view_enabled">Freigegeben</string>
+
+    <!-- Fragment Notification List -->
+    <string name="fragment_notification_list_title">Meldungen</string>
 
     <!-- Android Notification -->
     <string name="notification_project_is_not_available">Das Projekt ist nicht verfügbar.</string>

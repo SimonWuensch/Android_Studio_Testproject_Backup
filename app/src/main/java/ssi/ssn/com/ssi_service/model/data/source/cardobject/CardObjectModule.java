@@ -21,7 +21,7 @@ import ssi.ssn.com.ssi_service.model.database.SQLiteDB;
 import ssi.ssn.com.ssi_service.model.helper.SourceHelper;
 import ssi.ssn.com.ssi_service.model.network.handler.RequestHandler;
 import ssi.ssn.com.ssi_service.model.network.response.module.ResponseModule;
-import ssi.ssn.com.ssi_service.notification.AbstractAndroidNotification;
+import ssi.ssn.com.ssi_service.notification_android.AbstractAndroidNotification;
 
 public class CardObjectModule extends AbstractCardObject {
 
@@ -60,7 +60,6 @@ public class CardObjectModule extends AbstractCardObject {
     public void addResponseModule(ResponseModule responseModule) {
         responseModuleList.add(responseModule);
     }
-
 
     @Override
     public DBCardObject getDBSQLiteCardObject(SQLiteDB sqLiteDB) {

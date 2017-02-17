@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+
+    android:id="@+id/fragment_standard_card_view"
+
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="100dp"
+
+    android:layout_margin="5dp"
+
+    android:paddingTop="3dp"
+    card_view:cardElevation="6dp"
+    card_view:cardCornerRadius="0dp"
+
+    android:clickable="true"
+    android:foreground="?android:attr/selectableItemBackground">
+
+    <RelativeLayout
+        android:id="@+id/fragment_notification_list_card_view_relative_layout_up"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_gravity="center_horizontal"
+        android:longClickable="false">
+
+        <RelativeLayout
+            android:id="@+id/fragment_notification_list_card_view_relative_layout_up_status"
+            android:layout_width="50dp"
+            android:layout_height="match_parent">#
+
+            <View
+                android:id="@+id/fragment_notification_list_card_view_view_status_color"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/lightGray" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textColor="@color/colorWhite"
+                android:text="1"
+                android:id="@+id/fragment_notification_list_card_view_text_view_number"
+                android:layout_centerInParent="true"/>
+        </RelativeLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="10.10.17"
+            android:id="@+id/fragment_notification_list_card_view_text_view_date"
+            android:layout_marginBottom="2dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignLeft="@+id/fragment_notification_list_card_view_text_view_time"
+            android:layout_alignStart="@+id/fragment_notification_list_card_view_text_view_time" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="11:11:11"
+            android:id="@+id/fragment_notification_list_card_view_text_view_time"
+            android:layout_marginLeft="7dp"
+            android:layout_alignParentTop="true"
+            android:layout_toRightOf="@+id/fragment_notification_list_card_view_relative_layout_up_status"
+            android:layout_toEndOf="@+id/fragment_notification_list_card_view_relative_layout_up_status" />
+
+        <View
+            android:id="@+id/fragment_notification_list_card_view_view_status_up_line"
+            android:layout_width="2dp"
+            android:layout_height="match_parent"
+            android:background="@color/lightGray"
+            android:layout_alignParentTop="true"
+            android:layout_marginLeft="5dp"
+            android:layout_toRightOf="@+id/fragment_notification_list_card_view_text_view_date"
+            android:layout_toEndOf="@+id/fragment_notification_list_card_view_text_view_date" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="F01"
+            android:id="@+id/fragment_notification_list_card_view_text_view_node_path"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@+id/fragment_notification_list_card_view_view_status_up_line"
+            android:layout_toEndOf="@+id/fragment_notification_list_card_view_view_status_up_line"
+            android:layout_marginLeft="5dp"/>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/fragment_notification_list_card_view_relative_layout_down"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_gravity="center_horizontal"
+        android:longClickable="false"
+        android:layout_marginTop="50dp">
+
+        <View
+            android:id="@+id/fragment_notification_list_card_view_view_status_down_line"
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="@color/lightGray"
+            android:layout_alignParentTop="true" />
+
+        <TextView
+            android:id="@+id/fragment_notification_list_card_view_text_view_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="TEXT"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="5dp"/>
+    </RelativeLayout>
+
+</android.support.v7.widget.CardView>

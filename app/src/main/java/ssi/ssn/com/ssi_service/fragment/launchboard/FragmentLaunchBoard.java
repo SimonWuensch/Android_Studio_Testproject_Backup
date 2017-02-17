@@ -74,7 +74,7 @@ public class FragmentLaunchBoard extends AbstractFragment {
             @Override
             protected Object doInBackground(Object... objects) {
                 if(ObservationHelper.isProjectOutOfDate(project)){
-                ((MainActivity) getActivity()).getRequestHandler().sendRequestLoginWithSessionCurrentCheck(project);
+                ((MainActivity) getActivity()).getRequestHandler().sendRequestLogin(project);
                 }
                 return null;
             }
@@ -118,7 +118,7 @@ public class FragmentLaunchBoard extends AbstractFragment {
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        updateProjectStatusView();
+                        //updateProjectStatusView();
                         mAdapter.reloadCardViews();
                     }
                 }
@@ -134,8 +134,8 @@ public class FragmentLaunchBoard extends AbstractFragment {
     }
 
     public void updateProjectStatusView() {
-        final RequestHandler requestHandler = ((MainActivity) getActivity()).getRequestHandler();
-
+        MainActivity activity = ((MainActivity) getActivity());
+        final RequestHandler requestHandler = activity.getRequestHandler();
         rlLoadingView.setVisibility(View.VISIBLE);
         new AsyncTask<Object, Void, Object>() {
             @Override

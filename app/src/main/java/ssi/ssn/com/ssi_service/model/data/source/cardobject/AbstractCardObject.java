@@ -13,7 +13,7 @@ import ssi.ssn.com.ssi_service.model.database.DBCardObject;
 import ssi.ssn.com.ssi_service.model.database.SQLiteDB;
 import ssi.ssn.com.ssi_service.model.helper.JsonHelper;
 import ssi.ssn.com.ssi_service.model.network.handler.RequestHandler;
-import ssi.ssn.com.ssi_service.notification.AbstractAndroidNotification;
+import ssi.ssn.com.ssi_service.notification_android.AbstractAndroidNotification;
 
 public class AbstractCardObject {
 
@@ -31,10 +31,6 @@ public class AbstractCardObject {
     }
 
     public AbstractCardObject() {
-    }
-
-    public static void init(SQLiteDB sqLiteDB, Project project) {
-        throw new NullPointerException("No initialization settings specified");
     }
 
     public long get_id() {
@@ -91,6 +87,10 @@ public class AbstractCardObject {
 
     public void setLastObservationTime(long lastObservationTime) {
         this.lastObservationTime = lastObservationTime;
+    }
+
+    public static void init(SQLiteDB sqLiteDB, Project project) {
+        throw new NullPointerException("No initialization settings specified");
     }
 
     @JsonIgnore

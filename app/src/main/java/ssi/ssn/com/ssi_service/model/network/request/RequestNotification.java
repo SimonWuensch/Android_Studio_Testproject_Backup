@@ -31,18 +31,29 @@ public class RequestNotification {
     public void getTaskGET(final CookieHandler cookieHandler) {
         HttpGET httpGET = new HttpGET(cookieHandler, getAddress());
         DefaultResponse defaultResponse = httpGET.sendRequest(false);
-        project.setDefaultResponseNotification(defaultResponse);
-    }
 
+        switch (path) {
+            case TABLE_ALL:
+            case TABLE_ERROR:
+            case TABLE_WARNING:
+                project.setDefaultResponseNotification(defaultResponse);
+                break;
+            case COUNT_ALL:
+            case COUNT_ERROR:
+            case COUNT_WARNING:
+                project.setDefaultResponseNotificationCount(defaultResponse);
+                break;
+        }
+    }
 
     // *** Path ********************************************************************************* //
     public enum Path {
-        TABLE_ALL("/table"),
-        TABLE_ERROR("/table", "&condition=(($<<active>>) AND ($<<definition.severity>> = 'ERROR'))"),
-        TABLE_WARNING("/table", "&condition=(($<<active>>) AND ($<<definition.severity>> = 'WARN'))"),
-        COUNT_ALL("/count"),
-        COUNT_ERROR("/count", "&condition=(($<<active>>) AND ($<<definition.severity>> = 'ERROR'))"),
-        COUNT_WARNING("/count", "&condition=(($<<active>>) AND ($<<definition.severity>> = 'WARN'))");
+        TABLE_ALL("/table", "&condition=$<<active>>"),
+        TABLE_ERROR("/table", "&condition=$<<active>> AND ($<<definition.severity>> = 'ERROR'))"),
+        TABLE_WARNING("/table", "&condition=$<<active>> AND ($<<definition.severity>> = 'WARN'))"),
+        COUNT_ALL("/count", "&condition=$<<active>>"),
+        COUNT_ERROR("/count", "&condition=$<<active>> AND ($<<definition.severity>> = 'ERROR'))"),
+        COUNT_WARNING("/count", "&condition=$<<active>> AND ($<<definition.severity>> = 'WARN'))");
 
         private String defaultQuery = "?orderBy=$<<startTime>> DESC";
         private String url;

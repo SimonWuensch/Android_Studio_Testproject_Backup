@@ -1,15 +1,12 @@
 package ssi.ssn.com.ssi_service.activity;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import ssi.ssn.com.ssi_service.R;
@@ -18,13 +15,12 @@ import ssi.ssn.com.ssi_service.fragment.createproject.FragmentCreateProject;
 import ssi.ssn.com.ssi_service.fragment.customlist.FragmentCustomList;
 import ssi.ssn.com.ssi_service.fragment.launchboard.FragmentLaunchBoard;
 import ssi.ssn.com.ssi_service.fragment.modulelist.FragmentModuleList;
+import ssi.ssn.com.ssi_service.fragment.notificatonlist.FragmentNotificationList;
 import ssi.ssn.com.ssi_service.fragment.projectlist.FragmentProjectList;
 import ssi.ssn.com.ssi_service.model.data.source.Project;
 import ssi.ssn.com.ssi_service.model.database.SQLiteDB;
-import ssi.ssn.com.ssi_service.model.helper.JsonHelper;
 import ssi.ssn.com.ssi_service.model.network.handler.RequestHandler;
-import ssi.ssn.com.ssi_service.notification.AndroidNotificationHelper;
-import ssi.ssn.com.ssi_service.service.UpdateService;
+import ssi.ssn.com.ssi_service.notification_android.AndroidNotificationHelper;
 
 public class AbstractActivity extends Activity {
 
@@ -149,5 +145,17 @@ public class AbstractActivity extends Activity {
                 .addToBackStack(FragmentComponentList.TAG)
                 .commit();
         Log.i(getClass().getSimpleName(), "Show Fragment [" + FragmentComponentList.TAG + "].");
+    }
+
+    public void showNotificationListFragment(long projectID) {
+        FragmentNotificationList fragmentNotificationList = FragmentNotificationList.newInstance(projectID);
+        getFragmentManager()
+                .beginTransaction()
+                .replace(R.id.activity_main_fragment_container,
+                        fragmentNotificationList,
+                        FragmentNotificationList.TAG)
+                .addToBackStack(FragmentNotificationList.TAG)
+                .commit();
+        Log.i(getClass().getSimpleName(), "Show Fragment [" + FragmentNotificationList.TAG + "].");
     }
 }

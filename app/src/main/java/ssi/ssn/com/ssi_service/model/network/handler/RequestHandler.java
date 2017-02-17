@@ -55,11 +55,7 @@ public class RequestHandler {
     // ** With Cookie *************************************************************************** //
     // *** Login  ******************************************************************************* //
     public void sendRequestLogin(Project project) {
-        RequestLogin.init(this, project).getTaskGET(getCookieHandler(project));
-    }
-
-    public void sendRequestLoginWithSessionCurrentCheck(Project project) {
-        RequestLogin.init(this, project).addTaskGETtoExecutor(executor, getCookieHandler(project));
+        RequestLogin.init(this, project).addTaskGET(getCookieHandler(project));
     }
 
     // *** Application Config ******************************************************************* //
@@ -81,6 +77,15 @@ public class RequestHandler {
     }
 
     // *** Notification ************************************************************************* //
+
+    public void sendRequestNotificationTableAll(Project project){
+        sendRequestNotification(project, RequestNotification.Path.TABLE_ALL);
+    }
+
+    public void sendRequestNotificationCountAll(Project project){
+        sendRequestNotification(project, RequestNotification.Path.COUNT_ALL);
+    }
+
     public void sendRequestNotification(Project project, RequestNotification.Path path) {
         RequestNotification.init(project, path).getTaskGET(getCookieHandler(project));
     }

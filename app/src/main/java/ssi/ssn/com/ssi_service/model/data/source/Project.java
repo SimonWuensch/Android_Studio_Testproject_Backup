@@ -9,6 +9,7 @@ import ssi.ssn.com.ssi_service.fragment.launchboard.source.DetectorProject;
 import ssi.ssn.com.ssi_service.model.data.source.cardobject.AbstractCardObject;
 import ssi.ssn.com.ssi_service.model.data.source.cardobject.CardObjectComponent;
 import ssi.ssn.com.ssi_service.model.data.source.cardobject.CardObjectModule;
+import ssi.ssn.com.ssi_service.model.data.source.cardobject.CardObjectNotification;
 import ssi.ssn.com.ssi_service.model.database.SQLiteDB;
 import ssi.ssn.com.ssi_service.model.helper.JsonHelper;
 import ssi.ssn.com.ssi_service.model.network.handler.RequestHandler;
@@ -35,6 +36,8 @@ public class Project extends NetworkProject {
     private CardObjectModule cardObjectModule;
     @JsonIgnore
     private CardObjectComponent cardObjectComponent;
+    @JsonIgnore
+    private CardObjectNotification cardObjectNotification;
 
     public Project(String serverAddress, String userName, String password, long observationInterval) {
         this.serverAddress = serverAddress;
@@ -171,11 +174,22 @@ public class Project extends NetworkProject {
     }
 
     @JsonIgnore
+    public CardObjectNotification getCardObjectNotification() {
+        return cardObjectNotification;
+    }
+
+    @JsonIgnore
+    public void setCardObjectNotification(CardObjectNotification cardObjectNotification) {
+        this.cardObjectNotification = cardObjectNotification;
+    }
+
+    @JsonIgnore
     public List<AbstractCardObject> getAllCardObjects() {
         return new LinkedList<AbstractCardObject>() {
             {
                 add(cardObjectModule);
                 add(cardObjectComponent);
+                add(cardObjectNotification);
             }
         };
     }
@@ -183,6 +197,7 @@ public class Project extends NetworkProject {
     public void initCardObjects(SQLiteDB sqLiteDB) {
         CardObjectModule.init(sqLiteDB, this);
         CardObjectComponent.init(sqLiteDB, this);
+        cardObjectNotification.init(sqLiteDB, this);
     }
 
     // ** Others ******************************************************************************** //

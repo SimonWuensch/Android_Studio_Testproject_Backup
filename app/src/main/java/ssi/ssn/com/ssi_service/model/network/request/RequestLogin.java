@@ -40,13 +40,8 @@ public class RequestLogin {
                 .replace("{password}", project.getPassword());
     }
 
-    public void getTaskGET(final CookieHandler cookieHandler) {
-        HttpGET httpGET = new HttpGET(cookieHandler, getAddress());
-        DefaultResponse defaultResponse = httpGET.sendRequest(true);
-        project.setDefaultResponseLogin(defaultResponse);
-    }
 
-    public void addTaskGETtoExecutor(ExecutorService executor, final CookieHandler cookieHandler) {
+    public void addTaskGET(final CookieHandler cookieHandler) {
         requestHandler.sendRequestSessionsCurrent(project);
         if (project.getDefaultResponseSessionsCurrent().getCode() != 200) {
             return;

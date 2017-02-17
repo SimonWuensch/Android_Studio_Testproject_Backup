@@ -37,6 +37,7 @@ public class DetectorProject {
 
     public static void detectProjectStatus(SQLiteDB sqLiteDB, RequestHandler requestHandler, Project project) {
         Log.d(TAG, "Start detecting project status...");
+
         project.initCardObjects(sqLiteDB);
 
         project.detectApplicationStatus(requestHandler);

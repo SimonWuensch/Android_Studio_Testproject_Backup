@@ -24,7 +24,7 @@ import ssi.ssn.com.ssi_service.model.helper.FormatHelper;
 import ssi.ssn.com.ssi_service.model.helper.ObservationHelper;
 import ssi.ssn.com.ssi_service.model.helper.SourceHelper;
 import ssi.ssn.com.ssi_service.model.network.handler.RequestHandler;
-import ssi.ssn.com.ssi_service.notification.AndroidNotificationHelper;
+import ssi.ssn.com.ssi_service.notification_android.AndroidNotificationHelper;
 
 public class UpdateService extends Service {
 
@@ -40,7 +40,7 @@ public class UpdateService extends Service {
 
     private List<Project> projects = new ArrayList<>();
 
-    private int clickedNotificationID;
+    private int count = 0;
 
     public class Binder extends android.os.Binder {
         public UpdateService getService() {
@@ -74,7 +74,26 @@ public class UpdateService extends Service {
 
         Log.d(TAG, "Project list size is [" + projects.size() + "]");
         startDelay();
+        //test();
         return START_STICKY;
+    }
+
+    public void test() {
+        final Handler handler = new Handler();
+        new AsyncTask<Object, Void, Object>() {
+            @Override
+            protected Object doInBackground(Object... objects) {
+                TimerTask timerTask = new TimerTask() {
+                    @Override
+                    public void run() {
+                        Log.i(TAG, "service is running... [" + count++ + "]");
+                        handler.postDelayed(this, 1000);
+                    }
+                };
+                handler.postDelayed(timerTask, 1000);
+                return null;
+            }
+        }.execute();
     }
 
     public void startDelay() {
@@ -169,7 +188,7 @@ public class UpdateService extends Service {
                                     cardObject.getStatus().getColor(getBaseContext()),
                                     cardObject.getIcon(),
                                     SourceHelper.getString(getApplicationContext(), cardObject.getTitle()) + " " + SourceHelper.getString(getApplicationContext(), R.string.status) + ": " + cardObject.getStatus().name(),
-                                    project.designation() + "\n" + SourceHelper.getString(getApplicationContext(), cardObject.getTitle()) + " " + SourceHelper.getString(getApplicationContext(), R.string.notification_not_available) + " \n" + project.designation(),
+                                    project.designation() + "\n" + SourceHelper.getString(getApplicationContext(), cardObject.getTitle()) + " " + SourceHelper.getString(getApplicationContext(), R.string.notification_not_available),
                                     SourceHelper.getString(getApplicationContext(), R.string.project_status) + " " + project.getStatus());
                             break;
                         case ERROR:

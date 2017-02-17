@@ -57,7 +57,7 @@ public class DetectorCardObjectModule {
         Log.d(TAG + " Project ID: " + cardObject.get_id_project(), cardObject.getClass().getSimpleName() + " start load ard object module information from network...");
         project.getDefaultResponseModuleList().clear();
         final Map<String, String> enabledModuleList = new HashMap<>();
-        requestHandler.sendRequestLoginWithSessionCurrentCheck(project);
+        requestHandler.sendRequestLogin(project);
         requestHandler.sendRequestApplicationConfig(project);
 
         if (project.getDefaultResponseApplicationConfig().getCode() != 200) {

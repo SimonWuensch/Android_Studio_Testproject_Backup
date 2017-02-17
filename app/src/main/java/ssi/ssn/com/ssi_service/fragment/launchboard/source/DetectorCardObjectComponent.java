@@ -50,7 +50,7 @@ public class DetectorCardObjectComponent {
         Log.d(TAG + " Project ID: " + cardObject.get_id_project(), cardObject.getClass().getSimpleName() + " start load card object component information from network...");
         project.getDefaultResponseComponentList().clear();
         final List<String> notEnabledComponents = new ArrayList<>();
-        requestHandler.sendRequestLoginWithSessionCurrentCheck(project);
+        requestHandler.sendRequestLogin(project);
         requestHandler.sendRequestApplicationConfig(project);
 
         if (project.getDefaultResponseApplicationConfig().getCode() != 200) {
