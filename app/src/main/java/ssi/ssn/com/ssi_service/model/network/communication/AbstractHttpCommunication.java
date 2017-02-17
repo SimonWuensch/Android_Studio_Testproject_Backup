@@ -17,7 +17,7 @@ public class AbstractHttpCommunication {
     protected CookieHandler cookieHandler;
     protected String address;
 
-    private boolean isTestVersion = true;
+    private boolean isTestVersion = false;
     private TestRestResponse testRestResponse = new VersionRest_2_0_9_0();
 
     public AbstractHttpCommunication(CookieHandler cookieHandler, String address) {
@@ -53,5 +53,4 @@ public class AbstractHttpCommunication {
     protected int send() {
         throw new NullPointerException("No request settings found...");
     }
-
 }

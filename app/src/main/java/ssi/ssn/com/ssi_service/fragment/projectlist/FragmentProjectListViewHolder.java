@@ -1,6 +1,5 @@
 package ssi.ssn.com.ssi_service.fragment.projectlist;
 
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -10,12 +9,15 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.LinkedList;
+
 import ssi.ssn.com.ssi_service.R;
 import ssi.ssn.com.ssi_service.activity.MainActivity;
 import ssi.ssn.com.ssi_service.model.data.source.Project;
 import ssi.ssn.com.ssi_service.model.data.source.Status;
+import ssi.ssn.com.ssi_service.model.data.source.cardobject.AbstractCardObject;
+import ssi.ssn.com.ssi_service.model.helper.JsonHelper;
 import ssi.ssn.com.ssi_service.model.helper.SourceHelper;
-import ssi.ssn.com.ssi_service.service.UpdateService;
 
 
 class FragmentProjectListViewHolder extends RecyclerView.ViewHolder {
@@ -112,6 +114,7 @@ class FragmentProjectListViewHolder extends RecyclerView.ViewHolder {
             @Override
             public void onClick(View v) {
                 if (loadingView.getVisibility() == View.GONE) {
+                    saveDataForBackStack(project);
                     if (!project.getStatus().equals(ssi.ssn.com.ssi_service.model.data.source.Status.NOT_AVAILABLE)) {
                         activity.showLaunchBoardFragment(project.get_id());
                     } else {
@@ -120,6 +123,16 @@ class FragmentProjectListViewHolder extends RecyclerView.ViewHolder {
                 }
             }
         };
+    }
+
+    private void saveDataForBackStack(Project project){
+        adapter.clickedProject = project;
+        adapter.clickedProjectJson = JsonHelper.toJson(project);
+        adapter.clickedProject.initCardObjects(activity.getSQLiteDB());
+        adapter.cardObjectJsonList = new LinkedList<>();
+        for(AbstractCardObject cardObject : project.getAllCardObjects()){
+            adapter.cardObjectJsonList.add(JsonHelper.toJson(cardObject));
+        }
     }
 
     private CompoundButton.OnCheckedChangeListener onCheckedChangeListener(final Project project) {

@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -26,6 +27,10 @@ public class FragmentProjectListAdapter extends RecyclerView.Adapter<FragmentPro
 
     private List<Project> projects = new ArrayList<>();
     private Map<Project, FragmentProjectListViewHolder> viewHolderMap = new HashMap<>();
+
+    protected Project clickedProject;
+    protected String clickedProjectJson;
+    protected List<String> cardObjectJsonList;
 
     public FragmentProjectListAdapter(int layoutCardView, final FragmentProjectList fragment, List<Project> projects) {
         this.layoutCardView = layoutCardView;
@@ -58,16 +63,20 @@ public class FragmentProjectListAdapter extends RecyclerView.Adapter<FragmentPro
 
     public void reloadCardViews() {
         for (Project project : viewHolderMap.keySet()) {
-            if(project.isProjectObservation()){
-                SQLiteDB sqLiteDB = ((MainActivity) fragment.getActivity()).getSQLiteDB();
-                project.initCardObjects(sqLiteDB);
-                ObservationHelper.setLastObservationTimeToOLD(sqLiteDB, project);
-            }
-
-            boolean isLast = project.equals(viewHolderMap.keySet().toArray()[viewHolderMap.keySet().size() - 1]);
-            FragmentProjectListViewHolder viewHolder = viewHolderMap.get(project);
-            viewHolder.assignData(project, isLast);
+            reloadCardView(project);
         }
+    }
+
+    public void reloadCardView(Project project) {
+        if(project.isProjectObservation()){
+            SQLiteDB sqLiteDB = ((MainActivity) fragment.getActivity()).getSQLiteDB();
+            project.initCardObjects(sqLiteDB);
+            ObservationHelper.setLastObservationTimeToOLD(sqLiteDB, project);
+        }
+
+        boolean isLast = project.equals(viewHolderMap.keySet().toArray()[viewHolderMap.keySet().size() - 1]);
+        FragmentProjectListViewHolder viewHolder = viewHolderMap.get(project);
+        viewHolder.assignData(project, isLast);
     }
 
     public void sort() {

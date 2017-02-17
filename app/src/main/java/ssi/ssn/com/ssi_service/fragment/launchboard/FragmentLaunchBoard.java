@@ -64,7 +64,7 @@ public class FragmentLaunchBoard extends AbstractFragment {
             return;
         }
 
-        Long projectID = getArguments().getLong(PROJECT_ID);
+        final Long projectID = getArguments().getLong(PROJECT_ID);
         SQLiteDB sqLiteDB = ((MainActivity) getActivity()).getSQLiteDB();
         project = sqLiteDB.project().getByID(projectID);
         project.initCardObjects(sqLiteDB);
@@ -73,7 +73,9 @@ public class FragmentLaunchBoard extends AbstractFragment {
         new AsyncTask<Object, Void, Object>() {
             @Override
             protected Object doInBackground(Object... objects) {
+                if(ObservationHelper.isProjectOutOfDate(project)){
                 ((MainActivity) getActivity()).getRequestHandler().sendRequestLoginWithSessionCurrentCheck(project);
+                }
                 return null;
             }
         }.execute();

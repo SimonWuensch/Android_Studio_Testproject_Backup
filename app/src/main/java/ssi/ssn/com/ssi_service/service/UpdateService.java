@@ -15,12 +15,12 @@ import java.util.TimerTask;
 import java.util.concurrent.Executors;
 
 import ssi.ssn.com.ssi_service.R;
+import ssi.ssn.com.ssi_service.fragment.launchboard.FragmentLaunchBoardNotification;
 import ssi.ssn.com.ssi_service.fragment.projectlist.FragmentProjectListNotification;
 import ssi.ssn.com.ssi_service.model.data.source.Project;
 import ssi.ssn.com.ssi_service.model.data.source.cardobject.AbstractCardObject;
 import ssi.ssn.com.ssi_service.model.database.SQLiteDB;
 import ssi.ssn.com.ssi_service.model.helper.FormatHelper;
-import ssi.ssn.com.ssi_service.model.helper.JsonHelper;
 import ssi.ssn.com.ssi_service.model.helper.ObservationHelper;
 import ssi.ssn.com.ssi_service.model.helper.SourceHelper;
 import ssi.ssn.com.ssi_service.model.network.handler.RequestHandler;
@@ -50,7 +50,7 @@ public class UpdateService extends Service {
 
     @Override
     public void onCreate() {
-        androidNotificationHelper = new AndroidNotificationHelper(getBaseContext());
+        androidNotificationHelper = new AndroidNotificationHelper();
         sqliteDB = new SQLiteDB(this);
         requestHandler = RequestHandler.initRequestHandler(Executors.newSingleThreadExecutor());
     }
@@ -151,44 +151,46 @@ public class UpdateService extends Service {
                         return;
                 }
 
-                if (project.getStatus().equals(ssi.ssn.com.ssi_service.model.data.source.Status.ERROR)) {
-                    for (AbstractCardObject cardObject : project.getAllCardObjects()) {
-                        if(!cardObject.isObservation()){
-                            continue;
-                        }
-                        switch (cardObject.getStatus()) {
-                            case NOT_AVAILABLE:
-                                Log.w(TAG, "Throw notification - Project Status: [" + project.getStatus() + "]. " + cardObject.getTitle() + " Status: [" + cardObject.getStatus() + "]. Project: [" + project + "]");
-                                androidNotificationHelper.throwNotification(
-                                        getBaseContext(),
-                                        project.get_id() * 1000 + cardObject.getNotificationID(),
-                                        cardObject.getNotificationClass().createResultIntent(getBaseContext(), project.get_id()),
-                                        cardObject.getStatus().getColor(getBaseContext()),
-                                        cardObject.getIcon(),
-                                        SourceHelper.getString(getApplicationContext(), cardObject.getTitle()) + " " + SourceHelper.getString(getApplicationContext(), R.string.status) + ": " + cardObject.getStatus().name(),
-                                        project.designation() + "\n" + SourceHelper.getString(getApplicationContext(), cardObject.getTitle()) + " " + SourceHelper.getString(getApplicationContext(), R.string.notification_not_available) + " \n" + project.designation(),
-                                        SourceHelper.getString(getApplicationContext(), R.string.project_status) + " " + project.getStatus());
-                                break;
-                            case ERROR:
-                                List<String> messages = cardObject.getNotificationMessages(getBaseContext());
-                                StringBuilder notificationMessageBuilder = new StringBuilder();
-                                for (String message : messages) {
-                                    notificationMessageBuilder.append(message).append("\n");
-                                }
-                                String notificationMessage = notificationMessageBuilder.toString();
-                                Log.w(TAG, "Throw notification - Project Status: [" + project.getStatus() + "]. " + SourceHelper.getString(getBaseContext(), cardObject.getTitle()) + " Status: [" + cardObject.getStatus() + "]. Project: [" + project + "]. Message: " + notificationMessage);
+                if (!project.getStatus().equals(ssi.ssn.com.ssi_service.model.data.source.Status.ERROR)) {
+                    return;
+                }
 
-                                androidNotificationHelper.throwNotification(
-                                        getBaseContext(),
-                                        project.get_id() * 1000 + cardObject.getNotificationID(),
-                                        cardObject.getNotificationClass().createResultIntent(getBaseContext(), project.get_id()),
-                                        cardObject.getStatus().getColor(getBaseContext()),
-                                        cardObject.getIcon(),
-                                        SourceHelper.getString(getApplicationContext(), cardObject.getTitle()) + " " + SourceHelper.getString(getApplicationContext(), R.string.status) + ": " + cardObject.getStatus().name(),
-                                        project.designation() + "\n" + notificationMessage,
-                                        SourceHelper.getString(getApplicationContext(), cardObject.getTitle()) + " " + SourceHelper.getString(getApplicationContext(), R.string.notification_includes_errors) + " [" + messages.size() + "]");
-                                break;
-                        }
+                for (AbstractCardObject cardObject : project.getAllCardObjects()) {
+                    if(!cardObject.isObservation()){
+                        continue;
+                    }
+                    switch (cardObject.getStatus()) {
+                        case NOT_AVAILABLE:
+                            Log.w(TAG, "Throw notification - Project Status: [" + project.getStatus() + "]. " + cardObject.getTitle() + " Status: [" + cardObject.getStatus() + "]. Project: [" + project + "]");
+                            androidNotificationHelper.throwNotification(
+                                    getBaseContext(),
+                                    project.get_id() * 1000 + cardObject.getNotificationID(),
+                                    new FragmentLaunchBoardNotification().createResultIntent(getBaseContext(), project.get_id()),
+                                    cardObject.getStatus().getColor(getBaseContext()),
+                                    cardObject.getIcon(),
+                                    SourceHelper.getString(getApplicationContext(), cardObject.getTitle()) + " " + SourceHelper.getString(getApplicationContext(), R.string.status) + ": " + cardObject.getStatus().name(),
+                                    project.designation() + "\n" + SourceHelper.getString(getApplicationContext(), cardObject.getTitle()) + " " + SourceHelper.getString(getApplicationContext(), R.string.notification_not_available) + " \n" + project.designation(),
+                                    SourceHelper.getString(getApplicationContext(), R.string.project_status) + " " + project.getStatus());
+                            break;
+                        case ERROR:
+                            List<String> messages = cardObject.getNotificationMessages(getBaseContext());
+                            StringBuilder notificationMessageBuilder = new StringBuilder();
+                            for (String message : messages) {
+                                notificationMessageBuilder.append(message).append("\n");
+                            }
+                            String notificationMessage = notificationMessageBuilder.toString();
+                            Log.w(TAG, "Throw notification - Project Status: [" + project.getStatus() + "]. " + SourceHelper.getString(getBaseContext(), cardObject.getTitle()) + " Status: [" + cardObject.getStatus() + "]. Project: [" + project + "]. Message: " + notificationMessage);
+
+                            androidNotificationHelper.throwNotification(
+                                    getBaseContext(),
+                                    project.get_id() * 1000 + cardObject.getNotificationID(),
+                                    cardObject.getNotificationClass().createResultIntent(getBaseContext(), project.get_id()),
+                                    cardObject.getStatus().getColor(getBaseContext()),
+                                    cardObject.getIcon(),
+                                    SourceHelper.getString(getApplicationContext(), cardObject.getTitle()) + " " + SourceHelper.getString(getApplicationContext(), R.string.status) + ": " + cardObject.getStatus().name(),
+                                    project.designation() + "\n" + notificationMessage,
+                                    SourceHelper.getString(getApplicationContext(), cardObject.getTitle()) + " " + SourceHelper.getString(getApplicationContext(), R.string.notification_includes_errors) + " [" + messages.size() + "]");
+                            break;
                     }
                 }
             }

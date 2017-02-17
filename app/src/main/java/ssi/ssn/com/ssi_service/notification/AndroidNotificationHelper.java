@@ -31,7 +31,7 @@ public class AndroidNotificationHelper {
 
     private Map<Integer, Notification> iDNotificationMap = new HashMap<>();
 
-    public AndroidNotificationHelper(Context context) {
+    public AndroidNotificationHelper() {
     }
 
     public void handleNotificationClick(Activity activity, Intent intent) {
@@ -104,7 +104,7 @@ public class AndroidNotificationHelper {
         private String title;
         private String text;
         @JsonIgnore
-        private int number;
+        private int number ;
 
         public Notification() {
         }
@@ -112,6 +112,7 @@ public class AndroidNotificationHelper {
         public Notification(String title, String text) {
             this.title = title;
             this.text = text;
+            this.number = 1;
         }
 
         public String getTitle() {

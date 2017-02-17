@@ -1,6 +1,5 @@
 package ssi.ssn.com.ssi_service.fragment.projectlist;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -12,16 +11,16 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 import ssi.ssn.com.ssi_service.R;
 import ssi.ssn.com.ssi_service.activity.MainActivity;
 import ssi.ssn.com.ssi_service.fragment.AbstractFragment;
 import ssi.ssn.com.ssi_service.model.data.source.Project;
+import ssi.ssn.com.ssi_service.model.data.source.cardobject.AbstractCardObject;
 import ssi.ssn.com.ssi_service.model.helper.JsonHelper;
 import ssi.ssn.com.ssi_service.model.helper.SourceHelper;
-import ssi.ssn.com.ssi_service.service.UpdateService;
 
 public class FragmentProjectList extends AbstractFragment {
 
@@ -88,5 +87,37 @@ public class FragmentProjectList extends AbstractFragment {
             initViewComponents();
         }
         return rootView;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        if (mAdapter.clickedProject == null) {
+            return;
+        }
+
+        Project savedProject = (Project) JsonHelper.fromJsonGeneric(Project.class, mAdapter.clickedProjectJson);
+        Project newProject = getSQLiteDB().project().getByID(savedProject.get_id());
+        newProject.initCardObjects(getSQLiteDB());
+
+        if (!mAdapter.clickedProjectJson.equals(JsonHelper.toJson(newProject))) {
+            mAdapter.reloadCardView(mAdapter.clickedProject);
+            return;
+        }
+
+        List<String> newCardObjectJsonList = new LinkedList<>();
+        for (AbstractCardObject cardObject : newProject.getAllCardObjects()) {
+            newCardObjectJsonList.add(JsonHelper.toJson(cardObject));
+        }
+
+        for (int i = 0; i < mAdapter.cardObjectJsonList.size(); i++) {
+            String savedCardObject = mAdapter.cardObjectJsonList.get(i);
+            String newCardObject = newCardObjectJsonList.get(i);
+            if (!savedCardObject.equals(newCardObject)) {
+                mAdapter.reloadCardView(mAdapter.clickedProject);
+                return;
+            }
+        }
     }
 }

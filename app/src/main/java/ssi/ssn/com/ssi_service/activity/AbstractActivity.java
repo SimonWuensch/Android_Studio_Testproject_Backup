@@ -41,7 +41,7 @@ public class AbstractActivity extends Activity {
         super.onCreate(savedInstanceState);
         sqliteDB = new SQLiteDB(this);
         requestHandler = RequestHandler.initRequestHandler(Executors.newSingleThreadExecutor());
-        androidNotificationHelper = new AndroidNotificationHelper(getBaseContext());
+        androidNotificationHelper = new AndroidNotificationHelper();
     }
 
     @Override
