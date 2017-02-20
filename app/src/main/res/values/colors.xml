@@ -16,5 +16,6 @@
     <color name="OK">#7CD175</color>
     <color name="ERROR">#FA7470</color>
     <color name="WARNING">#fac570</color>
+    <color name="INFO">#708cfa</color>
     <color name="NOT_AVAILABLE">#AAAAAA</color>
 </resources>

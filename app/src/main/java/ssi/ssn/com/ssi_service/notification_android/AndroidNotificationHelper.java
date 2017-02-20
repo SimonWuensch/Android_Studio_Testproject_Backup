@@ -17,10 +17,10 @@ import java.util.List;
 import java.util.Map;
 
 import ssi.ssn.com.ssi_service.activity.MainActivity;
-import ssi.ssn.com.ssi_service.fragment.componentlist.FragmentComponentListNotification;
-import ssi.ssn.com.ssi_service.fragment.launchboard.FragmentLaunchBoardNotification;
-import ssi.ssn.com.ssi_service.fragment.modulelist.FragmentModuleListNotification;
-import ssi.ssn.com.ssi_service.fragment.projectlist.FragmentProjectListNotification;
+import ssi.ssn.com.ssi_service.fragment.list.component.FragmentComponentListNotification;
+import ssi.ssn.com.ssi_service.fragment.overview.launchboard.FragmentLaunchBoardNotification;
+import ssi.ssn.com.ssi_service.fragment.list.module.FragmentModuleListNotification;
+import ssi.ssn.com.ssi_service.fragment.list.project.FragmentProjectListNotification;
 import ssi.ssn.com.ssi_service.model.helper.JsonHelper;
 
 public class AndroidNotificationHelper {

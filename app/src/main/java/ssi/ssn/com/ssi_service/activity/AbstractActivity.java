@@ -10,16 +10,18 @@ import java.util.List;
 import java.util.concurrent.Executors;
 
 import ssi.ssn.com.ssi_service.R;
-import ssi.ssn.com.ssi_service.fragment.componentlist.FragmentComponentList;
-import ssi.ssn.com.ssi_service.fragment.createproject.FragmentCreateProject;
-import ssi.ssn.com.ssi_service.fragment.customlist.FragmentCustomList;
-import ssi.ssn.com.ssi_service.fragment.launchboard.FragmentLaunchBoard;
-import ssi.ssn.com.ssi_service.fragment.modulelist.FragmentModuleList;
-import ssi.ssn.com.ssi_service.fragment.notificatonlist.FragmentNotificationList;
-import ssi.ssn.com.ssi_service.fragment.projectlist.FragmentProjectList;
+import ssi.ssn.com.ssi_service.fragment.create.notificationfilter.FragmentCreateNotificationFilter;
+import ssi.ssn.com.ssi_service.fragment.list.component.FragmentComponentList;
+import ssi.ssn.com.ssi_service.fragment.create.project.FragmentCreateProject;
+import ssi.ssn.com.ssi_service.fragment.list.custom.FragmentCustomList;
+import ssi.ssn.com.ssi_service.fragment.overview.launchboard.FragmentLaunchBoard;
+import ssi.ssn.com.ssi_service.fragment.list.module.FragmentModuleList;
+import ssi.ssn.com.ssi_service.fragment.list.notification.FragmentNotificationList;
+import ssi.ssn.com.ssi_service.fragment.list.project.FragmentProjectList;
 import ssi.ssn.com.ssi_service.model.data.source.Project;
 import ssi.ssn.com.ssi_service.model.database.SQLiteDB;
 import ssi.ssn.com.ssi_service.model.network.handler.RequestHandler;
+import ssi.ssn.com.ssi_service.model.network.response.notification.objects.ResponseNotification;
 import ssi.ssn.com.ssi_service.notification_android.AndroidNotificationHelper;
 
 public class AbstractActivity extends Activity {
@@ -56,6 +58,9 @@ public class AbstractActivity extends Activity {
     }
 
     public SQLiteDB getSQLiteDB() {
+        if(sqliteDB == null){
+            return sqliteDB = new SQLiteDB(this);
+        }
         return sqliteDB;
     }
 
@@ -157,5 +162,17 @@ public class AbstractActivity extends Activity {
                 .addToBackStack(FragmentNotificationList.TAG)
                 .commit();
         Log.i(getClass().getSimpleName(), "Show Fragment [" + FragmentNotificationList.TAG + "].");
+    }
+
+    public void showCreateNotificationFilterFragment(Project project, ResponseNotification notification){
+        FragmentCreateNotificationFilter fragmentCreateNotificationFilter = FragmentCreateNotificationFilter.newInstance(project, notification);
+        getFragmentManager()
+                .beginTransaction()
+                .replace(R.id.activity_main_fragment_container,
+                        fragmentCreateNotificationFilter,
+                        FragmentCreateNotificationFilter.TAG)
+                .addToBackStack(FragmentCreateNotificationFilter.TAG)
+                .commit();
+        Log.i(getClass().getSimpleName(), "Show Fragment [" + FragmentCreateNotificationFilter.TAG + "].");
     }
 }

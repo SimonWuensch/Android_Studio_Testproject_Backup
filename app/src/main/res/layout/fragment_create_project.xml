@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragment.createproject.FragmentCreateProject">
+    tools:context=".fragment.create.project.FragmentCreateProject">
 
     <include
         android:id="@+id/fragment_create_project_include_headline"
@@ -32,13 +32,25 @@
         android:textColor="@color/colorBlack"
         android:textStyle="bold" />
 
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/fragment_create_project_text_view_add_project"
+        android:layout_above="@+id/fragment_create_project_button_final"
+        android:layout_marginTop="30dp"
+        android:layout_marginBottom="5dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center">
+
+
     <RelativeLayout
         android:id="@+id/fragment_create_project_relative_layout_ip_address"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/fragment_create_project_text_view_add_project"
-        android:layout_centerInParent="true"
-        android:layout_marginTop="30dp">
+        android:layout_height="wrap_content">
 
         <ImageView
             android:id="@+id/fragment_create_project_image_view_ip"
@@ -76,8 +88,6 @@
         android:id="@+id/fragment_create_project_relative_layout_user_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/fragment_create_project_relative_layout_password"
-        android:layout_below="@+id/fragment_create_project_relative_layout_ip_address"
         android:layout_marginTop="15dp">
 
         <ImageView
@@ -107,8 +117,6 @@
         android:id="@+id/fragment_create_project_relative_layout_password"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/fragment_create_project_relative_layout_user_name"
-        android:layout_centerInParent="true"
         android:layout_marginTop="15dp">
 
         <ImageView
@@ -137,8 +145,6 @@
         android:id="@+id/fragment_create_project_relative_layout_update_interval"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/fragment_create_project_relative_layout_password"
-        android:layout_centerInParent="true"
         android:layout_marginTop="15dp">
 
         <ImageView
@@ -185,6 +191,10 @@
         </RelativeLayout>
     </RelativeLayout>
 
+    </LinearLayout>
+
+    </ScrollView>
+
     <Button
         android:id="@+id/fragment_create_project_button_final"
         android:layout_width="320dp"
@@ -193,5 +203,5 @@
         android:layout_centerInParent="true"
         android:layout_marginBottom="20dp"
         android:background="@color/defaultColor"
-        android:text="@string/fragment_create_project_button_add_project" />
+        android:text="@string/add" />
 </RelativeLayout>

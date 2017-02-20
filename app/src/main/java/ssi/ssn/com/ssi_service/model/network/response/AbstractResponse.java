@@ -5,7 +5,7 @@ import android.util.Log;
 
 import java.util.List;
 
-import ssi.ssn.com.ssi_service.fragment.customlist.source.CustomListObject;
+import ssi.ssn.com.ssi_service.fragment.list.custom.source.CustomListObject;
 
 public class AbstractResponse {
 

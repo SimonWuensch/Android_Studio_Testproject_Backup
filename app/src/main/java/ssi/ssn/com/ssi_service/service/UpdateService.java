@@ -15,8 +15,8 @@ import java.util.TimerTask;
 import java.util.concurrent.Executors;
 
 import ssi.ssn.com.ssi_service.R;
-import ssi.ssn.com.ssi_service.fragment.launchboard.FragmentLaunchBoardNotification;
-import ssi.ssn.com.ssi_service.fragment.projectlist.FragmentProjectListNotification;
+import ssi.ssn.com.ssi_service.fragment.overview.launchboard.FragmentLaunchBoardNotification;
+import ssi.ssn.com.ssi_service.fragment.list.project.FragmentProjectListNotification;
 import ssi.ssn.com.ssi_service.model.data.source.Project;
 import ssi.ssn.com.ssi_service.model.data.source.cardobject.AbstractCardObject;
 import ssi.ssn.com.ssi_service.model.database.SQLiteDB;

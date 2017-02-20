@@ -8,7 +8,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import ssi.ssn.com.ssi_service.R;
-import ssi.ssn.com.ssi_service.fragment.customlist.source.CustomListObject;
+import ssi.ssn.com.ssi_service.fragment.list.custom.source.CustomListObject;
 import ssi.ssn.com.ssi_service.model.helper.FormatHelper;
 import ssi.ssn.com.ssi_service.model.helper.SourceHelper;
 import ssi.ssn.com.ssi_service.model.network.response.AbstractResponse;

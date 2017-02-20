@@ -6,23 +6,18 @@ import android.widget.Toast;
 import com.owlike.genson.annotation.JsonIgnore;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 
 import ssi.ssn.com.ssi_service.R;
 import ssi.ssn.com.ssi_service.activity.MainActivity;
-import ssi.ssn.com.ssi_service.fragment.componentlist.FragmentComponentListNotification;
-import ssi.ssn.com.ssi_service.fragment.launchboard.source.DetectorCardObjectComponent;
-import ssi.ssn.com.ssi_service.fragment.launchboard.source.DetectorCardObjectNotification;
+import ssi.ssn.com.ssi_service.fragment.overview.launchboard.source.DetectorCardObjectNotification;
 import ssi.ssn.com.ssi_service.model.data.source.Project;
 import ssi.ssn.com.ssi_service.model.data.source.Status;
 import ssi.ssn.com.ssi_service.model.database.DBCardObject;
-import ssi.ssn.com.ssi_service.model.database.DBCardObjectComponent;
 import ssi.ssn.com.ssi_service.model.database.DBCardObjectNotification;
 import ssi.ssn.com.ssi_service.model.database.SQLiteDB;
 import ssi.ssn.com.ssi_service.model.helper.SourceHelper;
 import ssi.ssn.com.ssi_service.model.network.handler.RequestHandler;
-import ssi.ssn.com.ssi_service.model.network.response.component.ResponseComponent;
 import ssi.ssn.com.ssi_service.model.network.response.notification.ResponseNotificationTable;
 import ssi.ssn.com.ssi_service.notification_android.AbstractAndroidNotification;
 

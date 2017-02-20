@@ -11,8 +11,8 @@ import java.util.List;
 
 import ssi.ssn.com.ssi_service.R;
 import ssi.ssn.com.ssi_service.activity.MainActivity;
-import ssi.ssn.com.ssi_service.fragment.launchboard.source.DetectorCardObjectModule;
-import ssi.ssn.com.ssi_service.fragment.modulelist.FragmentModuleListNotification;
+import ssi.ssn.com.ssi_service.fragment.overview.launchboard.source.DetectorCardObjectModule;
+import ssi.ssn.com.ssi_service.fragment.list.module.FragmentModuleListNotification;
 import ssi.ssn.com.ssi_service.model.data.source.Project;
 import ssi.ssn.com.ssi_service.model.data.source.Status;
 import ssi.ssn.com.ssi_service.model.database.DBCardObject;

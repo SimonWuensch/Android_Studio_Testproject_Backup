@@ -55,7 +55,7 @@ public class RequestHandler {
     // ** With Cookie *************************************************************************** //
     // *** Login  ******************************************************************************* //
     public void sendRequestLogin(Project project) {
-        RequestLogin.init(this, project).addTaskGET(getCookieHandler(project));
+        RequestLogin.init(this, project).getTaskGET(getCookieHandler(project));
     }
 
     // *** Application Config ******************************************************************* //

@@ -37,32 +37,32 @@
                 android:background="@color/lightGray" />
 
             <TextView
+                android:id="@+id/fragment_notification_list_card_view_text_view_number"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:textColor="@color/colorWhite"
                 android:text="1"
-                android:id="@+id/fragment_notification_list_card_view_text_view_number"
                 android:layout_centerInParent="true"/>
         </RelativeLayout>
 
         <TextView
+            android:id="@+id/fragment_notification_list_card_view_text_view_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:text="10.10.17"
-            android:id="@+id/fragment_notification_list_card_view_text_view_date"
             android:layout_marginBottom="2dp"
             android:layout_alignParentBottom="true"
             android:layout_alignLeft="@+id/fragment_notification_list_card_view_text_view_time"
             android:layout_alignStart="@+id/fragment_notification_list_card_view_text_view_time" />
 
         <TextView
+            android:id="@+id/fragment_notification_list_card_view_text_view_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:text="11:11:11"
-            android:id="@+id/fragment_notification_list_card_view_text_view_time"
             android:layout_marginLeft="7dp"
             android:layout_alignParentTop="true"
             android:layout_toRightOf="@+id/fragment_notification_list_card_view_relative_layout_up_status"
@@ -79,11 +79,11 @@
             android:layout_toEndOf="@+id/fragment_notification_list_card_view_text_view_date" />
 
         <TextView
+            android:id="@+id/fragment_notification_list_card_view_text_view_node_path"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:text="F01"
-            android:id="@+id/fragment_notification_list_card_view_text_view_node_path"
             android:layout_centerVertical="true"
             android:layout_toRightOf="@+id/fragment_notification_list_card_view_view_status_up_line"
             android:layout_toEndOf="@+id/fragment_notification_list_card_view_view_status_up_line"

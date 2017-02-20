@@ -12,7 +12,7 @@ public class FormatHelper {
     }
 
     public static String formatDate(Date date) {
-        SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy - hh:mm:ss");
+        SimpleDateFormat format = new SimpleDateFormat("dd.MM.yy - hh:mm:ss");
         return format.format(date);
     }
 

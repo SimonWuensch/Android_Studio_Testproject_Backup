@@ -7,6 +7,7 @@ import java.util.concurrent.ExecutorService;
 import ssi.ssn.com.ssi_service.model.data.source.Project;
 import ssi.ssn.com.ssi_service.model.helper.JsonHelper;
 import ssi.ssn.com.ssi_service.model.network.DefaultResponse;
+import ssi.ssn.com.ssi_service.model.network.communication.AbstractHttpCommunication;
 import ssi.ssn.com.ssi_service.model.network.communication.HttpGET;
 import ssi.ssn.com.ssi_service.model.network.handler.CookieHandler;
 import ssi.ssn.com.ssi_service.model.network.handler.RequestHandler;
@@ -41,7 +42,14 @@ public class RequestLogin {
     }
 
 
-    public void addTaskGET(final CookieHandler cookieHandler) {
+    public void getTaskGET(final CookieHandler cookieHandler) {
+        if(AbstractHttpCommunication.isTestVersion){
+            HttpGET httpGET = new HttpGET(cookieHandler, getAddress());
+            DefaultResponse defaultResponse = httpGET.sendRequest(true);
+            project.setDefaultResponseLogin(defaultResponse);
+            return;
+        }
+
         requestHandler.sendRequestSessionsCurrent(project);
         if (project.getDefaultResponseSessionsCurrent().getCode() != 200) {
             return;

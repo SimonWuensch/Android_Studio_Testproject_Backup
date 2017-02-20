@@ -5,7 +5,7 @@ public class ResponseNotification {
     private long id;
     private long startTime;
     private String text;
-    private String nodePath;
+    private String nodePath = "";
     private String tKey;
     private ResponseNotificationDefinition definition;
 

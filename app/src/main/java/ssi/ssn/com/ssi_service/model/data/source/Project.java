@@ -5,7 +5,7 @@ import com.owlike.genson.annotation.JsonIgnore;
 import java.util.LinkedList;
 import java.util.List;
 
-import ssi.ssn.com.ssi_service.fragment.launchboard.source.DetectorProject;
+import ssi.ssn.com.ssi_service.fragment.overview.launchboard.source.DetectorProject;
 import ssi.ssn.com.ssi_service.model.data.source.cardobject.AbstractCardObject;
 import ssi.ssn.com.ssi_service.model.data.source.cardobject.CardObjectComponent;
 import ssi.ssn.com.ssi_service.model.data.source.cardobject.CardObjectModule;
