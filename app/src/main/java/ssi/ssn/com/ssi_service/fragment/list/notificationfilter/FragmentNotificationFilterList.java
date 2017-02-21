@@ -1,6 +1,5 @@
-package ssi.ssn.com.ssi_service.fragment.list.notification;
+package ssi.ssn.com.ssi_service.fragment.list.notificationfilter;
 
-import android.app.Fragment;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -10,38 +9,31 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import java.util.List;
+import java.util.ArrayList;
 
 import ssi.ssn.com.ssi_service.R;
-import ssi.ssn.com.ssi_service.activity.MainActivity;
-import ssi.ssn.com.ssi_service.fragment.list.notification.source.NotificationListSorter;
+import ssi.ssn.com.ssi_service.fragment.AbstractFragment;
 import ssi.ssn.com.ssi_service.model.data.source.Project;
 import ssi.ssn.com.ssi_service.model.data.source.cardobject.CardObjectNotification;
-import ssi.ssn.com.ssi_service.model.database.SQLiteDB;
 import ssi.ssn.com.ssi_service.model.helper.SourceHelper;
-import ssi.ssn.com.ssi_service.model.network.response.notification.objects.ResponseNotification;
 
-public class FragmentNotificationList extends Fragment {
+public class FragmentNotificationFilterList extends AbstractFragment {
 
-    public static String TAG = FragmentNotificationList.class.getSimpleName();
+    public static String TAG = FragmentNotificationFilterList.class.getSimpleName();
 
-    protected static String PROJECT_ID = TAG + "PROJECT_ID";
+    private static String PROJECT_ID = TAG + "PROJECT_ID";
 
-    private static int FRAGMENT_LAYOUT = R.layout.fragment_notification_list;
+    private static int FRAGMENT_LAYOUT = R.layout.fragment_notification_filter_list;
     private static int RECYCLERVIEW = R.id.fragment_standard_recycler_view;
-    private static int CARDVIEW = R.layout.fragment_notification_list_card_view;
+    private static int CARDVIEW = R.layout.fragment_notification_filter_list_card_view;
 
-    private Project project;
     private View rootView;
+    private Project project;
 
-    public static FragmentNotificationList newInstance(long projectID) {
-        if (projectID <= 0) {
-            return new FragmentNotificationList();
-        }
-
-        FragmentNotificationList fragment = new FragmentNotificationList();
+    public static FragmentNotificationFilterList newInstance(int projectID) {
+        FragmentNotificationFilterList fragment = new FragmentNotificationFilterList();
         Bundle bundle = new Bundle();
-        bundle.putLong(PROJECT_ID, projectID);
+        bundle.putInt(PROJECT_ID, projectID);
         fragment.setArguments(bundle);
         return fragment;
     }
@@ -50,10 +42,10 @@ public class FragmentNotificationList extends Fragment {
         if (getArguments() == null) {
             return;
         }
-        long projectID = getArguments().getLong(PROJECT_ID);
-        SQLiteDB sqLiteDB = ((MainActivity) getActivity()).getSQLiteDB();
-        project = sqLiteDB.project().getByID(projectID);
-        CardObjectNotification.init(sqLiteDB, project);
+
+        int projectID = getArguments().getInt(PROJECT_ID);
+        project = getSQLiteDB().project().getByID(projectID);
+        CardObjectNotification.init(getSQLiteDB(), project);
     }
 
     @Override
@@ -68,8 +60,8 @@ public class FragmentNotificationList extends Fragment {
             rootView = inflater.inflate(FRAGMENT_LAYOUT, container, false);
             Log.d(TAG, "Fragment inflated [" + getActivity().getResources().getResourceName(FRAGMENT_LAYOUT) + "].");
 
-            List<ResponseNotification> notifications = NotificationListSorter.sortNotificationBySeverity(project.getCardObjectNotification().getNotificationTable().getData());
-            RecyclerView.Adapter mAdapter = new FragmentNotificationListAdapter(CARDVIEW, this, project, notifications);
+
+            RecyclerView.Adapter mAdapter = new FragmentNotificationFilterListAdapter(CARDVIEW, this, new ArrayList<>(project.getCardObjectNotification().getNotificationFilters().values()));
             Log.d(TAG, "Adapter [" + mAdapter.getClass().getSimpleName() + "] with CardView [" + getActivity().getResources().getResourceName(CARDVIEW) + "] initialized.");
 
             RecyclerView mRecyclerView = (RecyclerView) rootView.findViewById(RECYCLERVIEW);
@@ -85,6 +77,6 @@ public class FragmentNotificationList extends Fragment {
 
     public void initViewComponents() {
         TextView tvHeadLine = (TextView) rootView.findViewById(R.id.default_action_bar_text_view_headline);
-        tvHeadLine.setText(SourceHelper.getString(getActivity(), R.string.fragment_notification_list_title));
+        tvHeadLine.setText(SourceHelper.getString(getActivity(), R.string.fragment_notification_filter_title));
     }
 }

@@ -104,7 +104,7 @@ class FragmentProjectListViewHolder extends RecyclerView.ViewHolder {
         return new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                activity.showCreateProjectFragment(project);
+                activity.showCreateProjectFragment(project.get_id());
             }
         };
     }

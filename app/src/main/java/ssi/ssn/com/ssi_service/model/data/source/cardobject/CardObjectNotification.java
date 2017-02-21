@@ -144,7 +144,7 @@ public class CardObjectNotification extends AbstractCardObject {
         if (getStatus().equals(Status.NOT_AVAILABLE)) {
             Toast.makeText(activity, SourceHelper.getString(activity, R.string.fragment_launch_board_error_notification), Toast.LENGTH_SHORT).show();
         } else {
-            activity.showNotificationListFragment(project.get_id());
+            activity.showNotificationFilterListFragment(project.get_id());
         }
     }
 

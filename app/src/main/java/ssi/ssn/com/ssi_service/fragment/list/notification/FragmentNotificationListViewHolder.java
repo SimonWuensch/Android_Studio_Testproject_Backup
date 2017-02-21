@@ -59,7 +59,7 @@ public class FragmentNotificationListViewHolder extends RecyclerView.ViewHolder 
         cardView.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
-                activity.showCreateNotificationFilterFragment(project, notification);
+                activity.showCreateNotificationFilterFragment(project.get_id(), notification);
             }
         });
     }

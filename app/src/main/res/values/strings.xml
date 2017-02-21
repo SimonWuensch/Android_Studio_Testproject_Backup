@@ -20,7 +20,7 @@
     <string name="state_unknown">UNKNOWN</string>
 
     <!-- Fragment Create Project -->
-    <string name="fragment_create_project_title">Projekt</string>
+    <string name="fragment_create_project_title">Projekt anlegen</string>
     <string name="fragment_create_project_text_view_add_project">Projekt hinzufügen</string>
     <string name="fragment_create_project_edit_text_hint_ip_address">IP Adresse</string>
     <string name="fragment_create_project_edit_text_hint_user_name">Benutzername</string>
@@ -96,7 +96,7 @@
     <string name="fragment_notification_list_title">Meldungen</string>
 
     <!-- Fragment Create Notification Filter -->
-    <string name="fragment_notification_filter_title">Filter für Meldung</string>
+    <string name="fragment_notification_filter_title">Filter für Meldung anlegen</string>
     <string name="fragment_create_notification_filter_text_view_add_notification_filter">Filter hinzufügen</string>
     <string name="fragment_create_notification_filter_text_hint_note">Knoten</string>
     <string name="fragment_create_notification_filter_text_hint_active_time">Aktive Zeit</string>
@@ -108,6 +108,9 @@
         <item>WARN</item>
         <item>INFO</item>
     </string-array>
+
+    <!-- Fragment Notification Filter List -->
+    <string name="fragment_notification_filter_list_title">Meldungen: Filter Liste</string>
 
 
     <!-- Android Notification -->

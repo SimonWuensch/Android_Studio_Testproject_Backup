@@ -54,14 +54,14 @@ public class FragmentCreateProject extends AbstractFragment {
 
     private List<AsyncTask> asyncTaskList = new ArrayList<>();
 
-    public static FragmentCreateProject newInstance(Project project) {
-        if (project == null) {
+    public static FragmentCreateProject newInstance(int projectID) {
+        if (projectID == 0) {
             return new FragmentCreateProject();
         }
 
         FragmentCreateProject fragment = new FragmentCreateProject();
         Bundle bundle = new Bundle();
-        bundle.putInt(PROJECT_ID, project.get_id());
+        bundle.putInt(PROJECT_ID, projectID);
         fragment.setArguments(bundle);
         return fragment;
     }

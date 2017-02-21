@@ -189,7 +189,6 @@ public class DBCardObjectComponent extends SQLiteOpenHelper implements DBCardObj
         db.delete(TABLE_COMPONENT,
                 _ID + " = ?",
                 new String[]{String.valueOf(cardObject.get_id())});
-        db.close();
         Log.d(TAG, "ID Project: " + cardObject.get_id_project() + "| DELETE: Card Object Component + [" + cardObject + "]");
     }
 }

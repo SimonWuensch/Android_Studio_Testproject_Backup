@@ -14,6 +14,7 @@ import java.util.List;
 
 import ssi.ssn.com.ssi_service.model.data.source.Project;
 import ssi.ssn.com.ssi_service.model.data.source.Status;
+import ssi.ssn.com.ssi_service.model.data.source.cardobject.AbstractCardObject;
 import ssi.ssn.com.ssi_service.model.helper.JsonHelper;
 
 public class DBProject extends SQLiteOpenHelper {
@@ -42,8 +43,11 @@ public class DBProject extends SQLiteOpenHelper {
                     + JSON_PROJECT + " TEXT" +
                     ");";
 
-    public DBProject(int version, Context context) {
+    private SQLiteDB sqLiteDB;
+
+    public DBProject(int version, Context context, SQLiteDB sqLiteDB) {
         super(context, DATABASE_NAME, null, version);
+        this.sqLiteDB = sqLiteDB;
     }
 
     @Override
@@ -214,7 +218,11 @@ public class DBProject extends SQLiteOpenHelper {
         db.delete(TABLE_PROJECT,
                 _ID + " = ?",
                 new String[]{String.valueOf(project.get_id())});
-        db.close();
         Log.d(TAG, "DELETE: Project + [" + project + "]");
+
+        project.initCardObjects(sqLiteDB);
+        for(AbstractCardObject cardObject : project.getAllCardObjects()){
+            cardObject.getDBSQLiteCardObject(sqLiteDB).delete(cardObject);
+        }
     }
 }

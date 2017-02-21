@@ -34,8 +34,8 @@ public class FragmentCreateNotificationFilter extends AbstractFragment {
     private static int FRAGMENT_LAYOUT = R.layout.fragment_create_notification_filter;
 
     private static String PROJECT_ID = TAG + "PROJECT_ID";
-    private static String RESPONSE_NOTIFICATION_JSON = TAG + "RESPONSE_NOTIFICATION_JSON";
     private static String FILTER_NOTIFICATION_JSON = TAG + "FILTER_NOTIFICATION_JSON";
+    private static String RESPONSE_NOTIFICATION_JSON = TAG + "RESPONSE_NOTIFICATION_JSON";
 
     private CreateUpdateDeleteStatus fragmentStatus;
 
@@ -53,30 +53,30 @@ public class FragmentCreateNotificationFilter extends AbstractFragment {
 
 
     private Project project;
-    private ResponseNotification notification;
     private FilterNotification filter;
+    private ResponseNotification notification;
 
-    public static FragmentCreateNotificationFilter newInstance(Project project, ResponseNotification notification) {
-        if (project == null) {
+    public static FragmentCreateNotificationFilter newInstance(int projectID, ResponseNotification notification) {
+        if (projectID == 0) {
             return new FragmentCreateNotificationFilter();
         }
 
         FragmentCreateNotificationFilter fragment = new FragmentCreateNotificationFilter();
         Bundle bundle = new Bundle();
-        bundle.putInt(PROJECT_ID, project.get_id());
+        bundle.putInt(PROJECT_ID, projectID);
         bundle.putString(RESPONSE_NOTIFICATION_JSON, JsonHelper.toJson(notification));
         fragment.setArguments(bundle);
         return fragment;
     }
 
-    public static FragmentCreateNotificationFilter newInstance(Project project, FilterNotification filter) {
-        if (project == null) {
+    public static FragmentCreateNotificationFilter newInstance(int projectID, FilterNotification filter) {
+        if (projectID == 0) {
             return new FragmentCreateNotificationFilter();
         }
 
         FragmentCreateNotificationFilter fragment = new FragmentCreateNotificationFilter();
         Bundle bundle = new Bundle();
-        bundle.putInt(PROJECT_ID, project.get_id());
+        bundle.putInt(PROJECT_ID, projectID);
         bundle.putString(FILTER_NOTIFICATION_JSON, JsonHelper.toJson(filter));
         fragment.setArguments(bundle);
         return fragment;
@@ -334,7 +334,7 @@ public class FragmentCreateNotificationFilter extends AbstractFragment {
                         Log.i(TAG, "Delete successful. Notification filter: [" + JsonHelper.toJson(filter) + "]");
                         break;
                 }
-                //todo show Fragment Notification Filter list.
+                ((MainActivity)getActivity()).showNotificationFilterListFragment(project.get_id());
             }
         };
     }

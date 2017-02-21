@@ -12,7 +12,7 @@ public class SQLiteDB {
     private DBCardObjectNotification dbCardObjectNotification;
 
     public SQLiteDB(Context context) {
-        dbProject = new DBProject(DATABASE_VERSION, context);
+        dbProject = new DBProject(DATABASE_VERSION, context, this);
         dbCardObjectModule = new DBCardObjectModule(DATABASE_VERSION, context);
         dbCardObjectComponent = new DBCardObjectComponent(DATABASE_VERSION, context);
         dbCardObjectNotification = new DBCardObjectNotification(DATABASE_VERSION, context);

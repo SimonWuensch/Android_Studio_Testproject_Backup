@@ -189,7 +189,6 @@ public class DBCardObjectNotification extends SQLiteOpenHelper implements DBCard
         db.delete(TABLE_NOTIFICATION,
                 _ID + " = ?",
                 new String[]{String.valueOf(cardObject.get_id())});
-        db.close();
         Log.d(TAG, "ID Project: " + cardObject.get_id_project() + "| DELETE: Card Object Notification + [" + cardObject + "]");
     }
 }
