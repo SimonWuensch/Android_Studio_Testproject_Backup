@@ -11,7 +11,10 @@
     <string name="yes">Ja</string>
     <string name="no">Nein</string>
     <string name="loading_error">FEHLER</string>
+
     <string name="add">hinzufügen</string>
+    <string name="update">aktualisieren</string>
+    <string name="delete">löschen</string>
 
     <string name="state_running">RUNNING</string>
     <string name="state_unknown">UNKNOWN</string>
@@ -22,8 +25,6 @@
     <string name="fragment_create_project_edit_text_hint_ip_address">IP Adresse</string>
     <string name="fragment_create_project_edit_text_hint_user_name">Benutzername</string>
     <string name="fragment_create_project_edit_text_hint_password">Passwort</string>
-    <string name="fragment_create_project_button_delete_project">löschen</string>
-    <string name="fragment_create_project_button_update_project">aktualisieren</string>
     <string name="fragment_create_project_message_server_address_not_correct">Serveradresse ist nicht korrekt.</string>
     <string name="fragment_create_project_message_server_address_is_no_valid_lighthouse_address">Serveradresse ist keine valide Lighthouse Adresse</string>
     <string name="fragment_create_project_message_please_insert_all_information_in_the_input_field">Bitte befüllen Sie alle Eingabefelder</string>
@@ -101,6 +102,7 @@
     <string name="fragment_create_notification_filter_text_hint_active_time">Aktive Zeit</string>
     <string name="fragment_create_notification_filter_text_hint_severity">Severity:</string>
     <string name="fragment_create_notification_filter_text_hint_text">Text</string>
+    <string name="fragment_create_notification_filter_alert_text_filter_already_exists">Es existiert bereits ein Filter mit diesen Eingabewerten.</string>
     <string-array name="fragment_create_notification_filter_drop_down_box_severity_input">
         <item>ERROR</item>
         <item>WARN</item>

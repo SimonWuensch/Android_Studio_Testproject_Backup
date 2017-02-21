@@ -29,7 +29,7 @@
         android:layout_marginTop="10dp"
         android:text="@string/fragment_create_project_text_view_add_project"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:textColor="@color/colorBlack"
+        android:textColor="@color/colorGray"
         android:textStyle="bold" />
 
     <ScrollView

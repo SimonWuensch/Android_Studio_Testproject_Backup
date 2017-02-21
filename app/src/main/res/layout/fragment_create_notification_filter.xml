@@ -29,7 +29,7 @@
         android:layout_marginTop="10dp"
         android:text="@string/fragment_create_notification_filter_text_view_add_notification_filter"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:textColor="@color/colorBlack"
+        android:textColor="@color/colorGray"
         android:textStyle="bold" />
 
     <ScrollView
@@ -143,9 +143,10 @@
                         android:id="@+id/fragment_create_notification_filter_text_view_severity"
                         android:layout_width="199dp"
                         android:layout_height="wrap_content"
-                        android:hint="@string/fragment_create_notification_filter_text_hint_severity"
+                        android:text="@string/fragment_create_notification_filter_text_hint_severity"
                         android:textAppearance="?android:attr/textAppearanceMedium"
                         android:layout_centerInParent="true"
+                        android:textColor="@color/colorBlack"
                         android:layout_alignParentLeft="true"
                         android:paddingLeft="4dp"/>
 
@@ -163,8 +164,9 @@
                         android:layout_height="wrap_content"
                         android:layout_centerInParent="true"
                         android:hint="@string/fragment_create_notification_filter_text_hint_text"
-                        android:inputType="text"
-                        android:maxLines="2"/>
+                        android:inputType="textMultiLine"
+                        android:ems="10"/>
+
                 </RelativeLayout>
 
             </LinearLayout>

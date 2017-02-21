@@ -6,13 +6,16 @@ import android.widget.Toast;
 import com.owlike.genson.annotation.JsonIgnore;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import ssi.ssn.com.ssi_service.R;
 import ssi.ssn.com.ssi_service.activity.MainActivity;
 import ssi.ssn.com.ssi_service.fragment.overview.launchboard.source.DetectorCardObjectNotification;
 import ssi.ssn.com.ssi_service.model.data.source.Project;
 import ssi.ssn.com.ssi_service.model.data.source.Status;
+import ssi.ssn.com.ssi_service.model.data.source.filter.FilterNotification;
 import ssi.ssn.com.ssi_service.model.database.DBCardObject;
 import ssi.ssn.com.ssi_service.model.database.DBCardObjectNotification;
 import ssi.ssn.com.ssi_service.model.database.SQLiteDB;
@@ -23,9 +26,12 @@ import ssi.ssn.com.ssi_service.notification_android.AbstractAndroidNotification;
 
 public class CardObjectNotification extends AbstractCardObject {
 
+    private static String TAG = CardObjectNotification.class.getSimpleName();
+
     private static int NOTIFICATION_ID = 3;
 
     private ResponseNotificationTable notificationTable;
+    private Map<Integer, FilterNotification> notificationFilters = new HashMap<>();
 
     public CardObjectNotification(Project project) {
         super(project);
@@ -63,6 +69,58 @@ public class CardObjectNotification extends AbstractCardObject {
         this.notificationTable = notificationTable;
     }
 
+    public Map<Integer, FilterNotification> getNotificationFilters() {
+        return notificationFilters;
+    }
+
+    public void setNotificationFilters(Map<Integer, FilterNotification> notificationFilters) {
+        this.notificationFilters = notificationFilters;
+    }
+
+    public boolean addNotificationFilter(SQLiteDB sqLiteDB, FilterNotification newFilter) {
+        if (!isFilterExists(newFilter)) {
+            int id = notificationFilters.size();
+            newFilter.setId(id);
+            notificationFilters.put(id, newFilter);
+            return sqLiteDB.cardObjectNotification().update(this);
+        }
+        return false;
+    }
+
+    public boolean updateNotificationFilter(SQLiteDB sqLiteDB, FilterNotification filter){
+        if(!isFilterExists(filter)){
+            return false;
+        }
+        FilterNotification oldFilter = notificationFilters.get(filter.getId());
+        oldFilter.setNote(filter.getNote());
+        oldFilter.setActiveTime(filter.getActiveTime());
+        oldFilter.setSeverity(filter.getSeverity());
+        oldFilter.setText(filter.getText());
+        return sqLiteDB.cardObjectNotification().update(this);
+    }
+
+    public boolean removeNotificationFilter(SQLiteDB sqLiteDB, FilterNotification filter) {
+        if (!isFilterExists(filter)) {
+            return false;
+        }
+        notificationFilters.remove(filter.getId());
+        return sqLiteDB.cardObjectNotification().update(this);
+    }
+
+
+
+    private boolean isFilterExists(FilterNotification newFilter) {
+        for (FilterNotification oldFilter : notificationFilters.values()) {
+            if (oldFilter.getNote().equals(newFilter.getNote()) &&
+                    oldFilter.getActiveTime() == newFilter.getActiveTime() &&
+                    oldFilter.getText().equals(newFilter.getText()) &&
+                    oldFilter.getSeverity().equals(newFilter.getSeverity())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     @Override
     public DBCardObject getDBSQLiteCardObject(SQLiteDB sqLiteDB) {
         return sqLiteDB.cardObjectNotification();
@@ -93,20 +151,20 @@ public class CardObjectNotification extends AbstractCardObject {
     // ** Notification settings ***************************************************************** //
     @Override
     @JsonIgnore
-    public int getNotificationID(){
+    public int getNotificationID() {
         return NOTIFICATION_ID;
     }
 
     @Override
     @JsonIgnore
-    public AbstractAndroidNotification getNotificationClass(){
+    public AbstractAndroidNotification getNotificationClass() {
         return null;
         // return new FragmentComponentListNotification();
     }
 
     @Override
     @JsonIgnore
-    public List<String> getNotificationMessages(Context context){
+    public List<String> getNotificationMessages(Context context) {
         /*
         List<String> messages = new LinkedList<>();
         for (ResponseComponent responseComponent : responseComponentList) {

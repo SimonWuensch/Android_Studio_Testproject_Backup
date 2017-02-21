@@ -32,6 +32,10 @@ public class FormatHelper {
         return TimeUnit.MINUTES.toMillis(Integer.parseInt(minutes));
     }
 
+    public static long formatMinutesToMilliseconds(int minutes) {
+        return TimeUnit.MINUTES.toMillis(minutes);
+    }
+
     public static long formatMillisecondsToHours(long millis) {
         return TimeUnit.MILLISECONDS.toHours(millis);
     }

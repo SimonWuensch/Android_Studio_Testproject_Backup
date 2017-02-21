@@ -3,7 +3,10 @@ package ssi.ssn.com.ssi_service.fragment;
 import android.app.Fragment;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.EditText;
+import android.widget.Spinner;
 
 import ssi.ssn.com.ssi_service.activity.MainActivity;
 import ssi.ssn.com.ssi_service.model.database.SQLiteDB;
@@ -30,6 +33,19 @@ public class AbstractFragment extends Fragment {
 
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 doTextChanged();
+            }
+        });
+    }
+
+    public void onSpinnerSelectionChangedListener(Spinner spinner){
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
+                doAfterChanged();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parentView) {
             }
         });
     }

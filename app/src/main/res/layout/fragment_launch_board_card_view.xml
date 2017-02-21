@@ -38,7 +38,7 @@
             android:layout_toRightOf="@id/fragment_launch_board_card_view_frame_layout_image_view"
             android:text="Title"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:textColor="@color/colorBlack" />
+            android:textColor="@color/colorGray" />
 
         <CheckBox
             android:id="@+id/fragment_launch_board_card_view_check_box_observation"

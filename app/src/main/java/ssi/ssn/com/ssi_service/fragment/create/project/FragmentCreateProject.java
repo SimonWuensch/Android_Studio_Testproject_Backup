@@ -156,21 +156,12 @@ public class FragmentCreateProject extends AbstractFragment {
                     bFinal.setText(SourceHelper.getString(getActivity(), R.string.add));
                     break;
                 case DELETE:
-                    bFinal.setText(SourceHelper.getString(getActivity(), R.string.fragment_create_project_button_delete_project));
+                    bFinal.setText(SourceHelper.getString(getActivity(), R.string.delete));
                     super.onTextChangeListener(etServerAddress);
                     super.onTextChangeListener(etUserName);
                     super.onTextChangeListener(etPassword);
                     super.onTextChangeListener(etObservationInterval);
-                    spTimeInput.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                        @Override
-                        public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
-                            doAfterChanged();
-                        }
-
-                        @Override
-                        public void onNothingSelected(AdapterView<?> parentView) {
-                        }
-                    });
+                    super.onSpinnerSelectionChangedListener(spTimeInput);
                     break;
             }
             Log.d(TAG, "Fragment view components filled with project [" + project + "].");
@@ -208,16 +199,16 @@ public class FragmentCreateProject extends AbstractFragment {
         updateFinalButtonText();
     }
 
-    public void updateFinalButtonText() {
+    private void updateFinalButtonText() {
         switch (fragmentStatus) {
             case ADD:
                 bFinal.setText(SourceHelper.getString(getActivity(), R.string.add));
                 break;
             case UPDATE:
-                bFinal.setText(SourceHelper.getString(getActivity(), R.string.fragment_create_project_button_update_project));
+                bFinal.setText(SourceHelper.getString(getActivity(), R.string.update));
                 break;
             case DELETE:
-                bFinal.setText(SourceHelper.getString(getActivity(), R.string.fragment_create_project_button_delete_project));
+                bFinal.setText(SourceHelper.getString(getActivity(), R.string.delete));
                 break;
         }
     }

@@ -6,7 +6,8 @@
     <color name="transparent">#00ffffff</color>
 
     <color name="defaultColor">#BBCBDC</color>
-    <color name="colorBlack">#505A64</color>
+    <color name="colorGray">#505A64</color>
+    <color name="colorBlack">#000000</color>
     <color name="colorWhite">#ffffff</color>
     <color name="ssiYellow">#FFFF00</color>
     <color name="loading_view_background">#25000000</color>
