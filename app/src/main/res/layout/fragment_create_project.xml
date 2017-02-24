@@ -70,8 +70,7 @@
             android:layout_toRightOf="@+id/fragment_create_project_image_view_ip"
             android:hint="@string/fragment_create_project_edit_text_hint_ip_address"
             android:inputType="textUri"
-            android:lines="1"
-            android:maxLength="20" />
+            android:lines="1"/>
 
         <Button
             android:id="@+id/fragment_create_project_button_show_project_application_info"

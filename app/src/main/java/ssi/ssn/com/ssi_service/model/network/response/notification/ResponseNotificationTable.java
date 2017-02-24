@@ -1,5 +1,6 @@
 package ssi.ssn.com.ssi_service.model.network.response.notification;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import ssi.ssn.com.ssi_service.model.network.response.AbstractResponse;
@@ -9,7 +10,7 @@ import ssi.ssn.com.ssi_service.model.network.response.notification.objects.Respo
 public class ResponseNotificationTable extends AbstractResponse {
 
     private long count;
-    private List<ResponseNotification> data;
+    private List<ResponseNotification> data = new ArrayList<ResponseNotification>();
 
     public ResponseNotificationTable() {
     }

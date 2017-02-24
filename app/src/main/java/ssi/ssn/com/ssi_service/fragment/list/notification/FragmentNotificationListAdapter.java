@@ -42,7 +42,7 @@ public class FragmentNotificationListAdapter extends  RecyclerView.Adapter<Fragm
 
     @Override
     public void onBindViewHolder(FragmentNotificationListViewHolder viewHolder, int position) {
-        viewHolder.assignData(position, notificationList.get(position));
+        viewHolder.assignData(fragment, position, notificationList.get(position));
     }
 
     @Override

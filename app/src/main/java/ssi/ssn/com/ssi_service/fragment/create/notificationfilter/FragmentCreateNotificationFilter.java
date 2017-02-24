@@ -56,6 +56,18 @@ public class FragmentCreateNotificationFilter extends AbstractFragment {
     private FilterNotification filter;
     private ResponseNotification notification;
 
+    public static FragmentCreateNotificationFilter newInstance(int projectID) {
+        if (projectID == 0) {
+            return new FragmentCreateNotificationFilter();
+        }
+
+        FragmentCreateNotificationFilter fragment = new FragmentCreateNotificationFilter();
+        Bundle bundle = new Bundle();
+        bundle.putInt(PROJECT_ID, projectID);
+        fragment.setArguments(bundle);
+        return fragment;
+    }
+
     public static FragmentCreateNotificationFilter newInstance(int projectID, ResponseNotification notification) {
         if (projectID == 0) {
             return new FragmentCreateNotificationFilter();
@@ -94,6 +106,7 @@ public class FragmentCreateNotificationFilter extends AbstractFragment {
         } else if (getArguments().containsKey(FILTER_NOTIFICATION_JSON)) {
             filter = (FilterNotification) JsonHelper.fromJsonGeneric(FilterNotification.class, getArguments().getString(FILTER_NOTIFICATION_JSON));
             fragmentStatus = CreateUpdateDeleteStatus.DELETE;
+            bSearch.setVisibility(View.INVISIBLE);
             fillViewComponentsWithNotificationFilter();
         } else {
             fragmentStatus = CreateUpdateDeleteStatus.ADD;
@@ -278,7 +291,9 @@ public class FragmentCreateNotificationFilter extends AbstractFragment {
         return new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                if (filter != null) {
+                    return;
+                }
                 new AsyncTask<Object, Void, Object>() {
                     @Override
                     protected Object doInBackground(Object... objects) {

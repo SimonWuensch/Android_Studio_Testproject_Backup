@@ -17,6 +17,7 @@ import ssi.ssn.com.ssi_service.activity.MainActivity;
 import ssi.ssn.com.ssi_service.fragment.list.notification.source.NotificationListSorter;
 import ssi.ssn.com.ssi_service.model.data.source.Project;
 import ssi.ssn.com.ssi_service.model.data.source.cardobject.CardObjectNotification;
+import ssi.ssn.com.ssi_service.model.data.source.filter.FilterNotification;
 import ssi.ssn.com.ssi_service.model.database.SQLiteDB;
 import ssi.ssn.com.ssi_service.model.helper.SourceHelper;
 import ssi.ssn.com.ssi_service.model.network.response.notification.objects.ResponseNotification;
@@ -26,22 +27,35 @@ public class FragmentNotificationList extends Fragment {
     public static String TAG = FragmentNotificationList.class.getSimpleName();
 
     protected static String PROJECT_ID = TAG + "PROJECT_ID";
+    protected static String FILTER_ID = TAG + "FILTER_ID";
 
     private static int FRAGMENT_LAYOUT = R.layout.fragment_notification_list;
     private static int RECYCLERVIEW = R.id.fragment_standard_recycler_view;
     private static int CARDVIEW = R.layout.fragment_notification_list_card_view;
 
     private Project project;
+    protected FilterNotification filter;
+    List<ResponseNotification> notifications;
+
     private View rootView;
 
-    public static FragmentNotificationList newInstance(long projectID) {
+    public static FragmentNotificationList newInstance(int projectID){
+        return newInstance(projectID, -1);
+    }
+
+    public static FragmentNotificationList newInstance(int projectID, int filterID) {
         if (projectID <= 0) {
             return new FragmentNotificationList();
         }
 
         FragmentNotificationList fragment = new FragmentNotificationList();
         Bundle bundle = new Bundle();
-        bundle.putLong(PROJECT_ID, projectID);
+        bundle.putInt(PROJECT_ID, projectID);
+
+        if(filterID != -1){
+            bundle.putInt(FILTER_ID, filterID);
+        }
+
         fragment.setArguments(bundle);
         return fragment;
     }
@@ -50,10 +64,18 @@ public class FragmentNotificationList extends Fragment {
         if (getArguments() == null) {
             return;
         }
-        long projectID = getArguments().getLong(PROJECT_ID);
+        int projectID = getArguments().getInt(PROJECT_ID);
         SQLiteDB sqLiteDB = ((MainActivity) getActivity()).getSQLiteDB();
         project = sqLiteDB.project().getByID(projectID);
         CardObjectNotification.init(sqLiteDB, project);
+
+        if(getArguments().containsKey(FILTER_ID)){
+            int filterID = getArguments().getInt(FILTER_ID);
+            filter = project.getCardObjectNotification().getNotificationFilters().get(filterID);
+            notifications = NotificationListSorter.sortNotificationBySeverity(filter.getNotificationTable().getData());
+            return;
+        }
+            notifications = NotificationListSorter.sortNotificationBySeverity(project.getCardObjectNotification().getNotificationTable().getData());
     }
 
     @Override
@@ -68,7 +90,6 @@ public class FragmentNotificationList extends Fragment {
             rootView = inflater.inflate(FRAGMENT_LAYOUT, container, false);
             Log.d(TAG, "Fragment inflated [" + getActivity().getResources().getResourceName(FRAGMENT_LAYOUT) + "].");
 
-            List<ResponseNotification> notifications = NotificationListSorter.sortNotificationBySeverity(project.getCardObjectNotification().getNotificationTable().getData());
             RecyclerView.Adapter mAdapter = new FragmentNotificationListAdapter(CARDVIEW, this, project, notifications);
             Log.d(TAG, "Adapter [" + mAdapter.getClass().getSimpleName() + "] with CardView [" + getActivity().getResources().getResourceName(CARDVIEW) + "] initialized.");
 

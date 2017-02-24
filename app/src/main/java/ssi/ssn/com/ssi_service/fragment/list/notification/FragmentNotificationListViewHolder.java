@@ -1,6 +1,5 @@
 package ssi.ssn.com.ssi_service.fragment.list.notification;
 
-import android.app.Activity;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.TextView;
@@ -43,7 +42,7 @@ public class FragmentNotificationListViewHolder extends RecyclerView.ViewHolder 
         tvText = (TextView) cardView.findViewById(R.id.fragment_notification_list_card_view_text_view_text);
     }
 
-    protected void assignData(int position, final ResponseNotification notification) {
+    protected void assignData(final FragmentNotificationList fragment, int position, final ResponseNotification notification) {
         vStatusColor.setBackgroundColor(notification.getDefinition().getSeverity().getColor(activity));
         tvNumber.setText((position + 1) + "");
         tvText.setText(notification.getText());
@@ -59,7 +58,9 @@ public class FragmentNotificationListViewHolder extends RecyclerView.ViewHolder 
         cardView.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
-                activity.showCreateNotificationFilterFragment(project.get_id(), notification);
+                if (fragment.filter == null) {
+                    activity.showCreateNotificationFilterFragment(project.get_id(), notification);
+                }
             }
         });
     }

@@ -39,7 +39,7 @@
                     android:layout_marginLeft="20dp">
 
                     <TextView
-                        android:id="@+id/fragment_notification_filter_list_card_view_text_view_number"
+                        android:id="@+id/fragment_notification_filter_list_card_view_text_view_count"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerInParent="true"
@@ -48,27 +48,13 @@
                         android:textAppearance="?android:attr/textAppearanceMedium"/>
                 </RelativeLayout>
 
-                <View
-                    android:id="@+id/fragment_notification_filter_list_card_view_view_status_up_line"
-                    android:layout_width="2dp"
-                    android:layout_height="match_parent"
-                    android:layout_alignParentTop="true"
-                    android:layout_toEndOf="@+id/fragment_notification_filter_list_card_view_relative_layout_headline_number"
-                    android:layout_toRightOf="@+id/fragment_notification_filter_list_card_view_relative_layout_headline_number"
-                    android:background="@color/lightGray"
-                    android:visibility="gone"/>
-
-                <TextView
-                    android:id="@+id/fragment_notification_filter_list_card_view_text_view_node_path"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="5dp"
-                    android:layout_toEndOf="@+id/fragment_notification_filter_list_card_view_view_status_up_line"
-                    android:layout_toRightOf="@+id/fragment_notification_filter_list_card_view_view_status_up_line"
-                    android:text="F01"
-                    android:textAppearance="?android:attr/textAppearanceLarge"
-                    android:visibility="gone" />
+                <ImageView
+                    android:id="@+id/fragment_notification_filter_list_card_view_image_settings"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_alignParentRight="true"
+                    android:contentDescription="icon_three_dots"
+                    android:src="@drawable/icon_three_dots" />
 
             </RelativeLayout>
 

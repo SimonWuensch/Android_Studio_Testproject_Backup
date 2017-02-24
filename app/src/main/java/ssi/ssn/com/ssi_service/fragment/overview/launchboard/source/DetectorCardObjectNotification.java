@@ -5,6 +5,7 @@ import android.util.Log;
 import ssi.ssn.com.ssi_service.model.data.source.Project;
 import ssi.ssn.com.ssi_service.model.data.source.cardobject.CardObjectComponent;
 import ssi.ssn.com.ssi_service.model.data.source.cardobject.CardObjectNotification;
+import ssi.ssn.com.ssi_service.model.data.source.filter.FilterNotification;
 import ssi.ssn.com.ssi_service.model.database.SQLiteDB;
 import ssi.ssn.com.ssi_service.model.helper.JsonHelper;
 import ssi.ssn.com.ssi_service.model.network.handler.RequestHandler;
@@ -14,7 +15,8 @@ public class DetectorCardObjectNotification {
 
     private static String TAG = DetectorCardObjectNotification.class.getSimpleName();
 
-    public static void loadFromNetwork(RequestHandler requestHandler, Project project, CardObjectNotification cardObject) {
+    public static void loadAllActiveNotificationsFromNetwork(RequestHandler requestHandler, Project project) {
+        CardObjectNotification cardObject = project.getCardObjectNotification();
         Log.d(TAG + " Project ID: " + cardObject.get_id_project(), cardObject.getClass().getSimpleName() + " start load card object notification information from network...");
         requestHandler.sendRequestLogin(project);
         requestHandler.sendRequestNotificationTableAll(project);
@@ -26,6 +28,29 @@ public class DetectorCardObjectNotification {
         ResponseNotificationTable notificationTable = (ResponseNotificationTable) JsonHelper.fromJsonGeneric(ResponseNotificationTable.class, project.getDefaultResponseNotification().getResult());
         cardObject.setNotificationTable(notificationTable);
         Log.d(TAG + " Project ID: " + cardObject.get_id_project(), "Response notification table size is [" + cardObject.getNotificationTable().getCount() + "], [" + cardObject.getNotificationTable().getData() + "]");
+    }
+
+    public static void loadAllNotificationsByAllFilter(RequestHandler requestHandler, Project project){
+        CardObjectNotification cardObject = project.getCardObjectNotification();
+        for(FilterNotification filter : cardObject.getNotificationFilters().values()){
+            LoadAllNotificationsByFilter(requestHandler, project, filter.getId());
+        }
+    }
+
+    public static void LoadAllNotificationsByFilter(RequestHandler requestHandler, Project project, int filterID) {
+        CardObjectNotification cardObject = project.getCardObjectNotification();
+        Log.d(TAG + " Project ID: " + cardObject.get_id_project(), cardObject.getClass().getSimpleName() + " start load card object notification information from network...");
+        requestHandler.sendRequestLogin(project);
+        FilterNotification filter = cardObject.getNotificationFilters().get(filterID);
+        requestHandler.sendRequestNotification(project, filter);
+
+        if (project.getDefaultResponseNotification().getCode() != 200) {
+            return;
+        }
+
+        ResponseNotificationTable notificationTable = (ResponseNotificationTable) JsonHelper.fromJsonGeneric(ResponseNotificationTable.class, project.getDefaultResponseNotification().getResult());
+        filter.setNotificationTable(notificationTable);
+        Log.d(TAG + " Project ID: " + cardObject.get_id_project() + " Filter: " + filter.identity(), "Response notification table size is [" + filter.getNotificationTable().getCount() + "], [" + filter.getNotificationTable().getData() + "]");
     }
 
     public static void detectCardStatus(SQLiteDB sqLiteDB, CardObjectComponent cardObject) {

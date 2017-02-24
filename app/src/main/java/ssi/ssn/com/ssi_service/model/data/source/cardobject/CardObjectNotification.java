@@ -88,15 +88,17 @@ public class CardObjectNotification extends AbstractCardObject {
     }
 
     public boolean updateNotificationFilter(SQLiteDB sqLiteDB, FilterNotification filter){
-        if(!isFilterExists(filter)){
+        if(isFilterExists(filter)){
             return false;
+
         }
         FilterNotification oldFilter = notificationFilters.get(filter.getId());
         oldFilter.setNote(filter.getNote());
         oldFilter.setActiveTime(filter.getActiveTime());
         oldFilter.setSeverity(filter.getSeverity());
         oldFilter.setText(filter.getText());
-        return sqLiteDB.cardObjectNotification().update(this);
+        sqLiteDB.cardObjectNotification().update(this);
+        return true;
     }
 
     public boolean removeNotificationFilter(SQLiteDB sqLiteDB, FilterNotification filter) {
@@ -128,7 +130,8 @@ public class CardObjectNotification extends AbstractCardObject {
 
     @Override
     public void loadFromNetwork(RequestHandler requestHandler, Project project) {
-        DetectorCardObjectNotification.loadFromNetwork(requestHandler, project, this);
+        DetectorCardObjectNotification.loadAllActiveNotificationsFromNetwork(requestHandler, project);
+        DetectorCardObjectNotification.loadAllNotificationsByAllFilter(requestHandler, project);
     }
 
     @Override

@@ -19,6 +19,7 @@ import ssi.ssn.com.ssi_service.fragment.overview.launchboard.FragmentLaunchBoard
 import ssi.ssn.com.ssi_service.fragment.list.project.FragmentProjectListNotification;
 import ssi.ssn.com.ssi_service.model.data.source.Project;
 import ssi.ssn.com.ssi_service.model.data.source.cardobject.AbstractCardObject;
+import ssi.ssn.com.ssi_service.model.data.source.cardobject.CardObjectNotification;
 import ssi.ssn.com.ssi_service.model.database.SQLiteDB;
 import ssi.ssn.com.ssi_service.model.helper.FormatHelper;
 import ssi.ssn.com.ssi_service.model.helper.ObservationHelper;
@@ -67,7 +68,7 @@ public class UpdateService extends Service {
             return START_STICKY;
         }
 
-        Toast.makeText(this, "Services Started", Toast.LENGTH_LONG).show();
+        //Toast.makeText(this, "Services Started", Toast.LENGTH_LONG).show();
         Log.i(TAG, "Received start id " + startId + ": " + intent);
 
         projects = sqliteDB.project().getALL();
@@ -175,7 +176,7 @@ public class UpdateService extends Service {
                 }
 
                 for (AbstractCardObject cardObject : project.getAllCardObjects()) {
-                    if(!cardObject.isObservation()){
+                    if(!cardObject.isObservation() || cardObject instanceof CardObjectNotification){
                         continue;
                     }
                     switch (cardObject.getStatus()) {
@@ -218,7 +219,7 @@ public class UpdateService extends Service {
 
     @Override
     public void onDestroy() {
-        Toast.makeText(this, "Services Stopped", Toast.LENGTH_LONG).show();
+        //Toast.makeText(this, "Services Stopped", Toast.LENGTH_LONG).show();
         Log.i(TAG, "Services Stopped. Start id: " + startID);
         stopDelay();
     }

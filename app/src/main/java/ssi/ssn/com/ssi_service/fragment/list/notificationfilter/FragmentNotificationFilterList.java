@@ -7,11 +7,14 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
 
 import ssi.ssn.com.ssi_service.R;
+import ssi.ssn.com.ssi_service.activity.MainActivity;
 import ssi.ssn.com.ssi_service.fragment.AbstractFragment;
 import ssi.ssn.com.ssi_service.model.data.source.Project;
 import ssi.ssn.com.ssi_service.model.data.source.cardobject.CardObjectNotification;
@@ -28,6 +31,7 @@ public class FragmentNotificationFilterList extends AbstractFragment {
     private static int CARDVIEW = R.layout.fragment_notification_filter_list_card_view;
 
     private View rootView;
+    private FragmentNotificationFilterListAdapter mAdapter;
     private Project project;
 
     public static FragmentNotificationFilterList newInstance(int projectID) {
@@ -60,8 +64,7 @@ public class FragmentNotificationFilterList extends AbstractFragment {
             rootView = inflater.inflate(FRAGMENT_LAYOUT, container, false);
             Log.d(TAG, "Fragment inflated [" + getActivity().getResources().getResourceName(FRAGMENT_LAYOUT) + "].");
 
-
-            RecyclerView.Adapter mAdapter = new FragmentNotificationFilterListAdapter(CARDVIEW, this, new ArrayList<>(project.getCardObjectNotification().getNotificationFilters().values()));
+            mAdapter = new FragmentNotificationFilterListAdapter(CARDVIEW, this, project, new ArrayList<>(project.getCardObjectNotification().getNotificationFilters().values()));
             Log.d(TAG, "Adapter [" + mAdapter.getClass().getSimpleName() + "] with CardView [" + getActivity().getResources().getResourceName(CARDVIEW) + "] initialized.");
 
             RecyclerView mRecyclerView = (RecyclerView) rootView.findViewById(RECYCLERVIEW);
@@ -77,6 +80,25 @@ public class FragmentNotificationFilterList extends AbstractFragment {
 
     public void initViewComponents() {
         TextView tvHeadLine = (TextView) rootView.findViewById(R.id.default_action_bar_text_view_headline);
-        tvHeadLine.setText(SourceHelper.getString(getActivity(), R.string.fragment_notification_filter_title));
+        tvHeadLine.setText(SourceHelper.getString(getActivity(), R.string.fragment_notification_filter_list_title));
+
+        ImageButton bReload = (ImageButton) rootView.findViewById(R.id.default_action_bar_button_reload);
+        bReload.setVisibility(View.VISIBLE);
+        bReload.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        mAdapter.reloadCardViews();
+                    }
+                }
+        );
+
+        ImageView ivAddFilter = (ImageView) rootView.findViewById(R.id.fragment_notification_filter_list_add_filter);
+        ivAddFilter.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ((MainActivity) getActivity()).showCreateNotificationFilterFragment(project.get_id());
+            }
+        });
     }
 }

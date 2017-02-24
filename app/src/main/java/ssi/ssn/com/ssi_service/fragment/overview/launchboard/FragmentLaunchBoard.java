@@ -118,7 +118,6 @@ public class FragmentLaunchBoard extends AbstractFragment {
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        //updateProjectStatusView();
                         mAdapter.reloadCardViews();
                     }
                 }

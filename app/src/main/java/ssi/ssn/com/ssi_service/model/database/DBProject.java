@@ -81,7 +81,6 @@ public class DBProject extends SQLiteOpenHelper {
                 values);
 
         Log.d(TAG, "ADD: Project [" + project + "]");
-        db.close();
     }
 
     // ** GET *********************************************************************************** //
@@ -140,7 +139,6 @@ public class DBProject extends SQLiteOpenHelper {
     public long getCount() {
         SQLiteDatabase db = this.getReadableDatabase();
         long cnt = DatabaseUtils.queryNumEntries(db, TABLE_PROJECT);
-        //db.close();
         Log.i(TAG, "PROJECT COUNT [" + cnt + "].");
         return cnt;
     }

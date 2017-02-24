@@ -5,6 +5,7 @@ import java.util.Map;
 import java.util.concurrent.ExecutorService;
 
 import ssi.ssn.com.ssi_service.model.data.source.Project;
+import ssi.ssn.com.ssi_service.model.data.source.filter.FilterNotification;
 import ssi.ssn.com.ssi_service.model.network.request.RequestApplication;
 import ssi.ssn.com.ssi_service.model.network.request.RequestApplicationConfig;
 import ssi.ssn.com.ssi_service.model.network.request.RequestComponent;
@@ -88,6 +89,10 @@ public class RequestHandler {
 
     public void sendRequestNotification(Project project, RequestNotification.Path path) {
         RequestNotification.init(project, path).getTaskGET(getCookieHandler(project));
+    }
+
+    public void sendRequestNotification(Project project, FilterNotification filter) {
+        RequestNotification.init(project, filter).getTaskGET(getCookieHandler(project));
     }
 
     // *** Scada ******************************************************************************** //
