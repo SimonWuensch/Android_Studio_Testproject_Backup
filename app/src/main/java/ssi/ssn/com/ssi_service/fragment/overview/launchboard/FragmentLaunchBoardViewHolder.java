@@ -2,11 +2,14 @@ package ssi.ssn.com.ssi_service.fragment.overview.launchboard;
 
 import android.os.AsyncTask;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import java.util.Date;
 
 import ssi.ssn.com.ssi_service.R;
 import ssi.ssn.com.ssi_service.activity.MainActivity;
@@ -71,7 +74,20 @@ class FragmentLaunchBoardViewHolder extends RecyclerView.ViewHolder {
         new AsyncTask<Object, Void, Object>() {
             @Override
             protected Object doInBackground(Object... objects) {
-                project.detectProjectStatus(activity.getSQLiteDB(), activity.getRequestHandler());
+                //project.detectProjectStatus(activity.getSQLiteDB(), activity.getRequestHandler());
+                if (!cardObject.isObservation()) {
+                    Log.i(TAG + " - " + project.identity(), cardObject.getClass().getSimpleName() + " observation is disabled");
+                    return null;
+                }
+
+                if (!ObservationHelper.isCardObjectOutOfDate(project, cardObject)) {
+                    Log.i(TAG + " - " + project.identity(), cardObject.getClass().getSimpleName() + " status [" + cardObject.getStatus() + "]");
+                    return null;
+                }
+
+                cardObject.loadFromNetwork(activity.getRequestHandler(), project);
+                cardObject.setLastObservationTime(new Date().getTime());
+                cardObject.detectCardStatus(activity.getSQLiteDB());
                 return null;
             }
 

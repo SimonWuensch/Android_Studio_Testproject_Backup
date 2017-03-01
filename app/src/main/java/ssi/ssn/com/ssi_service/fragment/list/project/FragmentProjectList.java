@@ -102,7 +102,8 @@ public class FragmentProjectList extends AbstractFragment {
         newProject.initCardObjects(getSQLiteDB());
 
         if (!mAdapter.clickedProjectJson.equals(JsonHelper.toJson(newProject))) {
-            mAdapter.reloadCardView(mAdapter.clickedProject);
+            mAdapter.reloadCardView(mAdapter.clickedProject, false);
+            //mAdapter.projects.set(mAdapter.clickedProjectPosition, newProject);
             return;
         }
 
@@ -115,7 +116,8 @@ public class FragmentProjectList extends AbstractFragment {
             String savedCardObject = mAdapter.cardObjectJsonList.get(i);
             String newCardObject = newCardObjectJsonList.get(i);
             if (!savedCardObject.equals(newCardObject)) {
-                mAdapter.reloadCardView(mAdapter.clickedProject);
+                mAdapter.reloadCardView(mAdapter.clickedProject, false);
+                //mAdapter.projects.set(mAdapter.clickedProjectPosition, newProject);
                 return;
             }
         }

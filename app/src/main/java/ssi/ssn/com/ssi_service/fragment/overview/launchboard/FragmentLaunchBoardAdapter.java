@@ -5,6 +5,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -63,5 +64,7 @@ class FragmentLaunchBoardAdapter extends RecyclerView.Adapter<FragmentLaunchBoar
             FragmentLaunchBoardViewHolder viewHolder = viewHolderList.get(i);
             viewHolder.assignData(project, project.getAllCardObjects().get(i));
         }
+        project.setLastObservationTime(new Date().getTime());
+        sqLiteDB.project().updateLastObservationTime(project);
     }
 }

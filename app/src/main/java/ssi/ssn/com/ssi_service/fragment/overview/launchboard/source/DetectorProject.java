@@ -35,10 +35,8 @@ public class DetectorProject {
     }
 
     public static void detectProjectStatus(SQLiteDB sqLiteDB, RequestHandler requestHandler, Project project) {
-        Log.d(TAG, "Start detecting project status...");
-
+        Log.d(TAG + " - " + project.identity(), "### Start detecting project status.");
         project.initCardObjects(sqLiteDB);
-
         project.detectApplicationStatus(requestHandler);
         if (!project.getApplicationStatus().equals(Status.OK)) {
             project.setStatus(project.getApplicationStatus());
@@ -52,16 +50,17 @@ public class DetectorProject {
 
         for (AbstractCardObject cardObject : project.getAllCardObjects()) {
             if (!cardObject.isObservation()) {
-                Log.d(TAG + " - " + project.identity(), cardObject.getClass().getSimpleName() + " observation is disabled");
+                Log.i(TAG + " - " + project.identity(), cardObject.getClass().getSimpleName() + " observation is disabled");
                 continue;
             }
 
             if (!ObservationHelper.isCardObjectOutOfDate(project, cardObject)) {
-                Log.d(TAG + " - " + project.identity(), cardObject.getClass().getSimpleName() + " status [" + cardObject.getStatus() + "]");
+                Log.i(TAG + " - " + project.identity(), cardObject.getClass().getSimpleName() + " status [" + cardObject.getStatus() + "]");
                 continue;
             }
 
             cardObject.loadFromNetwork(requestHandler, project);
+            cardObject.setLastObservationTime(project.getLastObservationTime());
             cardObject.detectCardStatus(sqLiteDB);
         }
 
@@ -77,8 +76,11 @@ public class DetectorProject {
             }
         }
         project.setStatus(overAllStatus);
-        sqLiteDB.project().update(project);
-        ObservationHelper.setLastObservationTimeToNOW(sqLiteDB, project);
-        Log.i(TAG, "Project status detected - [" + project.getStatus() + "].");
+
+        if (ObservationHelper.isProjectOutOfDate(project)) {
+            sqLiteDB.project().update(project);
+            ObservationHelper.setLastObservationTimeToNOW(sqLiteDB, project);
+        }
+        Log.i(TAG + " - " + project.identity(), "### Project status detected - [" + project.getStatus() + "].");
     }
 }

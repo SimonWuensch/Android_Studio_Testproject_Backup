@@ -127,7 +127,7 @@ public class AbstractActivity extends Activity {
                         FragmentLaunchBoard.TAG)
                 .addToBackStack(FragmentLaunchBoard.TAG)
                 .commit();
-        Log.i(getClass().getSimpleName(), "Show Fragment [" + FragmentLaunchBoard.TAG + "]. + Project ID: " + projectID);
+        Log.i(getClass().getSimpleName(), "Show Fragment [" + FragmentLaunchBoard.TAG + "]. Project ID: " + projectID);
     }
 
     public void showModuleListFragment(long projectID) {

@@ -18,7 +18,7 @@
         android:layout_below="@+id/fragment_create_notification_filter_include_headline"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="20dp"
-        android:background="@drawable/icon_filter_new" />
+        android:background="@drawable/icon_filter" />
 
     <TextView
         android:id="@+id/fragment_create_notification_filter_text_view_add"
@@ -68,7 +68,7 @@
                         android:layout_height="40dp"
                         android:layout_toRightOf="@+id/fragment_create_notification_filter_edit_text_note"
                         android:background="@color/defaultColor"
-                        android:drawableLeft="@drawable/icon_search_new"
+                        android:drawableLeft="@drawable/icon_search"
                         android:padding="10dp" />
                 </LinearLayout>
 

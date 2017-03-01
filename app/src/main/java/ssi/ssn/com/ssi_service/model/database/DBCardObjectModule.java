@@ -14,7 +14,7 @@ import ssi.ssn.com.ssi_service.model.data.source.cardobject.AbstractCardObject;
 import ssi.ssn.com.ssi_service.model.data.source.cardobject.CardObjectModule;
 import ssi.ssn.com.ssi_service.model.helper.JsonHelper;
 
-public class DBCardObjectModule extends SQLiteOpenHelper implements DBCardObject {
+public class DBCardObjectModule extends SQLiteOpenHelper implements DBCardObject, DBObject {
 
     private static final String DATABASE_NAME = "service_ssi.db";
     private static final String TABLE_MODULE = "cardObjectModule";
@@ -38,6 +38,7 @@ public class DBCardObjectModule extends SQLiteOpenHelper implements DBCardObject
                     + JSON_MODULE + " TEXT" +
                     ");";
     private final String TAG = DBCardObjectModule.class.getSimpleName();
+    private String oldCardObjectString = "";
 
     public DBCardObjectModule(int version, Context context) {
         super(context, DATABASE_NAME, null, version);
@@ -114,6 +115,7 @@ public class DBCardObjectModule extends SQLiteOpenHelper implements DBCardObject
         cardObject.setStatus(status);
 
         Log.d(TAG, "ID Project: " + cardObject.get_id_project() + "| GET: Card Object Module [" + cardObject + "]");
+        this.oldCardObjectString = JsonHelper.toJson(cardObject);
         return cardObject;
     }
 
@@ -181,6 +183,15 @@ public class DBCardObjectModule extends SQLiteOpenHelper implements DBCardObject
             Log.e(TAG, "ID Project: " + cardObject.get_id_project() + "| [ERROR] UPDATE: Card Object Module [" + cardObject + "]. \n" + ex.getMessage() + " \n" + ex.getStackTrace());
             return false;
         }
+    }
+
+    @Override
+    public boolean isObjectDataChanged(String jsonObject){
+        if(oldCardObjectString.equals(jsonObject)){
+            return true;
+        }
+        oldCardObjectString = jsonObject;
+        return false;
     }
 
     // ** DELETE ******************************************************************************** //

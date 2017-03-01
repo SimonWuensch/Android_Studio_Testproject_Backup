@@ -24,11 +24,12 @@ public class FragmentProjectListAdapter extends RecyclerView.Adapter<FragmentPro
     private final FragmentProjectList fragment;
     private CardView cardView;
 
-    private List<Project> projects = new ArrayList<>();
+    protected List<Project> projects = new ArrayList<>();
     private Map<Project, FragmentProjectListViewHolder> viewHolderMap = new HashMap<>();
 
     protected Project clickedProject;
     protected String clickedProjectJson;
+    protected int clickedProjectPosition;
     protected List<String> cardObjectJsonList;
 
     public FragmentProjectListAdapter(int layoutCardView, final FragmentProjectList fragment, List<Project> projects) {
@@ -62,15 +63,18 @@ public class FragmentProjectListAdapter extends RecyclerView.Adapter<FragmentPro
 
     public void reloadCardViews() {
         for (Project project : viewHolderMap.keySet()) {
-            reloadCardView(project);
+            reloadCardView(project, true);
         }
     }
 
-    public void reloadCardView(Project project) {
-        if(project.isProjectObservation()){
+    public void reloadCardView(Project project, boolean resetObservationTime) {
+        if (project.isProjectObservation()) {
             SQLiteDB sqLiteDB = ((MainActivity) fragment.getActivity()).getSQLiteDB();
             project.initCardObjects(sqLiteDB);
-            ObservationHelper.setLastObservationTimeToOLD(sqLiteDB, project);
+
+            if (resetObservationTime) {
+                ObservationHelper.setLastObservationTimeToOLD(sqLiteDB, project);
+            }
         }
 
         boolean isLast = project.equals(viewHolderMap.keySet().toArray()[viewHolderMap.keySet().size() - 1]);

@@ -14,7 +14,7 @@ import ssi.ssn.com.ssi_service.model.data.source.cardobject.AbstractCardObject;
 import ssi.ssn.com.ssi_service.model.data.source.cardobject.CardObjectNotification;
 import ssi.ssn.com.ssi_service.model.helper.JsonHelper;
 
-public class DBCardObjectNotification extends SQLiteOpenHelper implements DBCardObject {
+public class DBCardObjectNotification extends SQLiteOpenHelper implements DBCardObject, DBObject {
 
     private static final String DATABASE_NAME = "service_ssi.db";
     private static final String TABLE_NOTIFICATION = "cardObjectNotification";
@@ -38,6 +38,8 @@ public class DBCardObjectNotification extends SQLiteOpenHelper implements DBCard
                     + JSON_NOTIFICATION + " TEXT" +
                     ");";
     private final String TAG = DBCardObjectNotification.class.getSimpleName();
+
+    private String oldCardObjectString = "";
 
     public DBCardObjectNotification(int version, Context context) {
         super(context, DATABASE_NAME, null, version);
@@ -113,6 +115,7 @@ public class DBCardObjectNotification extends SQLiteOpenHelper implements DBCard
         cardObject.setStatus(status);
 
         Log.d(TAG, "ID Project: " + cardObject.get_id_project() + "| GET: Card Object Notification [" + cardObject + "]");
+        this.oldCardObjectString = JsonHelper.toJson(cardObject);
         return cardObject;
     }
 
@@ -163,6 +166,11 @@ public class DBCardObjectNotification extends SQLiteOpenHelper implements DBCard
 
     @Override
     public boolean updateValue(AbstractCardObject cardObject, ContentValues values) {
+        if(isObjectDataChanged(JsonHelper.toJson(cardObject))){
+            Log.i(TAG, "ID Project: " + cardObject.get_id_project() + "| Update is not necessary. Card Object Notification [" + cardObject + "]");
+            return true;
+        }
+
         try {
             SQLiteDatabase db = getWritableDatabase();
             int affectedRows = db.update(TABLE_NOTIFICATION, values, _ID + " = ?", new String[]{
@@ -180,6 +188,14 @@ public class DBCardObjectNotification extends SQLiteOpenHelper implements DBCard
             Log.e(TAG, "ID Project: " + cardObject.get_id_project() + "| [ERROR] UPDATE: Card Object Notification [" + cardObject + "]. \n" + ex.getMessage() + " \n" + ex.getStackTrace());
             return false;
         }
+    }
+
+    public boolean isObjectDataChanged(String jsonObject){
+        if(oldCardObjectString.equals(jsonObject)){
+            return true;
+        }
+        oldCardObjectString = jsonObject;
+        return false;
     }
 
     // ** DELETE ******************************************************************************** //

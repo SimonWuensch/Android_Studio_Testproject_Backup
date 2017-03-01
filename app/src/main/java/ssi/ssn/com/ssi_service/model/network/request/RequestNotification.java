@@ -71,7 +71,7 @@ public class RequestNotification {
 
     // *** Path ********************************************************************************* //
     //http://172.26.26.16:8180/services/notification/table?orderBy=$<<startTime>> DESC&condition=$<<active>> AND (($<<definition.severity>> = 'ERROR') AND ($<<text>> = 'USV Netzausfall') AND ($<<nodePath>> IN ('F0105LRB049')))
-    /*public enum Path {
+    public enum Path {
         TABLE_FILTER("/table", "&condition=$<<active>> AND (($<<definition.severity>> = '" + PLACEHOLDER_SEVERITY + "') AND ($<<text>> = '" + PLACEHOLDER_TEXT + "') AND ($<<nodePath>> IN ('" + PLACEHOLDER_NODE + "')))"),
         TABLE_ALL("/table", "&condition=$<<active>>"),
         TABLE_ERROR("/table", "&condition=$<<active>> AND ($<<definition.severity>> = 'ERROR'))"),
@@ -94,8 +94,10 @@ public class RequestNotification {
         public String getUrl() {
             return url;
         }
-    }*/
+    }
 
+
+/*
     public enum Path {
         TABLE_FILTER("/table", "&condition=(($<<definition.severity>> = '" + PLACEHOLDER_SEVERITY + "') AND ($<<text>> = '" + PLACEHOLDER_TEXT + "') AND ($<<nodePath>> IN ('" + PLACEHOLDER_NODE + "')))"),
         TABLE_ALL("/table", ""),
@@ -120,4 +122,5 @@ public class RequestNotification {
             return url;
         }
     }
+    */
 }
