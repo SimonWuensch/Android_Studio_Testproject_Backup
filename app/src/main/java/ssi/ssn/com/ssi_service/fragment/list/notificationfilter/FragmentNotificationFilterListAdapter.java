@@ -36,6 +36,7 @@ class FragmentNotificationFilterListAdapter extends  RecyclerView.Adapter<Fragme
 
     protected void setNotificationFilterList(List<FilterNotification> notificationFilterList){
         this.notificationFilterList = notificationFilterList;
+        viewHolderList = new LinkedList<>();
     }
 
     @Override

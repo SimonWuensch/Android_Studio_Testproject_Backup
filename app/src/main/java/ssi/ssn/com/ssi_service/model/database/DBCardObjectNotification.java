@@ -113,9 +113,6 @@ public class DBCardObjectNotification extends SQLiteOpenHelper implements DBCard
 
         Status status = Status.getStatusByID(cursor.getInt(cursor.getColumnIndex(STATUS)));
         cardObject.setStatus(status);
-        for(FilterNotification filter : cardObject.getNotificationFilters().values()){
-            filter.checkResponseNotificationTable();
-        }
 
         Log.d(TAG, "ID Project: " + cardObject.get_id_project() + "| GET: Card Object Notification [" + cardObject + "]");
         this.oldCardObjectString = JsonHelper.toJson(cardObject);

@@ -109,8 +109,6 @@ public class CardObjectNotification extends AbstractCardObject {
         return sqLiteDB.cardObjectNotification().update(this);
     }
 
-
-
     private boolean isFilterExists(FilterNotification newFilter) {
         for (FilterNotification oldFilter : notificationFilters.values()) {
             if (oldFilter.getNote().equals(newFilter.getNote()) &&
@@ -136,18 +134,20 @@ public class CardObjectNotification extends AbstractCardObject {
 
     @Override
     public void detectCardStatus(SQLiteDB sqLiteDB) {
-        //DetectorCardObjectComponent.detectCardStatus(sqLiteDB, this);
-        setStatus(Status.ERROR);
-        getDBSQLiteCardObject(sqLiteDB).update(this);
+        DetectorCardObjectNotification.detectCardStatus(sqLiteDB, this);
+        //setStatus(Status.ERROR);
+        //getDBSQLiteCardObject(sqLiteDB).update(this);
     }
 
     @Override
     public void onClick(final MainActivity activity, final Project project) {
-        //TODO NOTIFICATION LIST IS NOT EMPTY EINFÜGEN
         if (getStatus().equals(Status.NOT_AVAILABLE)) {
             Toast.makeText(activity, SourceHelper.getString(activity, R.string.fragment_launch_board_error_notification), Toast.LENGTH_SHORT).show();
         } else {
             activity.showNotificationFilterListFragment(project.get_id());
+            if(getNotificationFilters().isEmpty()){
+                activity.showCreateNotificationFilterFragment(project.get_id());
+            }
         }
     }
 

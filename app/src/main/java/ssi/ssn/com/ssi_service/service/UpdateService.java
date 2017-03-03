@@ -176,7 +176,7 @@ public class UpdateService extends Service {
                 }
 
                 for (AbstractCardObject cardObject : project.getAllCardObjects()) {
-                    if(!cardObject.isObservation() || cardObject instanceof CardObjectNotification){
+                    if(!cardObject.isObservation()){
                         continue;
                     }
                     switch (cardObject.getStatus()) {

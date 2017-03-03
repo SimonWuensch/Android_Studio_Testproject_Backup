@@ -3,7 +3,7 @@ package ssi.ssn.com.ssi_service.fragment.overview.launchboard.source;
 import android.util.Log;
 
 import ssi.ssn.com.ssi_service.model.data.source.Project;
-import ssi.ssn.com.ssi_service.model.data.source.cardobject.CardObjectComponent;
+import ssi.ssn.com.ssi_service.model.data.source.Status;
 import ssi.ssn.com.ssi_service.model.data.source.cardobject.CardObjectNotification;
 import ssi.ssn.com.ssi_service.model.data.source.filter.FilterNotification;
 import ssi.ssn.com.ssi_service.model.database.SQLiteDB;
@@ -30,9 +30,9 @@ public class DetectorCardObjectNotification {
         Log.d(TAG + " Project ID: " + cardObject.get_id_project(), "Response notification table size is [" + cardObject.getNotificationTable().getCount() + "], [" + cardObject.getNotificationTable().getData() + "]");
     }
 
-    public static void loadAllNotificationsByAllFilter(RequestHandler requestHandler, Project project){
+    public static void loadAllNotificationsByAllFilter(RequestHandler requestHandler, Project project) {
         CardObjectNotification cardObject = project.getCardObjectNotification();
-        for(FilterNotification filter : cardObject.getNotificationFilters().values()){
+        for (FilterNotification filter : cardObject.getNotificationFilters().values()) {
             LoadAllNotificationsByFilter(requestHandler, project, filter.getId());
         }
     }
@@ -50,20 +50,20 @@ public class DetectorCardObjectNotification {
 
         ResponseNotificationTable notificationTable = (ResponseNotificationTable) JsonHelper.fromJsonGeneric(ResponseNotificationTable.class, project.getDefaultResponseNotification().getResult());
         filter.setNotificationTable(notificationTable);
+        filter.checkResponseNotificationTable();
         Log.d(TAG + " Project ID: " + cardObject.get_id_project() + " Filter: " + filter.identity(), "Response notification table size is [" + filter.getNotificationTable().getCount() + "], [" + filter.getNotificationTable().getData() + "]");
     }
 
-    public static void detectCardStatus(SQLiteDB sqLiteDB, CardObjectComponent cardObject) {
-        /*Log.d(TAG + " Project ID: " + cardObject.get_id_project(), cardObject.getClass().getSimpleName() + " start detecting card object component status...");
+    public static void detectCardStatus(SQLiteDB sqLiteDB, CardObjectNotification cardObject) {
+        Log.d(TAG + " Project ID: " + cardObject.get_id_project(), cardObject.getClass().getSimpleName() + " start detecting card object notification status...");
         Status overAllState = Status.OK;
-        if (cardObject.getResponseComponentList().isEmpty()) {
-            overAllState = Status.NOT_AVAILABLE;
+        if (cardObject.getNotificationFilters().isEmpty()) {
+            overAllState = Status.OK;
         } else {
-            for (ResponseComponent responseComponent : cardObject.getResponseComponentList()) {
-                String componentStatus = responseComponent.getState().getStatus();
-                if (!componentStatus.equals(Status.TEXT_ONLINE) &&
-                        !componentStatus.equals(Status.TEXT_UNKNOWN)) {
+            for (FilterNotification filter : cardObject.getNotificationFilters().values()) {
+                if (filter.getActiveTimeReachedNotificationTable().getCount() > 0) {
                     overAllState = Status.ERROR;
+                    break;
                 }
             }
         }
@@ -76,6 +76,6 @@ public class DetectorCardObjectNotification {
             }
         }
         Log.i(TAG + " Project ID: " + cardObject.get_id_project(), cardObject.getClass().getSimpleName() + " status: " + cardObject.getStatus());
-        */
+
     }
 }
