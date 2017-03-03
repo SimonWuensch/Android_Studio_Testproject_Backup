@@ -12,13 +12,14 @@ import android.util.Log;
 import ssi.ssn.com.ssi_service.model.data.source.Status;
 import ssi.ssn.com.ssi_service.model.data.source.cardobject.AbstractCardObject;
 import ssi.ssn.com.ssi_service.model.data.source.cardobject.CardObjectNotification;
+import ssi.ssn.com.ssi_service.model.data.source.filter.FilterNotification;
 import ssi.ssn.com.ssi_service.model.helper.JsonHelper;
 
 public class DBCardObjectNotification extends SQLiteOpenHelper implements DBCardObject, DBObject {
 
     private static final String DATABASE_NAME = "service_ssi.db";
     private static final String TABLE_NOTIFICATION = "cardObjectNotification";
-    public static final String DROP_TABLE_CARD_OBJECT_NOTIFICATION = //
+    protected static final String DROP_TABLE_CARD_OBJECT_NOTIFICATION = //
             "DROP TABLE IF EXISTS " + TABLE_NOTIFICATION;
     private static final String _ID = "_id";
     private static final String _ID_PROJECT = "_id_project";
@@ -27,7 +28,7 @@ public class DBCardObjectNotification extends SQLiteOpenHelper implements DBCard
     private static final String STATUS = "status";
     private static final String JSON_NOTIFICATION = "jsonCardObjectNotification";
 
-    public static final String CREATE_TABLE_CARD_OBJECT_NOTIFICATION = //
+    protected static final String CREATE_TABLE_CARD_OBJECT_NOTIFICATION = //
             "CREATE TABLE "//
                     + TABLE_NOTIFICATION + "("
                     + _ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " //
@@ -41,7 +42,7 @@ public class DBCardObjectNotification extends SQLiteOpenHelper implements DBCard
 
     private String oldCardObjectString = "";
 
-    public DBCardObjectNotification(int version, Context context) {
+    protected DBCardObjectNotification(int version, Context context) {
         super(context, DATABASE_NAME, null, version);
     }
 
@@ -87,10 +88,9 @@ public class DBCardObjectNotification extends SQLiteOpenHelper implements DBCard
     @Override
     public long getCount(long projectID) {
         SQLiteDatabase db = this.getReadableDatabase();
-        long count = DatabaseUtils.queryNumEntries(db, TABLE_NOTIFICATION,
+        return DatabaseUtils.queryNumEntries(db, TABLE_NOTIFICATION,
                 _ID_PROJECT + "=?", new String[]{String.valueOf(projectID)});
         //db.close();
-        return count;
     }
 
     // ** GET *********************************************************************************** //
@@ -108,14 +108,18 @@ public class DBCardObjectNotification extends SQLiteOpenHelper implements DBCard
         CardObjectNotification cardObject = (CardObjectNotification) JsonHelper.fromJsonGeneric(CardObjectNotification.class, json);
         cardObject.set_id(cursor.getInt(cursor.getColumnIndex(_ID)));
         cardObject.set_id_project(cursor.getInt(cursor.getColumnIndex(_ID_PROJECT)));
-        cardObject.setObservation(cursor.getInt(cursor.getColumnIndex(IS_OBSERVATION)) == 1 ? true : false);
+        cardObject.setObservation(cursor.getInt(cursor.getColumnIndex(IS_OBSERVATION)) == 1);
         cardObject.setLastObservationTime(cursor.getLong(cursor.getColumnIndex(LAST_OBSERVATION_TIME)));
 
         Status status = Status.getStatusByID(cursor.getInt(cursor.getColumnIndex(STATUS)));
         cardObject.setStatus(status);
+        for(FilterNotification filter : cardObject.getNotificationFilters().values()){
+            filter.checkResponseNotificationTable();
+        }
 
         Log.d(TAG, "ID Project: " + cardObject.get_id_project() + "| GET: Card Object Notification [" + cardObject + "]");
         this.oldCardObjectString = JsonHelper.toJson(cardObject);
+
         return cardObject;
     }
 
@@ -185,7 +189,7 @@ public class DBCardObjectNotification extends SQLiteOpenHelper implements DBCard
                 return false;
             }
         } catch (SQLiteException ex) {
-            Log.e(TAG, "ID Project: " + cardObject.get_id_project() + "| [ERROR] UPDATE: Card Object Notification [" + cardObject + "]. \n" + ex.getMessage() + " \n" + ex.getStackTrace());
+            Log.e(TAG, "ID Project: " + cardObject.get_id_project() + "| [ERROR] UPDATE: Card Object Notification [" + cardObject + "]. \n" + ex.getMessage() + " \n" + ex.getStackTrace().toString());
             return false;
         }
     }

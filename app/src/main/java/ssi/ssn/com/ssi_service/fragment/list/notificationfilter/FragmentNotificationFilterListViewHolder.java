@@ -20,7 +20,7 @@ import ssi.ssn.com.ssi_service.model.helper.ObservationHelper;
 import ssi.ssn.com.ssi_service.model.helper.SourceHelper;
 
 
-public class FragmentNotificationFilterListViewHolder extends RecyclerView.ViewHolder {
+class FragmentNotificationFilterListViewHolder extends RecyclerView.ViewHolder {
 
     private static String TAG = FragmentNotificationFilterListViewHolder.class.getSimpleName();
 
@@ -34,7 +34,7 @@ public class FragmentNotificationFilterListViewHolder extends RecyclerView.ViewH
     private ImageView ivSettings;
     private View cardView;
 
-    public FragmentNotificationFilterListViewHolder(MainActivity activity, View cardView) {
+    protected FragmentNotificationFilterListViewHolder(MainActivity activity, View cardView) {
         super(cardView);
         this.activity = activity;
         this.cardView = cardView;
@@ -51,6 +51,7 @@ public class FragmentNotificationFilterListViewHolder extends RecyclerView.ViewH
         tvNode.setText(filter.getNote());
         tvSeverity.setText(filter.getSeverity().name());
         tvText.setText(filter.getText());
+        rlHeadLine.setBackgroundColor(SourceHelper.getColor(activity, R.color.colorWhite));
 
         final String activeTime;
         String timeKind;
@@ -91,7 +92,7 @@ public class FragmentNotificationFilterListViewHolder extends RecyclerView.ViewH
 
     private void updateHeadline(FilterNotification filter) {
         tvCount.setText(String.valueOf(filter.getNotificationTable().getCount()));
-        if (filter.getNotificationTable().getCount() > 0) {
+        if (filter.getActiveTimeReachedNotificationTable().getCount() > 0) {
             rlHeadLine.setBackgroundColor(SourceHelper.getColor(activity, R.color.ERROR));
         }
     }

@@ -32,8 +32,8 @@ public class ProjectListSorter {
         }
 
         List<Project> projects = new ArrayList<>();
-        projects.addAll(sortProjectsByName(statusMap.get(Status.OK)));
         projects.addAll(sortProjectsByName(statusMap.get(Status.ERROR)));
+        projects.addAll(sortProjectsByName(statusMap.get(Status.OK)));
         projects.addAll(sortProjectsByName(statusMap.get(Status.NOT_AVAILABLE)));
         projects.addAll(sortProjectsByName(statusMap.get(Status.NOT_OBSERVATION)));
         return projects;

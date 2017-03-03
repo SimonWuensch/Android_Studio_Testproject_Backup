@@ -17,6 +17,7 @@ import ssi.ssn.com.ssi_service.R;
 import ssi.ssn.com.ssi_service.activity.MainActivity;
 import ssi.ssn.com.ssi_service.fragment.AbstractFragment;
 import ssi.ssn.com.ssi_service.fragment.create.CreateUpdateDeleteStatus;
+import ssi.ssn.com.ssi_service.fragment.list.notificationfilter.FragmentNotificationFilterList;
 import ssi.ssn.com.ssi_service.model.data.source.Project;
 import ssi.ssn.com.ssi_service.model.data.source.cardobject.CardObjectNotification;
 import ssi.ssn.com.ssi_service.model.data.source.filter.FilterNotification;
@@ -38,6 +39,7 @@ public class FragmentCreateNotificationFilter extends AbstractFragment {
     private static String RESPONSE_NOTIFICATION_JSON = TAG + "RESPONSE_NOTIFICATION_JSON";
 
     private CreateUpdateDeleteStatus fragmentStatus;
+    private boolean isStartedWithNotification = false;
 
     private View rootView;
 
@@ -50,7 +52,6 @@ public class FragmentCreateNotificationFilter extends AbstractFragment {
 
     private Spinner spTimeInput;
     private Spinner spSeverityInput;
-
 
     private Project project;
     private FilterNotification filter;
@@ -102,6 +103,7 @@ public class FragmentCreateNotificationFilter extends AbstractFragment {
         if (getArguments().containsKey(RESPONSE_NOTIFICATION_JSON)) {
             notification = (ResponseNotification) JsonHelper.fromJsonGeneric(ResponseNotification.class, getArguments().getString(RESPONSE_NOTIFICATION_JSON));
             fragmentStatus = CreateUpdateDeleteStatus.ADD;
+            isStartedWithNotification = true;
             fillViewComponentsWithNotificationInfo();
         } else if (getArguments().containsKey(FILTER_NOTIFICATION_JSON)) {
             filter = (FilterNotification) JsonHelper.fromJsonGeneric(FilterNotification.class, getArguments().getString(FILTER_NOTIFICATION_JSON));
@@ -193,20 +195,7 @@ public class FragmentCreateNotificationFilter extends AbstractFragment {
             etText.setText(filter.getText());
 
             selectSeverity(filter.getSeverity());
-
-            switch (fragmentStatus) {
-                case ADD:
-                    bFinal.setText(SourceHelper.getString(getActivity(), R.string.add));
-                    break;
-                case DELETE:
-                    bFinal.setText(SourceHelper.getString(getActivity(), R.string.delete));
-                    super.onTextChangeListener(etNode);
-                    super.onTextChangeListener(etActiveTime);
-                    super.onTextChangeListener(etText);
-                    super.onSpinnerSelectionChangedListener(spTimeInput);
-                    super.onSpinnerSelectionChangedListener(spSeverityInput);
-                    break;
-            }
+            updateFinalButtonText();
             Log.d(TAG, "Fragment view components filled with filter [" + JsonHelper.toJson(filter) + "].");
         }
     }
@@ -269,14 +258,22 @@ public class FragmentCreateNotificationFilter extends AbstractFragment {
                 break;
             case DELETE:
                 bFinal.setText(SourceHelper.getString(getActivity(), R.string.delete));
+                super.onTextChangeListener(etNode);
+                super.onTextChangeListener(etActiveTime);
+                super.onTextChangeListener(etText);
+                super.onSpinnerSelectionChangedListener(spTimeInput);
+                super.onSpinnerSelectionChangedListener(spSeverityInput);
                 break;
         }
     }
 
     private FilterNotification loadFilterFromComponentViewInputs() {
-        int activeTime = Integer.parseInt(etActiveTime.getText().toString());
-        int minutes = spTimeInput.getSelectedItemPosition() == 0 ? activeTime : activeTime * 60;
-        long millis = FormatHelper.formatMinutesToMilliseconds(minutes);
+        long millis = 0;
+        if (!etActiveTime.getText().toString().isEmpty()) {
+            int activeTime = Integer.parseInt(etActiveTime.getText().toString());
+            int minutes = spTimeInput.getSelectedItemPosition() == 0 ? activeTime : activeTime * 60;
+            millis = FormatHelper.formatMinutesToMilliseconds(minutes);
+        }
         int selectedPosition = spSeverityInput.getSelectedItemPosition();
         NotificationSeverity severity = selectedPosition == 0 ? NotificationSeverity.ERROR : selectedPosition == 1 ? NotificationSeverity.WARN : NotificationSeverity.INFO;
         FilterNotification newFilter = new FilterNotification(etNode.getText().toString(), millis, severity, etText.getText().toString());
@@ -318,6 +315,7 @@ public class FragmentCreateNotificationFilter extends AbstractFragment {
         return new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                MainActivity activity = (MainActivity) getActivity();
                 FilterNotification filter = loadFilterFromComponentViewInputs();
                 boolean isSuccessful;
                 switch (fragmentStatus) {
@@ -329,6 +327,12 @@ public class FragmentCreateNotificationFilter extends AbstractFragment {
                             return;
                         }
                         Log.i(TAG, "Add successful. Notification filter: [" + JsonHelper.toJson(filter) + "]");
+
+                        if (isStartedWithNotification) {
+                            activity.onBackPressed();
+                            activity.onBackPressed();
+                        }
+                        activity.onBackPressed();
                         break;
 
                     case UPDATE:
@@ -338,6 +342,7 @@ public class FragmentCreateNotificationFilter extends AbstractFragment {
                             return;
                         }
                         Log.i(TAG, "Update successful. Notification filter: [" + JsonHelper.toJson(filter) + "]");
+                        activity.onBackPressed();
                         break;
 
                     case DELETE:
@@ -347,9 +352,13 @@ public class FragmentCreateNotificationFilter extends AbstractFragment {
                             return;
                         }
                         Log.i(TAG, "Delete successful. Notification filter: [" + JsonHelper.toJson(filter) + "]");
+                        activity.onBackPressed();
                         break;
                 }
-                ((MainActivity)getActivity()).showNotificationFilterListFragment(project.get_id());
+                FragmentNotificationFilterList fragment = (FragmentNotificationFilterList) activity.getFragmentManager().findFragmentByTag(FragmentNotificationFilterList.TAG);
+                if (fragment != null) {
+                    fragment.updateDataSet();
+                }
             }
         };
     }

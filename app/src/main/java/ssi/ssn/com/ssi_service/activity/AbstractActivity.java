@@ -1,6 +1,7 @@
 package ssi.ssn.com.ssi_service.activity;
 
 import android.app.Activity;
+import android.app.Fragment;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -57,6 +58,11 @@ public class AbstractActivity extends Activity {
                 return null;
             }
         }.execute();
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
     }
 
     public SQLiteDB getSQLiteDB() {

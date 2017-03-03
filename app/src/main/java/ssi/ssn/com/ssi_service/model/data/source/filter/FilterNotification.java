@@ -1,13 +1,18 @@
 package ssi.ssn.com.ssi_service.model.data.source.filter;
 
-import java.util.ArrayList;
-import java.util.List;
+import android.util.Log;
 
+import java.util.Date;
+
+import ssi.ssn.com.ssi_service.model.helper.FormatHelper;
+import ssi.ssn.com.ssi_service.model.helper.SourceHelper;
 import ssi.ssn.com.ssi_service.model.network.response.notification.ResponseNotificationTable;
 import ssi.ssn.com.ssi_service.model.network.response.notification.objects.NotificationSeverity;
 import ssi.ssn.com.ssi_service.model.network.response.notification.objects.ResponseNotification;
 
 public class FilterNotification {
+
+    private static String TAG = FilterNotification.class.getSimpleName();
 
     private int id;
     private String note;
@@ -15,6 +20,7 @@ public class FilterNotification {
     private NotificationSeverity severity;
     private String text;
     private ResponseNotificationTable notificationTable;
+    private ResponseNotificationTable activeTimeReachedNotificationTable;
 
     public FilterNotification() {
     }
@@ -74,7 +80,32 @@ public class FilterNotification {
         this.notificationTable = notificationTable;
     }
 
+    public ResponseNotificationTable getActiveTimeReachedNotificationTable() {
+        return activeTimeReachedNotificationTable;
+    }
+
+    public void setActiveTimeReachedNotificationTable(ResponseNotificationTable activeTimeReachedNotificationTable) {
+        this.activeTimeReachedNotificationTable = activeTimeReachedNotificationTable;
+    }
+
     public String identity() {
         return "[" + getNote() + ";" + getActiveTime() + ";" + getSeverity() + ";" + getText() + "]";
+    }
+
+    public void checkResponseNotificationTable() {
+        activeTimeReachedNotificationTable = new ResponseNotificationTable();
+        if(notificationTable == null){
+            return;
+        }
+        for (ResponseNotification notification : notificationTable.getData()) {
+            long activeTime = new Date().getTime() - notification.getStartTime();
+            if (activeTime >= this.activeTime) {
+                activeTimeReachedNotificationTable.addNotification(notification);
+                Log.d(TAG, "Notification found, which reached the maximal active time. Active Time: " + FormatHelper.formatMillisecondsToHours(activeTime) + " hours.");
+            }
+        }
+        if (activeTimeReachedNotificationTable.getCount() > 0) {
+            Log.i(TAG + " - " + identity(), "[" + activeTimeReachedNotificationTable.getCount() +"] Notifications found, which reached the maximal active time");
+        }
     }
 }

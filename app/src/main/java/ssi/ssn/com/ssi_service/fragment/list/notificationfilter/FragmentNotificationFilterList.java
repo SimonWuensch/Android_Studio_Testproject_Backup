@@ -101,4 +101,10 @@ public class FragmentNotificationFilterList extends AbstractFragment {
             }
         });
     }
+
+    public void updateDataSet(){
+        CardObjectNotification.init(getSQLiteDB(), project);
+        mAdapter.setNotificationFilterList(new ArrayList<>(project.getCardObjectNotification().getNotificationFilters().values()));
+        mAdapter.notifyDataSetChanged();
+    }
 }

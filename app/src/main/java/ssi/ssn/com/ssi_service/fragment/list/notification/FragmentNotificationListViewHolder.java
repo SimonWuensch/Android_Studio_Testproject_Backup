@@ -4,14 +4,19 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.TextView;
 
+import java.util.Date;
+
 import ssi.ssn.com.ssi_service.R;
 import ssi.ssn.com.ssi_service.activity.MainActivity;
 import ssi.ssn.com.ssi_service.model.data.source.Project;
+import ssi.ssn.com.ssi_service.model.data.source.Status;
+import ssi.ssn.com.ssi_service.model.data.source.filter.FilterNotification;
 import ssi.ssn.com.ssi_service.model.helper.FormatHelper;
+import ssi.ssn.com.ssi_service.model.helper.SourceHelper;
 import ssi.ssn.com.ssi_service.model.network.response.notification.objects.ResponseNotification;
 
 
-public class FragmentNotificationListViewHolder extends RecyclerView.ViewHolder {
+class FragmentNotificationListViewHolder extends RecyclerView.ViewHolder {
 
     private static String TAG = FragmentNotificationListViewHolder.class.getSimpleName();
 
@@ -27,12 +32,14 @@ public class FragmentNotificationListViewHolder extends RecyclerView.ViewHolder 
     private MainActivity activity;
 
     private Project project;
+    private FilterNotification filter;
 
-    public FragmentNotificationListViewHolder(MainActivity activity, Project project, View cardView) {
+    protected FragmentNotificationListViewHolder(MainActivity activity, Project project, FilterNotification filter, View cardView) {
         super(cardView);
         this.cardView = cardView;
         this.activity = activity;
         this.project = project;
+        this.filter = filter;
 
         vStatusColor = cardView.findViewById(R.id.fragment_notification_list_card_view_view_status_color);
         tvNumber = (TextView) cardView.findViewById(R.id.fragment_notification_list_card_view_text_view_number);
@@ -44,12 +51,20 @@ public class FragmentNotificationListViewHolder extends RecyclerView.ViewHolder 
 
     protected void assignData(final FragmentNotificationList fragment, int position, final ResponseNotification notification) {
         vStatusColor.setBackgroundColor(notification.getDefinition().getSeverity().getColor(activity));
-        tvNumber.setText((position + 1) + "");
+        tvNumber.setText(String.valueOf(position + 1));
         tvText.setText(notification.getText());
 
         String[] dateTime = FormatHelper.formatDate(notification.getStartTime()).split(" - ");
         tvDate.setText(dateTime[0]);
         tvTime.setText(dateTime[1]);
+
+        if(filter != null){
+            long activeTime = new Date().getTime() - notification.getStartTime();
+            if(activeTime >= filter.getActiveTime()){
+                tvDate.setTextColor(Status.ERROR.getColor(activity));
+                tvTime.setTextColor(Status.ERROR.getColor(activity));
+            }
+        }
 
         String nodePath = notification.getNodePath();
         String node = nodePath == null ? "" : notification.getNodePath().substring(nodePath.lastIndexOf(".") + 1, nodePath.length());

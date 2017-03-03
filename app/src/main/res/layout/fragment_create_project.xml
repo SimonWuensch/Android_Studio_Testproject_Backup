@@ -42,7 +42,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical"
         android:gravity="center">
 
@@ -58,7 +58,6 @@
             android:layout_height="20dp"
             android:layout_alignParentLeft="true"
             android:layout_centerInParent="true"
-            android:contentDescription="Icon_IP_Address"
             android:src="@drawable/icon_ip" />
 
         <EditText
@@ -162,7 +161,7 @@
             android:layout_centerInParent="true"
             android:layout_marginLeft="5dp"
             android:layout_toRightOf="@+id/fragment_create_project_image_update_interval"
-            android:inputType="numberDecimal"
+            android:inputType="number"
             android:lines="1"
             android:maxLength="20"
             android:text="30" />

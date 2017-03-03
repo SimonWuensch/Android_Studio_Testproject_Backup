@@ -14,7 +14,7 @@ import ssi.ssn.com.ssi_service.model.data.source.filter.FilterNotification;
 import ssi.ssn.com.ssi_service.model.database.SQLiteDB;
 import ssi.ssn.com.ssi_service.model.helper.ObservationHelper;
 
-public class FragmentNotificationFilterListAdapter extends  RecyclerView.Adapter<FragmentNotificationFilterListViewHolder>{
+class FragmentNotificationFilterListAdapter extends  RecyclerView.Adapter<FragmentNotificationFilterListViewHolder>{
 
     private static String TAG = FragmentNotificationFilterListAdapter.class.getSimpleName();
 
@@ -27,18 +27,21 @@ public class FragmentNotificationFilterListAdapter extends  RecyclerView.Adapter
 
     private List<FragmentNotificationFilterListViewHolder> viewHolderList = new LinkedList<>();
 
-    public FragmentNotificationFilterListAdapter(int layoutCardView, FragmentNotificationFilterList fragment, Project project, List<FilterNotification> notificationFilterList) {
+    FragmentNotificationFilterListAdapter(int layoutCardView, FragmentNotificationFilterList fragment, Project project, List<FilterNotification> notificationFilterList) {
         this.layoutCardView = layoutCardView;
         this.fragment = fragment;
         this.project = project;
         this.notificationFilterList = notificationFilterList;
     }
 
+    protected void setNotificationFilterList(List<FilterNotification> notificationFilterList){
+        this.notificationFilterList = notificationFilterList;
+    }
+
     @Override
     public FragmentNotificationFilterListViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         cardView = (CardView) LayoutInflater.from(parent.getContext()).inflate(layoutCardView, parent, false);
-        FragmentNotificationFilterListViewHolder viewHolder = new FragmentNotificationFilterListViewHolder((MainActivity) fragment.getActivity(), cardView);
-        return viewHolder;
+        return new FragmentNotificationFilterListViewHolder((MainActivity) fragment.getActivity(), cardView);
     }
 
     @Override
@@ -57,7 +60,7 @@ public class FragmentNotificationFilterListAdapter extends  RecyclerView.Adapter
         return notificationFilterList.size();
     }
 
-    public void reloadCardViews() {
+    protected void reloadCardViews() {
         SQLiteDB sqLiteDB = ((MainActivity) fragment.getActivity()).getSQLiteDB();
         ObservationHelper.setLastObservationTimeToOLD(sqLiteDB, project);
         for (int i = 0; i < viewHolderList.size(); i++) {

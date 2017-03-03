@@ -7,10 +7,10 @@
     <string name="project_status">Projekt Status: </string>
     <string name="status">Status</string>
     <string name="days">Tage</string>
-    <string name="hours">Stunden</string>
     <string name="hour">Stunde</string>
+    <string name="hours">Stunden</string>
     <string name="minute">Minute</string>
-    <string name="minutes">Minute</string>
+    <string name="minutes">Minuten</string>
     <string name="yes">Ja</string>
     <string name="no">Nein</string>
     <string name="loading_error">FEHLER</string>

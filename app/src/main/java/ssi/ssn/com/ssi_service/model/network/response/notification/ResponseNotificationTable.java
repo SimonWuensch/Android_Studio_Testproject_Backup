@@ -1,5 +1,7 @@
 package ssi.ssn.com.ssi_service.model.network.response.notification;
 
+import com.owlike.genson.annotation.JsonIgnore;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,7 +12,7 @@ import ssi.ssn.com.ssi_service.model.network.response.notification.objects.Respo
 public class ResponseNotificationTable extends AbstractResponse {
 
     private long count;
-    private List<ResponseNotification> data = new ArrayList<ResponseNotification>();
+    private List<ResponseNotification> data = new ArrayList<>();
 
     public ResponseNotificationTable() {
     }
@@ -29,5 +31,11 @@ public class ResponseNotificationTable extends AbstractResponse {
 
     public void setData(List<ResponseNotification> data) {
         this.data = data;
+    }
+
+    @JsonIgnore
+    public void addNotification(ResponseNotification notification){
+        count++;
+        data.add(notification);
     }
 }

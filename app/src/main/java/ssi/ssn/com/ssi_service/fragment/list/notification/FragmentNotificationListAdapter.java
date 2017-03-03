@@ -11,9 +11,10 @@ import java.util.List;
 
 import ssi.ssn.com.ssi_service.activity.MainActivity;
 import ssi.ssn.com.ssi_service.model.data.source.Project;
+import ssi.ssn.com.ssi_service.model.data.source.filter.FilterNotification;
 import ssi.ssn.com.ssi_service.model.network.response.notification.objects.ResponseNotification;
 
-public class FragmentNotificationListAdapter extends  RecyclerView.Adapter<FragmentNotificationListViewHolder>{
+class FragmentNotificationListAdapter extends  RecyclerView.Adapter<FragmentNotificationListViewHolder>{
 
     private static String TAG = FragmentNotificationListAdapter.class.getSimpleName();
 
@@ -25,19 +26,20 @@ public class FragmentNotificationListAdapter extends  RecyclerView.Adapter<Fragm
     private Activity activity;
 
     private Project project;
+    private FilterNotification filter;
 
-    public FragmentNotificationListAdapter(int layoutCardView, FragmentNotificationList fragment, Project project, List<ResponseNotification> notificationList){
+    protected FragmentNotificationListAdapter(int layoutCardView, FragmentNotificationList fragment, Project project, FilterNotification filter, List<ResponseNotification> notificationList){
         this.layoutCardView = layoutCardView;
         this.fragment = fragment;
-        this.notificationList = notificationList;
         this.project = project;
+        this.filter = filter;
+        this.notificationList = notificationList;
     }
 
     @Override
     public FragmentNotificationListViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         cardView = (CardView) LayoutInflater.from(parent.getContext()).inflate(layoutCardView, parent, false);
-        FragmentNotificationListViewHolder viewHolder = new FragmentNotificationListViewHolder((MainActivity)fragment.getActivity(), project, cardView);
-        return viewHolder;
+        return new FragmentNotificationListViewHolder((MainActivity)fragment.getActivity(), project, filter, cardView);
     }
 
     @Override
