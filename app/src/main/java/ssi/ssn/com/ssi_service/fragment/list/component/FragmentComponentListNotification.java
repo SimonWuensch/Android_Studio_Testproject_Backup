@@ -26,10 +26,10 @@ public class FragmentComponentListNotification extends AbstractAndroidNotificati
     }
 
     @Override
-    public Intent createResultIntent(Context context, long projectID) {
+    public Intent createResultIntent(Context context, int... ids) {
         Intent resultIntent = new Intent(context, MainActivity.class);
         resultIntent.putExtra(AndroidNotificationHelper.TAG_FRAGMENT, FragmentComponentList.TAG);
-        resultIntent.putExtra(FragmentComponentList.PROJECT_ID, projectID);
+        resultIntent.putExtra(FragmentComponentList.PROJECT_ID, ids[0]);
         return resultIntent;
     }
 }

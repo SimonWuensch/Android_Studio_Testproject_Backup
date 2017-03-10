@@ -7,11 +7,13 @@ import com.owlike.genson.annotation.JsonIgnore;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
 import ssi.ssn.com.ssi_service.R;
 import ssi.ssn.com.ssi_service.activity.MainActivity;
+import ssi.ssn.com.ssi_service.fragment.list.notification.FragmentNotificationListNotification;
 import ssi.ssn.com.ssi_service.fragment.overview.launchboard.source.DetectorCardObjectNotification;
 import ssi.ssn.com.ssi_service.model.data.source.Project;
 import ssi.ssn.com.ssi_service.model.data.source.Status;
@@ -161,24 +163,12 @@ public class CardObjectNotification extends AbstractCardObject {
     @Override
     @JsonIgnore
     public AbstractAndroidNotification getNotificationClass() {
-        return null;
-        // return new FragmentComponentListNotification();
+        return new FragmentNotificationListNotification();
     }
 
     @Override
     @JsonIgnore
     public List<String> getNotificationMessages(Context context) {
-        /*
-        List<String> messages = new LinkedList<>();
-        for (ResponseComponent responseComponent : responseComponentList) {
-            String status = responseComponent.getState().getStatus();
-            if (!status.equals(Status.TEXT_ONLINE) &&
-                    !status.equals(Status.TEXT_UNKNOWN)) {
-                messages.add(responseComponent.getState().getName() + " " + SourceHelper.getString(context, R.string.status) + ": " + status);
-            }
-        }
-        return  messages;
-        */
         return new ArrayList<>();
     }
 

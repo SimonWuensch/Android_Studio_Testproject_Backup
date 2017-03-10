@@ -27,7 +27,7 @@ public class FragmentNotificationList extends Fragment {
     public static String TAG = FragmentNotificationList.class.getSimpleName();
 
     protected static String PROJECT_ID = TAG + "PROJECT_ID";
-    protected static String FILTER_ID = TAG + "FILTER_ID";
+    public static String FILTER_ID = TAG + "FILTER_ID";
 
     private static int FRAGMENT_LAYOUT = R.layout.fragment_notification_list;
     private static int RECYCLERVIEW = R.id.fragment_standard_recycler_view;

@@ -2,6 +2,7 @@ package ssi.ssn.com.ssi_service.fragment.list.notificationfilter;
 
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
@@ -9,10 +10,13 @@ import java.util.LinkedList;
 import java.util.List;
 
 import ssi.ssn.com.ssi_service.activity.MainActivity;
+import ssi.ssn.com.ssi_service.fragment.overview.launchboard.source.DetectorCardObjectNotification;
 import ssi.ssn.com.ssi_service.model.data.source.Project;
+import ssi.ssn.com.ssi_service.model.data.source.cardobject.CardObjectNotification;
 import ssi.ssn.com.ssi_service.model.data.source.filter.FilterNotification;
 import ssi.ssn.com.ssi_service.model.database.SQLiteDB;
 import ssi.ssn.com.ssi_service.model.helper.ObservationHelper;
+import ssi.ssn.com.ssi_service.model.network.handler.RequestHandler;
 
 class FragmentNotificationFilterListAdapter extends  RecyclerView.Adapter<FragmentNotificationFilterListViewHolder>{
 
@@ -26,6 +30,7 @@ class FragmentNotificationFilterListAdapter extends  RecyclerView.Adapter<Fragme
     private List<FilterNotification> notificationFilterList;
 
     private List<FragmentNotificationFilterListViewHolder> viewHolderList = new LinkedList<>();
+    protected FilterNotification clickedFilter = null;
 
     FragmentNotificationFilterListAdapter(int layoutCardView, FragmentNotificationFilterList fragment, Project project, List<FilterNotification> notificationFilterList) {
         this.layoutCardView = layoutCardView;
@@ -42,7 +47,7 @@ class FragmentNotificationFilterListAdapter extends  RecyclerView.Adapter<Fragme
     @Override
     public FragmentNotificationFilterListViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         cardView = (CardView) LayoutInflater.from(parent.getContext()).inflate(layoutCardView, parent, false);
-        return new FragmentNotificationFilterListViewHolder((MainActivity) fragment.getActivity(), cardView);
+        return new FragmentNotificationFilterListViewHolder((MainActivity) fragment.getActivity(), this, cardView);
     }
 
     @Override
@@ -62,12 +67,18 @@ class FragmentNotificationFilterListAdapter extends  RecyclerView.Adapter<Fragme
     }
 
     protected void reloadCardViews() {
+        Log.d(TAG, "Reloading all filters");
         SQLiteDB sqLiteDB = ((MainActivity) fragment.getActivity()).getSQLiteDB();
+        RequestHandler requestHandler = ((MainActivity) fragment.getActivity()).getRequestHandler();
+        DetectorCardObjectNotification.loadAllActiveNotificationsFromNetwork(requestHandler, project);
         ObservationHelper.setLastObservationTimeToOLD(sqLiteDB, project);
         for (int i = 0; i < viewHolderList.size(); i++) {
+            FilterNotification filter = project.getCardObjectNotification().getNotificationFilters().get(notificationFilterList.get(i).getId());
+            notificationFilterList.remove(i);
+            notificationFilterList.add(i, filter);
             FragmentNotificationFilterListViewHolder viewHolder = viewHolderList.get(i);
             viewHolder.assignData(project, notificationFilterList.get(i));
         }
+        Log.i(TAG + " - " + project.identity(), "All Filters reloaded. Filter count: [" + project.getCardObjectNotification().getNotificationFilters().size() + "]");
     }
-
 }

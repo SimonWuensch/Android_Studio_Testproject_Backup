@@ -25,6 +25,7 @@ import ssi.ssn.com.ssi_service.model.helper.FormatHelper;
 import ssi.ssn.com.ssi_service.model.helper.JsonHelper;
 import ssi.ssn.com.ssi_service.model.helper.ObservationHelper;
 import ssi.ssn.com.ssi_service.model.helper.SourceHelper;
+import ssi.ssn.com.ssi_service.model.network.response.notification.ResponseNotificationTable;
 import ssi.ssn.com.ssi_service.model.network.response.notification.objects.NotificationSeverity;
 import ssi.ssn.com.ssi_service.model.network.response.notification.objects.ResponseNotification;
 
@@ -336,6 +337,8 @@ public class FragmentCreateNotificationFilter extends AbstractFragment {
                         break;
 
                     case UPDATE:
+                        filter.setNotificationTable(new ResponseNotificationTable());
+                        filter.setActiveTimeReachedNotificationTable(new ResponseNotificationTable());
                         isSuccessful = project.getCardObjectNotification().updateNotificationFilter(getSQLiteDB(), filter);
                         if (!isSuccessful) {
                             Log.e(TAG, "Update failed. Notification filter: [" + JsonHelper.toJson(filter) + "]");

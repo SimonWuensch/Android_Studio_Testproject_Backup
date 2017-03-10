@@ -11,7 +11,7 @@ public class AbstractAndroidNotification {
     public void newInstanceWithIntent(Activity activity, Intent intent) {
     }
 
-    public Intent createResultIntent(Context context, long projectID) {
+    public Intent createResultIntent(Context context, int... ids) {
         return new Intent(context, MainActivity.class);
     }
 }

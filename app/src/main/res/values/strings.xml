@@ -5,6 +5,8 @@
 
     <!-- DEFAULT -->
     <string name="project_status">Projekt Status: </string>
+    <string name="project">Project</string>
+    <string name="filter">Filter</string>
     <string name="status">Status</string>
     <string name="days">Tage</string>
     <string name="hour">Stunde</string>
@@ -14,6 +16,7 @@
     <string name="yes">Ja</string>
     <string name="no">Nein</string>
     <string name="loading_error">FEHLER</string>
+    <string name="found">gefunden</string>
 
     <string name="add">hinzufügen</string>
     <string name="update">aktualisieren</string>
@@ -122,5 +125,6 @@
     <string name="notification_project_application_status_is_not_running">Der Status der Projekt Application ist nicht "Running".</string>
     <string name="notification_not_available">konnten nicht geladen werden.</string>
     <string name="notification_includes_errors">beinhaltet Fehler.</string>
+    <string name="notification_filter">mittels eines Filters gefunden.</string>
 
 </resources>

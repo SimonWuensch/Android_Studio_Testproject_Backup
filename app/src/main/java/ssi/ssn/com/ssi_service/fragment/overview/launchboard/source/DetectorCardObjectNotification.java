@@ -22,6 +22,7 @@ public class DetectorCardObjectNotification {
         requestHandler.sendRequestNotificationTableAll(project);
 
         if (project.getDefaultResponseNotification().getCode() != 200) {
+            cardObject.setNotificationTable(null);
             return;
         }
 
@@ -33,11 +34,11 @@ public class DetectorCardObjectNotification {
     public static void loadAllNotificationsByAllFilter(RequestHandler requestHandler, Project project) {
         CardObjectNotification cardObject = project.getCardObjectNotification();
         for (FilterNotification filter : cardObject.getNotificationFilters().values()) {
-            LoadAllNotificationsByFilter(requestHandler, project, filter.getId());
+            loadAllNotificationsByFilter(requestHandler, project, filter.getId());
         }
     }
 
-    public static void LoadAllNotificationsByFilter(RequestHandler requestHandler, Project project, int filterID) {
+    public static void loadAllNotificationsByFilter(RequestHandler requestHandler, Project project, int filterID) {
         CardObjectNotification cardObject = project.getCardObjectNotification();
         Log.d(TAG + " Project ID: " + cardObject.get_id_project(), cardObject.getClass().getSimpleName() + " start load card object notification information from network...");
         requestHandler.sendRequestLogin(project);
@@ -45,6 +46,7 @@ public class DetectorCardObjectNotification {
         requestHandler.sendRequestNotification(project, filter);
 
         if (project.getDefaultResponseNotification().getCode() != 200) {
+            filter.setNotificationTable(null);
             return;
         }
 
@@ -57,7 +59,9 @@ public class DetectorCardObjectNotification {
     public static void detectCardStatus(SQLiteDB sqLiteDB, CardObjectNotification cardObject) {
         Log.d(TAG + " Project ID: " + cardObject.get_id_project(), cardObject.getClass().getSimpleName() + " start detecting card object notification status...");
         Status overAllState = Status.OK;
-        if (cardObject.getNotificationFilters().isEmpty()) {
+        if (cardObject.getNotificationTable() == null) {
+            overAllState = Status.NOT_AVAILABLE;
+        } else if (cardObject.getNotificationFilters().isEmpty()) {
             overAllState = Status.OK;
         } else {
             for (FilterNotification filter : cardObject.getNotificationFilters().values()) {

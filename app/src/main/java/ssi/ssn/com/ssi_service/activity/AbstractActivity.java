@@ -172,8 +172,8 @@ public class AbstractActivity extends Activity {
         Log.i(getClass().getSimpleName(), "Show Fragment [" + FragmentNotificationList.TAG + "]. + Project ID: " + projectID);
     }
 
-    public void showNotificationListFragment(int projectID, FilterNotification filter) {
-        FragmentNotificationList fragmentNotificationList = FragmentNotificationList.newInstance(projectID, filter.getId());
+    public void showNotificationListFragment(int projectID, int filterID) {
+        FragmentNotificationList fragmentNotificationList = FragmentNotificationList.newInstance(projectID, filterID);
         getFragmentManager()
                 .beginTransaction()
                 .replace(R.id.activity_main_fragment_container,
@@ -181,7 +181,7 @@ public class AbstractActivity extends Activity {
                         FragmentNotificationList.TAG)
                 .addToBackStack(FragmentNotificationList.TAG)
                 .commit();
-        Log.i(getClass().getSimpleName(), "Show Fragment [" + FragmentNotificationList.TAG + "]. + Project ID: " + projectID + " Filter: " + filter.identity());
+        Log.i(getClass().getSimpleName(), "Show Fragment [" + FragmentNotificationList.TAG + "]. + Project ID: " + projectID + ", Filter ID: " + filterID);
     }
 
     public void showCreateNotificationFilterFragment(int projectID){

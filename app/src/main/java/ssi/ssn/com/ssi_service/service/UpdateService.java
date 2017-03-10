@@ -6,7 +6,6 @@ import android.os.AsyncTask;
 import android.os.Handler;
 import android.os.IBinder;
 import android.util.Log;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -15,11 +14,12 @@ import java.util.TimerTask;
 import java.util.concurrent.Executors;
 
 import ssi.ssn.com.ssi_service.R;
-import ssi.ssn.com.ssi_service.fragment.overview.launchboard.FragmentLaunchBoardNotification;
 import ssi.ssn.com.ssi_service.fragment.list.project.FragmentProjectListNotification;
+import ssi.ssn.com.ssi_service.fragment.overview.launchboard.FragmentLaunchBoardNotification;
 import ssi.ssn.com.ssi_service.model.data.source.Project;
 import ssi.ssn.com.ssi_service.model.data.source.cardobject.AbstractCardObject;
 import ssi.ssn.com.ssi_service.model.data.source.cardobject.CardObjectNotification;
+import ssi.ssn.com.ssi_service.model.data.source.filter.FilterNotification;
 import ssi.ssn.com.ssi_service.model.database.SQLiteDB;
 import ssi.ssn.com.ssi_service.model.helper.FormatHelper;
 import ssi.ssn.com.ssi_service.model.helper.ObservationHelper;
@@ -189,7 +189,7 @@ public class UpdateService extends Service {
                                     cardObject.getStatus().getColor(getBaseContext()),
                                     cardObject.getIcon(),
                                     SourceHelper.getString(getApplicationContext(), cardObject.getTitle()) + " " + SourceHelper.getString(getApplicationContext(), R.string.status) + ": " + cardObject.getStatus().name(),
-                                    project.designation() + "\n" + SourceHelper.getString(getApplicationContext(), cardObject.getTitle()) + " " + SourceHelper.getString(getApplicationContext(), R.string.notification_not_available),
+                                    SourceHelper.getString(getBaseContext(), R.string.project) + ": " + project.designation() + "\n" + SourceHelper.getString(getApplicationContext(), cardObject.getTitle()) + " " + SourceHelper.getString(getApplicationContext(), R.string.notification_not_available),
                                     SourceHelper.getString(getApplicationContext(), R.string.project_status) + " " + project.getStatus());
                             break;
                         case ERROR:
@@ -201,15 +201,38 @@ public class UpdateService extends Service {
                             String notificationMessage = notificationMessageBuilder.toString();
                             Log.w(TAG, "Throw notification - Project Status: [" + project.getStatus() + "]. " + SourceHelper.getString(getBaseContext(), cardObject.getTitle()) + " Status: [" + cardObject.getStatus() + "]. Project: [" + project + "]. Message: " + notificationMessage);
 
-                            androidNotificationHelper.throwNotification(
-                                    getBaseContext(),
-                                    project.get_id() * 1000 + cardObject.getNotificationID(),
-                                    cardObject.getNotificationClass().createResultIntent(getBaseContext(), project.get_id()),
-                                    cardObject.getStatus().getColor(getBaseContext()),
-                                    cardObject.getIcon(),
-                                    SourceHelper.getString(getApplicationContext(), cardObject.getTitle()) + " " + SourceHelper.getString(getApplicationContext(), R.string.status) + ": " + cardObject.getStatus().name(),
-                                    project.designation() + "\n" + notificationMessage,
-                                    SourceHelper.getString(getApplicationContext(), cardObject.getTitle()) + " " + SourceHelper.getString(getApplicationContext(), R.string.notification_includes_errors) + " [" + messages.size() + "]");
+                            String title = SourceHelper.getString(getApplicationContext(), cardObject.getTitle());
+                            if (!(cardObject instanceof CardObjectNotification)) {
+                                androidNotificationHelper.throwNotification(
+                                        getBaseContext(),
+                                        project.get_id() * 1000 + cardObject.getNotificationID(),
+                                        cardObject.getNotificationClass().createResultIntent(getBaseContext(), project.get_id()),
+                                        cardObject.getStatus().getColor(getBaseContext()),
+                                        cardObject.getIcon(),
+                                        title + " " + SourceHelper.getString(getApplicationContext(), R.string.status) + ": " + cardObject.getStatus().name(),
+                                        SourceHelper.getString(getBaseContext(), R.string.project) + ": " + project.designation() + "\n" + notificationMessage,
+                                        title + " " + SourceHelper.getString(getApplicationContext(), R.string.notification_includes_errors) + " [" + messages.size() + "]");
+                                break;
+                            }
+
+                            for (FilterNotification filter : ((CardObjectNotification) cardObject).getNotificationFilters().values()) {
+                                if (filter.getActiveTimeReachedNotificationTable().getCount() <= 0) {
+                                    continue;
+                                }
+
+                                String filterDesignation = filter.getNote() + " - " + filter.getActiveTime() + " - " + filter.getSeverity() + " - " + filter.getText();
+                                String message = title + " " + SourceHelper.getString(getBaseContext(), R.string.found) + ": " + filter.getActiveTimeReachedNotificationTable().getCount();
+
+                                androidNotificationHelper.throwNotification(
+                                        getBaseContext(),
+                                        project.get_id() * 1000 + cardObject.getNotificationID() * 1000 + filter.getId(),
+                                        cardObject.getNotificationClass().createResultIntent(getBaseContext(), project.get_id(), filter.getId()),
+                                        cardObject.getStatus().getColor(getBaseContext()),
+                                        cardObject.getIcon(),
+                                        title + " " + SourceHelper.getString(getApplicationContext(), R.string.status) + ": " + cardObject.getStatus().name(),
+                                        SourceHelper.getString(getBaseContext(), R.string.project) + ": " + project.designation() + "\n" + SourceHelper.getString(getBaseContext(), R.string.filter) + ": " + filterDesignation + "\n" + message,
+                                        filter.getActiveTimeReachedNotificationTable().getCount() + " " + title + " " + SourceHelper.getString(getApplicationContext(), R.string.notification_filter));
+                            }
                             break;
                     }
                 }

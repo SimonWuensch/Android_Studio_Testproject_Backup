@@ -387,6 +387,9 @@ public class FragmentCreateProject extends AbstractFragment {
                             return null;
                         }
 
+                        if(fragmentStatus.equals(CreateUpdateDeleteStatus.UPDATE)){
+                            requestHandler.sendRequestLogout(project);
+                        }
                         requestHandler.sendRequestLogin(project);
                         return null;
                     }

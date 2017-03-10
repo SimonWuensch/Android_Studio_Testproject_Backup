@@ -18,6 +18,7 @@ import java.util.Map;
 
 import ssi.ssn.com.ssi_service.activity.MainActivity;
 import ssi.ssn.com.ssi_service.fragment.list.component.FragmentComponentListNotification;
+import ssi.ssn.com.ssi_service.fragment.list.notification.FragmentNotificationListNotification;
 import ssi.ssn.com.ssi_service.fragment.overview.launchboard.FragmentLaunchBoardNotification;
 import ssi.ssn.com.ssi_service.fragment.list.module.FragmentModuleListNotification;
 import ssi.ssn.com.ssi_service.fragment.list.project.FragmentProjectListNotification;
@@ -41,6 +42,7 @@ public class AndroidNotificationHelper {
                 add(new FragmentLaunchBoardNotification());
                 add(new FragmentModuleListNotification());
                 add(new FragmentComponentListNotification());
+                add(new FragmentNotificationListNotification());
             }
         };
 

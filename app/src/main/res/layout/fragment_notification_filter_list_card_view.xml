@@ -201,7 +201,7 @@
                         android:layout_marginLeft="10dp"
                         android:text="text...."
                         android:layout_marginRight="10dp"
-                        android:maxLines="4"
+                        android:maxLines="10"
                         android:textAppearance="?android:attr/textAppearanceMedium" />
 
                 </LinearLayout>

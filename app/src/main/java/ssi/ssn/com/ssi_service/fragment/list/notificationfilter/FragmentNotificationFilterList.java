@@ -107,4 +107,9 @@ public class FragmentNotificationFilterList extends AbstractFragment {
         mAdapter.setNotificationFilterList(new ArrayList<>(project.getCardObjectNotification().getNotificationFilters().values()));
         mAdapter.notifyDataSetChanged();
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+    }
 }

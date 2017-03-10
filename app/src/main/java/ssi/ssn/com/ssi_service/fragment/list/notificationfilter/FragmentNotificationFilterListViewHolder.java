@@ -32,11 +32,14 @@ class FragmentNotificationFilterListViewHolder extends RecyclerView.ViewHolder {
     private TextView tvSeverity;
     private TextView tvText;
     private ImageView ivSettings;
+
+    private FragmentNotificationFilterListAdapter adapter;
     private View cardView;
 
-    protected FragmentNotificationFilterListViewHolder(MainActivity activity, View cardView) {
+    protected FragmentNotificationFilterListViewHolder(MainActivity activity, FragmentNotificationFilterListAdapter adapter, View cardView) {
         super(cardView);
         this.activity = activity;
+        this.adapter = adapter;
         this.cardView = cardView;
         rlHeadLine = (RelativeLayout) cardView.findViewById(R.id.fragment_notification_filter_list_card_view_relative_layout_headline);
         tvCount = (TextView) cardView.findViewById(R.id.fragment_notification_filter_list_card_view_text_view_count);
@@ -51,7 +54,6 @@ class FragmentNotificationFilterListViewHolder extends RecyclerView.ViewHolder {
         tvNode.setText(filter.getNote());
         tvSeverity.setText(filter.getSeverity().name());
         tvText.setText(filter.getText());
-        rlHeadLine.setBackgroundColor(SourceHelper.getColor(activity, R.color.colorWhite));
 
         final String activeTime;
         String timeKind;
@@ -72,7 +74,7 @@ class FragmentNotificationFilterListViewHolder extends RecyclerView.ViewHolder {
             new AsyncTask<Object, Void, Object>() {
                 @Override
                 protected Object doInBackground(Object... objects) {
-                    DetectorCardObjectNotification.LoadAllNotificationsByFilter(activity.getRequestHandler(), project, filter.getId());
+                    DetectorCardObjectNotification.loadAllNotificationsByFilter(activity.getRequestHandler(), project, filter.getId());
                     project.getCardObjectNotification().setLastObservationTime(new Date().getTime());
                     activity.getSQLiteDB().cardObjectNotification().update(project.getCardObjectNotification());
                     return null;
@@ -94,6 +96,8 @@ class FragmentNotificationFilterListViewHolder extends RecyclerView.ViewHolder {
         tvCount.setText(String.valueOf(filter.getNotificationTable().getCount()));
         if (filter.getActiveTimeReachedNotificationTable().getCount() > 0) {
             rlHeadLine.setBackgroundColor(SourceHelper.getColor(activity, R.color.ERROR));
+        }else{
+            rlHeadLine.setBackgroundColor(SourceHelper.getColor(activity, R.color.colorWhite));
         }
     }
 
@@ -102,7 +106,7 @@ class FragmentNotificationFilterListViewHolder extends RecyclerView.ViewHolder {
             @Override
             public void onClick(View v) {
                 if (filter.getNotificationTable().getCount() != 0) {
-                    activity.showNotificationListFragment(project.get_id(), filter);
+                    activity.showNotificationListFragment(project.get_id(), filter.getId());
                     return;
                 }
                 Toast.makeText(activity, R.string.fragment_notification_filter_list_alert_no_notifications_found_for_this_filter, Toast.LENGTH_SHORT).show();
@@ -115,6 +119,7 @@ class FragmentNotificationFilterListViewHolder extends RecyclerView.ViewHolder {
             @Override
             public void onClick(View view) {
                 activity.showCreateNotificationFilterFragment(project.get_id(), filter);
+                adapter.clickedFilter = filter;
             }
         };
     }

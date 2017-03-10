@@ -88,10 +88,6 @@ public class FilterNotification {
         this.activeTimeReachedNotificationTable = activeTimeReachedNotificationTable;
     }
 
-    public String identity() {
-        return "[" + getNote() + ";" + getActiveTime() + ";" + getSeverity() + ";" + getText() + "]";
-    }
-
     public void checkResponseNotificationTable() {
         activeTimeReachedNotificationTable = new ResponseNotificationTable();
         if(notificationTable == null){
@@ -107,5 +103,9 @@ public class FilterNotification {
         if (activeTimeReachedNotificationTable.getCount() > 0) {
             Log.i(TAG + " - " + identity(), "[" + activeTimeReachedNotificationTable.getCount() +"] Notifications found, which reached the maximal active time");
         }
+    }
+
+    public String identity() {
+        return "[" + getNote() + ";" + getActiveTime() + ";" + getSeverity() + ";" + getText() + "]";
     }
 }

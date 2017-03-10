@@ -24,10 +24,10 @@ public class FragmentLaunchBoardNotification extends AbstractAndroidNotification
     }
 
     @Override
-    public Intent createResultIntent(Context context, long projectID) {
+    public Intent createResultIntent(Context context, int... ids) {
         Intent resultIntent = new Intent(context, MainActivity.class);
         resultIntent.putExtra(AndroidNotificationHelper.TAG_FRAGMENT, FragmentLaunchBoard.TAG);
-        resultIntent.putExtra(FragmentLaunchBoard.PROJECT_ID, projectID);
+        resultIntent.putExtra(FragmentLaunchBoard.PROJECT_ID, ids[0]);
         return resultIntent;
     }
 }
