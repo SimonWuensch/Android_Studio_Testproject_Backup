@@ -1,9 +1,11 @@
 package ssi.ssn.com.ssi_service.model.network.request;
 
 import ssi.ssn.com.ssi_service.model.data.source.Project;
+import ssi.ssn.com.ssi_service.model.helper.JsonHelper;
 import ssi.ssn.com.ssi_service.model.network.DefaultResponse;
 import ssi.ssn.com.ssi_service.model.network.communication.HttpGET;
 import ssi.ssn.com.ssi_service.model.network.handler.CookieHandler;
+import ssi.ssn.com.ssi_service.model.network.response.application.ResponseApplication;
 
 public class RequestComponent {
 
