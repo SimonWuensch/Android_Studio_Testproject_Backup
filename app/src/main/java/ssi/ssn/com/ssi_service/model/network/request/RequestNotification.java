@@ -72,7 +72,7 @@ public class RequestNotification {
     // *** Path ********************************************************************************* //
     //http://172.26.26.16:8180/services/notification/table?orderBy=$<<startTime>> DESC&condition=$<<active>> AND (($<<definition.severity>> = 'ERROR') AND ($<<text>> = 'USV Netzausfall') AND ($<<nodePath>> IN ('F0105LRB049')))
     public enum Path {
-        TABLE_FILTER("/table", "&condition=$<<active>> AND (($<<definition.severity>> = '" + PLACEHOLDER_SEVERITY + "') AND ($<<text>> = '" + PLACEHOLDER_TEXT + "') AND ($<<nodePath>> IN ('" + PLACEHOLDER_NODE + "')))"),
+        TABLE_FILTER("/table", "&condition=$<<active>> AND (($<<definition.severity>> = '" + PLACEHOLDER_SEVERITY + "') AND ($<<text>> LIKE '%25" + PLACEHOLDER_TEXT + "%25') AND ($<<nodePath>> IN ('" + PLACEHOLDER_NODE + "')))"),
         TABLE_ALL("/table", "&condition=$<<active>>"),
         TABLE_ERROR("/table", "&condition=$<<active>> AND ($<<definition.severity>> = 'ERROR'))"),
         TABLE_WARNING("/table", "&condition=$<<active>> AND ($<<definition.severity>> = 'WARN'))"),
@@ -95,32 +95,4 @@ public class RequestNotification {
             return url;
         }
     }
-
-
-/*
-    public enum Path {
-        TABLE_FILTER("/table", "&condition=(($<<definition.severity>> = '" + PLACEHOLDER_SEVERITY + "') AND ($<<text>> = '" + PLACEHOLDER_TEXT + "') AND ($<<nodePath>> IN ('" + PLACEHOLDER_NODE + "')))"),
-        TABLE_ALL("/table", ""),
-        TABLE_ERROR("/table", "&condition=($<<definition.severity>> = 'ERROR'))"),
-        TABLE_WARNING("/table", "&condition=($<<definition.severity>> = 'WARN'))"),
-        COUNT_ALL("/count", ""),
-        COUNT_ERROR("/count", "&condition=($<<definition.severity>> = 'ERROR'))"),
-        COUNT_WARNING("/count", "&condition=($<<definition.severity>> = 'WARN'))");
-
-        private String defaultQuery = "?orderBy=$<<startTime>> DESC&firstResult=0&maxResults=19";
-        private String url;
-
-        Path(String url) {
-            this.url = url + defaultQuery;
-        }
-
-        Path(String url, String query) {
-            this.url = url + defaultQuery + query;
-        }
-
-        public String getUrl() {
-            return url;
-        }
-    }
-    */
 }

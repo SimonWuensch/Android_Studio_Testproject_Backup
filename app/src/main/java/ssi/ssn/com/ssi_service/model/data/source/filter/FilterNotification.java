@@ -19,8 +19,8 @@ public class FilterNotification {
     private long activeTime;
     private NotificationSeverity severity;
     private String text;
-    private ResponseNotificationTable notificationTable;
-    private ResponseNotificationTable activeTimeReachedNotificationTable;
+    private ResponseNotificationTable notificationTable = new ResponseNotificationTable();
+    private ResponseNotificationTable activeTimeReachedNotificationTable = new ResponseNotificationTable();
 
     public FilterNotification() {
     }

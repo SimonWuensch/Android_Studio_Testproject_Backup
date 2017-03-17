@@ -22,6 +22,7 @@ import ssi.ssn.com.ssi_service.model.data.source.cardobject.CardObjectNotificati
 import ssi.ssn.com.ssi_service.model.data.source.filter.FilterNotification;
 import ssi.ssn.com.ssi_service.model.database.SQLiteDB;
 import ssi.ssn.com.ssi_service.model.helper.FormatHelper;
+import ssi.ssn.com.ssi_service.model.helper.NetworkConnectionChecker;
 import ssi.ssn.com.ssi_service.model.helper.ObservationHelper;
 import ssi.ssn.com.ssi_service.model.helper.SourceHelper;
 import ssi.ssn.com.ssi_service.model.network.handler.RequestHandler;
@@ -112,7 +113,7 @@ public class UpdateService extends Service {
             } else {
                 firstStartAt = interval - ageInMillis;
             }
-            Log.i(TAG, "First Start in [" + FormatHelper.formatMillisecondsToMinutes(firstStartAt) + "] minutes. Interval is [" + FormatHelper.formatMillisecondsToMinutes(interval) + "]. Project: [" + project + "]");
+            Log.i(TAG + " " + project.identity(), "First Start in [" + FormatHelper.formatMillisecondsToMinutes(firstStartAt) + "] minutes. Interval is [" + FormatHelper.formatMillisecondsToMinutes(interval) + "]. Project: [" + project + "]");
 
             TimerTask timerTask = new TimerTask() {
                 @Override
@@ -120,7 +121,7 @@ public class UpdateService extends Service {
                     if (!isDelayRunning) {
                         return;
                     }
-                    Log.i(TAG, "Interval ended. Interval is [" + FormatHelper.formatMillisecondsToMinutes(interval) + "] minute. Project: [" + project + "]");
+                    Log.i(TAG, "Interval ended. Interval is [" + FormatHelper.formatMillisecondsToMinutes(interval) + "] minute.");
                     detectStatusAndNotify(project);
                     handler.postDelayed(this, interval);
                 }
@@ -131,6 +132,10 @@ public class UpdateService extends Service {
     }
 
     private void detectStatusAndNotify(final Project project) {
+        if(!NetworkConnectionChecker.getInstance(this).isOnline()){
+            Log.d(UpdateService.TAG, "No network connection found...");
+            return;
+        }
         new AsyncTask<Object, Void, Object>() {
             @Override
             protected Object doInBackground(Object... objects) {

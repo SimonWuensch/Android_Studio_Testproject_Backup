@@ -11,7 +11,7 @@ import ssi.ssn.com.ssi_service.model.network.response.notification.objects.Respo
 
 public class ResponseNotificationTable extends AbstractResponse {
 
-    private long count;
+    private long count = 0;
     private List<ResponseNotification> data = new ArrayList<>();
 
     public ResponseNotificationTable() {

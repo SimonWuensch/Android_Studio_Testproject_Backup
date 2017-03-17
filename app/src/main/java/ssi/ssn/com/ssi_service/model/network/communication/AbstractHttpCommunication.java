@@ -13,6 +13,7 @@ public class AbstractHttpCommunication {
     protected static int READ_TIME_OUT_INTERVAL = 10000;
     protected static int GET_COMMUNICATION_ERROR = 900;
     protected static int GET_COMMUNICATION_ERROR_TIMEOUT = 901;
+    protected static int NO_INTERNET_CONNECTION = 999;
 
     protected CookieHandler cookieHandler;
     protected String address;

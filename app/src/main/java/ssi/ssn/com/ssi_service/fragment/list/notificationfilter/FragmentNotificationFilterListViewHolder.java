@@ -93,6 +93,10 @@ class FragmentNotificationFilterListViewHolder extends RecyclerView.ViewHolder {
     }
 
     private void updateHeadline(FilterNotification filter) {
+        if(filter.getNotificationTable() == null){
+            return;
+        }
+
         tvCount.setText(String.valueOf(filter.getNotificationTable().getCount()));
         if (filter.getActiveTimeReachedNotificationTable().getCount() > 0) {
             rlHeadLine.setBackgroundColor(SourceHelper.getColor(activity, R.color.ERROR));

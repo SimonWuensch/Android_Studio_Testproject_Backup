@@ -8,7 +8,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -25,6 +24,7 @@ import ssi.ssn.com.ssi_service.fragment.AbstractFragment;
 import ssi.ssn.com.ssi_service.fragment.create.CreateUpdateDeleteStatus;
 import ssi.ssn.com.ssi_service.fragment.list.custom.FragmentCustomList;
 import ssi.ssn.com.ssi_service.model.data.source.Project;
+import ssi.ssn.com.ssi_service.model.data.source.version.Version_2_1;
 import ssi.ssn.com.ssi_service.model.helper.AlertDialogHelper;
 import ssi.ssn.com.ssi_service.model.helper.FormatHelper;
 import ssi.ssn.com.ssi_service.model.helper.JsonHelper;
@@ -251,9 +251,9 @@ public class FragmentCreateProject extends AbstractFragment {
         String positiveButtonText = SourceHelper.getString(getActivity(), R.string.yes);
         String negativeButtonText = SourceHelper.getString(getActivity(), R.string.no);
 
-        project.setProjectName(null);
-        project.setProjectLocation(null);
-        project.setProjectOrderNr(null);
+        project.setProjectName("");
+        project.setProjectLocation("");
+        project.setProjectOrderNr("");
         AsyncTask positiveButtonTask = new AsyncTask() {
             @Override
             protected Object doInBackground(Object[] objects) {
@@ -316,6 +316,26 @@ public class FragmentCreateProject extends AbstractFragment {
                                 }
                                 bShowApplicationInfo.setEnabled(true);
                                 setLoadingViewVisible(false);
+
+                                    /*if (project.getDefaultResponseApplication() == null || project.getDefaultResponseApplication().getCode() != 200) {
+                                        String serverAddress = project.getServerAddress();
+                                        project.setServerAddress(serverAddress + "/lighthouse-core");
+                                        requestHandler.sendRequestApplication(project);
+
+                                        if (project.getDefaultResponseApplication().getCode() != 200) {
+                                            project.setServerAddress(serverAddress);
+                                            Toast.makeText(getActivity(), SourceHelper.getString(getActivity(), R.string.fragment_create_project_message_server_address_is_no_valid_lighthouse_address), Toast.LENGTH_SHORT).show();
+                                        }else{
+                                            etServerAddress.setText(project.getServerAddress());
+                                        }
+                                    }
+
+                                    if (project.getDefaultResponseApplication() == null || project.getDefaultResponseApplication().getCode() != 200) {
+                                        ((MainActivity) getActivity()).showCustomListFragment(R.string.fragment_custom_list_application_info_title, FragmentCustomList.Type.APPLICATION, project.getDefaultResponseApplication().getResult());
+                                    }
+                                    bShowApplicationInfo.setEnabled(true);
+                                    setLoadingViewVisible(false);
+                                    */
                             }
                         }.execute();
                     }
@@ -381,8 +401,15 @@ public class FragmentCreateProject extends AbstractFragment {
                     protected Object doInBackground(Object... objects) {
                         requestHandler.sendRequestApplication(project);
                         if (project.getDefaultResponseApplication().getCode() != 200) {
-                            Toast.makeText(getActivity(), SourceHelper.getString(getActivity(), R.string.fragment_create_project_message_server_address_is_no_valid_lighthouse_address), Toast.LENGTH_SHORT).show();
-                            return null;
+                            String serverAddress = project.getServerAddress();
+                            project.setServerAddress(serverAddress + Version_2_1.URL_EXTENSION);
+                            requestHandler.sendRequestApplication(project);
+
+                            if (project.getDefaultResponseApplication().getCode() != 200) {
+                                project.setServerAddress(serverAddress);
+                                Toast.makeText(getActivity(), SourceHelper.getString(getActivity(), R.string.fragment_create_project_message_server_address_is_no_valid_lighthouse_address), Toast.LENGTH_SHORT).show();
+                                return null;
+                            }
                         }
 
                         ResponseApplication responseApplication = (ResponseApplication) JsonHelper.fromJsonGeneric(ResponseApplication.class, project.getDefaultResponseApplication().getResult());

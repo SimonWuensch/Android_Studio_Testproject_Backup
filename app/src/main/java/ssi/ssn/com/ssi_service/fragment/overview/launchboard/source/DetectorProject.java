@@ -2,6 +2,8 @@ package ssi.ssn.com.ssi_service.fragment.overview.launchboard.source;
 
 import android.util.Log;
 
+import java.util.Date;
+
 import ssi.ssn.com.ssi_service.model.data.source.Project;
 import ssi.ssn.com.ssi_service.model.data.source.Status;
 import ssi.ssn.com.ssi_service.model.data.source.cardobject.AbstractCardObject;
@@ -39,12 +41,15 @@ public class DetectorProject {
         project.initCardObjects(sqLiteDB);
         project.detectApplicationStatus(requestHandler);
         if (!project.getApplicationStatus().equals(Status.OK)) {
+            project.setLastObservationTime(new Date().getTime());
             project.setStatus(project.getApplicationStatus());
             sqLiteDB.project().update(project);
             for (AbstractCardObject cardObject : project.getAllCardObjects()) {
+                cardObject.setLastObservationTime(new Date().getTime());
                 cardObject.setStatus(Status.NOT_AVAILABLE);
                 cardObject.getDBSQLiteCardObject(sqLiteDB).update(cardObject);
             }
+            ObservationHelper.setLastObservationTimeToNOW(sqLiteDB, project);
             return;
         }
 
