@@ -21,6 +21,7 @@ public class Project extends NetworkProject {
     private String serverAddress;
     private String userName;
     private String password;
+    private String alias;
     private long observationInterval;
     private boolean projectObservation = true;
 
@@ -82,6 +83,14 @@ public class Project extends NetworkProject {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getAlias() {
+        return alias;
+    }
+
+    public void setAlias(String alias) {
+        this.alias = alias;
     }
 
     public long getObservationInterval() {

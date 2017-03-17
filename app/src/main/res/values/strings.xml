@@ -28,6 +28,7 @@
     <!-- Fragment Create Project -->
     <string name="fragment_create_project_title">Projekt anlegen</string>
     <string name="fragment_create_project_text_view_add_project">Projekt hinzufügen</string>
+    <string name="fragment_create_project_edit_text_hint_alias">Alias</string>
     <string name="fragment_create_project_edit_text_hint_ip_address">IP Adresse</string>
     <string name="fragment_create_project_edit_text_hint_user_name">Benutzername</string>
     <string name="fragment_create_project_edit_text_hint_password">Passwort</string>

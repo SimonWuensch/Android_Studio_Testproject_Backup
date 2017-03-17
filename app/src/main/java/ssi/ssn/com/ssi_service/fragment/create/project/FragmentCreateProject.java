@@ -40,6 +40,7 @@ public class FragmentCreateProject extends AbstractFragment {
     private static String PROJECT_ID = TAG + "PROJECT_ID";
 
     private CreateUpdateDeleteStatus fragmentStatus;
+    private EditText etAlias;
     private EditText etServerAddress;
     private EditText etUserName;
     private EditText etPassword;
@@ -116,6 +117,7 @@ public class FragmentCreateProject extends AbstractFragment {
         TextView tvHeadLine = (TextView) rootView.findViewById(R.id.default_action_bar_text_view_headline);
         tvHeadLine.setText(SourceHelper.getString(getActivity(), R.string.fragment_create_project_title));
 
+        etAlias = (EditText) rootView.findViewById(R.id.fragment_create_project_edit_text_alias);
         etServerAddress = (EditText) rootView.findViewById(R.id.fragment_create_project_edit_text_project_address);
         etUserName = (EditText) rootView.findViewById(R.id.fragment_create_project_edit_text_user_name);
         etPassword = (EditText) rootView.findViewById(R.id.fragment_create_project_edit_text_password);
@@ -136,6 +138,7 @@ public class FragmentCreateProject extends AbstractFragment {
 
     public void fillViewComponentsWithProjectInfo() {
         if (project != null) {
+            etAlias.setText(project.getAlias() != null ? project.getAlias() : "");
             etServerAddress.setText(project.getServerAddress());
             etUserName.setText(project.getUserName());
             etPassword.setText(project.getPassword());
@@ -157,6 +160,7 @@ public class FragmentCreateProject extends AbstractFragment {
                     break;
                 case DELETE:
                     bFinal.setText(SourceHelper.getString(getActivity(), R.string.delete));
+                    super.onTextChangeListener(etAlias);
                     super.onTextChangeListener(etServerAddress);
                     super.onTextChangeListener(etUserName);
                     super.onTextChangeListener(etPassword);
@@ -170,6 +174,7 @@ public class FragmentCreateProject extends AbstractFragment {
 
     @Override
     public void doAfterChanged() {
+        String initialAlias = project.getAlias() != null ? project.getAlias() : "";
         String initialServerAddress = project.getServerAddress();
         String initialUserName = project.getUserName();
         String initialPassword = project.getPassword();
@@ -185,13 +190,14 @@ public class FragmentCreateProject extends AbstractFragment {
             timeInputSelection = 1;
         }
 
+        boolean isChangedAlias = !initialAlias.equals(etAlias.getText() != null ? etAlias.getText().toString() : "");
         boolean isChangedServerAddress = !initialServerAddress.equals(etServerAddress.getText().toString());
         boolean isChangedUsername = !initialUserName.equals(etUserName.getText().toString());
         boolean isChangedPassword = !initialPassword.equals(etPassword.getText().toString());
         boolean isChangedObservationInterval = !initialObservationInterval.equals(etObservationInterval.getText().toString());
         boolean isChangedTimeInput = timeInputSelection != spTimeInput.getSelectedItemPosition();
 
-        if (isChangedServerAddress || isChangedUsername || isChangedPassword || isChangedObservationInterval || isChangedTimeInput) {
+        if (isChangedAlias || isChangedServerAddress || isChangedUsername || isChangedPassword || isChangedObservationInterval || isChangedTimeInput) {
             fragmentStatus = CreateUpdateDeleteStatus.UPDATE;
         } else {
             fragmentStatus = CreateUpdateDeleteStatus.DELETE;
@@ -217,6 +223,7 @@ public class FragmentCreateProject extends AbstractFragment {
         if (project == null) {
             project = new Project();
         }
+        project.setAlias(etAlias.getText().toString());
         project.setServerAddress(etServerAddress.getText().toString());
         project.setUserName(etUserName.getText().toString());
         project.setPassword(etPassword.getText().toString());
@@ -363,7 +370,6 @@ public class FragmentCreateProject extends AbstractFragment {
                 }
 
                 if (responseCode != 200) {
-
                     getAlertDialog().show();
                     bShowApplicationInfo.setEnabled(true);
                     setLoadingViewVisible(false);

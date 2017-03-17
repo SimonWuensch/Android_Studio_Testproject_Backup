@@ -29,9 +29,8 @@ class FragmentProjectListViewHolder extends RecyclerView.ViewHolder {
     private View cardView;
 
     private CheckBox cbObserveProject;
-    private TextView tvProjectName;
-    private TextView tvProjectLocation;
-    private TextView tvProjectOrderNr;
+    private TextView tvProjectAlias;
+    private TextView tvProjectIdentity;
     private ImageView ivProjectSettings;
     private View vProjectStatus;
     private View loadingView;
@@ -46,29 +45,24 @@ class FragmentProjectListViewHolder extends RecyclerView.ViewHolder {
 
     private void initViewComponents() {
         cbObserveProject = (CheckBox) cardView.findViewById(R.id.fragment_project_list_card_view_check_box_project_observation);
-        tvProjectName = (TextView) cardView.findViewById(R.id.fragment_project_list_card_view_text_view_project_name);
-        tvProjectLocation = (TextView) cardView.findViewById(R.id.fragment_project_list_card_view_text_view_project_location);
-        tvProjectOrderNr = (TextView) cardView.findViewById(R.id.fragment_project_list_card_view_text_view_project_order_nr);
+        tvProjectAlias = (TextView) cardView.findViewById(R.id.fragment_project_list_card_view_text_view_project_name);
+        tvProjectIdentity = (TextView) cardView.findViewById(R.id.fragment_project_list_card_view_text_view_project_identity);
         ivProjectSettings = (ImageView) cardView.findViewById(R.id.fragment_project_list_card_view_image_settings);
         vProjectStatus = cardView.findViewById(R.id.fragment_project_list_card_view_view_project_status);
         loadingView = cardView.findViewById(R.id.fragment_project_list_card_view_view_loading_view);
     }
 
     protected void assignData(final Project project, boolean isLast) {
-        String projectName = project.getProjectName();
-        String projectLocation = project.getProjectLocation();
-        String projectOrderNr = project.getProjectOrderNr();
-        vProjectStatus.setBackgroundColor(Status.NOT_OBSERVATION.getColor(activity));
-
-        if (projectName == null || projectLocation == null || projectOrderNr == null) {
-            tvProjectName.setText(project.getServerAddress());
-            tvProjectLocation.setText(project.getUserName());
-            tvProjectOrderNr.setText("");
+        String identity;
+        if (project.getProjectName() == null || project.getProjectLocation() == null || project.getProjectOrderNr() == null) {
+            identity = project.getServerAddress() + " " + project.getUserName();
         } else {
-            tvProjectName.setText(projectName);
-            tvProjectLocation.setText(projectLocation);
-            tvProjectOrderNr.setText(projectOrderNr);
+            identity = project.getProjectName() + " " + project.getProjectLocation() + " " + project.getProjectOrderNr();
         }
+
+        vProjectStatus.setBackgroundColor(Status.NOT_OBSERVATION.getColor(activity));
+        tvProjectAlias.setText(project.getAlias() != null && !project.getAlias().isEmpty() ? project.getAlias() : identity);
+        tvProjectIdentity.setText(identity);
 
         cbObserveProject.setChecked(project.isProjectObservation());
         cbObserveProject.setOnCheckedChangeListener(onCheckedChangeListener(project));
