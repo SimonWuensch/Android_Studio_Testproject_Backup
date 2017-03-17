@@ -4,7 +4,7 @@ import android.content.Context;
 
 public class SQLiteDB {
 
-    private static int DATABASE_VERSION = 5;
+    private static int DATABASE_VERSION = 1;
 
     private DBProject dbProject;
     private DBCardObjectModule dbCardObjectModule;

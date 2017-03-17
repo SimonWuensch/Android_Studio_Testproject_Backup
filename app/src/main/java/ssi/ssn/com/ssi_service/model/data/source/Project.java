@@ -30,6 +30,7 @@ public class Project extends NetworkProject {
     private String projectName;
     private String projectLocation;
     private String projectOrderNr;
+    private String projectVersion;
     private Status applicationStatus;
 
     @JsonIgnore
@@ -125,6 +126,14 @@ public class Project extends NetworkProject {
         this.projectOrderNr = projectOrderNr;
     }
 
+    public String getProjectVersion() {
+        return projectVersion;
+    }
+
+    public void setProjectVersion(String projectVersion) {
+        this.projectVersion = projectVersion;
+    }
+
     public Status getApplicationStatus() {
         return applicationStatus;
     }
@@ -207,6 +216,7 @@ public class Project extends NetworkProject {
         this.projectName = responseApplication.getProject().getName();
         this.projectLocation = responseApplication.getProject().getLocation();
         this.projectOrderNr = responseApplication.getProject().getOrderNr();
+        this.projectVersion = responseApplication.getBuild().getVersion();
     }
 
     public void detectApplicationStatus(RequestHandler requestHandler) {
