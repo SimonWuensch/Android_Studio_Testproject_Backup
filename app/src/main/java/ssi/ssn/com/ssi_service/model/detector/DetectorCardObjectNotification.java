@@ -1,4 +1,4 @@
-package ssi.ssn.com.ssi_service.fragment.overview.launchboard.source;
+package ssi.ssn.com.ssi_service.model.detector;
 
 import android.util.Log;
 

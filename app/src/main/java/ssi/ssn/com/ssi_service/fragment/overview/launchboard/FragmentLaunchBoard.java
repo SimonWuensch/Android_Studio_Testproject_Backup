@@ -33,16 +33,19 @@ public class FragmentLaunchBoard extends AbstractFragment {
 
     public static String TAG = FragmentLaunchBoard.class.getSimpleName();
     protected static String PROJECT_ID = TAG + "PROJECT_ID";
+
     private static int FRAGMENT_LAYOUT = R.layout.fragment_launch_board;
     private static int RECYCLERVIEW = R.id.fragment_launch_board_recycler_view;
     private static int CARDVIEW = R.layout.fragment_launch_board_card_view;
+
     private View rootView;
     private RelativeLayout rlProjectStateBackground;
     private TextView tvProjectStatus;
     private TextView tvProjectLifeTime;
     private TextView tvProjectVersion;
     private RelativeLayout rlLoadingView;
-    private FragmentLaunchBoardAdapter mAdapter;
+
+    private FragmentLaunchBoardAdapter adapter;
 
     private Project project;
     private List<AbstractCardObject> cardObjects;
@@ -93,13 +96,13 @@ public class FragmentLaunchBoard extends AbstractFragment {
             rootView = inflater.inflate(FRAGMENT_LAYOUT, container, false);
             Log.d(TAG, "Fragment inflated [" + getActivity().getResources().getResourceName(FRAGMENT_LAYOUT) + "].");
 
-            mAdapter = new FragmentLaunchBoardAdapter(CARDVIEW, this, project, cardObjects);
-            Log.d(TAG, "Adapter [" + mAdapter.getClass().getSimpleName() + "] with CardView [" + getActivity().getResources().getResourceName(CARDVIEW) + "] initialized.");
+            adapter = new FragmentLaunchBoardAdapter(CARDVIEW, this, project, cardObjects);
+            Log.d(TAG, "Adapter [" + adapter.getClass().getSimpleName() + "] with CardView [" + getActivity().getResources().getResourceName(CARDVIEW) + "] initialized.");
 
             RecyclerView mRecyclerView = (RecyclerView) rootView.findViewById(RECYCLERVIEW);
             mRecyclerView.setLayoutManager(new LinearLayoutManager(rootView.getContext()));
             mRecyclerView.setHasFixedSize(true);
-            mRecyclerView.setAdapter(mAdapter);
+            mRecyclerView.setAdapter(adapter);
             Log.d(TAG, "RecyclerView [" + getActivity().getResources().getResourceName(RECYCLERVIEW) + "] initialized.");
 
             initViewComponents();
@@ -118,7 +121,7 @@ public class FragmentLaunchBoard extends AbstractFragment {
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        mAdapter.reloadCardViews();
+                        adapter.reloadCardViews();
                     }
                 }
         );

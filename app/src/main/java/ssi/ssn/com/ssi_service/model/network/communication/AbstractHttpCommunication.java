@@ -18,7 +18,7 @@ public class AbstractHttpCommunication {
     protected CookieHandler cookieHandler;
     protected String address;
 
-    public static boolean isTestVersion = false;
+    public static boolean isTestVersion = true;
     private TestRestResponse testRestResponse = new VersionRest_2_0_9_0();
 
     public AbstractHttpCommunication(CookieHandler cookieHandler, String address) {

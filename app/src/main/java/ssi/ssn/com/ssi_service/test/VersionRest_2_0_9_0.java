@@ -53,10 +53,11 @@ public class VersionRest_2_0_9_0 extends TestRestResponse {
         addResponse("/services/smt/state", MODULE_SMT_STATE);
         addResponse("/services/notification/table?orderBy=$<<startTime>> DESC&condition=$<<active>>", NOTIFICATION);
         addResponse("/services/notification/count?orderBy=$<<startTime>> DESC&condition=$<<active>>", NOTIFICATION_COUNT);
-        addResponse("/services/notification/table?orderBy=$<<startTime>> DESC&condition=$<<active>> AND (($<<definition.severity>> = 'ERROR') AND ($<<text>> = 'TL2014 Node-ID 33 message one or some motors off') AND ($<<nodePath>> IN ('TL20Lift')))", NOTIFICATION_FILTER_TL20Lift);
-        addResponse("/services/notification/table?orderBy=$<<startTime>> DESC&condition=$<<active>> AND (($<<definition.severity>> = 'WARN') AND ($<<text>> = 'Connection lost') AND ($<<nodePath>> IN ('W111')))", NOTIFICATION_FILTER_W111);
-        addResponse("/services/notification/table?orderBy=$<<startTime>> DESC&condition=$<<active>> AND (($<<definition.severity>> = 'ERROR') AND ($<<text>> = 'test') AND ($<<nodePath>> IN ('test')))", NOTIFICATION_FILTER_TEST);
-        addResponse("/services/notification/table?orderBy=$<<startTime>> DESC&condition=$<<active>> AND (($<<definition.severity>> = 'ERROR') AND ($<<text>> = '') AND ($<<nodePath>> IN ('')))", NOTIFICATION_FILTER_NULL);
+        //.66.97:8080/services/notification/table?orderBy=$<<startTime>> DESC&condition=$<<active>> AND (($<<definition.severity>> = 'ERROR') AND ($<<text>> LIKE '%25TL2014 Node-ID 33 message one or some motors off%25') AND ($<<nodePath>> IN ('TL20Lift')))
+        addResponse("/services/notification/table?orderBy=$<<startTime>> DESC&condition=$<<active>> AND (($<<definition.severity>> = 'ERROR') AND ($<<text>> LIKE '%25TL2014 Node-ID 33 message one or some motors off%25') AND ($<<nodePath>> IN ('TL20Lift')))", NOTIFICATION_FILTER_TL20Lift);
+        addResponse("/services/notification/table?orderBy=$<<startTime>> DESC&condition=$<<active>> AND (($<<definition.severity>> = 'WARN') AND ($<<text>> LIKE '%25Connection lost%25') AND ($<<nodePath>> IN ('W111')))", NOTIFICATION_FILTER_W111);
+        addResponse("/services/notification/table?orderBy=$<<startTime>> DESC&condition=$<<active>> AND (($<<definition.severity>> = 'ERROR') AND ($<<text>> LIKE '%25test%25') AND ($<<nodePath>> IN ('test')))", NOTIFICATION_FILTER_TEST);
+        addResponse("/services/notification/table?orderBy=$<<startTime>> DESC&condition=$<<active>> AND (($<<definition.severity>> = 'ERROR') AND ($<<text>> LIKE '%25%25') AND ($<<nodePath>> IN ('')))", NOTIFICATION_FILTER_NULL);
         addResponse("/services/application/diagnostics/os", OS);
         addResponse("/services/scada/systems", SCADA_SYSTEMS);
         addResponse("/services/scada/scanners", SCADA_SCANNERS);

@@ -1,5 +1,6 @@
 package ssi.ssn.com.ssi_service.fragment.list.notificationfilter;
 
+import android.os.AsyncTask;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -10,9 +11,8 @@ import java.util.LinkedList;
 import java.util.List;
 
 import ssi.ssn.com.ssi_service.activity.MainActivity;
-import ssi.ssn.com.ssi_service.fragment.overview.launchboard.source.DetectorCardObjectNotification;
+import ssi.ssn.com.ssi_service.model.detector.DetectorCardObjectNotification;
 import ssi.ssn.com.ssi_service.model.data.source.Project;
-import ssi.ssn.com.ssi_service.model.data.source.cardobject.CardObjectNotification;
 import ssi.ssn.com.ssi_service.model.data.source.filter.FilterNotification;
 import ssi.ssn.com.ssi_service.model.database.SQLiteDB;
 import ssi.ssn.com.ssi_service.model.helper.ObservationHelper;
@@ -67,18 +67,30 @@ class FragmentNotificationFilterListAdapter extends  RecyclerView.Adapter<Fragme
     }
 
     protected void reloadCardViews() {
-        Log.d(TAG, "Reloading all filters");
-        SQLiteDB sqLiteDB = ((MainActivity) fragment.getActivity()).getSQLiteDB();
-        RequestHandler requestHandler = ((MainActivity) fragment.getActivity()).getRequestHandler();
-        DetectorCardObjectNotification.loadAllActiveNotificationsFromNetwork(requestHandler, project);
-        ObservationHelper.setLastObservationTimeToOLD(sqLiteDB, project);
-        for (int i = 0; i < viewHolderList.size(); i++) {
-            FilterNotification filter = project.getCardObjectNotification().getNotificationFilters().get(notificationFilterList.get(i).getId());
-            notificationFilterList.remove(i);
-            notificationFilterList.add(i, filter);
-            FragmentNotificationFilterListViewHolder viewHolder = viewHolderList.get(i);
-            viewHolder.assignData(project, notificationFilterList.get(i));
-        }
-        Log.i(TAG + " - " + project.identity(), "All Filters reloaded. Filter count: [" + project.getCardObjectNotification().getNotificationFilters().size() + "]");
+
+        new AsyncTask<Object, Void, Object>(){
+
+            @Override
+            protected Object doInBackground(Object... objects) {
+                Log.d(TAG, "Reloading all filters");
+                SQLiteDB sqLiteDB = ((MainActivity) fragment.getActivity()).getSQLiteDB();
+                RequestHandler requestHandler = ((MainActivity) fragment.getActivity()).getRequestHandler();
+                DetectorCardObjectNotification.loadAllActiveNotificationsFromNetwork(requestHandler, project);
+                ObservationHelper.setLastObservationTimeToOLD(sqLiteDB, project);
+                return null;
+            }
+
+            @Override
+            protected void onPostExecute(Object o) {
+                for (int i = 0; i < viewHolderList.size(); i++) {
+                    FilterNotification filter = project.getCardObjectNotification().getNotificationFilters().get(notificationFilterList.get(i).getId());
+                    notificationFilterList.remove(i);
+                    notificationFilterList.add(i, filter);
+                    FragmentNotificationFilterListViewHolder viewHolder = viewHolderList.get(i);
+                    viewHolder.assignData(project, notificationFilterList.get(i));
+                }
+                Log.i(TAG + " - " + project.identity(), "All Filters reloaded. Filter count: [" + project.getCardObjectNotification().getNotificationFilters().size() + "]");
+            }
+        }.execute();
     }
 }

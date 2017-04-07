@@ -110,7 +110,7 @@ public class AbstractCardObject {
 
     @JsonIgnore
     public void onClick(final MainActivity activity, final Project project) {
-        throw new NullPointerException("No on click settings specified");
+        throw new NullPointerException("No detection settings specified");
     }
 
     // ** Notification settings ***************************************************************** //

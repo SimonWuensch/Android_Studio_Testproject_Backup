@@ -7,14 +7,13 @@ import com.owlike.genson.annotation.JsonIgnore;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
 import ssi.ssn.com.ssi_service.R;
 import ssi.ssn.com.ssi_service.activity.MainActivity;
 import ssi.ssn.com.ssi_service.fragment.list.notification.FragmentNotificationListNotification;
-import ssi.ssn.com.ssi_service.fragment.overview.launchboard.source.DetectorCardObjectNotification;
+import ssi.ssn.com.ssi_service.model.detector.DetectorCardObjectNotification;
 import ssi.ssn.com.ssi_service.model.data.source.Project;
 import ssi.ssn.com.ssi_service.model.data.source.Status;
 import ssi.ssn.com.ssi_service.model.data.source.filter.FilterNotification;
@@ -137,8 +136,6 @@ public class CardObjectNotification extends AbstractCardObject {
     @Override
     public void detectCardStatus(SQLiteDB sqLiteDB) {
         DetectorCardObjectNotification.detectCardStatus(sqLiteDB, this);
-        //setStatus(Status.ERROR);
-        //getDBSQLiteCardObject(sqLiteDB).update(this);
     }
 
     @Override
