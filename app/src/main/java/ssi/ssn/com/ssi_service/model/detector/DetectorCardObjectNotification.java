@@ -1,6 +1,7 @@
 package ssi.ssn.com.ssi_service.model.detector;
 
 import android.util.Log;
+import android.view.LayoutInflater;
 
 import ssi.ssn.com.ssi_service.model.data.source.Project;
 import ssi.ssn.com.ssi_service.model.data.source.Status;
@@ -33,16 +34,15 @@ public class DetectorCardObjectNotification {
 
     public static void loadAllNotificationsByAllFilter(RequestHandler requestHandler, Project project) {
         CardObjectNotification cardObject = project.getCardObjectNotification();
-        for (FilterNotification filter : cardObject.getNotificationFilters().values()) {
-            loadAllNotificationsByFilter(requestHandler, project, filter.getId());
+        for (FilterNotification filter : cardObject.getNotificationFilters()) {
+            loadAllNotificationsByFilter(requestHandler, project, filter);
         }
     }
 
-    public static void loadAllNotificationsByFilter(RequestHandler requestHandler, Project project, int filterID) {
+    public static void loadAllNotificationsByFilter(RequestHandler requestHandler, Project project, FilterNotification filter) {
         CardObjectNotification cardObject = project.getCardObjectNotification();
         Log.d(TAG + " Project ID: " + cardObject.get_id_project(), cardObject.getClass().getSimpleName() + " start load card object notification information from network...");
         requestHandler.sendRequestLogin(project);
-        FilterNotification filter = cardObject.getNotificationFilters().get(filterID);
         requestHandler.sendRequestNotification(project, filter);
 
         if (project.getDefaultResponseNotification().getCode() != 200) {
@@ -64,7 +64,7 @@ public class DetectorCardObjectNotification {
         } else if (cardObject.getNotificationFilters().isEmpty()) {
             overAllState = Status.OK;
         } else {
-            for (FilterNotification filter : cardObject.getNotificationFilters().values()) {
+            for (FilterNotification filter : cardObject.getNotificationFilters()) {
                 if (filter.getActiveTimeReachedNotificationTable().getCount() > 0) {
                     overAllState = Status.ERROR;
                     break;

@@ -220,7 +220,7 @@ public class UpdateService extends Service {
                                 break;
                             }
 
-                            for (FilterNotification filter : ((CardObjectNotification) cardObject).getNotificationFilters().values()) {
+                            for (FilterNotification filter : ((CardObjectNotification) cardObject).getNotificationFilters()) {
                                 if (filter.getActiveTimeReachedNotificationTable().getCount() <= 0) {
                                     continue;
                                 }

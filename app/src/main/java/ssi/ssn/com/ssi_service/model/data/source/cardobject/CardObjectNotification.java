@@ -6,20 +6,20 @@ import android.widget.Toast;
 import com.owlike.genson.annotation.JsonIgnore;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
 import ssi.ssn.com.ssi_service.R;
 import ssi.ssn.com.ssi_service.activity.MainActivity;
 import ssi.ssn.com.ssi_service.fragment.list.notification.FragmentNotificationListNotification;
-import ssi.ssn.com.ssi_service.model.detector.DetectorCardObjectNotification;
 import ssi.ssn.com.ssi_service.model.data.source.Project;
 import ssi.ssn.com.ssi_service.model.data.source.Status;
 import ssi.ssn.com.ssi_service.model.data.source.filter.FilterNotification;
 import ssi.ssn.com.ssi_service.model.database.DBCardObject;
 import ssi.ssn.com.ssi_service.model.database.DBCardObjectNotification;
 import ssi.ssn.com.ssi_service.model.database.SQLiteDB;
+import ssi.ssn.com.ssi_service.model.detector.DetectorCardObjectNotification;
 import ssi.ssn.com.ssi_service.model.helper.SourceHelper;
 import ssi.ssn.com.ssi_service.model.network.handler.RequestHandler;
 import ssi.ssn.com.ssi_service.model.network.response.notification.ResponseNotificationTable;
@@ -32,7 +32,8 @@ public class CardObjectNotification extends AbstractCardObject {
     private static int NOTIFICATION_ID = 3;
 
     private ResponseNotificationTable notificationTable;
-    private Map<Integer, FilterNotification> notificationFilters = new HashMap<>();
+    private List<FilterNotification> notificationFilters = new LinkedList<>();
+    private int filterCount = 0;
 
     public CardObjectNotification(Project project) {
         super(project);
@@ -62,6 +63,14 @@ public class CardObjectNotification extends AbstractCardObject {
         NOTIFICATION_ID = notificationId;
     }
 
+    public int getFilterCount() {
+        return filterCount;
+    }
+
+    public void setFilterCount(int filterCount) {
+        this.filterCount = filterCount;
+    }
+
     public ResponseNotificationTable getNotificationTable() {
         return notificationTable;
     }
@@ -70,26 +79,45 @@ public class CardObjectNotification extends AbstractCardObject {
         this.notificationTable = notificationTable;
     }
 
-    public Map<Integer, FilterNotification> getNotificationFilters() {
+    public List<FilterNotification> getNotificationFilters() {
         return notificationFilters;
     }
 
-    public void setNotificationFilters(Map<Integer, FilterNotification> notificationFilters) {
+    public FilterNotification getFilterByID(int filterID){
+        for(FilterNotification filter : notificationFilters){
+            if(filter.getId() == filterID){
+                return filter;
+            }
+        }
+        throw new NullPointerException("No filter found with the id [" + filterID + "]");
+    }
+
+    public void removeFilterByID(int filterID){
+        for(FilterNotification filter : notificationFilters){
+            if(filter.getId() == filterID){
+                notificationFilters.remove(filter);
+                return;
+            }
+        }
+        throw new NullPointerException("No filter found with the id [" + filterID + "]");
+    }
+
+    public void setNotificationFilters(List<FilterNotification> notificationFilters) {
         this.notificationFilters = notificationFilters;
     }
 
     public boolean addNotificationFilter(SQLiteDB sqLiteDB, FilterNotification newFilter) {
         if (!isFilterExists(newFilter)) {
-            int id = notificationFilters.size();
-            newFilter.setId(id);
-            notificationFilters.put(id, newFilter);
+            newFilter.setId(filterCount);
+            filterCount++;
+            notificationFilters.add(newFilter);
             return sqLiteDB.cardObjectNotification().update(this);
         }
         return false;
     }
 
-    public boolean updateNotificationFilter(SQLiteDB sqLiteDB, FilterNotification filter){
-        if(isFilterExists(filter)){
+    public boolean updateNotificationFilter(SQLiteDB sqLiteDB, FilterNotification filter) {
+        if (isFilterExists(filter)) {
             return false;
 
         }
@@ -106,12 +134,12 @@ public class CardObjectNotification extends AbstractCardObject {
         if (!isFilterExists(filter)) {
             return false;
         }
-        notificationFilters.remove(filter.getId());
+        removeFilterByID(filter.getId());
         return sqLiteDB.cardObjectNotification().update(this);
     }
 
     private boolean isFilterExists(FilterNotification newFilter) {
-        for (FilterNotification oldFilter : notificationFilters.values()) {
+        for (FilterNotification oldFilter : notificationFilters) {
             if (oldFilter.getNote().equals(newFilter.getNote()) &&
                     oldFilter.getActiveTime() == newFilter.getActiveTime() &&
                     oldFilter.getText().equals(newFilter.getText()) &&
@@ -144,7 +172,7 @@ public class CardObjectNotification extends AbstractCardObject {
             Toast.makeText(activity, SourceHelper.getString(activity, R.string.fragment_launch_board_error_notification), Toast.LENGTH_SHORT).show();
         } else {
             activity.showNotificationFilterListFragment(project.get_id());
-            if(getNotificationFilters().isEmpty()){
+            if (getNotificationFilters().isEmpty()) {
                 activity.showCreateNotificationFilterFragment(project.get_id());
             }
         }

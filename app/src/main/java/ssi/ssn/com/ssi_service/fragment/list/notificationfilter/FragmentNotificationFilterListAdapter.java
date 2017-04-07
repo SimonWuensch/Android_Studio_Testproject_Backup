@@ -83,7 +83,7 @@ class FragmentNotificationFilterListAdapter extends  RecyclerView.Adapter<Fragme
             @Override
             protected void onPostExecute(Object o) {
                 for (int i = 0; i < viewHolderList.size(); i++) {
-                    FilterNotification filter = project.getCardObjectNotification().getNotificationFilters().get(notificationFilterList.get(i).getId());
+                    FilterNotification filter = project.getCardObjectNotification().getFilterByID(notificationFilterList.get(i).getId());
                     notificationFilterList.remove(i);
                     notificationFilterList.add(i, filter);
                     FragmentNotificationFilterListViewHolder viewHolder = viewHolderList.get(i);

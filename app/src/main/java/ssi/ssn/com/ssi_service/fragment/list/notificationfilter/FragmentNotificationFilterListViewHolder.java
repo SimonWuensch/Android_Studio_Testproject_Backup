@@ -74,7 +74,7 @@ class FragmentNotificationFilterListViewHolder extends RecyclerView.ViewHolder {
             new AsyncTask<Object, Void, Object>() {
                 @Override
                 protected Object doInBackground(Object... objects) {
-                    DetectorCardObjectNotification.loadAllNotificationsByFilter(activity.getRequestHandler(), project, filter.getId());
+                    DetectorCardObjectNotification.loadAllNotificationsByFilter(activity.getRequestHandler(), project, filter);
                     project.getCardObjectNotification().setLastObservationTime(new Date().getTime());
                     activity.getSQLiteDB().cardObjectNotification().update(project.getCardObjectNotification());
                     return null;

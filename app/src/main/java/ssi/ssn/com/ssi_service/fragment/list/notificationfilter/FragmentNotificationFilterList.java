@@ -64,7 +64,7 @@ public class FragmentNotificationFilterList extends AbstractFragment {
             rootView = inflater.inflate(FRAGMENT_LAYOUT, container, false);
             Log.d(TAG, "Fragment inflated [" + getActivity().getResources().getResourceName(FRAGMENT_LAYOUT) + "].");
 
-            mAdapter = new FragmentNotificationFilterListAdapter(CARDVIEW, this, project, new ArrayList<>(project.getCardObjectNotification().getNotificationFilters().values()));
+            mAdapter = new FragmentNotificationFilterListAdapter(CARDVIEW, this, project, project.getCardObjectNotification().getNotificationFilters());
             Log.d(TAG, "Adapter [" + mAdapter.getClass().getSimpleName() + "] with CardView [" + getActivity().getResources().getResourceName(CARDVIEW) + "] initialized.");
 
             RecyclerView mRecyclerView = (RecyclerView) rootView.findViewById(RECYCLERVIEW);
@@ -104,7 +104,7 @@ public class FragmentNotificationFilterList extends AbstractFragment {
 
     public void updateDataSet(){
         CardObjectNotification.init(getSQLiteDB(), project);
-        mAdapter.setNotificationFilterList(new ArrayList<>(project.getCardObjectNotification().getNotificationFilters().values()));
+        mAdapter.setNotificationFilterList(project.getCardObjectNotification().getNotificationFilters());
         mAdapter.notifyDataSetChanged();
     }
 

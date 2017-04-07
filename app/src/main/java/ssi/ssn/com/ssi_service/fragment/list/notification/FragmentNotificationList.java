@@ -71,7 +71,7 @@ public class FragmentNotificationList extends Fragment {
 
         if(getArguments().containsKey(FILTER_ID)){
             int filterID = getArguments().getInt(FILTER_ID);
-            filter = project.getCardObjectNotification().getNotificationFilters().get(filterID);
+            filter = project.getCardObjectNotification().getFilterByID(filterID);
             notifications = NotificationListSorter.sortNotificationBySeverity(filter.getNotificationTable().getData());
             return;
         }
