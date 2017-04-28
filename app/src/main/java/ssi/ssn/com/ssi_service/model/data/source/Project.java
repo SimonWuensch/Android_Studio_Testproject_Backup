@@ -5,12 +5,13 @@ import com.owlike.genson.annotation.JsonIgnore;
 import java.util.LinkedList;
 import java.util.List;
 
-import ssi.ssn.com.ssi_service.model.detector.DetectorProject;
 import ssi.ssn.com.ssi_service.model.data.source.cardobject.AbstractCardObject;
 import ssi.ssn.com.ssi_service.model.data.source.cardobject.CardObjectComponent;
+import ssi.ssn.com.ssi_service.model.data.source.cardobject.CardObjectKPI;
 import ssi.ssn.com.ssi_service.model.data.source.cardobject.CardObjectModule;
 import ssi.ssn.com.ssi_service.model.data.source.cardobject.CardObjectNotification;
 import ssi.ssn.com.ssi_service.model.database.SQLiteDB;
+import ssi.ssn.com.ssi_service.model.detector.DetectorProject;
 import ssi.ssn.com.ssi_service.model.helper.JsonHelper;
 import ssi.ssn.com.ssi_service.model.network.handler.RequestHandler;
 import ssi.ssn.com.ssi_service.model.network.response.application.ResponseApplication;
@@ -40,6 +41,8 @@ public class Project extends NetworkProject {
     private CardObjectComponent cardObjectComponent;
     @JsonIgnore
     private CardObjectNotification cardObjectNotification;
+    @JsonIgnore
+    private CardObjectKPI cardObjectKPI;
 
     public Project(String serverAddress, String userName, String password, long observationInterval) {
         this.serverAddress = serverAddress;
@@ -202,12 +205,23 @@ public class Project extends NetworkProject {
     }
 
     @JsonIgnore
+    public CardObjectKPI getCardObjectKPI() {
+        return cardObjectKPI;
+    }
+
+    @JsonIgnore
+    public void setCardObjectKPI(CardObjectKPI cardObjectKPI) {
+        this.cardObjectKPI = cardObjectKPI;
+    }
+
+    @JsonIgnore
     public List<AbstractCardObject> getAllCardObjects() {
         return new LinkedList<AbstractCardObject>() {
             {
                 add(cardObjectModule);
                 add(cardObjectComponent);
                 add(cardObjectNotification);
+                add(cardObjectKPI);
             }
         };
     }
@@ -216,6 +230,7 @@ public class Project extends NetworkProject {
         CardObjectModule.init(sqLiteDB, this);
         CardObjectComponent.init(sqLiteDB, this);
         cardObjectNotification.init(sqLiteDB, this);
+        cardObjectKPI.init(sqLiteDB, this);
     }
 
     // ** Others ******************************************************************************** //

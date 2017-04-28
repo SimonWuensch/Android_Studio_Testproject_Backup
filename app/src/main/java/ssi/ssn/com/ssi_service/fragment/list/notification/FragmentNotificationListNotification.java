@@ -5,8 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 
 import ssi.ssn.com.ssi_service.activity.MainActivity;
-import ssi.ssn.com.ssi_service.fragment.list.module.FragmentModuleList;
-import ssi.ssn.com.ssi_service.fragment.list.notificationfilter.FragmentNotificationFilterList;
 import ssi.ssn.com.ssi_service.notification_android.AbstractAndroidNotification;
 import ssi.ssn.com.ssi_service.notification_android.AndroidNotificationHelper;
 

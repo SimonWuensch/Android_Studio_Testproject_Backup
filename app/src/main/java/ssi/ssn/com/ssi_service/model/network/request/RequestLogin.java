@@ -41,7 +41,7 @@ public class RequestLogin {
 
 
     public void getTaskGET(final CookieHandler cookieHandler) {
-        if(AbstractHttpCommunication.isTestVersion){
+        if (AbstractHttpCommunication.isTestVersion) {
             HttpGET httpGET = new HttpGET(cookieHandler, getAddress());
             DefaultResponse defaultResponse = httpGET.sendRequest(true);
             project.setDefaultResponseLogin(defaultResponse);

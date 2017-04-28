@@ -2,7 +2,7 @@ package ssi.ssn.com.ssi_service.model.network.request;
 
 public class AbstractRequest {
 
-    class VersionValue{
+    class VersionValue {
         private String version;
         private String value;
 

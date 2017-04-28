@@ -12,7 +12,6 @@ import android.util.Log;
 import ssi.ssn.com.ssi_service.model.data.source.Status;
 import ssi.ssn.com.ssi_service.model.data.source.cardobject.AbstractCardObject;
 import ssi.ssn.com.ssi_service.model.data.source.cardobject.CardObjectNotification;
-import ssi.ssn.com.ssi_service.model.data.source.filter.FilterNotification;
 import ssi.ssn.com.ssi_service.model.helper.JsonHelper;
 
 public class DBCardObjectNotification extends SQLiteOpenHelper implements DBCardObject, DBObject {
@@ -62,7 +61,7 @@ public class DBCardObjectNotification extends SQLiteOpenHelper implements DBCard
     public void add(AbstractCardObject cardObject) {
         if (getCount(cardObject.get_id_project()) != 0) {
             try {
-                throw new Exception("Only one notification per project may exist");
+                throw new Exception("Only one notification card object per project may exist");
             } catch (Throwable t) {
                 t.printStackTrace();
                 return;
@@ -167,7 +166,7 @@ public class DBCardObjectNotification extends SQLiteOpenHelper implements DBCard
 
     @Override
     public boolean updateValue(AbstractCardObject cardObject, ContentValues values) {
-        if(isObjectDataChanged(JsonHelper.toJson(cardObject))){
+        if (isObjectDataChanged(JsonHelper.toJson(cardObject))) {
             Log.i(TAG, "ID Project: " + cardObject.get_id_project() + "| Update is not necessary. Card Object Notification [" + cardObject + "]");
             return true;
         }
@@ -191,8 +190,8 @@ public class DBCardObjectNotification extends SQLiteOpenHelper implements DBCard
         }
     }
 
-    public boolean isObjectDataChanged(String jsonObject){
-        if(oldCardObjectString.equals(jsonObject)){
+    public boolean isObjectDataChanged(String jsonObject) {
+        if (oldCardObjectString.equals(jsonObject)) {
             return true;
         }
         oldCardObjectString = jsonObject;

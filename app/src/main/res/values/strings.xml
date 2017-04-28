@@ -87,6 +87,7 @@
     <string name="fragment_launch_board_error_module">"Die Platform und Plugin Module konnten nicht geladen werden."</string>
     <string name="fragment_launch_board_error_component">"Die Komponenten konnten nicht geladen werden."</string>
     <string name="fragment_launch_board_error_notification">"Die Meldungen konnten nicht geladen werden."</string>
+    <string name="fragment_launch_board_error_kpi">"Die KPI´s konnten nicht geladen werden."</string>
 
     <!-- Fragment Module List -->
     <string name="fragment_module_list_title">Module</string>
@@ -101,6 +102,13 @@
 
     <!-- Fragment Notification List -->
     <string name="fragment_notification_list_title">Meldungen</string>
+
+    <!-- Fragment KPI Definition List -->
+    <string name="fragment_kpi_definition_list_title">KPI Definitionen</string>
+    <string name="fragment_kpi_definition_list_description">Beschreibung</string>
+    <string name="fragment_kpi_definition_list_tap_key">Schlüssel</string>
+    <string name="fragment_kpi_definition_list_tap_name">Name</string>
+    <string name="fragment_kpi_definition_list_filter_hint">Filter nach ...</string>
 
     <!-- Fragment Create Notification Filter -->
     <string name="fragment_notification_filter_title">Filter für Meldung anlegen</string>

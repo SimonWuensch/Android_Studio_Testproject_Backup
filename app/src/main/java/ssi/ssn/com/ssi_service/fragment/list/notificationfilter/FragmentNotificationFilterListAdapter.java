@@ -11,26 +11,24 @@ import java.util.LinkedList;
 import java.util.List;
 
 import ssi.ssn.com.ssi_service.activity.MainActivity;
-import ssi.ssn.com.ssi_service.model.detector.DetectorCardObjectNotification;
 import ssi.ssn.com.ssi_service.model.data.source.Project;
 import ssi.ssn.com.ssi_service.model.data.source.filter.FilterNotification;
 import ssi.ssn.com.ssi_service.model.database.SQLiteDB;
+import ssi.ssn.com.ssi_service.model.detector.DetectorCardObjectNotification;
 import ssi.ssn.com.ssi_service.model.helper.ObservationHelper;
 import ssi.ssn.com.ssi_service.model.network.handler.RequestHandler;
 
-class FragmentNotificationFilterListAdapter extends  RecyclerView.Adapter<FragmentNotificationFilterListViewHolder>{
+class FragmentNotificationFilterListAdapter extends RecyclerView.Adapter<FragmentNotificationFilterListViewHolder> {
 
     private static String TAG = FragmentNotificationFilterListAdapter.class.getSimpleName();
 
     private final int layoutCardView;
     private final FragmentNotificationFilterList fragment;
+    protected FilterNotification clickedFilter = null;
     private CardView cardView;
-
     private Project project;
     private List<FilterNotification> notificationFilterList;
-
     private List<FragmentNotificationFilterListViewHolder> viewHolderList = new LinkedList<>();
-    protected FilterNotification clickedFilter = null;
 
     FragmentNotificationFilterListAdapter(int layoutCardView, FragmentNotificationFilterList fragment, Project project, List<FilterNotification> notificationFilterList) {
         this.layoutCardView = layoutCardView;
@@ -39,7 +37,7 @@ class FragmentNotificationFilterListAdapter extends  RecyclerView.Adapter<Fragme
         this.notificationFilterList = notificationFilterList;
     }
 
-    protected void setNotificationFilterList(List<FilterNotification> notificationFilterList){
+    protected void setNotificationFilterList(List<FilterNotification> notificationFilterList) {
         this.notificationFilterList = notificationFilterList;
         viewHolderList = new LinkedList<>();
     }
@@ -68,7 +66,7 @@ class FragmentNotificationFilterListAdapter extends  RecyclerView.Adapter<Fragme
 
     protected void reloadCardViews() {
 
-        new AsyncTask<Object, Void, Object>(){
+        new AsyncTask<Object, Void, Object>() {
 
             @Override
             protected Object doInBackground(Object... objects) {

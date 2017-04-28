@@ -33,22 +33,15 @@ public class UpdateService extends Service {
     private static String TAG = UpdateService.class.getSimpleName();
 
     private final IBinder mBinder = new Binder();
-    private int startID;
-
     protected SQLiteDB sqliteDB;
     protected RequestHandler requestHandler;
+    private int startID;
     private AndroidNotificationHelper androidNotificationHelper;
     private boolean isDelayRunning = true;
 
     private List<Project> projects = new ArrayList<>();
 
     private int count = 0;
-
-    public class Binder extends android.os.Binder {
-        public UpdateService getService() {
-            return UpdateService.this;
-        }
-    }
 
     @Override
     public void onCreate() {
@@ -65,7 +58,7 @@ public class UpdateService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         this.startID = startId;
-        if(startId != 1){
+        if (startId != 1) {
             return START_STICKY;
         }
 
@@ -132,7 +125,7 @@ public class UpdateService extends Service {
     }
 
     private void detectStatusAndNotify(final Project project) {
-        if(!NetworkConnectionChecker.getInstance(this).isOnline()){
+        if (!NetworkConnectionChecker.getInstance(this).isOnline()) {
             Log.d(UpdateService.TAG, "No network connection found...");
             return;
         }
@@ -181,7 +174,7 @@ public class UpdateService extends Service {
                 }
 
                 for (AbstractCardObject cardObject : project.getAllCardObjects()) {
-                    if(!cardObject.isObservation()){
+                    if (!cardObject.isObservation()) {
                         continue;
                     }
                     switch (cardObject.getStatus()) {
@@ -255,5 +248,11 @@ public class UpdateService extends Service {
     public void stopDelay() {
         isDelayRunning = false;
         Log.i(TAG, "Delay stopped.");
+    }
+
+    public class Binder extends android.os.Binder {
+        public UpdateService getService() {
+            return UpdateService.this;
+        }
     }
 }

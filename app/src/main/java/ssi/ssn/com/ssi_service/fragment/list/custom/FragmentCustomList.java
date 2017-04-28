@@ -20,9 +20,9 @@ public class FragmentCustomList extends AbstractFragment {
 
     public static String TAG = FragmentCustomList.class.getSimpleName();
 
-    private static int FRAGMENT_LAYOUT = R.layout.fragment_custom_list;
+    private static int FRAGMENT_LAYOUT = R.layout.fragment_list_custom;
     private static int RECYCLERVIEW = R.id.fragment_custom_list_recycler_view;
-    private static int CARDVIEW = R.layout.fragment_custom_list_card_view;
+    private static int CARDVIEW = R.layout.fragment_list_custom_card_view;
 
     private static String HEADLINE_STRING_ID = TAG + "HEADLINE_STRING_ID";
     private static String RESPONSE_JSON = TAG + "_RESPONSE_JSON";

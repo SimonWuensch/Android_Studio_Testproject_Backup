@@ -8,7 +8,6 @@ import com.owlike.genson.annotation.JsonIgnore;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 
 import ssi.ssn.com.ssi_service.R;
 import ssi.ssn.com.ssi_service.activity.MainActivity;
@@ -83,27 +82,27 @@ public class CardObjectNotification extends AbstractCardObject {
         return notificationFilters;
     }
 
-    public FilterNotification getFilterByID(int filterID){
-        for(FilterNotification filter : notificationFilters){
-            if(filter.getId() == filterID){
+    public void setNotificationFilters(List<FilterNotification> notificationFilters) {
+        this.notificationFilters = notificationFilters;
+    }
+
+    public FilterNotification getFilterByID(int filterID) {
+        for (FilterNotification filter : notificationFilters) {
+            if (filter.getId() == filterID) {
                 return filter;
             }
         }
         throw new NullPointerException("No filter found with the id [" + filterID + "]");
     }
 
-    public void removeFilterByID(int filterID){
-        for(FilterNotification filter : notificationFilters){
-            if(filter.getId() == filterID){
+    public void removeFilterByID(int filterID) {
+        for (FilterNotification filter : notificationFilters) {
+            if (filter.getId() == filterID) {
                 notificationFilters.remove(filter);
                 return;
             }
         }
-        throw new NullPointerException("No filter found with the id [" + filterID + "]");
-    }
-
-    public void setNotificationFilters(List<FilterNotification> notificationFilters) {
-        this.notificationFilters = notificationFilters;
+        throw new NullPointerException("No Notification filter found with the id [" + filterID + "]");
     }
 
     public boolean addNotificationFilter(SQLiteDB sqLiteDB, FilterNotification newFilter) {

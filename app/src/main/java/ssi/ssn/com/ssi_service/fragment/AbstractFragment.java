@@ -37,7 +37,7 @@ public class AbstractFragment extends Fragment {
         });
     }
 
-    public void onSpinnerSelectionChangedListener(Spinner spinner){
+    public void onSpinnerSelectionChangedListener(Spinner spinner) {
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {

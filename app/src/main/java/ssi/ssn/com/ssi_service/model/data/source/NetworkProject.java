@@ -27,6 +27,10 @@ public class NetworkProject {
     @JsonIgnore
     private DefaultResponse defaultResponseSessionsCurrent;
     @JsonIgnore
+    private DefaultResponse defaultResponseKPIDefinitions;
+    @JsonIgnore
+    private DefaultResponse defaultResponseKPIMeasurements;
+    @JsonIgnore
     private List<DefaultResponse> defaultResponseComponentList;
     @JsonIgnore
     private List<DefaultResponse> defaultResponseModuleList;
@@ -120,6 +124,26 @@ public class NetworkProject {
     @JsonIgnore
     public void setDefaultResponseSessionsCurrent(DefaultResponse defaultResponseSessionsCurrent) {
         this.defaultResponseSessionsCurrent = defaultResponseSessionsCurrent;
+    }
+
+    @JsonIgnore
+    public DefaultResponse getDefaultResponseKPIDefinitionList() {
+        return defaultResponseKPIDefinitions;
+    }
+
+    @JsonIgnore
+    public void setDefaultResponseKPIDefinitions(DefaultResponse defaultResponseKPIDefinitions) {
+        this.defaultResponseKPIDefinitions = defaultResponseKPIDefinitions;
+    }
+
+    @JsonIgnore
+    public DefaultResponse getDefaultResponseKPIMeasurementList() {
+        return defaultResponseKPIMeasurements;
+    }
+
+    @JsonIgnore
+    public void setDefaultResponseKPIMeasurements(DefaultResponse defaultResponseKPIMeasurements) {
+        this.defaultResponseKPIMeasurements = defaultResponseKPIMeasurements;
     }
 
     @JsonIgnore

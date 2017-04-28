@@ -20,15 +20,15 @@ import ssi.ssn.com.ssi_service.model.database.SQLiteDB;
 import ssi.ssn.com.ssi_service.model.helper.SourceHelper;
 import ssi.ssn.com.ssi_service.model.network.response.component.ResponseComponent;
 
-public class FragmentComponentList extends Fragment{
+public class FragmentComponentList extends Fragment {
 
     public static String TAG = FragmentComponentList.class.getSimpleName();
 
     protected static String PROJECT_ID = TAG + "PROJECT_ID";
 
-    private static int FRAGMENT_LAYOUT = R.layout.fragment_component_list;
+    private static int FRAGMENT_LAYOUT = R.layout.fragment_list_component;
     private static int RECYCLERVIEW = R.id.fragment_component_list_recycler_view;
-    private static int CARDVIEW = R.layout.fragment_component_list_card_view;
+    private static int CARDVIEW = R.layout.fragment_list_component_card_view;
 
     private Project project;
     private View rootView;

@@ -1,4 +1,4 @@
-package ssi.ssn.com.ssi_service.fragment.create.notificationfilter;
+package ssi.ssn.com.ssi_service.fragment.create.filter.notification;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -33,7 +33,7 @@ public class FragmentCreateNotificationFilter extends AbstractFragment {
 
     public static String TAG = FragmentCreateNotificationFilter.class.getSimpleName();
 
-    private static int FRAGMENT_LAYOUT = R.layout.fragment_create_notification_filter;
+    private static int FRAGMENT_LAYOUT = R.layout.fragment_create_filter_notification;
 
     private static String PROJECT_ID = TAG + "PROJECT_ID";
     private static String FILTER_NOTIFICATION_JSON = TAG + "FILTER_NOTIFICATION_JSON";
@@ -149,12 +149,12 @@ public class FragmentCreateNotificationFilter extends AbstractFragment {
 
         spTimeInput = (Spinner) rootView.findViewById(R.id.fragment_create_notification_filter_spinner_time_input);
         ArrayAdapter<CharSequence> adapterTimeInput = ArrayAdapter.createFromResource(getActivity(), R.array.fragment_create_project_drop_down_box_time_input, android.R.layout.simple_spinner_item);
-        adapterTimeInput.setDropDownViewResource(R.layout.spinner_drop_down_item);
+        adapterTimeInput.setDropDownViewResource(R.layout.default_spinner_drop_down_item);
         spTimeInput.setAdapter(adapterTimeInput);
 
         spSeverityInput = (Spinner) rootView.findViewById(R.id.fragment_create_notification_filter_spinner_severity_input);
         ArrayAdapter<CharSequence> adapterSeverityInput = ArrayAdapter.createFromResource(getActivity(), R.array.fragment_create_notification_filter_drop_down_box_severity_input, android.R.layout.simple_spinner_item);
-        adapterSeverityInput.setDropDownViewResource(R.layout.spinner_drop_down_item);
+        adapterSeverityInput.setDropDownViewResource(R.layout.default_spinner_drop_down_item);
         spSeverityInput.setAdapter(adapterSeverityInput);
 
         bSearch = (Button) rootView.findViewById(R.id.fragment_create_notification_filter_button_show_notification_list);

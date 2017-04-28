@@ -12,9 +12,9 @@ import java.util.Date;
 
 import ssi.ssn.com.ssi_service.R;
 import ssi.ssn.com.ssi_service.activity.MainActivity;
-import ssi.ssn.com.ssi_service.model.detector.DetectorCardObjectNotification;
 import ssi.ssn.com.ssi_service.model.data.source.Project;
 import ssi.ssn.com.ssi_service.model.data.source.filter.FilterNotification;
+import ssi.ssn.com.ssi_service.model.detector.DetectorCardObjectNotification;
 import ssi.ssn.com.ssi_service.model.helper.FormatHelper;
 import ssi.ssn.com.ssi_service.model.helper.ObservationHelper;
 import ssi.ssn.com.ssi_service.model.helper.SourceHelper;
@@ -93,14 +93,14 @@ class FragmentNotificationFilterListViewHolder extends RecyclerView.ViewHolder {
     }
 
     private void updateHeadline(FilterNotification filter) {
-        if(filter.getNotificationTable() == null){
+        if (filter.getNotificationTable() == null) {
             return;
         }
 
         tvCount.setText(String.valueOf(filter.getNotificationTable().getCount()));
         if (filter.getActiveTimeReachedNotificationTable().getCount() > 0) {
             rlHeadLine.setBackgroundColor(SourceHelper.getColor(activity, R.color.ERROR));
-        }else{
+        } else {
             rlHeadLine.setBackgroundColor(SourceHelper.getColor(activity, R.color.colorWhite));
         }
     }

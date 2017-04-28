@@ -11,15 +11,12 @@ import ssi.ssn.com.ssi_service.model.network.handler.CookieHandler;
 public class RequestComponent extends AbstractRequest {
 
     private static String TAG = RequestOs.class.getSimpleName();
-
+    private static String ADDRESS = "/services/component/{name}";
     private Map<String, VersionValue> versionSettings = new HashMap<String, VersionValue>() {
         {
             put("opcua", new VersionValue("2.1", "OpcUa"));
         }
     };
-
-    private static String ADDRESS = "/services/component/{name}";
-
     private Project project;
     private String name;
 

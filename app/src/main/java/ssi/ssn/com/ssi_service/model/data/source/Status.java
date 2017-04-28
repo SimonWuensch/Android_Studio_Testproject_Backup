@@ -1,6 +1,5 @@
 package ssi.ssn.com.ssi_service.model.data.source;
 
-import android.app.Activity;
 import android.content.Context;
 
 import java.util.HashMap;

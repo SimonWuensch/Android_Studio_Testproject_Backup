@@ -17,12 +17,11 @@ import ssi.ssn.com.ssi_service.notification_android.AbstractAndroidNotification;
 
 public class AbstractCardObject {
 
-    private long _id;
-    private long _id_project;
     protected int title;
     protected int icon;
-
     protected Status status;
+    private long _id;
+    private long _id_project;
     private boolean observation = true;
     private long lastObservationTime;
 
@@ -31,6 +30,10 @@ public class AbstractCardObject {
     }
 
     public AbstractCardObject() {
+    }
+
+    public static void init(SQLiteDB sqLiteDB, Project project) {
+        throw new NullPointerException("No initialization settings specified");
     }
 
     public long get_id() {
@@ -89,10 +92,6 @@ public class AbstractCardObject {
         this.lastObservationTime = lastObservationTime;
     }
 
-    public static void init(SQLiteDB sqLiteDB, Project project) {
-        throw new NullPointerException("No initialization settings specified");
-    }
-
     @JsonIgnore
     public DBCardObject getDBSQLiteCardObject(SQLiteDB sqLiteDB) {
         throw new NullPointerException("No database specified");
@@ -116,17 +115,17 @@ public class AbstractCardObject {
     // ** Notification settings ***************************************************************** //
 
     @JsonIgnore
-    public int getNotificationID(){
+    public int getNotificationID() {
         throw new NullPointerException("No notification id specified");
     }
 
     @JsonIgnore
-    public AbstractAndroidNotification getNotificationClass(){
+    public AbstractAndroidNotification getNotificationClass() {
         throw new NullPointerException("No notification class specified");
     }
 
     @JsonIgnore
-    public List<String> getNotificationMessages(Context context){
+    public List<String> getNotificationMessages(Context context) {
         throw new NullPointerException("No notification message specified");
     }
 

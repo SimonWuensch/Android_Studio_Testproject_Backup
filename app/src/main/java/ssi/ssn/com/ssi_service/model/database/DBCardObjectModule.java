@@ -60,7 +60,7 @@ public class DBCardObjectModule extends SQLiteOpenHelper implements DBCardObject
     public void add(AbstractCardObject cardObject) {
         if (getCount(cardObject.get_id_project()) != 0) {
             try {
-                throw new Exception("Only one module per project may exist");
+                throw new Exception("Only one module card object per project may exist");
             } catch (Throwable t) {
                 t.printStackTrace();
                 return;
@@ -186,8 +186,8 @@ public class DBCardObjectModule extends SQLiteOpenHelper implements DBCardObject
     }
 
     @Override
-    public boolean isObjectDataChanged(String jsonObject){
-        if(oldCardObjectString.equals(jsonObject)){
+    public boolean isObjectDataChanged(String jsonObject) {
+        if (oldCardObjectString.equals(jsonObject)) {
             return true;
         }
         oldCardObjectString = jsonObject;

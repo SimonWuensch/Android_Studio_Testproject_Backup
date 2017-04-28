@@ -12,7 +12,7 @@ public enum NotificationSeverity {
 
     private int color;
 
-    NotificationSeverity(int color){
+    NotificationSeverity(int color) {
         this.color = color;
     }
 

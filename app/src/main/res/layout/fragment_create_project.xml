@@ -35,190 +35,190 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/fragment_create_project_text_view_add_project"
         android:layout_above="@+id/fragment_create_project_button_final"
-        android:layout_marginTop="5dp"
-        android:layout_marginBottom="5dp">
+        android:layout_below="@+id/fragment_create_project_text_view_add_project"
+        android:layout_marginBottom="5dp"
+        android:layout_marginTop="5dp">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:gravity="center">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="vertical">
 
-        <RelativeLayout
-            android:id="@+id/fragment_create_project_relative_layout_alias"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+            <RelativeLayout
+                android:id="@+id/fragment_create_project_relative_layout_alias"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
 
-            <ImageView
-                android:id="@+id/fragment_create_project_image_alias"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:layout_alignParentLeft="true"
-                android:layout_centerInParent="true"
-                android:contentDescription="icon_username"
-                android:src="@drawable/icon_alias" />
+                <ImageView
+                    android:id="@+id/fragment_create_project_image_alias"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_alignParentLeft="true"
+                    android:layout_centerInParent="true"
+                    android:contentDescription="icon_username"
+                    android:src="@drawable/icon_alias" />
 
-            <EditText
-                android:id="@+id/fragment_create_project_edit_text_alias"
-                android:layout_width="300dp"
+                <EditText
+                    android:id="@+id/fragment_create_project_edit_text_alias"
+                    android:layout_width="300dp"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:layout_marginLeft="5dp"
+                    android:layout_toRightOf="@+id/fragment_create_project_image_alias"
+                    android:hint="@string/fragment_create_project_edit_text_hint_alias"
+                    android:inputType="textPersonName"
+                    android:lines="1"
+                    android:maxLength="20" />
+
+            </RelativeLayout>
+
+
+            <RelativeLayout
+                android:id="@+id/fragment_create_project_relative_layout_ip_address"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:layout_marginLeft="5dp"
-                android:layout_toRightOf="@+id/fragment_create_project_image_alias"
-                android:hint="@string/fragment_create_project_edit_text_hint_alias"
-                android:inputType="textPersonName"
-                android:lines="1"
-                android:maxLength="20" />
+                android:layout_marginTop="15dp">
 
-        </RelativeLayout>
+                <ImageView
+                    android:id="@+id/fragment_create_project_image_view_ip"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_alignParentLeft="true"
+                    android:layout_centerInParent="true"
+                    android:src="@drawable/icon_ip" />
 
+                <EditText
+                    android:id="@+id/fragment_create_project_edit_text_project_address"
+                    android:layout_width="250dp"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:layout_marginLeft="5dp"
+                    android:layout_toRightOf="@+id/fragment_create_project_image_view_ip"
+                    android:hint="@string/fragment_create_project_edit_text_hint_ip_address"
+                    android:inputType="textUri"
+                    android:lines="1" />
 
-        <RelativeLayout
-        android:id="@+id/fragment_create_project_relative_layout_ip_address"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-            android:layout_marginTop="15dp">
+                <Button
+                    android:id="@+id/fragment_create_project_button_show_project_application_info"
+                    android:layout_width="44dp"
+                    android:layout_height="40dp"
+                    android:layout_toRightOf="@+id/fragment_create_project_edit_text_project_address"
+                    android:background="@color/defaultColor"
+                    android:drawableLeft="@drawable/icon_info"
+                    android:padding="10dp" />
 
-        <ImageView
-            android:id="@+id/fragment_create_project_image_view_ip"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:layout_alignParentLeft="true"
-            android:layout_centerInParent="true"
-            android:src="@drawable/icon_ip" />
+            </RelativeLayout>
 
-        <EditText
-            android:id="@+id/fragment_create_project_edit_text_project_address"
-            android:layout_width="250dp"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:layout_marginLeft="5dp"
-            android:layout_toRightOf="@+id/fragment_create_project_image_view_ip"
-            android:hint="@string/fragment_create_project_edit_text_hint_ip_address"
-            android:inputType="textUri"
-            android:lines="1"/>
+            <RelativeLayout
+                android:id="@+id/fragment_create_project_relative_layout_user_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp">
 
-        <Button
-            android:id="@+id/fragment_create_project_button_show_project_application_info"
-            android:layout_width="44dp"
-            android:layout_height="40dp"
-            android:layout_toRightOf="@+id/fragment_create_project_edit_text_project_address"
-            android:background="@color/defaultColor"
-            android:drawableLeft="@drawable/icon_info"
-            android:padding="10dp" />
+                <ImageView
+                    android:id="@+id/fragment_create_project_image_user"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_alignParentLeft="true"
+                    android:layout_centerInParent="true"
+                    android:contentDescription="icon_username"
+                    android:src="@drawable/icon_user" />
 
-    </RelativeLayout>
+                <EditText
+                    android:id="@+id/fragment_create_project_edit_text_user_name"
+                    android:layout_width="300dp"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:layout_marginLeft="5dp"
+                    android:layout_toRightOf="@+id/fragment_create_project_image_user"
+                    android:hint="@string/fragment_create_project_edit_text_hint_user_name"
+                    android:inputType="textPersonName"
+                    android:lines="1"
+                    android:maxLength="20" />
 
-    <RelativeLayout
-        android:id="@+id/fragment_create_project_relative_layout_user_name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="15dp">
+            </RelativeLayout>
 
-        <ImageView
-            android:id="@+id/fragment_create_project_image_user"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:layout_alignParentLeft="true"
-            android:layout_centerInParent="true"
-            android:contentDescription="icon_username"
-            android:src="@drawable/icon_user" />
+            <RelativeLayout
+                android:id="@+id/fragment_create_project_relative_layout_password"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp">
 
-        <EditText
-            android:id="@+id/fragment_create_project_edit_text_user_name"
-            android:layout_width="300dp"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:layout_marginLeft="5dp"
-            android:layout_toRightOf="@+id/fragment_create_project_image_user"
-            android:hint="@string/fragment_create_project_edit_text_hint_user_name"
-            android:inputType="textPersonName"
-            android:lines="1"
-            android:maxLength="20" />
+                <ImageView
+                    android:id="@+id/fragment_create_project_image_password"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_alignParentLeft="true"
+                    android:layout_centerInParent="true"
+                    android:contentDescription="icon_password"
+                    android:src="@drawable/icon_password" />
 
-    </RelativeLayout>
+                <EditText
+                    android:id="@+id/fragment_create_project_edit_text_password"
+                    android:layout_width="300dp"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:layout_marginLeft="5dp"
+                    android:layout_toRightOf="@+id/fragment_create_project_image_password"
+                    android:hint="@string/fragment_create_project_edit_text_hint_password"
+                    android:inputType="textPassword"
+                    android:lines="1"
+                    android:maxLength="20" />
+            </RelativeLayout>
 
-    <RelativeLayout
-        android:id="@+id/fragment_create_project_relative_layout_password"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="15dp">
+            <RelativeLayout
+                android:id="@+id/fragment_create_project_relative_layout_update_interval"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp">
 
-        <ImageView
-            android:id="@+id/fragment_create_project_image_password"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:layout_alignParentLeft="true"
-            android:layout_centerInParent="true"
-            android:contentDescription="icon_password"
-            android:src="@drawable/icon_password" />
+                <ImageView
+                    android:id="@+id/fragment_create_project_image_update_interval"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_alignParentLeft="true"
+                    android:layout_centerInParent="true"
+                    android:contentDescription="icon_update_interval"
+                    android:src="@drawable/icon_update_interval" />
 
-        <EditText
-            android:id="@+id/fragment_create_project_edit_text_password"
-            android:layout_width="300dp"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:layout_marginLeft="5dp"
-            android:layout_toRightOf="@+id/fragment_create_project_image_password"
-            android:hint="@string/fragment_create_project_edit_text_hint_password"
-            android:inputType="textPassword"
-            android:lines="1"
-            android:maxLength="20" />
-    </RelativeLayout>
+                <EditText
+                    android:id="@+id/fragment_create_project_edit_text_update_interval"
+                    android:layout_width="180dp"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:layout_marginLeft="5dp"
+                    android:layout_toRightOf="@+id/fragment_create_project_image_update_interval"
+                    android:inputType="number"
+                    android:lines="1"
+                    android:maxLength="20"
+                    android:text="30" />
 
-    <RelativeLayout
-        android:id="@+id/fragment_create_project_relative_layout_update_interval"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="15dp">
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@id/fragment_create_project_edit_text_update_interval">
 
-        <ImageView
-            android:id="@+id/fragment_create_project_image_update_interval"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:layout_alignParentLeft="true"
-            android:layout_centerInParent="true"
-            android:contentDescription="icon_update_interval"
-            android:src="@drawable/icon_update_interval" />
+                    <Spinner
+                        android:id="@+id/fragment_create_project_spinner_time_input"
+                        android:layout_width="115dp"
+                        android:layout_height="40dp"
+                        android:background="@color/defaultColor" />
 
-        <EditText
-            android:id="@+id/fragment_create_project_edit_text_update_interval"
-            android:layout_width="180dp"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:layout_marginLeft="5dp"
-            android:layout_toRightOf="@+id/fragment_create_project_image_update_interval"
-            android:inputType="number"
-            android:lines="1"
-            android:maxLength="20"
-            android:text="30" />
+                    <ImageView
+                        android:id="@+id/fragment_create_project_image_drop_down"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_alignRight="@+id/fragment_create_project_spinner_time_input"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="10dp"
+                        android:contentDescription="icon_drop_down_arrow"
+                        android:src="@drawable/icon_drop_down_arrow" />
+                </RelativeLayout>
+            </RelativeLayout>
 
-        <RelativeLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_toRightOf="@id/fragment_create_project_edit_text_update_interval">
-
-            <Spinner
-                android:id="@+id/fragment_create_project_spinner_time_input"
-                android:layout_width="115dp"
-                android:layout_height="40dp"
-                android:background="@color/defaultColor" />
-
-            <ImageView
-                android:id="@+id/fragment_create_project_image_drop_down"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:layout_alignRight="@+id/fragment_create_project_spinner_time_input"
-                android:layout_centerVertical="true"
-                android:layout_marginRight="10dp"
-                android:contentDescription="icon_drop_down_arrow"
-                android:src="@drawable/icon_drop_down_arrow" />
-        </RelativeLayout>
-    </RelativeLayout>
-
-    </LinearLayout>
+        </LinearLayout>
 
     </ScrollView>
 

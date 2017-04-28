@@ -26,16 +26,13 @@ public class FragmentProjectList extends AbstractFragment {
 
     public static String TAG = FragmentProjectList.class.getSimpleName();
 
-    private static int FRAGMENT_LAYOUT = R.layout.fragment_project_list;
+    private static int FRAGMENT_LAYOUT = R.layout.fragment_list_project;
     private static int RECYCLERVIEW = R.id.fragment_project_list_recycler_view;
-    private static int CARDVIEW = R.layout.fragment_project_list_card_view;
-
+    private static int CARDVIEW = R.layout.fragment_list_project_card_view;
+    boolean isServicesStarted = false;
     private List<Project> projects;
     private FragmentProjectListAdapter mAdapter;
-
     private View rootView;
-
-    boolean isServicesStarted = false;
 
     public static FragmentProjectList newInstance() {
         FragmentProjectList fragment = new FragmentProjectList();

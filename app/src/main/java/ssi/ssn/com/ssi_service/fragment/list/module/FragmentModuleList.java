@@ -24,9 +24,9 @@ public class FragmentModuleList extends Fragment {
 
     public static String TAG = FragmentModuleList.class.getSimpleName();
     protected static String PROJECT_ID = TAG + "PROJECT_ID";
-    private static int FRAGMENT_LAYOUT = R.layout.fragment_module_list;
+    private static int FRAGMENT_LAYOUT = R.layout.fragment_list_module;
     private static int RECYCLERVIEW = R.id.fragment_module_list_recycler_view;
-    private static int CARDVIEW = R.layout.fragment_module_list_card_view;
+    private static int CARDVIEW = R.layout.fragment_list_module_card_view;
     private View rootView;
     private Project project;
     private List<ResponseModule> responseModuleList;

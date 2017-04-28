@@ -1,7 +1,6 @@
 package ssi.ssn.com.ssi_service.activity;
 
 import android.app.Activity;
-import android.app.Fragment;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -11,15 +10,16 @@ import java.util.List;
 import java.util.concurrent.Executors;
 
 import ssi.ssn.com.ssi_service.R;
-import ssi.ssn.com.ssi_service.fragment.create.notificationfilter.FragmentCreateNotificationFilter;
-import ssi.ssn.com.ssi_service.fragment.list.component.FragmentComponentList;
+import ssi.ssn.com.ssi_service.fragment.create.filter.notification.FragmentCreateNotificationFilter;
 import ssi.ssn.com.ssi_service.fragment.create.project.FragmentCreateProject;
+import ssi.ssn.com.ssi_service.fragment.list.component.FragmentComponentList;
 import ssi.ssn.com.ssi_service.fragment.list.custom.FragmentCustomList;
-import ssi.ssn.com.ssi_service.fragment.list.notificationfilter.FragmentNotificationFilterList;
-import ssi.ssn.com.ssi_service.fragment.overview.launchboard.FragmentLaunchBoard;
+import ssi.ssn.com.ssi_service.fragment.list.kpi.FragmentKpiDefinitionList;
 import ssi.ssn.com.ssi_service.fragment.list.module.FragmentModuleList;
 import ssi.ssn.com.ssi_service.fragment.list.notification.FragmentNotificationList;
+import ssi.ssn.com.ssi_service.fragment.list.notificationfilter.FragmentNotificationFilterList;
 import ssi.ssn.com.ssi_service.fragment.list.project.FragmentProjectList;
+import ssi.ssn.com.ssi_service.fragment.overview.launchboard.FragmentLaunchBoard;
 import ssi.ssn.com.ssi_service.model.data.source.Project;
 import ssi.ssn.com.ssi_service.model.data.source.filter.FilterNotification;
 import ssi.ssn.com.ssi_service.model.database.SQLiteDB;
@@ -66,7 +66,7 @@ public class AbstractActivity extends Activity {
     }
 
     public SQLiteDB getSQLiteDB() {
-        if(sqliteDB == null){
+        if (sqliteDB == null) {
             return sqliteDB = new SQLiteDB(this);
         }
         return sqliteDB;
@@ -184,7 +184,7 @@ public class AbstractActivity extends Activity {
         Log.i(getClass().getSimpleName(), "Show Fragment [" + FragmentNotificationList.TAG + "]. + Project ID: " + projectID + ", Filter ID: " + filterID);
     }
 
-    public void showCreateNotificationFilterFragment(int projectID){
+    public void showCreateNotificationFilterFragment(int projectID) {
         FragmentCreateNotificationFilter fragmentCreateNotificationFilter = FragmentCreateNotificationFilter.newInstance(projectID);
         getFragmentManager()
                 .beginTransaction()
@@ -196,7 +196,7 @@ public class AbstractActivity extends Activity {
         Log.i(getClass().getSimpleName(), "Show Fragment [" + FragmentCreateNotificationFilter.TAG + "]. + Project ID: " + projectID + "].");
     }
 
-    public void showCreateNotificationFilterFragment(int projectID, ResponseNotification notification){
+    public void showCreateNotificationFilterFragment(int projectID, ResponseNotification notification) {
         FragmentCreateNotificationFilter fragmentCreateNotificationFilter = FragmentCreateNotificationFilter.newInstance(projectID, notification);
         getFragmentManager()
                 .beginTransaction()
@@ -208,7 +208,7 @@ public class AbstractActivity extends Activity {
         Log.i(getClass().getSimpleName(), "Show Fragment [" + FragmentCreateNotificationFilter.TAG + "]. + Project ID: " + projectID);
     }
 
-    public void showCreateNotificationFilterFragment(int projectID, FilterNotification filter){
+    public void showCreateNotificationFilterFragment(int projectID, FilterNotification filter) {
         FragmentCreateNotificationFilter fragmentCreateNotificationFilter = FragmentCreateNotificationFilter.newInstance(projectID, filter);
         getFragmentManager()
                 .beginTransaction()
@@ -220,7 +220,7 @@ public class AbstractActivity extends Activity {
         Log.i(getClass().getSimpleName(), "Show Fragment [" + FragmentCreateNotificationFilter.TAG + "]. + Project ID: " + projectID + ", Filter: " + filter.identity());
     }
 
-    public void showNotificationFilterListFragment(int projectID){
+    public void showNotificationFilterListFragment(int projectID) {
         FragmentNotificationFilterList fragmentNotificationFilterList = FragmentNotificationFilterList.newInstance(projectID);
         getFragmentManager()
                 .beginTransaction()
@@ -230,5 +230,31 @@ public class AbstractActivity extends Activity {
                 .addToBackStack(FragmentNotificationFilterList.TAG)
                 .commit();
         Log.i(getClass().getSimpleName(), "Show Fragment [" + FragmentNotificationFilterList.TAG + "]. + Project ID: " + projectID);
+    }
+
+    public void showKPIFilterListFragment(int projectID) {
+        //Todo Card Object KPI -> KPI Filter List Fragment erstellen
+        /*FragmentNotificationFilterList fragmentNotificationFilterList = FragmentNotificationFilterList.newInstance(projectID);
+        getFragmentManager()
+                .beginTransaction()
+                .replace(R.id.activity_main_fragment_container,
+                        fragmentNotificationFilterList,
+                        FragmentNotificationFilterList.TAG)
+                .addToBackStack(FragmentNotificationFilterList.TAG)
+                .commit();
+                */
+        Log.i(getClass().getSimpleName(), "Show Fragment [" + FragmentNotificationFilterList.TAG + "]. + Project ID: " + projectID);
+    }
+
+    public void showKpiDefinitionList(int projectID) {
+        FragmentKpiDefinitionList fragmentKpiDefinitionList = FragmentKpiDefinitionList.newInstance(projectID);
+        getFragmentManager()
+                .beginTransaction()
+                .replace(R.id.activity_main_fragment_container,
+                        fragmentKpiDefinitionList,
+                        FragmentKpiDefinitionList.TAG)
+                .addToBackStack(FragmentKpiDefinitionList.TAG)
+                .commit();
+        Log.i(getClass().getSimpleName(), "Show Fragment [" + FragmentKpiDefinitionList.TAG + "]. + Project ID: " + projectID);
     }
 }

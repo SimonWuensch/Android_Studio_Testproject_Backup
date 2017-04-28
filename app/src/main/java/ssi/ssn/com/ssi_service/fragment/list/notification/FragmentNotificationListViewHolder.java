@@ -12,7 +12,6 @@ import ssi.ssn.com.ssi_service.model.data.source.Project;
 import ssi.ssn.com.ssi_service.model.data.source.Status;
 import ssi.ssn.com.ssi_service.model.data.source.filter.FilterNotification;
 import ssi.ssn.com.ssi_service.model.helper.FormatHelper;
-import ssi.ssn.com.ssi_service.model.helper.SourceHelper;
 import ssi.ssn.com.ssi_service.model.network.response.notification.objects.ResponseNotification;
 
 
@@ -58,9 +57,9 @@ class FragmentNotificationListViewHolder extends RecyclerView.ViewHolder {
         tvDate.setText(dateTime[0]);
         tvTime.setText(dateTime[1]);
 
-        if(filter != null){
+        if (filter != null) {
             long activeTime = new Date().getTime() - notification.getStartTime();
-            if(activeTime >= filter.getActiveTime()){
+            if (activeTime >= filter.getActiveTime()) {
                 tvDate.setTextColor(Status.ERROR.getColor(activity));
                 tvTime.setTextColor(Status.ERROR.getColor(activity));
             }
@@ -70,7 +69,7 @@ class FragmentNotificationListViewHolder extends RecyclerView.ViewHolder {
         String node = nodePath == null ? "" : notification.getNodePath().substring(nodePath.lastIndexOf(".") + 1, nodePath.length());
         tvNodePath.setText(node);
 
-        cardView.setOnClickListener(new View.OnClickListener(){
+        cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (fragment.filter == null) {

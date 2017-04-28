@@ -25,21 +25,17 @@ import ssi.ssn.com.ssi_service.model.network.response.notification.objects.Respo
 public class FragmentNotificationList extends Fragment {
 
     public static String TAG = FragmentNotificationList.class.getSimpleName();
-
-    protected static String PROJECT_ID = TAG + "PROJECT_ID";
     public static String FILTER_ID = TAG + "FILTER_ID";
-
-    private static int FRAGMENT_LAYOUT = R.layout.fragment_notification_list;
+    protected static String PROJECT_ID = TAG + "PROJECT_ID";
+    private static int FRAGMENT_LAYOUT = R.layout.fragment_list_notification;
     private static int RECYCLERVIEW = R.id.fragment_standard_recycler_view;
-    private static int CARDVIEW = R.layout.fragment_notification_list_card_view;
-
-    private Project project;
+    private static int CARDVIEW = R.layout.fragment_list_notification_card_view;
     protected FilterNotification filter;
     List<ResponseNotification> notifications;
-
+    private Project project;
     private View rootView;
 
-    public static FragmentNotificationList newInstance(int projectID){
+    public static FragmentNotificationList newInstance(int projectID) {
         return newInstance(projectID, -1);
     }
 
@@ -52,7 +48,7 @@ public class FragmentNotificationList extends Fragment {
         Bundle bundle = new Bundle();
         bundle.putInt(PROJECT_ID, projectID);
 
-        if(filterID != -1){
+        if (filterID != -1) {
             bundle.putInt(FILTER_ID, filterID);
         }
 
@@ -69,13 +65,13 @@ public class FragmentNotificationList extends Fragment {
         project = sqLiteDB.project().getByID(projectID);
         CardObjectNotification.init(sqLiteDB, project);
 
-        if(getArguments().containsKey(FILTER_ID)){
+        if (getArguments().containsKey(FILTER_ID)) {
             int filterID = getArguments().getInt(FILTER_ID);
             filter = project.getCardObjectNotification().getFilterByID(filterID);
             notifications = NotificationListSorter.sortNotificationBySeverity(filter.getNotificationTable().getData());
             return;
         }
-            notifications = NotificationListSorter.sortNotificationBySeverity(project.getCardObjectNotification().getNotificationTable().getData());
+        notifications = NotificationListSorter.sortNotificationBySeverity(project.getCardObjectNotification().getNotificationTable().getData());
     }
 
     @Override

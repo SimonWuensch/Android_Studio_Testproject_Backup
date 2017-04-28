@@ -11,13 +11,13 @@ import java.util.List;
 
 import ssi.ssn.com.ssi_service.R;
 import ssi.ssn.com.ssi_service.activity.MainActivity;
-import ssi.ssn.com.ssi_service.model.detector.DetectorCardObjectModule;
 import ssi.ssn.com.ssi_service.fragment.list.module.FragmentModuleListNotification;
 import ssi.ssn.com.ssi_service.model.data.source.Project;
 import ssi.ssn.com.ssi_service.model.data.source.Status;
 import ssi.ssn.com.ssi_service.model.database.DBCardObject;
 import ssi.ssn.com.ssi_service.model.database.DBCardObjectModule;
 import ssi.ssn.com.ssi_service.model.database.SQLiteDB;
+import ssi.ssn.com.ssi_service.model.detector.DetectorCardObjectModule;
 import ssi.ssn.com.ssi_service.model.helper.SourceHelper;
 import ssi.ssn.com.ssi_service.model.network.handler.RequestHandler;
 import ssi.ssn.com.ssi_service.model.network.response.module.ResponseModule;
@@ -88,19 +88,19 @@ public class CardObjectModule extends AbstractCardObject {
     // ** Notification settings ***************************************************************** //
     @Override
     @JsonIgnore
-    public int getNotificationID(){
+    public int getNotificationID() {
         return NOTIFICATION_ID;
     }
 
     @Override
     @JsonIgnore
-    public AbstractAndroidNotification getNotificationClass(){
+    public AbstractAndroidNotification getNotificationClass() {
         return new FragmentModuleListNotification();
     }
 
     @Override
     @JsonIgnore
-    public List<String> getNotificationMessages(Context context){
+    public List<String> getNotificationMessages(Context context) {
         List<String> messages = new LinkedList<>();
         for (ResponseModule responseModule : responseModuleList) {
             String status = responseModule.getStatus();

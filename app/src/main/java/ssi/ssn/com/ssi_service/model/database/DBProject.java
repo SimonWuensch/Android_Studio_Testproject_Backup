@@ -56,6 +56,7 @@ public class DBProject extends SQLiteOpenHelper {
         db.execSQL(DBCardObjectModule.CREATE_TABLE_CARD_OBJECT_MODULE);
         db.execSQL(DBCardObjectComponent.CREATE_TABLE_CARD_OBJECT_COMPONENT);
         db.execSQL(DBCardObjectNotification.CREATE_TABLE_CARD_OBJECT_NOTIFICATION);
+        db.execSQL(DBCardObjectKPI.CREATE_TABLE_CARD_OBJECT_KPI);
     }
 
     @Override
@@ -65,6 +66,7 @@ public class DBProject extends SQLiteOpenHelper {
         db.execSQL(DBCardObjectModule.DROP_TABLE_CARD_OBJECT_MODULE);
         db.execSQL(DBCardObjectComponent.DROP_TABLE_CARD_OBJECT_COMPONENT);
         db.execSQL(DBCardObjectNotification.DROP_TABLE_CARD_OBJECT_NOTIFICATION);
+        db.execSQL(DBCardObjectKPI.DROP_TABLE_CARD_OBJECT_KPI);
         this.onCreate(db);
     }
 
@@ -219,7 +221,7 @@ public class DBProject extends SQLiteOpenHelper {
         Log.d(TAG, "DELETE: Project + [" + project + "]");
 
         project.initCardObjects(sqLiteDB);
-        for(AbstractCardObject cardObject : project.getAllCardObjects()){
+        for (AbstractCardObject cardObject : project.getAllCardObjects()) {
             cardObject.getDBSQLiteCardObject(sqLiteDB).delete(cardObject);
         }
     }

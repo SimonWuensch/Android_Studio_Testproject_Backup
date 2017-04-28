@@ -9,6 +9,8 @@ import ssi.ssn.com.ssi_service.model.data.source.filter.FilterNotification;
 import ssi.ssn.com.ssi_service.model.network.request.RequestApplication;
 import ssi.ssn.com.ssi_service.model.network.request.RequestApplicationConfig;
 import ssi.ssn.com.ssi_service.model.network.request.RequestComponent;
+import ssi.ssn.com.ssi_service.model.network.request.RequestKPIDefinitions;
+import ssi.ssn.com.ssi_service.model.network.request.RequestKPIMeasurements;
 import ssi.ssn.com.ssi_service.model.network.request.RequestLogin;
 import ssi.ssn.com.ssi_service.model.network.request.RequestLogout;
 import ssi.ssn.com.ssi_service.model.network.request.RequestModule;
@@ -78,12 +80,11 @@ public class RequestHandler {
     }
 
     // *** Notification ************************************************************************* //
-
-    public void sendRequestNotificationTableAll(Project project){
+    public void sendRequestNotificationTableAll(Project project) {
         sendRequestNotification(project, RequestNotification.Path.TABLE_ALL);
     }
 
-    public void sendRequestNotificationCountAll(Project project){
+    public void sendRequestNotificationCountAll(Project project) {
         sendRequestNotification(project, RequestNotification.Path.COUNT_ALL);
     }
 
@@ -95,12 +96,21 @@ public class RequestHandler {
         RequestNotification.init(project, filter).getTaskGET(getCookieHandler(project));
     }
 
+    // ** KPI *********************************************************************************** //
+    public void sendRequestKPIDefinitions(Project project) {
+        RequestKPIDefinitions.init(project).getTaskGET(getCookieHandler(project));
+    }
+
+    public void sendRequestKPIMeasurements(Project project) {
+        RequestKPIMeasurements.init(project).getTaskGET(getCookieHandler(project));
+    }
+
     // *** Scada ******************************************************************************** //
     public void sendRequestScada(Project project, RequestScada.Path path) {
         RequestScada.init(project, path).getTaskGET(getCookieHandler(project));
     }
 
-    // *** Logout
+    // *** Logout  ****************************************************************************** //
     public void sendRequestLogout(Project project) {
         RequestLogout.init(project).getTaskGET(getCookieHandler(project));
     }

@@ -7,9 +7,8 @@ import android.util.Log;
 
 public class NetworkConnectionChecker {
 
-    private static String TAG = NetworkConnectionChecker.class.getSimpleName();
-
     static Context context;
+    private static String TAG = NetworkConnectionChecker.class.getSimpleName();
     ConnectivityManager connectivityManager;
     NetworkInfo wifiInfo, mobileInfo;
     boolean connected = false;

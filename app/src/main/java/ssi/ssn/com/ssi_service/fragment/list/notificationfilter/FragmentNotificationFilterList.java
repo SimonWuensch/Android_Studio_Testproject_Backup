@@ -11,8 +11,6 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import java.util.ArrayList;
-
 import ssi.ssn.com.ssi_service.R;
 import ssi.ssn.com.ssi_service.activity.MainActivity;
 import ssi.ssn.com.ssi_service.fragment.AbstractFragment;
@@ -26,9 +24,9 @@ public class FragmentNotificationFilterList extends AbstractFragment {
 
     protected static String PROJECT_ID = TAG + "PROJECT_ID";
 
-    private static int FRAGMENT_LAYOUT = R.layout.fragment_notification_filter_list;
+    private static int FRAGMENT_LAYOUT = R.layout.fragment_list_notification_filter;
     private static int RECYCLERVIEW = R.id.fragment_standard_recycler_view;
-    private static int CARDVIEW = R.layout.fragment_notification_filter_list_card_view;
+    private static int CARDVIEW = R.layout.fragment_list_notification_filter_card_view;
 
     private View rootView;
     private FragmentNotificationFilterListAdapter mAdapter;
@@ -102,7 +100,7 @@ public class FragmentNotificationFilterList extends AbstractFragment {
         });
     }
 
-    public void updateDataSet(){
+    public void updateDataSet() {
         CardObjectNotification.init(getSQLiteDB(), project);
         mAdapter.setNotificationFilterList(project.getCardObjectNotification().getNotificationFilters());
         mAdapter.notifyDataSetChanged();

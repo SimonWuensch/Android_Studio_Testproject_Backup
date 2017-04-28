@@ -12,12 +12,12 @@ import java.util.List;
 import ssi.ssn.com.ssi_service.R;
 import ssi.ssn.com.ssi_service.activity.MainActivity;
 import ssi.ssn.com.ssi_service.fragment.list.component.FragmentComponentListNotification;
-import ssi.ssn.com.ssi_service.model.detector.DetectorCardObjectComponent;
 import ssi.ssn.com.ssi_service.model.data.source.Project;
 import ssi.ssn.com.ssi_service.model.data.source.Status;
 import ssi.ssn.com.ssi_service.model.database.DBCardObject;
 import ssi.ssn.com.ssi_service.model.database.DBCardObjectComponent;
 import ssi.ssn.com.ssi_service.model.database.SQLiteDB;
+import ssi.ssn.com.ssi_service.model.detector.DetectorCardObjectComponent;
 import ssi.ssn.com.ssi_service.model.helper.SourceHelper;
 import ssi.ssn.com.ssi_service.model.network.handler.RequestHandler;
 import ssi.ssn.com.ssi_service.model.network.response.component.ResponseComponent;
@@ -85,19 +85,19 @@ public class CardObjectComponent extends AbstractCardObject {
     // ** Notification settings ***************************************************************** //
     @Override
     @JsonIgnore
-    public int getNotificationID(){
+    public int getNotificationID() {
         return NOTIFICATION_ID;
     }
 
     @Override
     @JsonIgnore
-    public AbstractAndroidNotification getNotificationClass(){
+    public AbstractAndroidNotification getNotificationClass() {
         return new FragmentComponentListNotification();
     }
 
     @Override
     @JsonIgnore
-    public List<String> getNotificationMessages(Context context){
+    public List<String> getNotificationMessages(Context context) {
         List<String> messages = new LinkedList<>();
         for (ResponseComponent responseComponent : responseComponentList) {
             String status = responseComponent.getState().getStatus();
@@ -106,6 +106,6 @@ public class CardObjectComponent extends AbstractCardObject {
                 messages.add(responseComponent.getState().getName() + " " + SourceHelper.getString(context, R.string.status) + ": " + status);
             }
         }
-        return  messages;
+        return messages;
     }
 }

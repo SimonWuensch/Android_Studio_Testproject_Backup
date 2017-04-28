@@ -3,7 +3,6 @@ package ssi.ssn.com.ssi_service.fragment.list.notification;
 import android.app.Activity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
@@ -14,7 +13,7 @@ import ssi.ssn.com.ssi_service.model.data.source.Project;
 import ssi.ssn.com.ssi_service.model.data.source.filter.FilterNotification;
 import ssi.ssn.com.ssi_service.model.network.response.notification.objects.ResponseNotification;
 
-class FragmentNotificationListAdapter extends  RecyclerView.Adapter<FragmentNotificationListViewHolder>{
+class FragmentNotificationListAdapter extends RecyclerView.Adapter<FragmentNotificationListViewHolder> {
 
     private static String TAG = FragmentNotificationListAdapter.class.getSimpleName();
 
@@ -28,7 +27,7 @@ class FragmentNotificationListAdapter extends  RecyclerView.Adapter<FragmentNoti
     private Project project;
     private FilterNotification filter;
 
-    protected FragmentNotificationListAdapter(int layoutCardView, FragmentNotificationList fragment, Project project, FilterNotification filter, List<ResponseNotification> notificationList){
+    protected FragmentNotificationListAdapter(int layoutCardView, FragmentNotificationList fragment, Project project, FilterNotification filter, List<ResponseNotification> notificationList) {
         this.layoutCardView = layoutCardView;
         this.fragment = fragment;
         this.project = project;
@@ -39,7 +38,7 @@ class FragmentNotificationListAdapter extends  RecyclerView.Adapter<FragmentNoti
     @Override
     public FragmentNotificationListViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         cardView = (CardView) LayoutInflater.from(parent.getContext()).inflate(layoutCardView, parent, false);
-        return new FragmentNotificationListViewHolder((MainActivity)fragment.getActivity(), project, filter, cardView);
+        return new FragmentNotificationListViewHolder((MainActivity) fragment.getActivity(), project, filter, cardView);
     }
 
     @Override

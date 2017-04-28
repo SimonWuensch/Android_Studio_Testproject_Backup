@@ -119,13 +119,13 @@ class FragmentProjectListViewHolder extends RecyclerView.ViewHolder {
         };
     }
 
-    private void saveDataForBackStack(Project project){
+    private void saveDataForBackStack(Project project) {
         adapter.clickedProject = project;
         adapter.clickedProjectJson = JsonHelper.toJson(project);
         adapter.clickedProject.initCardObjects(activity.getSQLiteDB());
         adapter.cardObjectJsonList = new LinkedList<>();
         //adapter.clickedProjectPosition = adapter.projects.indexOf(project);
-        for(AbstractCardObject cardObject : project.getAllCardObjects()){
+        for (AbstractCardObject cardObject : project.getAllCardObjects()) {
             adapter.cardObjectJsonList.add(JsonHelper.toJson(cardObject));
         }
     }

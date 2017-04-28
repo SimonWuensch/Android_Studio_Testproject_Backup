@@ -1,7 +1,6 @@
 package ssi.ssn.com.ssi_service.model.detector;
 
 import android.util.Log;
-import android.view.LayoutInflater;
 
 import ssi.ssn.com.ssi_service.model.data.source.Project;
 import ssi.ssn.com.ssi_service.model.data.source.Status;
@@ -41,7 +40,7 @@ public class DetectorCardObjectNotification {
 
     public static void loadAllNotificationsByFilter(RequestHandler requestHandler, Project project, FilterNotification filter) {
         CardObjectNotification cardObject = project.getCardObjectNotification();
-        Log.d(TAG + " Project ID: " + cardObject.get_id_project(), cardObject.getClass().getSimpleName() + " start load card object notification information from network...");
+        Log.d(TAG + " Project ID: " + cardObject.get_id_project(), cardObject.getClass().getSimpleName() + " start load card object notification filter information from network...");
         requestHandler.sendRequestLogin(project);
         requestHandler.sendRequestNotification(project, filter);
 

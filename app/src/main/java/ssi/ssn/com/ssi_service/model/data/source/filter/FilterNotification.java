@@ -5,7 +5,6 @@ import android.util.Log;
 import java.util.Date;
 
 import ssi.ssn.com.ssi_service.model.helper.FormatHelper;
-import ssi.ssn.com.ssi_service.model.helper.SourceHelper;
 import ssi.ssn.com.ssi_service.model.network.response.notification.ResponseNotificationTable;
 import ssi.ssn.com.ssi_service.model.network.response.notification.objects.NotificationSeverity;
 import ssi.ssn.com.ssi_service.model.network.response.notification.objects.ResponseNotification;
@@ -90,7 +89,7 @@ public class FilterNotification {
 
     public void checkResponseNotificationTable() {
         activeTimeReachedNotificationTable = new ResponseNotificationTable();
-        if(notificationTable == null){
+        if (notificationTable == null) {
             return;
         }
         for (ResponseNotification notification : notificationTable.getData()) {
@@ -101,7 +100,7 @@ public class FilterNotification {
             }
         }
         if (activeTimeReachedNotificationTable.getCount() > 0) {
-            Log.i(TAG + " - " + identity(), "[" + activeTimeReachedNotificationTable.getCount() +"] Notifications found, which reached the maximal active time");
+            Log.i(TAG + " - " + identity(), "[" + activeTimeReachedNotificationTable.getCount() + "] Notifications found, which reached the maximal active time");
         }
     }
 

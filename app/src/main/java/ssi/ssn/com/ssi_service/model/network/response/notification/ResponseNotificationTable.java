@@ -34,7 +34,7 @@ public class ResponseNotificationTable extends AbstractResponse {
     }
 
     @JsonIgnore
-    public void addNotification(ResponseNotification notification){
+    public void addNotification(ResponseNotification notification) {
         count++;
         data.add(notification);
     }

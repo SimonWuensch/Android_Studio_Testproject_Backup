@@ -42,10 +42,10 @@
                         android:id="@+id/fragment_notification_filter_list_card_view_text_view_count"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_centerInParent="true"
                         android:layout_alignParentLeft="true"
+                        android:layout_centerInParent="true"
                         android:text="1"
-                        android:textAppearance="?android:attr/textAppearanceMedium"/>
+                        android:textAppearance="?android:attr/textAppearanceMedium" />
                 </RelativeLayout>
 
                 <ImageView
@@ -93,8 +93,8 @@
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
                         android:layout_marginLeft="10dp"
-                        android:text="F01"
                         android:layout_marginRight="10dp"
+                        android:text="F01"
                         android:textAppearance="?android:attr/textAppearanceMedium" />
 
                 </LinearLayout>
@@ -128,8 +128,8 @@
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
                         android:layout_marginLeft="10dp"
-                        android:text="3 Stunden"
                         android:layout_marginRight="10dp"
+                        android:text="3 Stunden"
                         android:textAppearance="?android:attr/textAppearanceMedium" />
 
                 </LinearLayout>
@@ -163,8 +163,8 @@
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
                         android:layout_marginLeft="10dp"
-                        android:text="ERROR"
                         android:layout_marginRight="10dp"
+                        android:text="ERROR"
                         android:textAppearance="?android:attr/textAppearanceMedium" />
 
                 </LinearLayout>
@@ -180,8 +180,8 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:minHeight="30dp"
                     android:gravity="left|center"
+                    android:minHeight="30dp"
                     android:orientation="horizontal">
 
                     <TextView
@@ -199,9 +199,9 @@
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
                         android:layout_marginLeft="10dp"
-                        android:text="text...."
                         android:layout_marginRight="10dp"
                         android:maxLines="10"
+                        android:text="text...."
                         android:textAppearance="?android:attr/textAppearanceMedium" />
 
                 </LinearLayout>

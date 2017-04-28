@@ -34,9 +34,9 @@ public class FragmentLaunchBoard extends AbstractFragment {
     public static String TAG = FragmentLaunchBoard.class.getSimpleName();
     protected static String PROJECT_ID = TAG + "PROJECT_ID";
 
-    private static int FRAGMENT_LAYOUT = R.layout.fragment_launch_board;
+    private static int FRAGMENT_LAYOUT = R.layout.fragment_overview_launch_board;
     private static int RECYCLERVIEW = R.id.fragment_launch_board_recycler_view;
-    private static int CARDVIEW = R.layout.fragment_launch_board_card_view;
+    private static int CARDVIEW = R.layout.fragment_overview_launch_board_card_view;
 
     private View rootView;
     private RelativeLayout rlProjectStateBackground;
@@ -76,8 +76,8 @@ public class FragmentLaunchBoard extends AbstractFragment {
         new AsyncTask<Object, Void, Object>() {
             @Override
             protected Object doInBackground(Object... objects) {
-                if(ObservationHelper.isProjectOutOfDate(project)){
-                ((MainActivity) getActivity()).getRequestHandler().sendRequestLogin(project);
+                if (ObservationHelper.isProjectOutOfDate(project)) {
+                    ((MainActivity) getActivity()).getRequestHandler().sendRequestLogin(project);
                 }
                 return null;
             }
@@ -133,6 +133,7 @@ public class FragmentLaunchBoard extends AbstractFragment {
         rlLoadingView = (RelativeLayout) rootView.findViewById(R.id.fragment_launch_board_project_state_loading_view);
         rlLoadingView.setVisibility(View.GONE);
         updateProjectStatusView();
+
     }
 
     public void updateProjectStatusView() {

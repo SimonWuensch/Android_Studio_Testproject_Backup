@@ -37,8 +37,8 @@
             android:layout_centerInParent="true"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="5dp"
-            android:layout_toRightOf="@id/fragment_project_list_card_view_check_box_project_observation"
             android:layout_toLeftOf="@+id/fragment_project_list_relative_layout_project_status"
+            android:layout_toRightOf="@id/fragment_project_list_card_view_check_box_project_observation"
             android:orientation="vertical">
 
             <TextView

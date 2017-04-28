@@ -112,7 +112,6 @@ public class FragmentCreateProject extends AbstractFragment {
     }
 
 
-
     public void initViewComponents() {
         TextView tvHeadLine = (TextView) rootView.findViewById(R.id.default_action_bar_text_view_headline);
         tvHeadLine.setText(SourceHelper.getString(getActivity(), R.string.fragment_create_project_title));
@@ -128,7 +127,7 @@ public class FragmentCreateProject extends AbstractFragment {
 
         spTimeInput = (Spinner) rootView.findViewById(R.id.fragment_create_project_spinner_time_input);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getActivity(), R.array.fragment_create_project_drop_down_box_time_input, android.R.layout.simple_spinner_item);
-        adapter.setDropDownViewResource(R.layout.spinner_drop_down_item);
+        adapter.setDropDownViewResource(R.layout.default_spinner_drop_down_item);
         spTimeInput.setAdapter(adapter);
 
         bFinal = (Button) rootView.findViewById(R.id.fragment_create_project_button_final);
@@ -420,7 +419,7 @@ public class FragmentCreateProject extends AbstractFragment {
                             return null;
                         }
 
-                        if(fragmentStatus.equals(CreateUpdateDeleteStatus.UPDATE)){
+                        if (fragmentStatus.equals(CreateUpdateDeleteStatus.UPDATE)) {
                             requestHandler.sendRequestLogout(project);
                         }
                         requestHandler.sendRequestLogin(project);

@@ -1,9 +1,5 @@
 package ssi.ssn.com.ssi_service.model.network.response.notification.objects;
 
-import com.owlike.genson.annotation.JsonIgnore;
-
-import java.util.Date;
-
 public class ResponseNotification {
 
     private long id;

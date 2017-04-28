@@ -4,7 +4,6 @@ import android.util.Log;
 
 import java.util.Date;
 
-import ssi.ssn.com.ssi_service.activity.MainActivity;
 import ssi.ssn.com.ssi_service.model.data.source.Project;
 import ssi.ssn.com.ssi_service.model.data.source.cardobject.AbstractCardObject;
 import ssi.ssn.com.ssi_service.model.database.SQLiteDB;

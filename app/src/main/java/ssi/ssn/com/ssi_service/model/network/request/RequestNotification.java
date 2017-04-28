@@ -42,7 +42,7 @@ public class RequestNotification {
 
     private String getAddress() {
         if (!path.equals(Path.TABLE_FILTER)) {
-        return project.getServerAddress() + ADDRESS + path.getUrl();
+            return project.getServerAddress() + ADDRESS + path.getUrl();
         }
         return project.getServerAddress() + ADDRESS + path.getUrl()
                 .replace(PLACEHOLDER_SEVERITY, filter.getSeverity().name())

@@ -55,7 +55,7 @@ class FragmentLaunchBoardViewHolder extends RecyclerView.ViewHolder {
         if (cardObject.isObservation()) {
             if (ObservationHelper.isCardObjectOutOfDate(project, cardObject)) {
                 detectCardObjectStatus(project, cardObject);
-            }else{
+            } else {
                 vStatus.setBackgroundColor(cardObject.getStatus().getColor(activity));
             }
             cardView.setOnClickListener(new View.OnClickListener() {

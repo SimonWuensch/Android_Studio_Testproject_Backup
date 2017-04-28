@@ -22,15 +22,13 @@ public class FragmentProjectListAdapter extends RecyclerView.Adapter<FragmentPro
 
     private final int layoutCardView;
     private final FragmentProjectList fragment;
-    private CardView cardView;
-
     protected List<Project> projects = new ArrayList<>();
-    private Map<Project, FragmentProjectListViewHolder> viewHolderMap = new HashMap<>();
-
     protected Project clickedProject;
     protected String clickedProjectJson;
     protected int clickedProjectPosition;
     protected List<String> cardObjectJsonList;
+    private CardView cardView;
+    private Map<Project, FragmentProjectListViewHolder> viewHolderMap = new HashMap<>();
 
     public FragmentProjectListAdapter(int layoutCardView, final FragmentProjectList fragment, List<Project> projects) {
         this.layoutCardView = layoutCardView;

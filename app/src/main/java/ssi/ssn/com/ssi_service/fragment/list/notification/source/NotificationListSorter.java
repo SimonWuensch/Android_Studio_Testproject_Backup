@@ -13,7 +13,7 @@ import ssi.ssn.com.ssi_service.model.network.response.notification.objects.Respo
 public class NotificationListSorter {
 
     public static List<ResponseNotification> sortNotificationBySeverity(List<ResponseNotification> list) {
-        if(list == null || list.isEmpty()){
+        if (list == null || list.isEmpty()) {
             return new ArrayList<>();
         }
         Map<NotificationSeverity, List<ResponseNotification>> severityMap = new HashMap<NotificationSeverity, List<ResponseNotification>>() {
@@ -39,7 +39,7 @@ public class NotificationListSorter {
     }
 
     public static List<ResponseNotification> sortNotificationByTime(List<ResponseNotification> list) {
-        if(list.isEmpty()){
+        if (list.isEmpty()) {
             return new ArrayList<>();
         }
         Collections.sort(list, new Comparator<ResponseNotification>() {
