@@ -53,32 +53,7 @@ public class FragmentKpiDefinitionViewHolder extends RecyclerView.ViewHolder {
 
 
         // TODO fix error...  Cannot call this method while RecyclerView is computing a layout or scrolling
-        /*if (adapter.filterText.isEmpty()) {
-            //cardView.setVisibility(View.VISIBLE);
-            if(adapter.definitions.contains(definition)){
-                return;
-            }
-            adapter.definitions.add(getAdapterPosition(), definition);
-            adapter.notifyItemInserted(getAdapterPosition());
-            adapter.notifyItemRangeChanged(getAdapterPosition(),  adapter.definitions.size());
 
-        } else if (name.contains(adapter.filterText) || key.contains(adapter.filterText)) {
-            //cardView.setVisibility(View.VISIBLE);
-            if(adapter.definitions.contains(definition)){
-                return;
-            }
-            adapter.definitions.add(getAdapterPosition(), definition);
-            adapter.notifyItemInserted(getAdapterPosition());
-            adapter.notifyItemRangeChanged(getAdapterPosition(),  adapter.definitions.size());
-        } else {
-            //cardView.setVisibility(View.GONE);
-            if(!adapter.definitions.contains(definition)){
-                return;
-            }
-            adapter.definitions.remove(getAdapterPosition());
-            adapter.notifyItemRemoved(getAdapterPosition());
-            adapter.notifyItemRangeChanged(getAdapterPosition(),  adapter.definitions.size());
-        }*/
     }
 
     protected void updateHeadline() {

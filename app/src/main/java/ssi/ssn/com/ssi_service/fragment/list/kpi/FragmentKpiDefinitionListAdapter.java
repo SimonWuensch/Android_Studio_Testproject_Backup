@@ -13,21 +13,26 @@ import ssi.ssn.com.ssi_service.model.network.response.kpi.definitions.ResponseKP
 
 public class FragmentKpiDefinitionListAdapter extends RecyclerView.Adapter<FragmentKpiDefinitionViewHolder> {
 
+    private static String TAG = FragmentKpiDefinitionListAdapter.class.getSimpleName();
+
     protected static String HEADLINE_TYPE_KEY = "HEADLINE_KEY";
     protected static String HEADLINE_TYPE_NAME = "HEADLINE_Name";
-    private static String TAG = FragmentKpiDefinitionListAdapter.class.getSimpleName();
+    protected String headlineType = HEADLINE_TYPE_KEY;
+
+    protected String filterText = "";
+
     private final int layoutCardView;
     private final FragmentKpiDefinitionList fragment;
-    protected String headlineType = HEADLINE_TYPE_KEY;
-    protected String filterText = "";
-    protected List<ResponseKPIDefinition> definitions;
     private CardView cardView;
-    private List<FragmentKpiDefinitionViewHolder> viewHolders = new ArrayList<>();
 
-    public FragmentKpiDefinitionListAdapter(int layoutCardView, final FragmentKpiDefinitionList fragment, List<ResponseKPIDefinition> definitions) {
+    private List<FragmentKpiDefinitionViewHolder> viewHolders = new ArrayList<>();
+    protected List<ResponseKPIDefinition> currentDefinitions;
+
+
+    public FragmentKpiDefinitionListAdapter(int layoutCardView, final FragmentKpiDefinitionList fragment, List<ResponseKPIDefinition> currentDefinitions) {
         this.layoutCardView = layoutCardView;
         this.fragment = fragment;
-        this.definitions = definitions;
+        this.currentDefinitions = currentDefinitions;
     }
 
     @Override
@@ -41,7 +46,7 @@ public class FragmentKpiDefinitionListAdapter extends RecyclerView.Adapter<Fragm
 
     @Override
     public void onBindViewHolder(FragmentKpiDefinitionViewHolder viewHolder, int position) {
-        viewHolder.assignData(definitions.get(position));
+        viewHolder.assignData(currentDefinitions.get(position));
     }
 
     @Override
@@ -51,7 +56,7 @@ public class FragmentKpiDefinitionListAdapter extends RecyclerView.Adapter<Fragm
 
     @Override
     public int getItemCount() {
-        return definitions.size();
+        return currentDefinitions.size();
     }
 
     // ** Tap Settings ************************************************************************** //
@@ -75,14 +80,6 @@ public class FragmentKpiDefinitionListAdapter extends RecyclerView.Adapter<Fragm
     public void updateViewHolders() {
         for (FragmentKpiDefinitionViewHolder viewHolder : viewHolders) {
             viewHolder.updateHeadline();
-        }
-    }
-
-    // ** Filter Settings *********************************************************************** //
-    public void handleFilter(String text) {
-        filterText = text.toLowerCase();
-        for (FragmentKpiDefinitionViewHolder viewHolder : viewHolders) {
-            viewHolder.updateVisibility();
         }
     }
 }

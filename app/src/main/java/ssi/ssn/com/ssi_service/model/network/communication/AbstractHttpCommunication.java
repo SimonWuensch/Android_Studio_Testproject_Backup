@@ -9,7 +9,7 @@ import ssi.ssn.com.ssi_service.test.VersionRest_2_0_9_0;
 
 public class AbstractHttpCommunication {
 
-    public static boolean isTestVersion = true;
+    public static boolean isTestVersion = false;
     protected static String PROTOCOLL = "http://";
     protected static int READ_TIME_OUT_INTERVAL = 10000;
     protected static int GET_COMMUNICATION_ERROR = 900;

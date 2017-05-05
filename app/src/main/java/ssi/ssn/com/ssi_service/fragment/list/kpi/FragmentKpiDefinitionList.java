@@ -1,6 +1,5 @@
 package ssi.ssn.com.ssi_service.fragment.list.kpi;
 
-import android.app.Fragment;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -13,17 +12,19 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import ssi.ssn.com.ssi_service.R;
 import ssi.ssn.com.ssi_service.activity.MainActivity;
+import ssi.ssn.com.ssi_service.fragment.AbstractFragment;
 import ssi.ssn.com.ssi_service.model.data.source.Project;
 import ssi.ssn.com.ssi_service.model.data.source.cardobject.CardObjectKPI;
 import ssi.ssn.com.ssi_service.model.database.SQLiteDB;
 import ssi.ssn.com.ssi_service.model.helper.SourceHelper;
 import ssi.ssn.com.ssi_service.model.network.response.kpi.definitions.ResponseKPIDefinition;
 
-public class FragmentKpiDefinitionList extends Fragment {
+public class FragmentKpiDefinitionList extends AbstractFragment {
 
     public static String TAG = FragmentKpiDefinitionList.class.getSimpleName();
 
@@ -33,11 +34,14 @@ public class FragmentKpiDefinitionList extends Fragment {
     private static int RECYCLERVIEW = R.id.fragment_standard_recycler_view;
     private static int CARDVIEW = R.layout.fragment_list_kpi_definition_cardview;
 
-    private Project project;
     private FragmentKpiDefinitionListAdapter adapter;
-    private List<ResponseKPIDefinition> definitions;
-
+    private RecyclerView mRecyclerView;
+    private EditText etFilter;
+    private Button clearButton;
     private View rootView;
+
+    private Project project;
+    private List<ResponseKPIDefinition> definitions;
 
     public static FragmentKpiDefinitionList newInstance(long projectID) {
         if (projectID <= 0) {
@@ -77,7 +81,7 @@ public class FragmentKpiDefinitionList extends Fragment {
             this.adapter = new FragmentKpiDefinitionListAdapter(CARDVIEW, this, definitions);
             Log.d(TAG, "Adapter [" + adapter.getClass().getSimpleName() + "] with CardView [" + getActivity().getResources().getResourceName(CARDVIEW) + "] initialized.");
 
-            RecyclerView mRecyclerView = (RecyclerView) rootView.findViewById(RECYCLERVIEW);
+            mRecyclerView = (RecyclerView) rootView.findViewById(RECYCLERVIEW);
             mRecyclerView.setLayoutManager(new LinearLayoutManager(rootView.getContext()));
             mRecyclerView.setHasFixedSize(true);
             mRecyclerView.setAdapter(adapter);
@@ -128,14 +132,49 @@ public class FragmentKpiDefinitionList extends Fragment {
 
     // ** Filter Settings *********************************************************************** //
     private void handleFilter() {
+        etFilter = (EditText) rootView.findViewById(R.id.fragment_kpi_definition_list_edit_text_filter);
+        super.onTextChangeListener(etFilter);
+        clearButton = (Button) rootView.findViewById(R.id.fragment_kpi_definition_list_button_filter_clear);
         ImageButton ibFilter = (ImageButton) rootView.findViewById(R.id.fragment_kpi_definition_list_image_button_filter);
-        final EditText etFilter = (EditText) rootView.findViewById(R.id.fragment_kpi_definition_list_edit_text_filter);
+
+        clearButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                etFilter.setText("");
+                updateAdapter("");
+            }
+        });
 
         ibFilter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                adapter.handleFilter(etFilter.getText().toString());
+                updateAdapter(etFilter.getText().toString());
             }
         });
     }
+
+    private void updateAdapter(String filterText) {
+        List<ResponseKPIDefinition> currentDefinitions = filterText.isEmpty() ? definitions : getDefinitionsByFilterText(filterText);
+        this.adapter = new FragmentKpiDefinitionListAdapter(CARDVIEW, this, currentDefinitions);
+        mRecyclerView.setAdapter(adapter);
+    }
+
+    private List<ResponseKPIDefinition> getDefinitionsByFilterText(String filterText) {
+        List<ResponseKPIDefinition> currentDefinitions = new ArrayList<>();
+        for (ResponseKPIDefinition definition : definitions) {
+            String key = definition.getKey().toLowerCase();
+            String name = definition.getName() == null ? "" : definition.getName().toLowerCase();
+            if (name.contains(filterText) || key.contains(filterText)) {
+                currentDefinitions.add(definition);
+            }
+        }
+        return currentDefinitions;
+    }
+
+    @Override
+    public void doAfterChanged() {
+        String filterText = etFilter.getText().toString();
+        clearButton.setVisibility(filterText.isEmpty() ? View.GONE : View.VISIBLE);
+    }
+
 }
