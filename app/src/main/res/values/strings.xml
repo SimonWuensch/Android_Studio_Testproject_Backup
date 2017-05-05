@@ -109,6 +109,12 @@
     <string name="fragment_kpi_definition_list_tap_key">Schlüssel</string>
     <string name="fragment_kpi_definition_list_tap_name">Name</string>
     <string name="fragment_kpi_definition_list_filter_hint">Filter nach ...</string>
+    <string name="fragment_kpi_definition_list_type_is_not_known">Kpi Type ist nicht bekannt. Type: </string>
+
+    <!-- Fragment Create KPI Filter -->
+    <string name="fragment_kpi_filter_title">Filter für Kpi anlegen</string>
+    <string name="fragment_create_kpi_filter_text_view_add_kpi_filter">Filter hinzufügen</string>
+    <string name="fragment_create_Kpi_filter_alert_text_filter_already_exists">Es existiert bereits ein Filter mit diesen Eingabewerten.</string>
 
     <!-- Fragment Create Notification Filter -->
     <string name="fragment_notification_filter_title">Filter für Meldung anlegen</string>

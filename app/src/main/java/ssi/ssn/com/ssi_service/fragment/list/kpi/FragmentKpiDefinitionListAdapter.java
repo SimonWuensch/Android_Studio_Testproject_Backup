@@ -9,7 +9,8 @@ import android.view.ViewGroup;
 import java.util.ArrayList;
 import java.util.List;
 
-import ssi.ssn.com.ssi_service.model.network.response.kpi.definitions.ResponseKPIDefinition;
+import ssi.ssn.com.ssi_service.model.data.source.Project;
+import ssi.ssn.com.ssi_service.model.network.response.kpi.definitions.ResponseKpiDefinition;
 
 public class FragmentKpiDefinitionListAdapter extends RecyclerView.Adapter<FragmentKpiDefinitionViewHolder> {
 
@@ -25,12 +26,14 @@ public class FragmentKpiDefinitionListAdapter extends RecyclerView.Adapter<Fragm
     private final FragmentKpiDefinitionList fragment;
     private CardView cardView;
 
+    private Project project;
     private List<FragmentKpiDefinitionViewHolder> viewHolders = new ArrayList<>();
-    protected List<ResponseKPIDefinition> currentDefinitions;
+    protected List<ResponseKpiDefinition> currentDefinitions;
 
 
-    public FragmentKpiDefinitionListAdapter(int layoutCardView, final FragmentKpiDefinitionList fragment, List<ResponseKPIDefinition> currentDefinitions) {
+    public FragmentKpiDefinitionListAdapter(int layoutCardView, Project project, final FragmentKpiDefinitionList fragment, List<ResponseKpiDefinition> currentDefinitions) {
         this.layoutCardView = layoutCardView;
+        this.project = project;
         this.fragment = fragment;
         this.currentDefinitions = currentDefinitions;
     }
@@ -46,7 +49,7 @@ public class FragmentKpiDefinitionListAdapter extends RecyclerView.Adapter<Fragm
 
     @Override
     public void onBindViewHolder(FragmentKpiDefinitionViewHolder viewHolder, int position) {
-        viewHolder.assignData(currentDefinitions.get(position));
+        viewHolder.assignData(project, currentDefinitions.get(position));
     }
 
     @Override

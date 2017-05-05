@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.concurrent.Executors;
 
 import ssi.ssn.com.ssi_service.R;
+import ssi.ssn.com.ssi_service.fragment.create.filter.kpi.FragmentCreateKpiFilter;
 import ssi.ssn.com.ssi_service.fragment.create.filter.notification.FragmentCreateNotificationFilter;
 import ssi.ssn.com.ssi_service.fragment.create.project.FragmentCreateProject;
 import ssi.ssn.com.ssi_service.fragment.list.component.FragmentComponentList;
@@ -21,9 +22,11 @@ import ssi.ssn.com.ssi_service.fragment.list.notificationfilter.FragmentNotifica
 import ssi.ssn.com.ssi_service.fragment.list.project.FragmentProjectList;
 import ssi.ssn.com.ssi_service.fragment.overview.launchboard.FragmentLaunchBoard;
 import ssi.ssn.com.ssi_service.model.data.source.Project;
-import ssi.ssn.com.ssi_service.model.data.source.filter.FilterNotification;
+import ssi.ssn.com.ssi_service.model.data.source.filter.kpi.FilterKpi;
+import ssi.ssn.com.ssi_service.model.data.source.filter.notification.FilterNotification;
 import ssi.ssn.com.ssi_service.model.database.SQLiteDB;
 import ssi.ssn.com.ssi_service.model.network.handler.RequestHandler;
+import ssi.ssn.com.ssi_service.model.network.response.kpi.definitions.ResponseKpiDefinition;
 import ssi.ssn.com.ssi_service.model.network.response.notification.objects.ResponseNotification;
 import ssi.ssn.com.ssi_service.notification_android.AndroidNotificationHelper;
 
@@ -256,5 +259,29 @@ public class AbstractActivity extends Activity {
                 .addToBackStack(FragmentKpiDefinitionList.TAG)
                 .commit();
         Log.i(getClass().getSimpleName(), "Show Fragment [" + FragmentKpiDefinitionList.TAG + "]. + Project ID: " + projectID);
+    }
+
+    public void showCreateKpiFilterFragment(int projectID, ResponseKpiDefinition definition) {
+        FragmentCreateKpiFilter fragmentCreateKpiFilter = FragmentCreateKpiFilter.newInstance(projectID, definition);
+        getFragmentManager()
+                .beginTransaction()
+                .replace(R.id.activity_main_fragment_container,
+                        fragmentCreateKpiFilter,
+                        FragmentCreateKpiFilter.TAG)
+                .addToBackStack(FragmentCreateKpiFilter.TAG)
+                .commit();
+        Log.i(getClass().getSimpleName(), "Show Fragment [" + FragmentCreateKpiFilter.TAG + "]. + Project ID: " + projectID);
+    }
+
+    public void showCreateKpiFilterFragment(int projectID, FilterKpi filter) {
+        FragmentCreateKpiFilter fragmentCreateKpiFilter = FragmentCreateKpiFilter.newInstance(projectID, filter);
+        getFragmentManager()
+                .beginTransaction()
+                .replace(R.id.activity_main_fragment_container,
+                        fragmentCreateKpiFilter,
+                        FragmentCreateKpiFilter.TAG)
+                .addToBackStack(FragmentCreateKpiFilter.TAG)
+                .commit();
+        Log.i(getClass().getSimpleName(), "Show Fragment [" + FragmentCreateKpiFilter.TAG + "]. + Project ID: " + projectID + ", Filter: " + filter.identity());
     }
 }

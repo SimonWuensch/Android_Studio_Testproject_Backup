@@ -19,10 +19,10 @@ import ssi.ssn.com.ssi_service.R;
 import ssi.ssn.com.ssi_service.activity.MainActivity;
 import ssi.ssn.com.ssi_service.fragment.AbstractFragment;
 import ssi.ssn.com.ssi_service.model.data.source.Project;
-import ssi.ssn.com.ssi_service.model.data.source.cardobject.CardObjectKPI;
+import ssi.ssn.com.ssi_service.model.data.source.cardobject.CardObjectKpi;
 import ssi.ssn.com.ssi_service.model.database.SQLiteDB;
 import ssi.ssn.com.ssi_service.model.helper.SourceHelper;
-import ssi.ssn.com.ssi_service.model.network.response.kpi.definitions.ResponseKPIDefinition;
+import ssi.ssn.com.ssi_service.model.network.response.kpi.definitions.ResponseKpiDefinition;
 
 public class FragmentKpiDefinitionList extends AbstractFragment {
 
@@ -41,7 +41,7 @@ public class FragmentKpiDefinitionList extends AbstractFragment {
     private View rootView;
 
     private Project project;
-    private List<ResponseKPIDefinition> definitions;
+    private List<ResponseKpiDefinition> definitions;
 
     public static FragmentKpiDefinitionList newInstance(long projectID) {
         if (projectID <= 0) {
@@ -62,8 +62,8 @@ public class FragmentKpiDefinitionList extends AbstractFragment {
         long projectID = getArguments().getLong(PROJECT_ID);
         SQLiteDB sqLiteDB = ((MainActivity) getActivity()).getSQLiteDB();
         project = sqLiteDB.project().getByID(projectID);
-        CardObjectKPI.init(sqLiteDB, project);
-        definitions = project.getCardObjectKPI().getDefinitions().getDefinitions();
+        CardObjectKpi.init(sqLiteDB, project);
+        definitions = project.getCardObjectKpi().getDefinitions().getDefinitions();
     }
 
     @Override
@@ -78,7 +78,7 @@ public class FragmentKpiDefinitionList extends AbstractFragment {
             rootView = inflater.inflate(FRAGMENT_LAYOUT, container, false);
             Log.d(TAG, "Fragment inflated [" + getActivity().getResources().getResourceName(FRAGMENT_LAYOUT) + "].");
 
-            this.adapter = new FragmentKpiDefinitionListAdapter(CARDVIEW, this, definitions);
+            this.adapter = new FragmentKpiDefinitionListAdapter(CARDVIEW, project, this, definitions);
             Log.d(TAG, "Adapter [" + adapter.getClass().getSimpleName() + "] with CardView [" + getActivity().getResources().getResourceName(CARDVIEW) + "] initialized.");
 
             mRecyclerView = (RecyclerView) rootView.findViewById(RECYCLERVIEW);
@@ -154,14 +154,14 @@ public class FragmentKpiDefinitionList extends AbstractFragment {
     }
 
     private void updateAdapter(String filterText) {
-        List<ResponseKPIDefinition> currentDefinitions = filterText.isEmpty() ? definitions : getDefinitionsByFilterText(filterText);
-        this.adapter = new FragmentKpiDefinitionListAdapter(CARDVIEW, this, currentDefinitions);
+        List<ResponseKpiDefinition> currentDefinitions = filterText.isEmpty() ? definitions : getDefinitionsByFilterText(filterText);
+        this.adapter = new FragmentKpiDefinitionListAdapter(CARDVIEW, project, this, currentDefinitions);
         mRecyclerView.setAdapter(adapter);
     }
 
-    private List<ResponseKPIDefinition> getDefinitionsByFilterText(String filterText) {
-        List<ResponseKPIDefinition> currentDefinitions = new ArrayList<>();
-        for (ResponseKPIDefinition definition : definitions) {
+    private List<ResponseKpiDefinition> getDefinitionsByFilterText(String filterText) {
+        List<ResponseKpiDefinition> currentDefinitions = new ArrayList<>();
+        for (ResponseKpiDefinition definition : definitions) {
             String key = definition.getKey().toLowerCase();
             String name = definition.getName() == null ? "" : definition.getName().toLowerCase();
             if (name.contains(filterText) || key.contains(filterText)) {

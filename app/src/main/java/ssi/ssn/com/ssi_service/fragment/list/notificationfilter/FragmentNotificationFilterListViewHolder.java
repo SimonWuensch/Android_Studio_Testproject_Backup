@@ -13,7 +13,7 @@ import java.util.Date;
 import ssi.ssn.com.ssi_service.R;
 import ssi.ssn.com.ssi_service.activity.MainActivity;
 import ssi.ssn.com.ssi_service.model.data.source.Project;
-import ssi.ssn.com.ssi_service.model.data.source.filter.FilterNotification;
+import ssi.ssn.com.ssi_service.model.data.source.filter.notification.FilterNotification;
 import ssi.ssn.com.ssi_service.model.detector.DetectorCardObjectNotification;
 import ssi.ssn.com.ssi_service.model.helper.FormatHelper;
 import ssi.ssn.com.ssi_service.model.helper.ObservationHelper;

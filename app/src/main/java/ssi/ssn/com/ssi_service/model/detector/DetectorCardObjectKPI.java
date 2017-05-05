@@ -4,8 +4,8 @@ import android.util.Log;
 
 import ssi.ssn.com.ssi_service.model.data.source.Project;
 import ssi.ssn.com.ssi_service.model.data.source.Status;
-import ssi.ssn.com.ssi_service.model.data.source.cardobject.CardObjectKPI;
-import ssi.ssn.com.ssi_service.model.data.source.filter.FilterKPI;
+import ssi.ssn.com.ssi_service.model.data.source.cardobject.CardObjectKpi;
+import ssi.ssn.com.ssi_service.model.data.source.filter.kpi.FilterKpi;
 import ssi.ssn.com.ssi_service.model.database.SQLiteDB;
 import ssi.ssn.com.ssi_service.model.helper.JsonHelper;
 import ssi.ssn.com.ssi_service.model.network.handler.RequestHandler;
@@ -16,7 +16,7 @@ public class DetectorCardObjectKPI {
     private static String TAG = DetectorCardObjectKPI.class.getSimpleName();
 
     public static void loadKpiDefinitionsFromNetwork(RequestHandler requestHandler, Project project) {
-        CardObjectKPI cardObject = project.getCardObjectKPI();
+        CardObjectKpi cardObject = project.getCardObjectKpi();
         Log.d(TAG + " Project ID: " + cardObject.get_id_project(), cardObject.getClass().getSimpleName() + " start load card object kpi definitions information from network...");
         requestHandler.sendRequestLogin(project);
         requestHandler.sendRequestKPIDefinitions(project);
@@ -32,13 +32,13 @@ public class DetectorCardObjectKPI {
     }
 
     public static void loadAllKpiMeasurementsByAllFilters(RequestHandler requestHandler, Project project) {
-        CardObjectKPI cardObject = project.getCardObjectKPI();
-        for (FilterKPI filter : cardObject.getKpiFilters()) {
+        CardObjectKpi cardObject = project.getCardObjectKpi();
+        for (FilterKpi filter : cardObject.getKpiFilters()) {
             loadKpiMeasurementByFilter(requestHandler, project, filter);
         }
     }
 
-    public static void loadKpiMeasurementByFilter(RequestHandler requestHandler, Project project, FilterKPI filter) {
+    public static void loadKpiMeasurementByFilter(RequestHandler requestHandler, Project project, FilterKpi filter) {
         //TODO Card Object Kpi -> Load Kpi Measurement By Filter from Network
         /*CardObjectKPI cardObject = project.getCardObjectKPI();
         Log.d(TAG + " Project ID: " + cardObject.get_id_project(), cardObject.getClass().getSimpleName() + " start load card object kpi filter information from network...");
@@ -56,7 +56,7 @@ public class DetectorCardObjectKPI {
         Log.d(TAG + " Project ID: " + cardObject.get_id_project() + " Filter: " + filter.identity(), "Response notification table size is [" + filter.getNotificationTable().getCount() + "], [" + filter.getNotificationTable().getData() + "]");*/
     }
 
-    public static void detectCardStatus(SQLiteDB sqLiteDB, CardObjectKPI cardObject) {
+    public static void detectCardStatus(SQLiteDB sqLiteDB, CardObjectKpi cardObject) {
         Log.d(TAG + " Project ID: " + cardObject.get_id_project(), cardObject.getClass().getSimpleName() + " start detecting card object kpi status...");
         Status overAllState = Status.OK;
         if (cardObject.getDefinitions() == null) {
@@ -64,7 +64,7 @@ public class DetectorCardObjectKPI {
         } else if (cardObject.getKpiFilters().isEmpty()) {
             overAllState = Status.OK;
         } else {
-            for (FilterKPI filter : cardObject.getKpiFilters()) {
+            for (FilterKpi filter : cardObject.getKpiFilters()) {
                 //TODO CARD Object Kpi -> Filter status check
                 /*if (filter.getActiveTimeReachedNotificationTable().getCount() > 0) {
                     overAllState = Status.ERROR;

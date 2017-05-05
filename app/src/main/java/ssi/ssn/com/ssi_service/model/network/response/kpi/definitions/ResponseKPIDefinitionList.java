@@ -7,16 +7,16 @@ import ssi.ssn.com.ssi_service.model.network.response.AbstractResponse;
 
 public class ResponseKPIDefinitionList extends AbstractResponse {
 
-    private List<ResponseKPIDefinition> definitions;
+    private List<ResponseKpiDefinition> definitions;
 
     public ResponseKPIDefinitionList() {
     }
 
-    public List<ResponseKPIDefinition> getDefinitions() {
+    public List<ResponseKpiDefinition> getDefinitions() {
         return definitions;
     }
 
-    public void setDefinitions(List<ResponseKPIDefinition> definitions) {
+    public void setDefinitions(List<ResponseKpiDefinition> definitions) {
         this.definitions = definitions;
     }
 }

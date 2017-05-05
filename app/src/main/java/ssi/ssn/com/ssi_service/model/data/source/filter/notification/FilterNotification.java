@@ -1,4 +1,4 @@
-package ssi.ssn.com.ssi_service.model.data.source.filter;
+package ssi.ssn.com.ssi_service.model.data.source.filter.notification;
 
 import android.util.Log;
 

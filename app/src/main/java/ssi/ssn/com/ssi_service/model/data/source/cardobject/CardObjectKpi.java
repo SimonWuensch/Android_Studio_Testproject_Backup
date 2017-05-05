@@ -14,7 +14,7 @@ import ssi.ssn.com.ssi_service.activity.MainActivity;
 import ssi.ssn.com.ssi_service.fragment.list.notification.FragmentNotificationListNotification;
 import ssi.ssn.com.ssi_service.model.data.source.Project;
 import ssi.ssn.com.ssi_service.model.data.source.Status;
-import ssi.ssn.com.ssi_service.model.data.source.filter.FilterKPI;
+import ssi.ssn.com.ssi_service.model.data.source.filter.kpi.FilterKpi;
 import ssi.ssn.com.ssi_service.model.database.DBCardObject;
 import ssi.ssn.com.ssi_service.model.database.DBCardObjectKPI;
 import ssi.ssn.com.ssi_service.model.database.SQLiteDB;
@@ -24,33 +24,33 @@ import ssi.ssn.com.ssi_service.model.network.handler.RequestHandler;
 import ssi.ssn.com.ssi_service.model.network.response.kpi.definitions.ResponseKPIDefinitionList;
 import ssi.ssn.com.ssi_service.notification_android.AbstractAndroidNotification;
 
-public class CardObjectKPI extends AbstractCardObject {
+public class CardObjectKpi extends AbstractCardObject {
 
-    private static String TAG = CardObjectKPI.class.getSimpleName();
+    private static String TAG = CardObjectKpi.class.getSimpleName();
 
     private static int NOTIFICATION_ID = 4;
 
     private ResponseKPIDefinitionList definitions;
-    private List<FilterKPI> kpiFilters = new LinkedList<>();
+    private List<FilterKpi> kpiFilters = new LinkedList<>();
     private int filterCount = 0;
 
-    public CardObjectKPI(Project project) {
+    public CardObjectKpi(Project project) {
         super(project);
         this.title = R.string.fragment_launch_board_card_kpi;
         this.icon = R.drawable.icon_kpi;
     }
 
-    public CardObjectKPI() {
+    public CardObjectKpi() {
     }
 
     public static void init(SQLiteDB sqLiteDB, Project project) {
         DBCardObjectKPI dbCardObject = sqLiteDB.cardObjectKPI();
         if (dbCardObject.getCount(project.get_id()) == 0) {
-            CardObjectKPI cardObject = new CardObjectKPI(project);
-            project.setCardObjectKPI(cardObject);
+            CardObjectKpi cardObject = new CardObjectKpi(project);
+            project.setCardObjectKpi(cardObject);
             dbCardObject.add(cardObject);
         } else {
-            project.setCardObjectKPI(dbCardObject.getByProjectID(project.get_id()));
+            project.setCardObjectKpi(dbCardObject.getByProjectID(project.get_id()));
         }
     }
 
@@ -78,16 +78,16 @@ public class CardObjectKPI extends AbstractCardObject {
         this.definitions = definitions;
     }
 
-    public List<FilterKPI> getKpiFilters() {
+    public List<FilterKpi> getKpiFilters() {
         return kpiFilters;
     }
 
-    public void setKpiFilters(List<FilterKPI> kpiFilters) {
+    public void setKpiFilters(List<FilterKpi> kpiFilters) {
         this.kpiFilters = kpiFilters;
     }
 
-    public FilterKPI getFilterByID(int filterID) {
-        for (FilterKPI filter : kpiFilters) {
+    public FilterKpi getFilterByID(int filterID) {
+        for (FilterKpi filter : kpiFilters) {
             if (filter.getId() == filterID) {
                 return filter;
             }
@@ -96,7 +96,7 @@ public class CardObjectKPI extends AbstractCardObject {
     }
 
     public void removeFilterByID(int filterID) {
-        for (FilterKPI filter : kpiFilters) {
+        for (FilterKpi filter : kpiFilters) {
             if (filter.getId() == filterID) {
                 kpiFilters.remove(filter);
                 return;
@@ -105,7 +105,7 @@ public class CardObjectKPI extends AbstractCardObject {
         throw new NullPointerException("No KPI filter found with the id [" + filterID + "]");
     }
 
-    public boolean addKPIFilter(SQLiteDB sqLiteDB, FilterKPI newFilter) {
+    public boolean addKpiFilter(SQLiteDB sqLiteDB, FilterKpi newFilter) {
         if (!isFilterExists(newFilter)) {
             newFilter.setId(filterCount);
             filterCount++;
@@ -115,12 +115,12 @@ public class CardObjectKPI extends AbstractCardObject {
         return false;
     }
 
-    public boolean updateKPIFilter(SQLiteDB sqLiteDB, FilterKPI filter) {
+    public boolean updateKpiFilter(SQLiteDB sqLiteDB, FilterKpi filter) {
         if (isFilterExists(filter)) {
             return false;
 
         }
-        FilterKPI oldFilter = kpiFilters.get(filter.getId());
+        FilterKpi oldFilter = kpiFilters.get(filter.getId());
         //TODO CARD Object KPI -> Update Filter
         /*oldFilter.setNote(filter.getNote());
         oldFilter.setActiveTime(filter.getActiveTime());
@@ -131,7 +131,7 @@ public class CardObjectKPI extends AbstractCardObject {
         return true;
     }
 
-    public boolean removeNotificationFilter(SQLiteDB sqLiteDB, FilterKPI filter) {
+    public boolean removeKpiFilter(SQLiteDB sqLiteDB, FilterKpi filter) {
         if (!isFilterExists(filter)) {
             return false;
         }
@@ -139,8 +139,8 @@ public class CardObjectKPI extends AbstractCardObject {
         return sqLiteDB.cardObjectKPI().update(this);
     }
 
-    private boolean isFilterExists(FilterKPI newFilter) {
-        for (FilterKPI oldFilter : kpiFilters) {
+    private boolean isFilterExists(FilterKpi newFilter) {
+        for (FilterKpi oldFilter : kpiFilters) {
             //TODO CARD Object KPI Filter -> Is Filter Exists if clause
             if (false) {
                 return true;

@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_marginLeft="19dp"
+        android:layout_marginRight="19dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/fragment_create_kpi_filter_stub_average_text_view_average"
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:text="average"
+                android:gravity="center|left"
+                android:textAppearance="?android:attr/textAppearanceMedium"/>
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center">
+
+                <Spinner
+                    android:id="@+id/fragment_create_kpi_filter_stub_average_spinner_verification_object_average"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:background="@color/defaultColor" />
+
+            </RelativeLayout>
+
+            <EditText
+                android:id="@+id/fragment_create_kpi_filter_stub_average_edit_text_average"
+                android:layout_width="1dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1.6"
+                android:gravity="center"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/fragment_create_kpi_filter_stub_average_text_view_numSamples"
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:text="numSamples"
+                android:gravity="center|left"
+                android:textAppearance="?android:attr/textAppearanceMedium"/>
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center">
+
+                <Spinner
+                    android:id="@+id/fragment_create_kpi_filter_stub_average_spinner_verification_object_numSamples"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:background="@color/defaultColor" />
+
+            </RelativeLayout>
+
+            <EditText
+                android:id="@+id/fragment_create_kpi_filter_stub_average_edit_text_numSamples"
+                android:layout_width="1dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1.6"
+                android:gravity="center"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/fragment_create_kpi_filter_stub_average_text_view_min"
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:text="minimum"
+                android:gravity="center|left"
+                android:textAppearance="?android:attr/textAppearanceMedium"/>
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center">
+
+                <Spinner
+                    android:id="@+id/fragment_create_kpi_filter_stub_average_spinner_verification_object_min"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:background="@color/defaultColor" />
+
+            </RelativeLayout>
+
+            <EditText
+                android:id="@+id/fragment_create_kpi_filter_stub_average_edit_text_min"
+                android:layout_width="1dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1.6"
+                android:gravity="center"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/fragment_create_kpi_filter_stub_average_text_view_max"
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:text="maximum"
+                android:gravity="center|left"
+                android:textAppearance="?android:attr/textAppearanceMedium"/>
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center">
+
+                <Spinner
+                    android:id="@+id/fragment_create_kpi_filter_stub_average_spinner_verification_object_max"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:background="@color/defaultColor" />
+
+            </RelativeLayout>
+
+            <EditText
+                android:id="@+id/fragment_create_kpi_filter_stub_average_edit_text_max"
+                android:layout_width="1dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1.6"
+                android:gravity="center"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/fragment_create_kpi_filter_stub_average_text_view_stdDev"
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:text="stdDev"
+                android:gravity="center|left"
+                android:textAppearance="?android:attr/textAppearanceMedium"/>
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center">
+
+                <Spinner
+                    android:id="@+id/fragment_create_kpi_filter_stub_average_spinner_verification_object_stdDev"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:background="@color/defaultColor" />
+
+            </RelativeLayout>
+
+            <EditText
+                android:id="@+id/fragment_create_kpi_filter_stub_average_edit_text_stdDev"
+                android:layout_width="1dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1.6"
+                android:gravity="center"/>
+        </LinearLayout>
+
+    </LinearLayout>
+
+</ScrollView>

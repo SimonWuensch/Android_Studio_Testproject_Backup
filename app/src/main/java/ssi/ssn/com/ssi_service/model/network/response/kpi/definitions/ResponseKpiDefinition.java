@@ -1,6 +1,6 @@
 package ssi.ssn.com.ssi_service.model.network.response.kpi.definitions;
 
-public class ResponseKPIDefinition {
+public class ResponseKpiDefinition {
 
     private String key;
     private String provider;
@@ -15,7 +15,7 @@ public class ResponseKPIDefinition {
     private int removeAfter;
     private String[] spectrumCategories;
 
-    public ResponseKPIDefinition() {
+    public ResponseKpiDefinition() {
     }
 
     public String getKey() {

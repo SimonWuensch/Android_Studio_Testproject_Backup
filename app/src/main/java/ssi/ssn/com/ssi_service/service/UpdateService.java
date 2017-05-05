@@ -19,7 +19,7 @@ import ssi.ssn.com.ssi_service.fragment.overview.launchboard.FragmentLaunchBoard
 import ssi.ssn.com.ssi_service.model.data.source.Project;
 import ssi.ssn.com.ssi_service.model.data.source.cardobject.AbstractCardObject;
 import ssi.ssn.com.ssi_service.model.data.source.cardobject.CardObjectNotification;
-import ssi.ssn.com.ssi_service.model.data.source.filter.FilterNotification;
+import ssi.ssn.com.ssi_service.model.data.source.filter.notification.FilterNotification;
 import ssi.ssn.com.ssi_service.model.database.SQLiteDB;
 import ssi.ssn.com.ssi_service.model.helper.FormatHelper;
 import ssi.ssn.com.ssi_service.model.helper.NetworkConnectionChecker;

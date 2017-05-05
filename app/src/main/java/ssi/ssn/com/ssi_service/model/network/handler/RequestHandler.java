@@ -5,7 +5,7 @@ import java.util.Map;
 import java.util.concurrent.ExecutorService;
 
 import ssi.ssn.com.ssi_service.model.data.source.Project;
-import ssi.ssn.com.ssi_service.model.data.source.filter.FilterNotification;
+import ssi.ssn.com.ssi_service.model.data.source.filter.notification.FilterNotification;
 import ssi.ssn.com.ssi_service.model.network.request.RequestApplication;
 import ssi.ssn.com.ssi_service.model.network.request.RequestApplicationConfig;
 import ssi.ssn.com.ssi_service.model.network.request.RequestComponent;

@@ -5,7 +5,7 @@ import android.util.Log;
 import ssi.ssn.com.ssi_service.model.data.source.Project;
 import ssi.ssn.com.ssi_service.model.data.source.Status;
 import ssi.ssn.com.ssi_service.model.data.source.cardobject.CardObjectNotification;
-import ssi.ssn.com.ssi_service.model.data.source.filter.FilterNotification;
+import ssi.ssn.com.ssi_service.model.data.source.filter.notification.FilterNotification;
 import ssi.ssn.com.ssi_service.model.database.SQLiteDB;
 import ssi.ssn.com.ssi_service.model.helper.JsonHelper;
 import ssi.ssn.com.ssi_service.model.network.handler.RequestHandler;

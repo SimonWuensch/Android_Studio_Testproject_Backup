@@ -20,7 +20,7 @@ import ssi.ssn.com.ssi_service.fragment.create.CreateUpdateDeleteStatus;
 import ssi.ssn.com.ssi_service.fragment.list.notificationfilter.FragmentNotificationFilterList;
 import ssi.ssn.com.ssi_service.model.data.source.Project;
 import ssi.ssn.com.ssi_service.model.data.source.cardobject.CardObjectNotification;
-import ssi.ssn.com.ssi_service.model.data.source.filter.FilterNotification;
+import ssi.ssn.com.ssi_service.model.data.source.filter.notification.FilterNotification;
 import ssi.ssn.com.ssi_service.model.helper.FormatHelper;
 import ssi.ssn.com.ssi_service.model.helper.JsonHelper;
 import ssi.ssn.com.ssi_service.model.helper.ObservationHelper;

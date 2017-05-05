@@ -14,7 +14,7 @@ import ssi.ssn.com.ssi_service.activity.MainActivity;
 import ssi.ssn.com.ssi_service.fragment.list.notification.FragmentNotificationListNotification;
 import ssi.ssn.com.ssi_service.model.data.source.Project;
 import ssi.ssn.com.ssi_service.model.data.source.Status;
-import ssi.ssn.com.ssi_service.model.data.source.filter.FilterNotification;
+import ssi.ssn.com.ssi_service.model.data.source.filter.notification.FilterNotification;
 import ssi.ssn.com.ssi_service.model.database.DBCardObject;
 import ssi.ssn.com.ssi_service.model.database.DBCardObjectNotification;
 import ssi.ssn.com.ssi_service.model.database.SQLiteDB;

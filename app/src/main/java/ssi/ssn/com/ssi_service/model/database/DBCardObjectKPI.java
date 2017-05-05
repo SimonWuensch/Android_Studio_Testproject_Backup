@@ -11,7 +11,7 @@ import android.util.Log;
 
 import ssi.ssn.com.ssi_service.model.data.source.Status;
 import ssi.ssn.com.ssi_service.model.data.source.cardobject.AbstractCardObject;
-import ssi.ssn.com.ssi_service.model.data.source.cardobject.CardObjectKPI;
+import ssi.ssn.com.ssi_service.model.data.source.cardobject.CardObjectKpi;
 import ssi.ssn.com.ssi_service.model.helper.JsonHelper;
 
 public class DBCardObjectKPI extends SQLiteOpenHelper implements DBCardObject, DBObject {
@@ -94,7 +94,7 @@ public class DBCardObjectKPI extends SQLiteOpenHelper implements DBCardObject, D
 
     // ** GET *********************************************************************************** //
     @Override
-    public CardObjectKPI getByProjectID(long id) {
+    public CardObjectKpi getByProjectID(long id) {
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery("SELECT * " +
                 "FROM " + TABLE_KPI + " " +
@@ -104,7 +104,7 @@ public class DBCardObjectKPI extends SQLiteOpenHelper implements DBCardObject, D
             cursor.moveToFirst();
 
         String json = cursor.getString(cursor.getColumnIndex(JSON_KPI));
-        CardObjectKPI cardObject = (CardObjectKPI) JsonHelper.fromJsonGeneric(CardObjectKPI.class, json);
+        CardObjectKpi cardObject = (CardObjectKpi) JsonHelper.fromJsonGeneric(CardObjectKpi.class, json);
         cardObject.set_id(cursor.getInt(cursor.getColumnIndex(_ID)));
         cardObject.set_id_project(cursor.getInt(cursor.getColumnIndex(_ID_PROJECT)));
         cardObject.setObservation(cursor.getInt(cursor.getColumnIndex(IS_OBSERVATION)) == 1);

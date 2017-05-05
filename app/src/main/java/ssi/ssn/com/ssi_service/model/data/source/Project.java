@@ -7,7 +7,7 @@ import java.util.List;
 
 import ssi.ssn.com.ssi_service.model.data.source.cardobject.AbstractCardObject;
 import ssi.ssn.com.ssi_service.model.data.source.cardobject.CardObjectComponent;
-import ssi.ssn.com.ssi_service.model.data.source.cardobject.CardObjectKPI;
+import ssi.ssn.com.ssi_service.model.data.source.cardobject.CardObjectKpi;
 import ssi.ssn.com.ssi_service.model.data.source.cardobject.CardObjectModule;
 import ssi.ssn.com.ssi_service.model.data.source.cardobject.CardObjectNotification;
 import ssi.ssn.com.ssi_service.model.database.SQLiteDB;
@@ -42,7 +42,7 @@ public class Project extends NetworkProject {
     @JsonIgnore
     private CardObjectNotification cardObjectNotification;
     @JsonIgnore
-    private CardObjectKPI cardObjectKPI;
+    private CardObjectKpi cardObjectKpi;
 
     public Project(String serverAddress, String userName, String password, long observationInterval) {
         this.serverAddress = serverAddress;
@@ -205,13 +205,13 @@ public class Project extends NetworkProject {
     }
 
     @JsonIgnore
-    public CardObjectKPI getCardObjectKPI() {
-        return cardObjectKPI;
+    public CardObjectKpi getCardObjectKpi() {
+        return cardObjectKpi;
     }
 
     @JsonIgnore
-    public void setCardObjectKPI(CardObjectKPI cardObjectKPI) {
-        this.cardObjectKPI = cardObjectKPI;
+    public void setCardObjectKpi(CardObjectKpi cardObjectKpi) {
+        this.cardObjectKpi = cardObjectKpi;
     }
 
     @JsonIgnore
@@ -221,7 +221,7 @@ public class Project extends NetworkProject {
                 add(cardObjectModule);
                 add(cardObjectComponent);
                 add(cardObjectNotification);
-                add(cardObjectKPI);
+                add(cardObjectKpi);
             }
         };
     }
@@ -230,7 +230,7 @@ public class Project extends NetworkProject {
         CardObjectModule.init(sqLiteDB, this);
         CardObjectComponent.init(sqLiteDB, this);
         cardObjectNotification.init(sqLiteDB, this);
-        cardObjectKPI.init(sqLiteDB, this);
+        cardObjectKpi.init(sqLiteDB, this);
     }
 
     // ** Others ******************************************************************************** //
