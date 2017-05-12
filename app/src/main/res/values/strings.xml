@@ -116,6 +116,16 @@
     <string name="fragment_create_kpi_filter_text_view_add_kpi_filter">Filter hinzufügen</string>
     <string name="fragment_create_Kpi_filter_alert_text_filter_already_exists">Es existiert bereits ein Filter mit diesen Eingabewerten.</string>
 
+    <!-- Fragment KPI Filter Average -->
+    <string name="fragment_create_kpi_filter_average_text_view_average">average</string>
+    <string name="fragment_create_kpi_filter_average_text_view_num_samples">numSamples</string>
+    <string name="fragment_create_kpi_filter_average_text_view_min">minimum</string>
+    <string name="fragment_create_kpi_filter_average_text_view_max">maximum</string>
+    <string name="fragment_create_kpi_filter_average_text_view_std_dev">stdDev</string>
+
+    <!-- Fragment KPI Filter Singular Double -->
+    <string name="fragment_create_kpi_filter_singular_long_text_view_value">value</string>
+
     <!-- Fragment Create Notification Filter -->
     <string name="fragment_notification_filter_title">Filter für Meldung anlegen</string>
     <string name="fragment_create_notification_filter_text_view_add_notification_filter">Filter hinzufügen</string>

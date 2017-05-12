@@ -21,7 +21,7 @@ import ssi.ssn.com.ssi_service.model.database.SQLiteDB;
 import ssi.ssn.com.ssi_service.model.detector.DetectorCardObjectKPI;
 import ssi.ssn.com.ssi_service.model.helper.SourceHelper;
 import ssi.ssn.com.ssi_service.model.network.handler.RequestHandler;
-import ssi.ssn.com.ssi_service.model.network.response.kpi.definitions.ResponseKPIDefinitionList;
+import ssi.ssn.com.ssi_service.model.network.response.kpi.definitions.ResponseKpiDefinitionList;
 import ssi.ssn.com.ssi_service.notification_android.AbstractAndroidNotification;
 
 public class CardObjectKpi extends AbstractCardObject {
@@ -30,7 +30,7 @@ public class CardObjectKpi extends AbstractCardObject {
 
     private static int NOTIFICATION_ID = 4;
 
-    private ResponseKPIDefinitionList definitions;
+    private ResponseKpiDefinitionList definitions;
     private List<FilterKpi> kpiFilters = new LinkedList<>();
     private int filterCount = 0;
 
@@ -70,11 +70,11 @@ public class CardObjectKpi extends AbstractCardObject {
         this.filterCount = filterCount;
     }
 
-    public ResponseKPIDefinitionList getDefinitions() {
+    public ResponseKpiDefinitionList getDefinitions() {
         return definitions;
     }
 
-    public void setDefinitions(ResponseKPIDefinitionList definitions) {
+    public void setDefinitions(ResponseKpiDefinitionList definitions) {
         this.definitions = definitions;
     }
 
@@ -106,7 +106,7 @@ public class CardObjectKpi extends AbstractCardObject {
     }
 
     public boolean addKpiFilter(SQLiteDB sqLiteDB, FilterKpi newFilter) {
-        if (!isFilterExists(newFilter)) {
+        if (!isFilterExisting(newFilter)) {
             newFilter.setId(filterCount);
             filterCount++;
             kpiFilters.add(newFilter);
@@ -116,33 +116,38 @@ public class CardObjectKpi extends AbstractCardObject {
     }
 
     public boolean updateKpiFilter(SQLiteDB sqLiteDB, FilterKpi filter) {
-        if (isFilterExists(filter)) {
+        if (!isFilterExistingByID(filter)) {
             return false;
 
         }
         FilterKpi oldFilter = kpiFilters.get(filter.getId());
-        //TODO CARD Object KPI -> Update Filter
-        /*oldFilter.setNote(filter.getNote());
-        oldFilter.setActiveTime(filter.getActiveTime());
-        oldFilter.setSeverity(filter.getSeverity());
-        oldFilter.setText(filter.getText());
-        */
+        oldFilter.setSignification(filter.getSignification());
+        oldFilter.setKpiType(filter.getKpiType());
         sqLiteDB.cardObjectKPI().update(this);
         return true;
     }
 
     public boolean removeKpiFilter(SQLiteDB sqLiteDB, FilterKpi filter) {
-        if (!isFilterExists(filter)) {
+        if (!isFilterExistingByID(filter)) {
             return false;
         }
         removeFilterByID(filter.getId());
         return sqLiteDB.cardObjectKPI().update(this);
     }
 
-    private boolean isFilterExists(FilterKpi newFilter) {
+    private boolean isFilterExisting(FilterKpi newFilter) {
         for (FilterKpi oldFilter : kpiFilters) {
-            //TODO CARD Object KPI Filter -> Is Filter Exists if clause
             if (false) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+
+    private boolean isFilterExistingByID(FilterKpi newFilter) {
+        for (FilterKpi oldFilter : kpiFilters) {
+            if (oldFilter.getId() == newFilter.getId()) {
                 return true;
             }
         }
@@ -170,7 +175,8 @@ public class CardObjectKpi extends AbstractCardObject {
         if (getStatus().equals(Status.NOT_AVAILABLE)) {
             Toast.makeText(activity, SourceHelper.getString(activity, R.string.fragment_launch_board_error_kpi), Toast.LENGTH_SHORT).show();
         } else {
-            activity.showKPIFilterListFragment(project.get_id());
+            //activity.showKPIFilterListFragment(project.get_id());
+            activity.showKpiDefinitionList(project.get_id());
             if (getKpiFilters().isEmpty()) {
                 activity.showKpiDefinitionList(project.get_id());
             }

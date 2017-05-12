@@ -9,7 +9,7 @@ import ssi.ssn.com.ssi_service.model.data.source.filter.kpi.FilterKpi;
 import ssi.ssn.com.ssi_service.model.database.SQLiteDB;
 import ssi.ssn.com.ssi_service.model.helper.JsonHelper;
 import ssi.ssn.com.ssi_service.model.network.handler.RequestHandler;
-import ssi.ssn.com.ssi_service.model.network.response.kpi.definitions.ResponseKPIDefinitionList;
+import ssi.ssn.com.ssi_service.model.network.response.kpi.definitions.ResponseKpiDefinitionList;
 
 public class DetectorCardObjectKPI {
 
@@ -26,7 +26,7 @@ public class DetectorCardObjectKPI {
             return;
         }
 
-        ResponseKPIDefinitionList definitions = (ResponseKPIDefinitionList) JsonHelper.fromJsonGeneric(ResponseKPIDefinitionList.class, project.getDefaultResponseKPIDefinitionList().getResult());
+        ResponseKpiDefinitionList definitions = (ResponseKpiDefinitionList) JsonHelper.fromJsonGeneric(ResponseKpiDefinitionList.class, project.getDefaultResponseKPIDefinitionList().getResult());
         cardObject.setDefinitions(definitions);
         Log.d(TAG + " Project ID: " + cardObject.get_id_project(), "Response kpi definition list size is [" + cardObject.getDefinitions().getDefinitions().size() + "], [" + cardObject.getDefinitions().getDefinitions() + "]");
     }

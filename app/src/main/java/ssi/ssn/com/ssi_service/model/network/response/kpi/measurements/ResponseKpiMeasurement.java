@@ -2,7 +2,7 @@ package ssi.ssn.com.ssi_service.model.network.response.kpi.measurements;
 
 import ssi.ssn.com.ssi_service.model.network.response.AbstractResponse;
 
-public class ResponseKPIMeasurement extends AbstractResponse {
+public class ResponseKpiMeasurement extends AbstractResponse {
 
     private String defKey;
     private String type;
@@ -16,7 +16,7 @@ public class ResponseKPIMeasurement extends AbstractResponse {
     private double stdDev;
     private long channelIndex;
 
-    public ResponseKPIMeasurement() {
+    public ResponseKpiMeasurement() {
     }
 
     public String getDefKey() {

@@ -5,11 +5,11 @@ import java.util.List;
 import ssi.ssn.com.ssi_service.model.network.response.AbstractResponse;
 
 
-public class ResponseKPIDefinitionList extends AbstractResponse {
+public class ResponseKpiDefinitionList extends AbstractResponse {
 
     private List<ResponseKpiDefinition> definitions;
 
-    public ResponseKPIDefinitionList() {
+    public ResponseKpiDefinitionList() {
     }
 
     public List<ResponseKpiDefinition> getDefinitions() {

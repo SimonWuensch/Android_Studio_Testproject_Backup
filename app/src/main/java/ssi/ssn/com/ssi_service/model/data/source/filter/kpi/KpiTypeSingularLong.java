@@ -1,6 +1,8 @@
 package ssi.ssn.com.ssi_service.model.data.source.filter.kpi;
 
-public class KpiTypeSingularLong extends FilterKpi {
+import ssi.ssn.com.ssi_service.model.network.response.kpi.measurements.ResponseKpiMeasurement;
+
+public class KpiTypeSingularLong implements KpiType {
 
     private long value;
     private VerificationObject voValue;
@@ -25,7 +27,7 @@ public class KpiTypeSingularLong extends FilterKpi {
     }
 
     @Override
-    public boolean check() {
+    public boolean check(ResponseKpiMeasurement measurement) {
         return false;
     }
 }

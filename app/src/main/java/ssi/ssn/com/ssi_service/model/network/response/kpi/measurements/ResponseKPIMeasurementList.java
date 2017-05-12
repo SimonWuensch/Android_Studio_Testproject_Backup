@@ -7,16 +7,16 @@ import ssi.ssn.com.ssi_service.model.network.response.AbstractResponse;
 
 public class ResponseKPIMeasurementList extends AbstractResponse {
 
-    private List<ResponseKPIMeasurement> measurements;
+    private List<ResponseKpiMeasurement> measurements;
 
     public ResponseKPIMeasurementList() {
     }
 
-    public List<ResponseKPIMeasurement> getMeasurements() {
+    public List<ResponseKpiMeasurement> getMeasurements() {
         return measurements;
     }
 
-    public void setMeasurements(List<ResponseKPIMeasurement> measurements) {
+    public void setMeasurements(List<ResponseKpiMeasurement> measurements) {
         this.measurements = measurements;
     }
 }

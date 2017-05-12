@@ -1,6 +1,8 @@
 package ssi.ssn.com.ssi_service.model.data.source.filter.kpi;
 
-public class KpiTypeSpectrum extends FilterKpi {
+import ssi.ssn.com.ssi_service.model.network.response.kpi.measurements.ResponseKpiMeasurement;
+
+public class KpiTypeSpectrum implements KpiType {
 
     private double value;
     private VerificationObject voValue;
@@ -34,7 +36,7 @@ public class KpiTypeSpectrum extends FilterKpi {
     }
 
     @Override
-    public boolean check() {
+    public boolean check(ResponseKpiMeasurement measurement) {
         return false;
     }
 }

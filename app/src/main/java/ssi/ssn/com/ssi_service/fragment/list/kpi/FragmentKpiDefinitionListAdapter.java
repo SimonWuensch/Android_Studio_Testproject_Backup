@@ -43,7 +43,6 @@ public class FragmentKpiDefinitionListAdapter extends RecyclerView.Adapter<Fragm
         cardView = (CardView) LayoutInflater.from(parent.getContext()).inflate(layoutCardView, parent, false);
         FragmentKpiDefinitionViewHolder viewHolder = new FragmentKpiDefinitionViewHolder(fragment.getActivity(), this, cardView);
         viewHolders.add(viewHolder);
-        Log.d(TAG, "View Holder create. ViewHolders Size: " + viewHolders.size());
         return viewHolder;
     }
 

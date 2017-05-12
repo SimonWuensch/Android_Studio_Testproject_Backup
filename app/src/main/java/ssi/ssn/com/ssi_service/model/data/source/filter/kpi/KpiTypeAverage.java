@@ -1,6 +1,8 @@
 package ssi.ssn.com.ssi_service.model.data.source.filter.kpi;
 
-public class KpiTypeAverage extends FilterKpi {
+import ssi.ssn.com.ssi_service.model.network.response.kpi.measurements.ResponseKpiMeasurement;
+
+public class KpiTypeAverage implements KpiType {
 
     private double average;
     private VerificationObject voAverage;
@@ -97,7 +99,7 @@ public class KpiTypeAverage extends FilterKpi {
     }
 
     @Override
-    public boolean check() {
+    public boolean check(ResponseKpiMeasurement measurement){
         return false;
     }
 }

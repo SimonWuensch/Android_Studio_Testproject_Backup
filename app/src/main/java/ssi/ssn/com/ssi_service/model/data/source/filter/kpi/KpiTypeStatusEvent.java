@@ -1,6 +1,8 @@
 package ssi.ssn.com.ssi_service.model.data.source.filter.kpi;
 
-public class KpiTypeStatusEvent extends FilterKpi {
+import ssi.ssn.com.ssi_service.model.network.response.kpi.measurements.ResponseKpiMeasurement;
+
+public class KpiTypeStatusEvent implements KpiType {
 
     private String value;
     private VerificationObject voValue;
@@ -25,7 +27,7 @@ public class KpiTypeStatusEvent extends FilterKpi {
     }
 
     @Override
-    public boolean check() {
+    public boolean check(ResponseKpiMeasurement measurement) {
         return false;
     }
 

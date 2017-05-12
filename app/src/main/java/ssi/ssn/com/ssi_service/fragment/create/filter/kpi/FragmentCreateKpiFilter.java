@@ -1,5 +1,6 @@
 package ssi.ssn.com.ssi_service.fragment.create.filter.kpi;
 
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -8,6 +9,7 @@ import android.view.ViewGroup;
 import android.view.ViewStub;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -15,6 +17,11 @@ import ssi.ssn.com.ssi_service.R;
 import ssi.ssn.com.ssi_service.activity.MainActivity;
 import ssi.ssn.com.ssi_service.fragment.AbstractFragment;
 import ssi.ssn.com.ssi_service.fragment.create.CreateUpdateDeleteStatus;
+import ssi.ssn.com.ssi_service.fragment.create.filter.kpi.stub.AbstractKpiTypeStub;
+import ssi.ssn.com.ssi_service.fragment.create.filter.kpi.stub.StubAverage;
+import ssi.ssn.com.ssi_service.fragment.create.filter.kpi.stub.StubSingularDouble;
+import ssi.ssn.com.ssi_service.fragment.create.filter.kpi.stub.StubSingularLong;
+import ssi.ssn.com.ssi_service.fragment.create.filter.kpi.view.VerificationButton;
 import ssi.ssn.com.ssi_service.model.data.source.Project;
 import ssi.ssn.com.ssi_service.model.data.source.cardobject.CardObjectKpi;
 import ssi.ssn.com.ssi_service.model.data.source.filter.kpi.FilterKpi;
@@ -47,6 +54,8 @@ public class FragmentCreateKpiFilter extends AbstractFragment {
     private Project project;
     private FilterKpi filter;
     private ResponseKpiDefinition definition;
+
+    private AbstractKpiTypeStub stub;
 
     public static FragmentCreateKpiFilter newInstance(int projectID, ResponseKpiDefinition definition) {
         if (projectID == 0) {
@@ -83,14 +92,11 @@ public class FragmentCreateKpiFilter extends AbstractFragment {
             definition = (ResponseKpiDefinition) JsonHelper.fromJsonGeneric(ResponseKpiDefinition.class, getArguments().getString(RESPONSE_DEFINITION_JSON));
             fragmentStatus = CreateUpdateDeleteStatus.ADD;
             isStartedWithDefinition = true;
-            fillViewComponentsWithDefinitionInfo();
         } else if (getArguments().containsKey(FILTER_KPI_JSON)) {
             filter = (FilterKpi) JsonHelper.fromJsonGeneric(FilterKpi.class, getArguments().getString(FILTER_KPI_JSON));
+            definition = filter.getDefinition();
             fragmentStatus = CreateUpdateDeleteStatus.DELETE;
-            fillViewComponentsWithKpiFilter();
         }
-        updateFinalButtonText();
-
         int projectID = getArguments().getInt(PROJECT_ID);
         project = getSQLiteDB().project().getByID(projectID);
         CardObjectKpi.init(getSQLiteDB(), project);
@@ -104,14 +110,28 @@ public class FragmentCreateKpiFilter extends AbstractFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        if (rootView == null) {
-            rootView = inflater.inflate(FRAGMENT_LAYOUT, container, false);
-            Log.d(TAG, "Fragment inflated [" + getActivity().getResources().getResourceName(FRAGMENT_LAYOUT) + "].");
-
-            initViewComponents();
-            loadArguments();
+        if (rootView != null) {
+            return rootView;
         }
+        rootView = inflater.inflate(FRAGMENT_LAYOUT, container, false);
+        Log.d(TAG, "Fragment inflated [" + getActivity().getResources().getResourceName(FRAGMENT_LAYOUT) + "].");
+        initArguments();
         return rootView;
+    }
+
+    public void initArguments() {
+        new AsyncTask<Object, Void, Object>() {
+            @Override
+            protected Object doInBackground(Object... objects) {
+                loadArguments();
+                return null;
+            }
+
+            @Override
+            protected void onPostExecute(Object o) {
+                initViewComponents();
+            }
+        }.execute();
     }
 
     public void initViewComponents() {
@@ -122,18 +142,23 @@ public class FragmentCreateKpiFilter extends AbstractFragment {
         tvKpiName = (TextView) rootView.findViewById(R.id.fragment_create_kpi_filter_name_value);
         tvKpiDescription = (TextView) rootView.findViewById(R.id.fragment_create_kpi_filter_description_value);
         vsKpiType = (ViewStub) rootView.findViewById(R.id.fragment_create_kpi_filter_view_stub_kpi_type);
-
         vsKpiType.setLayoutResource(R.layout.fragment_create_filter_kpi_stub_average);
-        View stubView = vsKpiType.inflate();
-        EditText etNumSamples = (EditText) stubView.findViewById(R.id.fragment_create_kpi_filter_stub_average_edit_text_numSamples);
-        etNumSamples.setText("testtext");
-
 
         bFinal = (Button) rootView.findViewById(R.id.fragment_create_kpi_filter_button_final);
         bFinal.setOnClickListener(onClickFinalButton());
+
+        stub = isStartedWithDefinition ? initStub() : initStub(filter);
+
+        updateFinalButtonText();
+        if (definition != null) {
+            fillViewComponentsWithDefinitionInfo();
+        }
+        if (filter != null) {
+            fillViewComponentsWithKpiFilter();
+        }
     }
 
-    // ** Start Fragment Status == ADD ******************************************************* //
+    // ** Start Fragment Status == ADD ********************************************************** //
     public void fillViewComponentsWithDefinitionInfo() {
         if (definition != null) {
             tvKpiKey.setText(definition.getKey());
@@ -142,7 +167,6 @@ public class FragmentCreateKpiFilter extends AbstractFragment {
             Log.d(TAG, "Fragment view components filled with definition [" + JsonHelper.toJson(definition) + "].");
         }
     }
-
 
     // ** Start Fragment Status == DELETE ******************************************************* //
     public void fillViewComponentsWithKpiFilter() {
@@ -157,6 +181,7 @@ public class FragmentCreateKpiFilter extends AbstractFragment {
 
     @Override
     public void doAfterChanged() {
+        Log.d(TAG, "something chanded...");
         /*String initialNode = filter.getNote();
         String initialText = filter.getText();
 
@@ -190,6 +215,45 @@ public class FragmentCreateKpiFilter extends AbstractFragment {
     }
 
     // ** Settings ****************************************************************************** //
+    private AbstractKpiTypeStub initStub() {
+        return initStub(null);
+    }
+
+    private AbstractKpiTypeStub initStub(FilterKpi filter) {
+        if (definition.getType().equals(FilterKpi.KpiTypeSignification.AVERAGE.name())) {
+            if (filter != null) {
+                return StubAverage.initStub(filter, vsKpiType);
+            } else {
+                return StubAverage.initStub(definition, vsKpiType);
+            }
+        } else if (definition.getType().equals(FilterKpi.KpiTypeSignification.SINGULAR_DOUBLE.name())) {
+            if (filter != null) {
+                return StubSingularDouble.initStub(filter, vsKpiType);
+            } else {
+                return StubSingularDouble.initStub(definition, vsKpiType);
+            }
+        } else if (definition.getType().equals(FilterKpi.KpiTypeSignification.SINGULAR_LONG.name())) {
+            if (filter != null) {
+                return StubSingularLong.initStub(filter, vsKpiType);
+            } else {
+                return StubSingularLong.initStub(definition, vsKpiType);
+            }
+        } else if (definition.getType().equals(FilterKpi.KpiTypeSignification.SPECTRUM.name())) {
+            if (filter != null) {
+                return StubAverage.initStub(filter, vsKpiType);
+            } else {
+                return StubAverage.initStub(definition, vsKpiType);
+            }
+        } else if (definition.getType().equals(FilterKpi.KpiTypeSignification.STATUS_EVENT.name())) {
+            if (filter != null) {
+                return StubAverage.initStub(filter, vsKpiType);
+            } else {
+                return StubAverage.initStub(definition, vsKpiType);
+            }
+        }
+
+        throw new NullPointerException("Definition type is unknown. [" + definition.getType() + "]");
+    }
 
     private void updateFinalButtonText() {
         switch (fragmentStatus) {
@@ -201,25 +265,15 @@ public class FragmentCreateKpiFilter extends AbstractFragment {
                 break;
             case DELETE:
                 bFinal.setText(SourceHelper.getString(getActivity(), R.string.delete));
-                /*
-                TODO Set on Change listener in Container
-                super.onTextChangeListener(etNode);
-                super.onTextChangeListener(etActiveTime);
-                super.onTextChangeListener(etText);
-                super.onSpinnerSelectionChangedListener(spTimeInput);
-                super.onSpinnerSelectionChangedListener(spSeverityInput);
-                */
+                for(EditText editText : stub.getAllEditTextViews()){
+                    super.onTextChangeListener(editText);
+                }
+                for(VerificationButton button : stub.getAllVerificationButtonViews()){
+                    //Todo add on button textChange listeneer
+                    //super.onSpinnerSelectionChangedListener(spinner);
+                }
                 break;
         }
-    }
-
-    private FilterKpi loadFilterFromComponentViewInputs() {
-        //TODO Load Filter Settings from Container
-        /*if (filter != null) {
-            newFilter.setId(filter.getId());
-        }
-        return newFilter;*/
-        return null;
     }
 
     // ** ClickListener ************************************************************************* //
@@ -229,7 +283,7 @@ public class FragmentCreateKpiFilter extends AbstractFragment {
             @Override
             public void onClick(View view) {
                 MainActivity activity = (MainActivity) getActivity();
-                FilterKpi filter = loadFilterFromComponentViewInputs();
+                FilterKpi filter = stub.loadFilterFromComponentViews();
                 boolean isSuccessful;
                 switch (fragmentStatus) {
                     case ADD:
@@ -239,12 +293,8 @@ public class FragmentCreateKpiFilter extends AbstractFragment {
                             Toast.makeText(getActivity().getBaseContext(), R.string.fragment_create_Kpi_filter_alert_text_filter_already_exists, Toast.LENGTH_LONG).show();
                             return;
                         }
-                        Log.i(TAG, "Add successful. Kpi filter: [" + JsonHelper.toJson(filter) + "]");
 
-                        if (isStartedWithDefinition) {
-                            activity.onBackPressed();
-                            activity.onBackPressed();
-                        }
+                        Log.i(TAG, "Add successful. Kpi filter: [" + JsonHelper.toJson(filter) + "]");
                         activity.onBackPressed();
                         break;
 
