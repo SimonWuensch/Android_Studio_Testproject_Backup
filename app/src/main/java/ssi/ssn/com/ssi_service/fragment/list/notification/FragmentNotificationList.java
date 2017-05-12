@@ -1,6 +1,7 @@
 package ssi.ssn.com.ssi_service.fragment.list.notification;
 
 import android.app.Fragment;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -10,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import ssi.ssn.com.ssi_service.R;
@@ -30,10 +32,14 @@ public class FragmentNotificationList extends Fragment {
     private static int FRAGMENT_LAYOUT = R.layout.fragment_list_notification;
     private static int RECYCLERVIEW = R.id.fragment_standard_recycler_view;
     private static int CARDVIEW = R.layout.fragment_list_notification_card_view;
-    protected FilterNotification filter;
-    List<ResponseNotification> notifications;
+
+    private FragmentNotificationListAdapter adapter;
+    private RecyclerView recyclerView;
+
     private Project project;
     private View rootView;
+    protected FilterNotification filter;
+    List<ResponseNotification> responseNotifications;
 
     public static FragmentNotificationList newInstance(int projectID) {
         return newInstance(projectID, -1);
@@ -68,36 +74,53 @@ public class FragmentNotificationList extends Fragment {
         if (getArguments().containsKey(FILTER_ID)) {
             int filterID = getArguments().getInt(FILTER_ID);
             filter = project.getCardObjectNotification().getFilterByID(filterID);
-            notifications = NotificationListSorter.sortNotificationBySeverity(filter.getNotificationTable().getData());
+            responseNotifications = NotificationListSorter.sortNotificationBySeverity(filter.getNotificationTable().getData());
             return;
         }
-        notifications = NotificationListSorter.sortNotificationBySeverity(project.getCardObjectNotification().getNotificationTable().getData());
+        responseNotifications = NotificationListSorter.sortNotificationBySeverity(project.getCardObjectNotification().getNotificationTable().getData());
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        loadArguments();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        if (rootView == null) {
-            rootView = inflater.inflate(FRAGMENT_LAYOUT, container, false);
-            Log.d(TAG, "Fragment inflated [" + getActivity().getResources().getResourceName(FRAGMENT_LAYOUT) + "].");
-
-            RecyclerView.Adapter mAdapter = new FragmentNotificationListAdapter(CARDVIEW, this, project, filter, notifications);
-            Log.d(TAG, "Adapter [" + mAdapter.getClass().getSimpleName() + "] with CardView [" + getActivity().getResources().getResourceName(CARDVIEW) + "] initialized.");
-
-            RecyclerView mRecyclerView = (RecyclerView) rootView.findViewById(RECYCLERVIEW);
-            mRecyclerView.setLayoutManager(new LinearLayoutManager(rootView.getContext()));
-            mRecyclerView.setHasFixedSize(true);
-            mRecyclerView.setAdapter(mAdapter);
-            Log.d(TAG, "RecyclerView [" + getActivity().getResources().getResourceName(RECYCLERVIEW) + "] initialized.");
-
-            initViewComponents();
+        if (rootView != null) {
+            return rootView;
         }
+        rootView = inflater.inflate(FRAGMENT_LAYOUT, container, false);
+        Log.d(TAG, "Fragment inflated [" + getActivity().getResources().getResourceName(FRAGMENT_LAYOUT) + "].");
+
+        adapter = new FragmentNotificationListAdapter(CARDVIEW, this, new Project(), new FilterNotification(), new ArrayList<ResponseNotification>());
+        Log.d(TAG, "Adapter [" + adapter.getClass().getSimpleName() + "] with CardView [" + getActivity().getResources().getResourceName(CARDVIEW) + "] initialized.");
+
+        recyclerView = (RecyclerView) rootView.findViewById(RECYCLERVIEW);
+        recyclerView.setLayoutManager(new LinearLayoutManager(rootView.getContext()));
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setAdapter(adapter);
+        Log.d(TAG, "RecyclerView [" + getActivity().getResources().getResourceName(RECYCLERVIEW) + "] initialized.");
+
+        initAdapter();
+        initViewComponents();
         return rootView;
+    }
+
+    private void initAdapter() {
+        new AsyncTask<Object, Void, RecyclerView.Adapter>(){
+            @Override
+            protected RecyclerView.Adapter doInBackground(Object... objects) {
+                loadArguments();
+                adapter = new FragmentNotificationListAdapter(CARDVIEW, FragmentNotificationList.this, project, filter, responseNotifications);
+                return adapter;
+            }
+
+            @Override
+            protected void onPostExecute(RecyclerView.Adapter adapter) {
+                recyclerView.setAdapter(adapter);
+            }
+        }.execute(adapter);
     }
 
     public void initViewComponents() {

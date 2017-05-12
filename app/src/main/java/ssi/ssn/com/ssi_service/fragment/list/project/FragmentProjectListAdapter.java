@@ -1,5 +1,6 @@
 package ssi.ssn.com.ssi_service.fragment.list.project;
 
+import android.os.AsyncTask;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -65,19 +66,27 @@ public class FragmentProjectListAdapter extends RecyclerView.Adapter<FragmentPro
         }
     }
 
-    public void reloadCardView(Project project, boolean resetObservationTime) {
-        if (project.isProjectObservation()) {
-            SQLiteDB sqLiteDB = ((MainActivity) fragment.getActivity()).getSQLiteDB();
-            project.initCardObjects(sqLiteDB);
-
-            if (resetObservationTime) {
-                ObservationHelper.setLastObservationTimeToOLD(sqLiteDB, project);
+    public void reloadCardView(final Project project, final boolean resetObservationTime) {
+        final SQLiteDB sqLiteDB = ((MainActivity) fragment.getActivity()).getSQLiteDB();
+        new AsyncTask<Object, Void, Object>() {
+            @Override
+            protected Object doInBackground(Object... objects) {
+                if (project.isProjectObservation()) {
+                    project.initCardObjects(sqLiteDB);
+                    if (resetObservationTime) {
+                        ObservationHelper.setLastObservationTimeToOLD(sqLiteDB, project);
+                    }
+                }
+                return null;
             }
-        }
 
-        boolean isLast = project.equals(viewHolderMap.keySet().toArray()[viewHolderMap.keySet().size() - 1]);
-        FragmentProjectListViewHolder viewHolder = viewHolderMap.get(project);
-        viewHolder.assignData(project, isLast);
+            @Override
+            protected void onPostExecute(Object o) {
+                boolean isLast = project.equals(viewHolderMap.keySet().toArray()[viewHolderMap.keySet().size() - 1]);
+                FragmentProjectListViewHolder viewHolder = viewHolderMap.get(project);
+                viewHolder.assignData(project, isLast);
+            }
+        }.execute();
     }
 
     public void sort() {

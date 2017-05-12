@@ -12,6 +12,7 @@ import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -46,6 +47,7 @@ public class FragmentLaunchBoard extends AbstractFragment {
     private RelativeLayout rlLoadingView;
 
     private FragmentLaunchBoardAdapter adapter;
+    private RecyclerView recyclerView;
 
     private Project project;
     private List<AbstractCardObject> cardObjects;
@@ -91,23 +93,40 @@ public class FragmentLaunchBoard extends AbstractFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        loadArguments();
-        if (rootView == null) {
-            rootView = inflater.inflate(FRAGMENT_LAYOUT, container, false);
-            Log.d(TAG, "Fragment inflated [" + getActivity().getResources().getResourceName(FRAGMENT_LAYOUT) + "].");
-
-            adapter = new FragmentLaunchBoardAdapter(CARDVIEW, this, project, cardObjects);
-            Log.d(TAG, "Adapter [" + adapter.getClass().getSimpleName() + "] with CardView [" + getActivity().getResources().getResourceName(CARDVIEW) + "] initialized.");
-
-            RecyclerView mRecyclerView = (RecyclerView) rootView.findViewById(RECYCLERVIEW);
-            mRecyclerView.setLayoutManager(new LinearLayoutManager(rootView.getContext()));
-            mRecyclerView.setHasFixedSize(true);
-            mRecyclerView.setAdapter(adapter);
-            Log.d(TAG, "RecyclerView [" + getActivity().getResources().getResourceName(RECYCLERVIEW) + "] initialized.");
-
-            initViewComponents();
+        if (rootView != null) {
+            return rootView;
         }
+        rootView = inflater.inflate(FRAGMENT_LAYOUT, container, false);
+        Log.d(TAG, "Fragment inflated [" + getActivity().getResources().getResourceName(FRAGMENT_LAYOUT) + "].");
+
+        adapter = new FragmentLaunchBoardAdapter(CARDVIEW, this, new Project(), new ArrayList<AbstractCardObject>());
+        Log.d(TAG, "Adapter [" + adapter.getClass().getSimpleName() + "] with CardView [" + getActivity().getResources().getResourceName(CARDVIEW) + "] initialized.");
+
+        recyclerView = (RecyclerView) rootView.findViewById(RECYCLERVIEW);
+        recyclerView.setLayoutManager(new LinearLayoutManager(rootView.getContext()));
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setAdapter(adapter);
+        Log.d(TAG, "RecyclerView [" + getActivity().getResources().getResourceName(RECYCLERVIEW) + "] initialized.");
+
+        initAdapter();
         return rootView;
+    }
+
+    private void initAdapter() {
+        new AsyncTask<Object, Void, RecyclerView.Adapter>(){
+            @Override
+            protected RecyclerView.Adapter doInBackground(Object... objects) {
+                loadArguments();
+                adapter = new FragmentLaunchBoardAdapter(CARDVIEW, FragmentLaunchBoard.this, project, cardObjects);
+                return adapter;
+            }
+
+            @Override
+            protected void onPostExecute(RecyclerView.Adapter adapter) {
+                recyclerView.setAdapter(adapter);
+                initViewComponents();
+            }
+        }.execute(adapter);
     }
 
     public void initViewComponents() {

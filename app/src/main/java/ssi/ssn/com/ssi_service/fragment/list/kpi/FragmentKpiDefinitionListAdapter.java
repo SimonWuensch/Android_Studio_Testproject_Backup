@@ -31,7 +31,7 @@ public class FragmentKpiDefinitionListAdapter extends RecyclerView.Adapter<Fragm
     protected List<ResponseKpiDefinition> currentDefinitions;
 
 
-    public FragmentKpiDefinitionListAdapter(int layoutCardView, Project project, final FragmentKpiDefinitionList fragment, List<ResponseKpiDefinition> currentDefinitions) {
+    public FragmentKpiDefinitionListAdapter(int layoutCardView, final FragmentKpiDefinitionList fragment, Project project, List<ResponseKpiDefinition> currentDefinitions) {
         this.layoutCardView = layoutCardView;
         this.project = project;
         this.fragment = fragment;

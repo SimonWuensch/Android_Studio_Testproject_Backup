@@ -124,7 +124,6 @@ class FragmentProjectListViewHolder extends RecyclerView.ViewHolder {
         adapter.clickedProjectJson = JsonHelper.toJson(project);
         adapter.clickedProject.initCardObjects(activity.getSQLiteDB());
         adapter.cardObjectJsonList = new LinkedList<>();
-        //adapter.clickedProjectPosition = adapter.projects.indexOf(project);
         for (AbstractCardObject cardObject : project.getAllCardObjects()) {
             adapter.cardObjectJsonList.add(JsonHelper.toJson(cardObject));
         }
@@ -134,7 +133,6 @@ class FragmentProjectListViewHolder extends RecyclerView.ViewHolder {
         return new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-
                 if (!isChecked) {
                     cardView.setOnClickListener(null);
                     vProjectStatus.setBackgroundColor(SourceHelper.getColor(activity, R.color.lightGray));

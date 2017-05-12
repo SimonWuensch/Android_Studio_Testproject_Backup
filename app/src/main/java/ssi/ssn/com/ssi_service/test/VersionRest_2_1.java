@@ -59,7 +59,7 @@ public class VersionRest_2_1 extends TestRestResponse {
         addResponse("/services/notification/table?condition=$<<active>> AND (($<<definition.severity>> = 'ERROR') AND ($<<text>> = 'Freimass') AND ($<<nodePath>> IN ('F0107LSL085')))", NOTIFICATION_FILTER_F0107LSL085);
         addResponse("/services/notification/table?orderBy=$<<startTime>> DESC&condition=$<<active>> AND (($<<definition.severity>> = 'ERROR') AND ($<<text>> = '') AND ($<<nodePath>> IN ('')))", NOTIFICATION_FILTER_NULL);
 
-        addResponse("/services/kpi/currentDefinitions", KPI_DEFINITIONS);
+        addResponse("/services/kpi/definitions", KPI_DEFINITIONS);
         addResponse("/services/kpi/measurements", KPI_MESUREMENTS);
     }
 }

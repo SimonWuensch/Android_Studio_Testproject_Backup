@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewStub;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -122,6 +123,10 @@ public class FragmentCreateKpiFilter extends AbstractFragment {
         tvKpiDescription = (TextView) rootView.findViewById(R.id.fragment_create_kpi_filter_description_value);
         vsKpiType = (ViewStub) rootView.findViewById(R.id.fragment_create_kpi_filter_view_stub_kpi_type);
 
+        vsKpiType.setLayoutResource(R.layout.fragment_create_filter_kpi_stub_average);
+        View stubView = vsKpiType.inflate();
+        EditText etNumSamples = (EditText) stubView.findViewById(R.id.fragment_create_kpi_filter_stub_average_edit_text_numSamples);
+        etNumSamples.setText("testtext");
 
 
         bFinal = (Button) rootView.findViewById(R.id.fragment_create_kpi_filter_button_final);

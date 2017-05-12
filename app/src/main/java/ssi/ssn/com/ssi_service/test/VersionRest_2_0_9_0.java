@@ -64,7 +64,7 @@ public class VersionRest_2_0_9_0 extends TestRestResponse {
         addResponse("/services/notification/table?orderBy=$<<startTime>> DESC&condition=$<<active>> AND (($<<definition.severity>> = 'ERROR') AND ($<<text>> LIKE '%25test%25') AND ($<<nodePath>> IN ('test')))", NOTIFICATION_FILTER_TEST);
         addResponse("/services/notification/table?orderBy=$<<startTime>> DESC&condition=$<<active>> AND (($<<definition.severity>> = 'ERROR') AND ($<<text>> LIKE '%25%25') AND ($<<nodePath>> IN ('')))", NOTIFICATION_FILTER_NULL);
 
-        addResponse("/services/kpi/currentDefinitions", KPI_DEFINITIONS);
+        addResponse("/services/kpi/definitions", KPI_DEFINITIONS);
         addResponse("/services/kpi/measurements", KPI_MESUREMENTS);
     }
 }

@@ -1,5 +1,6 @@
 package ssi.ssn.com.ssi_service.fragment.list.kpi;
 
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -35,13 +36,14 @@ public class FragmentKpiDefinitionList extends AbstractFragment {
     private static int CARDVIEW = R.layout.fragment_list_kpi_definition_cardview;
 
     private FragmentKpiDefinitionListAdapter adapter;
-    private RecyclerView mRecyclerView;
+    private RecyclerView recyclerView;
+
     private EditText etFilter;
     private Button clearButton;
     private View rootView;
 
     private Project project;
-    private List<ResponseKpiDefinition> definitions;
+    private List<ResponseKpiDefinition> responseDefinitions;
 
     public static FragmentKpiDefinitionList newInstance(long projectID) {
         if (projectID <= 0) {
@@ -63,34 +65,53 @@ public class FragmentKpiDefinitionList extends AbstractFragment {
         SQLiteDB sqLiteDB = ((MainActivity) getActivity()).getSQLiteDB();
         project = sqLiteDB.project().getByID(projectID);
         CardObjectKpi.init(sqLiteDB, project);
-        definitions = project.getCardObjectKpi().getDefinitions().getDefinitions();
+        responseDefinitions = project.getCardObjectKpi().getDefinitions().getDefinitions();
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        loadArguments();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        if (rootView == null) {
-            rootView = inflater.inflate(FRAGMENT_LAYOUT, container, false);
-            Log.d(TAG, "Fragment inflated [" + getActivity().getResources().getResourceName(FRAGMENT_LAYOUT) + "].");
-
-            this.adapter = new FragmentKpiDefinitionListAdapter(CARDVIEW, project, this, definitions);
-            Log.d(TAG, "Adapter [" + adapter.getClass().getSimpleName() + "] with CardView [" + getActivity().getResources().getResourceName(CARDVIEW) + "] initialized.");
-
-            mRecyclerView = (RecyclerView) rootView.findViewById(RECYCLERVIEW);
-            mRecyclerView.setLayoutManager(new LinearLayoutManager(rootView.getContext()));
-            mRecyclerView.setHasFixedSize(true);
-            mRecyclerView.setAdapter(adapter);
-            Log.d(TAG, "RecyclerView [" + getActivity().getResources().getResourceName(RECYCLERVIEW) + "] initialized.");
-
-            initViewComponents();
+        if (rootView != null) {
+            return rootView;
         }
+
+        rootView = inflater.inflate(FRAGMENT_LAYOUT, container, false);
+        Log.d(TAG, "Fragment inflated [" + getActivity().getResources().getResourceName(FRAGMENT_LAYOUT) + "].");
+
+        this.adapter = new FragmentKpiDefinitionListAdapter(CARDVIEW, this, new Project(), new ArrayList<ResponseKpiDefinition>());
+        Log.d(TAG, "Adapter [" + adapter.getClass().getSimpleName() + "] with CardView [" + getActivity().getResources().getResourceName(CARDVIEW) + "] initialized.");
+
+        recyclerView = (RecyclerView) rootView.findViewById(RECYCLERVIEW);
+        recyclerView.setLayoutManager(new LinearLayoutManager(rootView.getContext()));
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setAdapter(adapter);
+        Log.d(TAG, "RecyclerView [" + getActivity().getResources().getResourceName(RECYCLERVIEW) + "] initialized.");
+
+        initAdapter();
+        initViewComponents();
         return rootView;
     }
+
+    private void initAdapter() {
+        new AsyncTask<Object, Void, RecyclerView.Adapter>() {
+            @Override
+            protected RecyclerView.Adapter doInBackground(Object... objects) {
+                loadArguments();
+                adapter = new FragmentKpiDefinitionListAdapter(CARDVIEW, FragmentKpiDefinitionList.this, project, responseDefinitions);
+                return adapter;
+            }
+
+            @Override
+            protected void onPostExecute(RecyclerView.Adapter adapter) {
+                recyclerView.setAdapter(adapter);
+            }
+        }.execute(adapter);
+    }
+
 
     public void initViewComponents() {
         TextView tvHeadLine = (TextView) rootView.findViewById(R.id.default_action_bar_text_view_headline);
@@ -154,14 +175,14 @@ public class FragmentKpiDefinitionList extends AbstractFragment {
     }
 
     private void updateAdapter(String filterText) {
-        List<ResponseKpiDefinition> currentDefinitions = filterText.isEmpty() ? definitions : getDefinitionsByFilterText(filterText);
-        this.adapter = new FragmentKpiDefinitionListAdapter(CARDVIEW, project, this, currentDefinitions);
-        mRecyclerView.setAdapter(adapter);
+        List<ResponseKpiDefinition> currentDefinitions = filterText.isEmpty() ? responseDefinitions : getDefinitionsByFilterText(filterText);
+        this.adapter = new FragmentKpiDefinitionListAdapter(CARDVIEW, this, project, currentDefinitions);
+        recyclerView.setAdapter(adapter);
     }
 
     private List<ResponseKpiDefinition> getDefinitionsByFilterText(String filterText) {
         List<ResponseKpiDefinition> currentDefinitions = new ArrayList<>();
-        for (ResponseKpiDefinition definition : definitions) {
+        for (ResponseKpiDefinition definition : responseDefinitions) {
             String key = definition.getKey().toLowerCase();
             String name = definition.getName() == null ? "" : definition.getName().toLowerCase();
             if (name.contains(filterText) || key.contains(filterText)) {

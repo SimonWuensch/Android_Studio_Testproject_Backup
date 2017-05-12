@@ -1,5 +1,6 @@
 package ssi.ssn.com.ssi_service.fragment.list.project;
 
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -11,6 +12,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -29,14 +31,63 @@ public class FragmentProjectList extends AbstractFragment {
     private static int FRAGMENT_LAYOUT = R.layout.fragment_list_project;
     private static int RECYCLERVIEW = R.id.fragment_project_list_recycler_view;
     private static int CARDVIEW = R.layout.fragment_list_project_card_view;
-    boolean isServicesStarted = false;
+
+    private FragmentProjectListAdapter adapter;
+    private RecyclerView recyclerView;
+
     private List<Project> projects;
-    private FragmentProjectListAdapter mAdapter;
     private View rootView;
 
     public static FragmentProjectList newInstance() {
         FragmentProjectList fragment = new FragmentProjectList();
         return fragment;
+    }
+
+    private void loadArguments() {
+        projects = getSQLiteDB().project().getALL();
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        if (rootView != null) {
+            return rootView;
+        }
+        rootView = inflater.inflate(FRAGMENT_LAYOUT, container, false);
+        Log.d(TAG, "Fragment inflated [" + getActivity().getResources().getResourceName(FRAGMENT_LAYOUT) + "].");
+
+        adapter = new FragmentProjectListAdapter(CARDVIEW, this, new ArrayList<Project>());
+        Log.d(TAG, "Adapter [" + adapter.getClass().getSimpleName() + "] with CardView [" + getActivity().getResources().getResourceName(CARDVIEW) + "] initialized.");
+
+        recyclerView = (RecyclerView) rootView.findViewById(RECYCLERVIEW);
+        recyclerView.setLayoutManager(new LinearLayoutManager(rootView.getContext()));
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setAdapter(adapter);
+        Log.d(TAG, "RecyclerView [" + getActivity().getResources().getResourceName(RECYCLERVIEW) + "] initialized.");
+
+        initAdapter();
+        initViewComponents();
+        return rootView;
+    }
+
+    private void initAdapter() {
+        new AsyncTask<Object, Void, RecyclerView.Adapter>() {
+            @Override
+            protected RecyclerView.Adapter doInBackground(Object... objects) {
+                loadArguments();
+                adapter = new FragmentProjectListAdapter(CARDVIEW, FragmentProjectList.this, projects);
+                return adapter;
+            }
+
+            @Override
+            protected void onPostExecute(RecyclerView.Adapter adapter) {
+                recyclerView.setAdapter(adapter);
+            }
+        }.execute(adapter);
     }
 
     public void initViewComponents() {
@@ -48,7 +99,7 @@ public class FragmentProjectList extends AbstractFragment {
         bReload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mAdapter.reloadCardViews();
+                adapter.reloadCardViews();
             }
         });
 
@@ -62,61 +113,43 @@ public class FragmentProjectList extends AbstractFragment {
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        if (rootView == null) {
-            rootView = inflater.inflate(FRAGMENT_LAYOUT, container, false);
-            Log.d(TAG, "Fragment inflated [" + getActivity().getResources().getResourceName(FRAGMENT_LAYOUT) + "].");
-
-            projects = getSQLiteDB().project().getALL();
-            mAdapter = new FragmentProjectListAdapter(CARDVIEW, this, projects);
-            Log.d(TAG, "Adapter [" + mAdapter.getClass().getSimpleName() + "] with CardView [" + getActivity().getResources().getResourceName(CARDVIEW) + "] initialized.");
-
-            RecyclerView mRecyclerView = (RecyclerView) rootView.findViewById(RECYCLERVIEW);
-            mRecyclerView.setLayoutManager(new LinearLayoutManager(rootView.getContext()));
-            mRecyclerView.setHasFixedSize(true);
-            mRecyclerView.setAdapter(mAdapter);
-            Log.d(TAG, "RecyclerView [" + getActivity().getResources().getResourceName(RECYCLERVIEW) + "] initialized.");
-            initViewComponents();
-        }
-        return rootView;
-    }
-
-    @Override
     public void onResume() {
         super.onResume();
 
-        if (mAdapter.clickedProject == null) {
+        if (adapter.clickedProject == null) {
             return;
         }
 
-        Project savedProject = (Project) JsonHelper.fromJsonGeneric(Project.class, mAdapter.clickedProjectJson);
-        Project newProject = getSQLiteDB().project().getByID(savedProject.get_id());
-        newProject.initCardObjects(getSQLiteDB());
-
-        if (!mAdapter.clickedProjectJson.equals(JsonHelper.toJson(newProject))) {
-            mAdapter.reloadCardView(mAdapter.clickedProject, false);
-            //mAdapter.projects.set(mAdapter.clickedProjectPosition, newProject);
-            return;
-        }
-
-        List<String> newCardObjectJsonList = new LinkedList<>();
-        for (AbstractCardObject cardObject : newProject.getAllCardObjects()) {
-            newCardObjectJsonList.add(JsonHelper.toJson(cardObject));
-        }
-
-        for (int i = 0; i < mAdapter.cardObjectJsonList.size(); i++) {
-            String savedCardObject = mAdapter.cardObjectJsonList.get(i);
-            String newCardObject = newCardObjectJsonList.get(i);
-            if (!savedCardObject.equals(newCardObject)) {
-                mAdapter.reloadCardView(mAdapter.clickedProject, false);
-                //mAdapter.projects.set(mAdapter.clickedProjectPosition, newProject);
-                return;
+        new AsyncTask<Object, Void, Project>() {
+            @Override
+            protected Project doInBackground(Object... objects) {
+                Project savedProject = (Project) JsonHelper.fromJsonGeneric(Project.class, adapter.clickedProjectJson);
+                Project newProject = getSQLiteDB().project().getByID(savedProject.get_id());
+                newProject.initCardObjects(getSQLiteDB());
+                return newProject;
             }
-        }
+
+            @Override
+            protected void onPostExecute(Project newProject) {
+                if (!adapter.clickedProjectJson.equals(JsonHelper.toJson(newProject))) {
+                    adapter.reloadCardView(adapter.clickedProject, false);
+                    return;
+                }
+
+                List<String> newCardObjectJsonList = new LinkedList<>();
+                for (AbstractCardObject cardObject : newProject.getAllCardObjects()) {
+                    newCardObjectJsonList.add(JsonHelper.toJson(cardObject));
+                }
+
+                for (int i = 0; i < adapter.cardObjectJsonList.size(); i++) {
+                    String savedCardObject = adapter.cardObjectJsonList.get(i);
+                    String newCardObject = newCardObjectJsonList.get(i);
+                    if (!savedCardObject.equals(newCardObject)) {
+                        adapter.reloadCardView(adapter.clickedProject, false);
+                        return;
+                    }
+                }
+            }
+        }.execute();
     }
 }

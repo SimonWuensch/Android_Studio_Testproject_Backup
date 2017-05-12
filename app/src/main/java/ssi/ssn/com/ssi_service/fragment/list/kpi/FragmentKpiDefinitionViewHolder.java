@@ -49,15 +49,15 @@ public class FragmentKpiDefinitionViewHolder extends RecyclerView.ViewHolder {
             public void onClick(View v) {
                 //TODO Show Fragment Kpi Create Filter after click if type is known
 
-                if (definition.getType().equals(FilterKpi.KpiTypeSignification.AVERAGE)) {
+                if (definition.getType().equals(FilterKpi.KpiTypeSignification.AVERAGE.name())) {
                     KpiTypeAverage kpiType = new KpiTypeAverage();
-                } else if (definition.getType().equals(FilterKpi.KpiTypeSignification.SINGULAR_DOUBLE)) {
+                } else if (definition.getType().equals(FilterKpi.KpiTypeSignification.SINGULAR_DOUBLE.name())) {
                     KpiTypeSingularDouble kpiType = new KpiTypeSingularDouble();
-                } else if (definition.getType().equals(FilterKpi.KpiTypeSignification.SINGULAR_LONG)) {
+                } else if (definition.getType().equals(FilterKpi.KpiTypeSignification.SINGULAR_LONG.name())) {
                     KpiTypeSingularLong kpiType = new KpiTypeSingularLong();
-                } else if (definition.getType().equals(FilterKpi.KpiTypeSignification.SPECTRUM)) {
+                } else if (definition.getType().equals(FilterKpi.KpiTypeSignification.SPECTRUM.name())) {
                     KpiTypeSpectrum kpiType = new KpiTypeSpectrum();
-                } else if (definition.getType().equals(FilterKpi.KpiTypeSignification.STATUS_EVENT)) {
+                } else if (definition.getType().equals(FilterKpi.KpiTypeSignification.STATUS_EVENT.name())) {
                     KpiTypeStatusEvent kpiType = new KpiTypeStatusEvent();
                 } else {
                     Toast.makeText(activity, SourceHelper.getString(activity, R.string.fragment_kpi_definition_list_type_is_not_known) + definition.getType(), Toast.LENGTH_SHORT).show();

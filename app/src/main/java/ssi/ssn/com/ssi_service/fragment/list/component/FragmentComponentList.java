@@ -1,6 +1,7 @@
 package ssi.ssn.com.ssi_service.fragment.list.component;
 
 import android.app.Fragment;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -10,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import ssi.ssn.com.ssi_service.R;
@@ -29,6 +31,9 @@ public class FragmentComponentList extends Fragment {
     private static int FRAGMENT_LAYOUT = R.layout.fragment_list_component;
     private static int RECYCLERVIEW = R.id.fragment_component_list_recycler_view;
     private static int CARDVIEW = R.layout.fragment_list_component_card_view;
+
+    private FragmentComponentListAdapter adapter;
+    private RecyclerView recyclerView;
 
     private Project project;
     private View rootView;
@@ -60,28 +65,48 @@ public class FragmentComponentList extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        loadArguments();
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        if (rootView == null) {
-            rootView = inflater.inflate(FRAGMENT_LAYOUT, container, false);
-            Log.d(TAG, "Fragment inflated [" + getActivity().getResources().getResourceName(FRAGMENT_LAYOUT) + "].");
-
-            RecyclerView.Adapter mAdapter = new FragmentComponentListAdapter(CARDVIEW, this, responseComponentList);
-            Log.d(TAG, "Adapter [" + mAdapter.getClass().getSimpleName() + "] with CardView [" + getActivity().getResources().getResourceName(CARDVIEW) + "] initialized.");
-
-            RecyclerView mRecyclerView = (RecyclerView) rootView.findViewById(RECYCLERVIEW);
-            mRecyclerView.setLayoutManager(new LinearLayoutManager(rootView.getContext()));
-            mRecyclerView.setHasFixedSize(true);
-            mRecyclerView.setAdapter(mAdapter);
-            Log.d(TAG, "RecyclerView [" + getActivity().getResources().getResourceName(RECYCLERVIEW) + "] initialized.");
-
-            initViewComponents();
+    public View onCreateView(final LayoutInflater inflater, final ViewGroup container, Bundle savedInstanceState) {
+        if (rootView != null) {
+            return rootView;
         }
+
+        rootView = inflater.inflate(FRAGMENT_LAYOUT, container, false);
+        Log.d(TAG, "Fragment inflated [" + getActivity().getResources().getResourceName(FRAGMENT_LAYOUT) + "].");
+
+        this.adapter = new FragmentComponentListAdapter(CARDVIEW, this, new ArrayList<ResponseComponent>());
+        Log.d(TAG, "Adapter [" + adapter.getClass().getSimpleName() + "] with CardView [" + getActivity().getResources().getResourceName(CARDVIEW) + "] initialized.");
+
+        this.recyclerView = (RecyclerView) rootView.findViewById(RECYCLERVIEW);
+        recyclerView.setLayoutManager(new LinearLayoutManager(rootView.getContext()));
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setAdapter(adapter);
+        Log.d(TAG, "RecyclerView [" + getActivity().getResources().getResourceName(RECYCLERVIEW) + "] initialized.");
+
+        initAdapter();
+        initViewComponents();
+
         return rootView;
     }
+
+    private void initAdapter() {
+        new AsyncTask<Object, Void, RecyclerView.Adapter>(){
+            @Override
+            protected RecyclerView.Adapter doInBackground(Object... objects) {
+                loadArguments();
+                adapter = new FragmentComponentListAdapter(CARDVIEW, FragmentComponentList.this, responseComponentList);
+                return adapter;
+            }
+
+            @Override
+            protected void onPostExecute(RecyclerView.Adapter adapter) {
+                recyclerView.setAdapter(adapter);
+            }
+        }.execute(adapter);
+    }
+
 
     public void initViewComponents() {
         TextView tvHeadLine = (TextView) rootView.findViewById(R.id.default_action_bar_text_view_headline);
