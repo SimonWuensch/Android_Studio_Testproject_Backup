@@ -9,6 +9,7 @@ import android.widget.EditText;
 import android.widget.Spinner;
 
 import ssi.ssn.com.ssi_service.activity.MainActivity;
+import ssi.ssn.com.ssi_service.fragment.create.filter.kpi.view.VerificationButton;
 import ssi.ssn.com.ssi_service.model.database.SQLiteDB;
 
 public class AbstractFragment extends Fragment {
@@ -46,6 +47,15 @@ public class AbstractFragment extends Fragment {
 
             @Override
             public void onNothingSelected(AdapterView<?> parentView) {
+            }
+        });
+    }
+
+    public void onVerificationButtonSelectionChangedListener(VerificationButton button) {
+        button.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                doAfterChanged();
             }
         });
     }

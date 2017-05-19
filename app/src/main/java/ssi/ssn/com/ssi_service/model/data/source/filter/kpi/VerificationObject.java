@@ -6,7 +6,8 @@ public enum VerificationObject {
     LESS_THEN_EQUALS(1, "<="),
     GREATER_THEN(2, ">"),
     GREATER_THEN_EQUALS(3, ">="),
-    EQUALS(4, "=");
+    EQUALS(4, "="),
+    IGNORE(5, "<");
 
     private int id;
     private String icon;

@@ -21,7 +21,10 @@ import ssi.ssn.com.ssi_service.fragment.create.filter.kpi.stub.AbstractKpiTypeSt
 import ssi.ssn.com.ssi_service.fragment.create.filter.kpi.stub.StubAverage;
 import ssi.ssn.com.ssi_service.fragment.create.filter.kpi.stub.StubSingularDouble;
 import ssi.ssn.com.ssi_service.fragment.create.filter.kpi.stub.StubSingularLong;
+import ssi.ssn.com.ssi_service.fragment.create.filter.kpi.stub.StubSpectrum;
+import ssi.ssn.com.ssi_service.fragment.create.filter.kpi.stub.StubStatusEvent;
 import ssi.ssn.com.ssi_service.fragment.create.filter.kpi.view.VerificationButton;
+import ssi.ssn.com.ssi_service.fragment.list.kpifilter.FragmentKpiFilterList;
 import ssi.ssn.com.ssi_service.model.data.source.Project;
 import ssi.ssn.com.ssi_service.model.data.source.cardobject.CardObjectKpi;
 import ssi.ssn.com.ssi_service.model.data.source.filter.kpi.FilterKpi;
@@ -212,6 +215,16 @@ public class FragmentCreateKpiFilter extends AbstractFragment {
         }
         updateFinalButtonText();
         */
+
+        String oldFilterJson = JsonHelper.toJson(filter);
+        String newFilterJson = JsonHelper.toJson(stub.loadFilterFromComponentViews());
+
+        if(!oldFilterJson.equals(newFilterJson)){
+            fragmentStatus = CreateUpdateDeleteStatus.UPDATE;
+        }else{
+            fragmentStatus = CreateUpdateDeleteStatus.DELETE;
+        }
+        updateFinalButtonText();
     }
 
     // ** Settings ****************************************************************************** //
@@ -240,15 +253,15 @@ public class FragmentCreateKpiFilter extends AbstractFragment {
             }
         } else if (definition.getType().equals(FilterKpi.KpiTypeSignification.SPECTRUM.name())) {
             if (filter != null) {
-                return StubAverage.initStub(filter, vsKpiType);
+                return StubSpectrum.initStub(getActivity(), filter, vsKpiType);
             } else {
-                return StubAverage.initStub(definition, vsKpiType);
+                return StubSpectrum.initStub(getActivity(), definition, vsKpiType);
             }
         } else if (definition.getType().equals(FilterKpi.KpiTypeSignification.STATUS_EVENT.name())) {
             if (filter != null) {
-                return StubAverage.initStub(filter, vsKpiType);
+                return StubStatusEvent.initStub(filter, vsKpiType);
             } else {
-                return StubAverage.initStub(definition, vsKpiType);
+                return StubStatusEvent.initStub(definition, vsKpiType);
             }
         }
 
@@ -265,12 +278,14 @@ public class FragmentCreateKpiFilter extends AbstractFragment {
                 break;
             case DELETE:
                 bFinal.setText(SourceHelper.getString(getActivity(), R.string.delete));
-                for(EditText editText : stub.getAllEditTextViews()){
+                for (EditText editText : stub.getAllEditTextViews()) {
                     super.onTextChangeListener(editText);
                 }
-                for(VerificationButton button : stub.getAllVerificationButtonViews()){
-                    //Todo add on button textChange listeneer
-                    //super.onSpinnerSelectionChangedListener(spinner);
+                for (Spinner spinner : stub.getAllSpinnerViews()) {
+                    super.onSpinnerSelectionChangedListener(spinner);
+                }
+                for (VerificationButton button : stub.getAllVerificationButtonViews()) {
+                    super.onVerificationButtonSelectionChangedListener(button);
                 }
                 break;
         }
@@ -284,9 +299,16 @@ public class FragmentCreateKpiFilter extends AbstractFragment {
             public void onClick(View view) {
                 MainActivity activity = (MainActivity) getActivity();
                 FilterKpi filter = stub.loadFilterFromComponentViews();
+                if(!stub.isReadyForCreation()){
+                    Toast.makeText(getActivity(), SourceHelper.getString(getActivity(), R.string.fragment_create_kpi_filter_message_please_insert_all_information_in_the_input_field), Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+
                 boolean isSuccessful;
                 switch (fragmentStatus) {
                     case ADD:
+                        boolean filterListIsEmpty = project.getCardObjectKpi().getKpiFilters().isEmpty();
                         isSuccessful = project.getCardObjectKpi().addKpiFilter(getSQLiteDB(), filter);
                         if (!isSuccessful) {
                             Log.e(TAG, "Add failed. Kpi filter: [" + JsonHelper.toJson(filter) + "]");
@@ -296,6 +318,11 @@ public class FragmentCreateKpiFilter extends AbstractFragment {
 
                         Log.i(TAG, "Add successful. Kpi filter: [" + JsonHelper.toJson(filter) + "]");
                         activity.onBackPressed();
+                        activity.onBackPressed();
+
+                        if(filterListIsEmpty){
+                            activity.showKpiFilterListFragment(project.get_id());
+                        }
                         break;
 
                     case UPDATE:
@@ -324,11 +351,10 @@ public class FragmentCreateKpiFilter extends AbstractFragment {
                         break;
                 }
 
-                //TODO Show Kpi Filter List Fragment
-                //FragmentNotificationFilterList fragment = (FragmentNotificationFilterList) activity.getFragmentManager().findFragmentByTag(FragmentNotificationFilterList.TAG);
-                //if (fragment != null) {
-                //    fragment.updateDataSet();
-                //}
+                FragmentKpiFilterList fragment = (FragmentKpiFilterList) activity.getFragmentManager().findFragmentByTag(FragmentKpiFilterList.TAG);
+                if (fragment != null) {
+                    fragment.updateDataSet();
+                }
             }
         };
     }

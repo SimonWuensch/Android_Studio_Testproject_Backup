@@ -32,7 +32,7 @@ public class VerificationButton extends AppCompatButton {
 
     public VerificationButton(Context context, AttributeSet attrs) {
         super(context, attrs);
-        setText(VerificationObject.LESS_THEN.getIcon());
+        setText(verificationObjects.get(0).getIcon());
     }
 
     public void setVerificationObject(VerificationObject object) {
@@ -40,9 +40,14 @@ public class VerificationButton extends AppCompatButton {
         setText(object.getIcon());
     }
 
+    public void setVerificationObjects(List<VerificationObject> verificationObjects){
+        this.verificationObjects = verificationObjects;
+        setText(verificationObjects.get(0).getIcon());
+    }
+
     @Override
     public boolean performClick() {
-        if (position == 4) {
+        if (position >= verificationObjects.size() -1) {
             position = 0;
         } else {
             position++;

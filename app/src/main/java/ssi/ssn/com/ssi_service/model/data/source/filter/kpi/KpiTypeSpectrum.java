@@ -7,6 +7,7 @@ public class KpiTypeSpectrum implements KpiType {
     private double value;
     private VerificationObject voValue;
     private int channelIndex;
+    private VerificationObject voChannelIndex;
 
     public KpiTypeSpectrum() {
     }
@@ -33,6 +34,14 @@ public class KpiTypeSpectrum implements KpiType {
 
     public void setChannelIndex(int channelIndex) {
         this.channelIndex = channelIndex;
+    }
+
+    public VerificationObject getVoChannelIndex() {
+        return voChannelIndex;
+    }
+
+    public void setVoChannelIndex(VerificationObject voChannelIndex) {
+        this.voChannelIndex = voChannelIndex;
     }
 
     @Override

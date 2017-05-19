@@ -16,6 +16,7 @@ import ssi.ssn.com.ssi_service.fragment.create.project.FragmentCreateProject;
 import ssi.ssn.com.ssi_service.fragment.list.component.FragmentComponentList;
 import ssi.ssn.com.ssi_service.fragment.list.custom.FragmentCustomList;
 import ssi.ssn.com.ssi_service.fragment.list.kpi.FragmentKpiDefinitionList;
+import ssi.ssn.com.ssi_service.fragment.list.kpifilter.FragmentKpiFilterList;
 import ssi.ssn.com.ssi_service.fragment.list.module.FragmentModuleList;
 import ssi.ssn.com.ssi_service.fragment.list.notification.FragmentNotificationList;
 import ssi.ssn.com.ssi_service.fragment.list.notificationfilter.FragmentNotificationFilterList;
@@ -235,18 +236,16 @@ public class AbstractActivity extends Activity {
         Log.i(getClass().getSimpleName(), "Show Fragment [" + FragmentNotificationFilterList.TAG + "]. + Project ID: " + projectID);
     }
 
-    public void showKPIFilterListFragment(int projectID) {
-        //Todo Card Object KPI -> KPI Filter List Fragment erstellen
-        /*FragmentNotificationFilterList fragmentNotificationFilterList = FragmentNotificationFilterList.newInstance(projectID);
+    public void showKpiFilterListFragment(int projectID) {
+        FragmentKpiFilterList fragmentKpiFilterList = FragmentKpiFilterList.newInstance(projectID);
         getFragmentManager()
                 .beginTransaction()
                 .replace(R.id.activity_main_fragment_container,
-                        fragmentNotificationFilterList,
-                        FragmentNotificationFilterList.TAG)
-                .addToBackStack(FragmentNotificationFilterList.TAG)
+                        fragmentKpiFilterList,
+                        FragmentKpiFilterList.TAG)
+                .addToBackStack(FragmentKpiFilterList.TAG)
                 .commit();
-                */
-        Log.i(getClass().getSimpleName(), "Show Fragment [" + FragmentNotificationFilterList.TAG + "]. + Project ID: " + projectID);
+        Log.i(getClass().getSimpleName(), "Show Fragment [" + FragmentKpiFilterList.TAG + "]. + Project ID: " + projectID);
     }
 
     public void showKpiDefinitionList(int projectID) {

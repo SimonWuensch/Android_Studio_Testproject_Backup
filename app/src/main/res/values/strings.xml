@@ -115,6 +115,7 @@
     <string name="fragment_kpi_filter_title">Filter für Kpi anlegen</string>
     <string name="fragment_create_kpi_filter_text_view_add_kpi_filter">Filter hinzufügen</string>
     <string name="fragment_create_Kpi_filter_alert_text_filter_already_exists">Es existiert bereits ein Filter mit diesen Eingabewerten.</string>
+    <string name="fragment_create_kpi_filter_message_please_insert_all_information_in_the_input_field">Bitte beachten Sie die Eingabefelder.</string>
 
     <!-- Fragment KPI Filter Average -->
     <string name="fragment_create_kpi_filter_average_text_view_average">average</string>
@@ -124,7 +125,20 @@
     <string name="fragment_create_kpi_filter_average_text_view_std_dev">stdDev</string>
 
     <!-- Fragment KPI Filter Singular Double -->
-    <string name="fragment_create_kpi_filter_singular_long_text_view_value">value</string>
+    <string name="fragment_create_kpi_filter_singular_double_text_view_value">Wert</string>
+
+    <!-- Fragment KPI Filter Singular Long -->
+    <string name="fragment_create_kpi_filter_singular_long_text_view_value">Wert</string>
+
+    <!-- Fragment KPI Filter Spectrum -->
+    <string name="fragment_create_kpi_filter_spectrum_text_view_value">Wert</string>
+    <string name="fragment_create_kpi_filter_spectrum_text_view_spinner_categories">Kategorie</string>
+
+    <!-- Fragment KPI Filter Status Event -->
+    <string name="fragment_create_kpi_filter_status_event_text_view_value">Wert</string>
+
+    <!-- Fragment KPI Filter List -->
+    <string name="fragment_kpi_filter_list_title">KPI Filterliste</string>
 
     <!-- Fragment Create Notification Filter -->
     <string name="fragment_notification_filter_title">Filter für Meldung anlegen</string>

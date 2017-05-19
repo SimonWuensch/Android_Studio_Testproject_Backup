@@ -19,6 +19,7 @@ import ssi.ssn.com.ssi_service.model.database.DBCardObject;
 import ssi.ssn.com.ssi_service.model.database.DBCardObjectKPI;
 import ssi.ssn.com.ssi_service.model.database.SQLiteDB;
 import ssi.ssn.com.ssi_service.model.detector.DetectorCardObjectKPI;
+import ssi.ssn.com.ssi_service.model.helper.JsonHelper;
 import ssi.ssn.com.ssi_service.model.helper.SourceHelper;
 import ssi.ssn.com.ssi_service.model.network.handler.RequestHandler;
 import ssi.ssn.com.ssi_service.model.network.response.kpi.definitions.ResponseKpiDefinitionList;
@@ -120,7 +121,7 @@ public class CardObjectKpi extends AbstractCardObject {
             return false;
 
         }
-        FilterKpi oldFilter = kpiFilters.get(filter.getId());
+        FilterKpi oldFilter = getFilterByID(filter.getId());
         oldFilter.setSignification(filter.getSignification());
         oldFilter.setKpiType(filter.getKpiType());
         sqLiteDB.cardObjectKPI().update(this);
@@ -137,7 +138,9 @@ public class CardObjectKpi extends AbstractCardObject {
 
     private boolean isFilterExisting(FilterKpi newFilter) {
         for (FilterKpi oldFilter : kpiFilters) {
-            if (false) {
+            String oldKpiTypeJson = JsonHelper.toJson(oldFilter.getKpiType());
+            String newKpiTypeJson = JsonHelper.toJson(newFilter.getKpiType());
+            if (oldKpiTypeJson.equals(newKpiTypeJson)) {
                 return true;
             }
         }
@@ -175,10 +178,10 @@ public class CardObjectKpi extends AbstractCardObject {
         if (getStatus().equals(Status.NOT_AVAILABLE)) {
             Toast.makeText(activity, SourceHelper.getString(activity, R.string.fragment_launch_board_error_kpi), Toast.LENGTH_SHORT).show();
         } else {
-            //activity.showKPIFilterListFragment(project.get_id());
-            activity.showKpiDefinitionList(project.get_id());
             if (getKpiFilters().isEmpty()) {
                 activity.showKpiDefinitionList(project.get_id());
+            }else{
+                activity.showKpiFilterListFragment(project.get_id());
             }
         }
     }

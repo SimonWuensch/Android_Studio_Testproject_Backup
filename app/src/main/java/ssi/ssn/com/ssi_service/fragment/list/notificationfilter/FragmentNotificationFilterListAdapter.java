@@ -37,11 +37,6 @@ class FragmentNotificationFilterListAdapter extends RecyclerView.Adapter<Fragmen
         this.notificationFilterList = notificationFilterList;
     }
 
-    protected void setNotificationFilterList(List<FilterNotification> notificationFilterList) {
-        this.notificationFilterList = notificationFilterList;
-        viewHolderList = new LinkedList<>();
-    }
-
     @Override
     public FragmentNotificationFilterListViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         cardView = (CardView) LayoutInflater.from(parent.getContext()).inflate(layoutCardView, parent, false);
