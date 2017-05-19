@@ -17,6 +17,7 @@ import ssi.ssn.com.ssi_service.R;
 import ssi.ssn.com.ssi_service.activity.MainActivity;
 import ssi.ssn.com.ssi_service.fragment.AbstractFragment;
 import ssi.ssn.com.ssi_service.fragment.create.CreateUpdateDeleteStatus;
+import ssi.ssn.com.ssi_service.fragment.create.filter.kpi.source.KpiTypeStubHandler;
 import ssi.ssn.com.ssi_service.fragment.create.filter.kpi.stub.AbstractKpiTypeStub;
 import ssi.ssn.com.ssi_service.fragment.create.filter.kpi.stub.StubAverage;
 import ssi.ssn.com.ssi_service.fragment.create.filter.kpi.stub.StubSingularDouble;
@@ -145,12 +146,11 @@ public class FragmentCreateKpiFilter extends AbstractFragment {
         tvKpiName = (TextView) rootView.findViewById(R.id.fragment_create_kpi_filter_name_value);
         tvKpiDescription = (TextView) rootView.findViewById(R.id.fragment_create_kpi_filter_description_value);
         vsKpiType = (ViewStub) rootView.findViewById(R.id.fragment_create_kpi_filter_view_stub_kpi_type);
-        vsKpiType.setLayoutResource(R.layout.fragment_create_filter_kpi_stub_average);
 
         bFinal = (Button) rootView.findViewById(R.id.fragment_create_kpi_filter_button_final);
         bFinal.setOnClickListener(onClickFinalButton());
 
-        stub = isStartedWithDefinition ? initStub() : initStub(filter);
+        stub = isStartedWithDefinition ? KpiTypeStubHandler.initStub(getActivity(), vsKpiType, definition) : KpiTypeStubHandler.initStub(getActivity(), vsKpiType, definition, filter);
 
         updateFinalButtonText();
         if (definition != null) {
@@ -184,38 +184,6 @@ public class FragmentCreateKpiFilter extends AbstractFragment {
 
     @Override
     public void doAfterChanged() {
-        Log.d(TAG, "something chanded...");
-        /*String initialNode = filter.getNote();
-        String initialText = filter.getText();
-
-        long millis = filter.getActiveTime();
-        String initialActiveTime;
-        int timeInputSelection;
-        if (FormatHelper.formatMillisecondsToMinutes(millis) % 60 != 0) {
-            initialActiveTime = String.valueOf(FormatHelper.formatMillisecondsToMinutes(millis));
-            timeInputSelection = 0;
-        } else {
-            initialActiveTime = String.valueOf(FormatHelper.formatMillisecondsToHours(millis));
-            timeInputSelection = 1;
-        }
-
-        int selectedPosition = spSeverityInput.getSelectedItemPosition();
-        NotificationSeverity selectedSeverity = selectedPosition == 0 ? NotificationSeverity.ERROR : selectedPosition == 1 ? NotificationSeverity.WARN : NotificationSeverity.INFO;
-
-        boolean isChangedNode = !initialNode.equals(etNode.getText().toString());
-        boolean isChangedActiveTime = !initialActiveTime.equals(etActiveTime.getText().toString());
-        boolean isChangedText = !initialText.equals(etText.getText().toString());
-        boolean isChangedTimeInput = timeInputSelection != spTimeInput.getSelectedItemPosition();
-        boolean isChangedSeverityInput = filter.getSeverity() != selectedSeverity;
-
-        if (isChangedNode || isChangedActiveTime || isChangedText || isChangedTimeInput || isChangedSeverityInput) {
-            fragmentStatus = CreateUpdateDeleteStatus.UPDATE;
-        } else {
-            fragmentStatus = CreateUpdateDeleteStatus.DELETE;
-        }
-        updateFinalButtonText();
-        */
-
         String oldFilterJson = JsonHelper.toJson(filter);
         String newFilterJson = JsonHelper.toJson(stub.loadFilterFromComponentViews());
 
@@ -228,46 +196,6 @@ public class FragmentCreateKpiFilter extends AbstractFragment {
     }
 
     // ** Settings ****************************************************************************** //
-    private AbstractKpiTypeStub initStub() {
-        return initStub(null);
-    }
-
-    private AbstractKpiTypeStub initStub(FilterKpi filter) {
-        if (definition.getType().equals(FilterKpi.KpiTypeSignification.AVERAGE.name())) {
-            if (filter != null) {
-                return StubAverage.initStub(filter, vsKpiType);
-            } else {
-                return StubAverage.initStub(definition, vsKpiType);
-            }
-        } else if (definition.getType().equals(FilterKpi.KpiTypeSignification.SINGULAR_DOUBLE.name())) {
-            if (filter != null) {
-                return StubSingularDouble.initStub(filter, vsKpiType);
-            } else {
-                return StubSingularDouble.initStub(definition, vsKpiType);
-            }
-        } else if (definition.getType().equals(FilterKpi.KpiTypeSignification.SINGULAR_LONG.name())) {
-            if (filter != null) {
-                return StubSingularLong.initStub(filter, vsKpiType);
-            } else {
-                return StubSingularLong.initStub(definition, vsKpiType);
-            }
-        } else if (definition.getType().equals(FilterKpi.KpiTypeSignification.SPECTRUM.name())) {
-            if (filter != null) {
-                return StubSpectrum.initStub(getActivity(), filter, vsKpiType);
-            } else {
-                return StubSpectrum.initStub(getActivity(), definition, vsKpiType);
-            }
-        } else if (definition.getType().equals(FilterKpi.KpiTypeSignification.STATUS_EVENT.name())) {
-            if (filter != null) {
-                return StubStatusEvent.initStub(filter, vsKpiType);
-            } else {
-                return StubStatusEvent.initStub(definition, vsKpiType);
-            }
-        }
-
-        throw new NullPointerException("Definition type is unknown. [" + definition.getType() + "]");
-    }
-
     private void updateFinalButtonText() {
         switch (fragmentStatus) {
             case ADD:
@@ -326,11 +254,6 @@ public class FragmentCreateKpiFilter extends AbstractFragment {
                         break;
 
                     case UPDATE:
-                        /*
-                        TODO SET UPDATE FILTER SETTINGS
-                        filter.setNotificationTable(new ResponseNotificationTable());
-                        filter.setActiveTimeReachedNotificationTable(new ResponseNotificationTable());
-                         */
                         isSuccessful = project.getCardObjectKpi().updateKpiFilter(getSQLiteDB(), filter);
                         if (!isSuccessful) {
                             Log.e(TAG, "Update failed. Kpi filter: [" + JsonHelper.toJson(filter) + "]");

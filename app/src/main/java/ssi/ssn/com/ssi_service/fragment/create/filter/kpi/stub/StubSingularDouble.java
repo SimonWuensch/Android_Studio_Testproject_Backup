@@ -19,6 +19,8 @@ public class StubSingularDouble extends AbstractKpiTypeStub{
     private static int STUB_LAYOUT = R.layout.fragment_create_filter_kpi_stub_singular_double;
 
     private KpiTypeSingularDouble kpiType;
+
+    private View inflatedView;
     private EditText etValue;
     private VerificationButton vbValue;
 
@@ -45,10 +47,10 @@ public class StubSingularDouble extends AbstractKpiTypeStub{
     @Override
     public void initViewComponents(){
         viewStub.setLayoutResource(STUB_LAYOUT);
-        View inflated = viewStub.inflate();
+        inflatedView = viewStub.inflate();
 
-        etValue = (EditText) inflated.findViewById(R.id.fragment_create_kpi_filter_stub_singular_double_edit_text_value);
-        vbValue = (VerificationButton) inflated.findViewById(R.id.fragment_create_kpi_filter_stub_singular_double_button_verification_object_value);
+        etValue = (EditText) inflatedView.findViewById(R.id.fragment_create_kpi_filter_stub_singular_double_edit_text_value);
+        vbValue = (VerificationButton) inflatedView.findViewById(R.id.fragment_create_kpi_filter_stub_singular_double_button_verification_object_value);
     }
 
     @Override
@@ -60,6 +62,11 @@ public class StubSingularDouble extends AbstractKpiTypeStub{
     @Override
     public FilterKpi.KpiTypeSignification getKpiTypeSignification(){
         return FilterKpi.KpiTypeSignification.SINGULAR_DOUBLE;
+    }
+
+    @Override
+    public View getInflatedView(){
+        return inflatedView;
     }
 
     @Override

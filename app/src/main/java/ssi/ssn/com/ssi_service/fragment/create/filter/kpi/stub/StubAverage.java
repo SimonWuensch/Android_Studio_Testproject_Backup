@@ -20,6 +20,8 @@ public class StubAverage extends AbstractKpiTypeStub {
 
     private KpiTypeAverage kpiType;
 
+    private View inflatedView;
+
     private EditText etAverage;
     private EditText etNumSamples;
     private EditText etMinimum;
@@ -55,19 +57,19 @@ public class StubAverage extends AbstractKpiTypeStub {
     @Override
     public void initViewComponents() {
         viewStub.setLayoutResource(STUB_LAYOUT);
-        View inflated = viewStub.inflate();
+        inflatedView = viewStub.inflate();
 
-        etAverage = (EditText) inflated.findViewById(R.id.fragment_create_kpi_filter_stub_average_edit_text_average);
-        etNumSamples = (EditText) inflated.findViewById(R.id.fragment_create_kpi_filter_stub_average_edit_text_numSamples);
-        etMinimum = (EditText) inflated.findViewById(R.id.fragment_create_kpi_filter_stub_average_edit_text_min);
-        etMaximum = (EditText) inflated.findViewById(R.id.fragment_create_kpi_filter_stub_average_edit_text_max);
-        etStdDev = (EditText) inflated.findViewById(R.id.fragment_create_kpi_filter_stub_average_edit_text_stdDev);
+        etAverage = (EditText) inflatedView.findViewById(R.id.fragment_create_kpi_filter_stub_average_edit_text_average);
+        etNumSamples = (EditText) inflatedView.findViewById(R.id.fragment_create_kpi_filter_stub_average_edit_text_numSamples);
+        etMinimum = (EditText) inflatedView.findViewById(R.id.fragment_create_kpi_filter_stub_average_edit_text_min);
+        etMaximum = (EditText) inflatedView.findViewById(R.id.fragment_create_kpi_filter_stub_average_edit_text_max);
+        etStdDev = (EditText) inflatedView.findViewById(R.id.fragment_create_kpi_filter_stub_average_edit_text_stdDev);
 
-        vbAverage = (VerificationButton) inflated.findViewById(R.id.fragment_create_kpi_filter_stub_average_button_verification_object_average);
-        vbNumSamples = (VerificationButton) inflated.findViewById(R.id.fragment_create_kpi_filter_stub_average_button_verification_object_numSamples);
-        vbMinimum = (VerificationButton) inflated.findViewById(R.id.fragment_create_kpi_filter_stub_average_button_verification_object_min);
-        vbMaximum = (VerificationButton) inflated.findViewById(R.id.fragment_create_kpi_filter_stub_average_button_verification_object_max);
-        vbStdDev = (VerificationButton) inflated.findViewById(R.id.fragment_create_kpi_filter_stub_average_button_verification_object_stdDev);
+        vbAverage = (VerificationButton) inflatedView.findViewById(R.id.fragment_create_kpi_filter_stub_average_button_verification_object_average);
+        vbNumSamples = (VerificationButton) inflatedView.findViewById(R.id.fragment_create_kpi_filter_stub_average_button_verification_object_numSamples);
+        vbMinimum = (VerificationButton) inflatedView.findViewById(R.id.fragment_create_kpi_filter_stub_average_button_verification_object_min);
+        vbMaximum = (VerificationButton) inflatedView.findViewById(R.id.fragment_create_kpi_filter_stub_average_button_verification_object_max);
+        vbStdDev = (VerificationButton) inflatedView.findViewById(R.id.fragment_create_kpi_filter_stub_average_button_verification_object_stdDev);
     }
 
     @Override
@@ -88,6 +90,11 @@ public class StubAverage extends AbstractKpiTypeStub {
     @Override
     public FilterKpi.KpiTypeSignification getKpiTypeSignification() {
         return FilterKpi.KpiTypeSignification.AVERAGE;
+    }
+
+    @Override
+    public View getInflatedView(){
+        return inflatedView;
     }
 
     @Override
@@ -115,6 +122,8 @@ public class StubAverage extends AbstractKpiTypeStub {
         kpiType.setVoStdDev(stdDev.isEmpty() ? VerificationObject.IGNORE : getVerificationObjectByIcon((String) vbStdDev.getText()));
         return kpiType;
     }
+
+
 
     @Override
     public boolean isReadyForCreation() {

@@ -1,6 +1,7 @@
 package ssi.ssn.com.ssi_service.fragment.create.filter.kpi.stub;
 
 import android.app.Activity;
+import android.view.View;
 import android.view.ViewStub;
 import android.widget.EditText;
 import android.widget.Spinner;
@@ -67,6 +68,10 @@ public class AbstractKpiTypeStub {
     }
 
     protected KpiType getKpiType(){
+        throw new NullPointerException("No settings found...");
+    }
+
+    public View getInflatedView(){
         throw new NullPointerException("No settings found...");
     }
 

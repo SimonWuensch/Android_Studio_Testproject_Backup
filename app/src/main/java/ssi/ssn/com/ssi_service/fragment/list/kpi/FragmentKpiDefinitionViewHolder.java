@@ -10,11 +10,6 @@ import ssi.ssn.com.ssi_service.R;
 import ssi.ssn.com.ssi_service.activity.MainActivity;
 import ssi.ssn.com.ssi_service.model.data.source.Project;
 import ssi.ssn.com.ssi_service.model.data.source.filter.kpi.FilterKpi;
-import ssi.ssn.com.ssi_service.model.data.source.filter.kpi.KpiTypeAverage;
-import ssi.ssn.com.ssi_service.model.data.source.filter.kpi.KpiTypeSingularDouble;
-import ssi.ssn.com.ssi_service.model.data.source.filter.kpi.KpiTypeSingularLong;
-import ssi.ssn.com.ssi_service.model.data.source.filter.kpi.KpiTypeSpectrum;
-import ssi.ssn.com.ssi_service.model.data.source.filter.kpi.KpiTypeStatusEvent;
 import ssi.ssn.com.ssi_service.model.helper.SourceHelper;
 import ssi.ssn.com.ssi_service.model.network.response.kpi.definitions.ResponseKpiDefinition;
 
@@ -47,23 +42,15 @@ public class FragmentKpiDefinitionViewHolder extends RecyclerView.ViewHolder {
         cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO Show Fragment Kpi Create Filter after click if type is known
-
-                if (definition.getType().equals(FilterKpi.KpiTypeSignification.AVERAGE.name())) {
-                    KpiTypeAverage kpiType = new KpiTypeAverage();
-                } else if (definition.getType().equals(FilterKpi.KpiTypeSignification.SINGULAR_DOUBLE.name())) {
-                    KpiTypeSingularDouble kpiType = new KpiTypeSingularDouble();
-                } else if (definition.getType().equals(FilterKpi.KpiTypeSignification.SINGULAR_LONG.name())) {
-                    KpiTypeSingularLong kpiType = new KpiTypeSingularLong();
-                } else if (definition.getType().equals(FilterKpi.KpiTypeSignification.SPECTRUM.name())) {
-                    KpiTypeSpectrum kpiType = new KpiTypeSpectrum();
-                } else if (definition.getType().equals(FilterKpi.KpiTypeSignification.STATUS_EVENT.name())) {
-                    KpiTypeStatusEvent kpiType = new KpiTypeStatusEvent();
+                if (definition.getType().equals(FilterKpi.KpiTypeSignification.AVERAGE.name()) ||
+                        definition.getType().equals(FilterKpi.KpiTypeSignification.SINGULAR_DOUBLE.name()) ||
+                        definition.getType().equals(FilterKpi.KpiTypeSignification.SINGULAR_LONG.name()) ||
+                        definition.getType().equals(FilterKpi.KpiTypeSignification.SPECTRUM.name()) ||
+                        definition.getType().equals(FilterKpi.KpiTypeSignification.STATUS_EVENT.name())) {
+                    ((MainActivity) activity).showCreateKpiFilterFragment(project.get_id(), definition);
                 } else {
                     Toast.makeText(activity, SourceHelper.getString(activity, R.string.fragment_kpi_definition_list_type_is_not_known) + definition.getType(), Toast.LENGTH_SHORT).show();
                 }
-
-                ((MainActivity) activity).showCreateKpiFilterFragment(project.get_id(), definition);
             }
         });
     }

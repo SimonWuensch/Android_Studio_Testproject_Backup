@@ -1,38 +1,112 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.CardView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
-
-    android:layout_margin="5dp"
 
     android:id="@+id/fragment_standard_card_view"
 
-    android:orientation="vertical"
     android:layout_width="match_parent"
+
     android:layout_height="wrap_content"
-
-    android:paddingTop="3dp"
-    card_view:cardElevation="6dp"
-    card_view:cardCornerRadius="0dp"
-
     android:clickable="true"
-    android:foreground="?android:attr/selectableItemBackground">
+    android:layout_marginBottom="10dp"
 
-    <RelativeLayout
+    android:foreground="?android:attr/selectableItemBackground"
+    android:orientation="vertical"
+
+    card_view:cardCornerRadius="0dp"
+    card_view:cardElevation="6dp">
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:longClickable="false"
-        android:padding="10dp">
+        android:orientation="vertical">
 
-        <TextView
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:id="@+id/fragment_kpi_filter_list_card_view_relative_layout_headline"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="TEST"
-            android:id="@+id/fragment_standard_text_view"
-            android:layout_marginStart="15dp"/>
+            android:orientation="horizontal"
+            android:background="@color/defaultColor">
 
-    </RelativeLayout>
+            <TextView
+                android:id="@+id/fragment_kpi_filter_list_card_view_text_view_key_name"
+                android:layout_width="1dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="11"
+                android:gravity="center_vertical"
+                android:text="Key / Name"
+                android:layout_marginLeft="15dp"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textColor="@color/colorWhite"/>
+
+            <ImageView
+                android:id="@+id/fragment_kpi_filter_list_card_view_image_settings"
+                android:layout_width="1dp"
+                android:layout_height="30dp"
+                android:layout_weight="1"
+                android:gravity="center_vertical"
+                android:src="@drawable/icon_three_dots" />
+        </LinearLayout>
+
+        <View
+            android:id="@+id/fragment_kpi_filter_list_card_view_view_status_node_line"
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:layout_alignParentTop="true"
+            android:background="@color/lightGray"
+            android:layout_marginBottom="5dp"/>
+
+        <LinearLayout
+            android:id="@+id/fragment_kpi_filter_list_card_view_relative_layout_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:minHeight="30dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/fragment_kpi_filter_list_card_view_text_view_description_key"
+                    android:layout_width="120dp"
+                    android:layout_height="wrap_content"
+                    android:text="@string/fragment_kpi_definition_list_description"
+                    android:textAppearance="?android:attr/textAppearanceMedium" />
+
+                <TextView
+                    android:id="@+id/fragment_kpi_filter_list_card_view_text_view_description_value"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginBottom="5dp"
+                    android:maxLines="10"
+                    android:text="text...."
+                    android:textAppearance="?android:attr/textAppearanceMedium" />
+
+            </LinearLayout>
+        </LinearLayout>
+
+        <RelativeLayout
+            android:id="@+id/fragment_kpi_filter_list_card_view_relative_layout_stub"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:longClickable="false">
+
+            <ViewStub
+                android:id="@+id/fragment_kpi_filter_list_view_stub_kpi_type"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginBottom="5dp" />
+
+        </RelativeLayout>
+
+    </LinearLayout>
 
 </android.support.v7.widget.CardView>

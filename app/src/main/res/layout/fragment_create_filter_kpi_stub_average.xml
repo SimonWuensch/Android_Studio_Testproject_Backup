@@ -12,6 +12,7 @@
         android:orientation="vertical">
 
         <LinearLayout
+            android:id="@+id/fragment_create_kpi_filter_stub_linear_layout_average"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="horizontal">
@@ -20,7 +21,7 @@
                 android:id="@+id/fragment_create_kpi_filter_stub_average_text_view_average"
                 android:layout_width="1dp"
                 android:layout_height="match_parent"
-                android:layout_weight="1.3"
+                android:layout_weight="1.15"
                 android:text="@string/fragment_create_kpi_filter_average_text_view_average"
                 android:gravity="center|left"
                 android:textAppearance="?android:attr/textAppearanceMedium"/>
@@ -50,6 +51,7 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/fragment_create_kpi_filter_stub_linear_layout_numSamples"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="horizontal">
@@ -58,7 +60,7 @@
                 android:id="@+id/fragment_create_kpi_filter_stub_average_text_view_numSamples"
                 android:layout_width="1dp"
                 android:layout_height="match_parent"
-                android:layout_weight="1.3"
+                android:layout_weight="1.15"
                 android:text="@string/fragment_create_kpi_filter_average_text_view_num_samples"
                 android:gravity="center|left"
                 android:textAppearance="?android:attr/textAppearanceMedium"/>
@@ -88,6 +90,7 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/fragment_create_kpi_filter_stub_linear_layout_min"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="horizontal">
@@ -96,7 +99,7 @@
                 android:id="@+id/fragment_create_kpi_filter_stub_average_text_view_min"
                 android:layout_width="1dp"
                 android:layout_height="match_parent"
-                android:layout_weight="1.3"
+                android:layout_weight="1.15"
                 android:text="@string/fragment_create_kpi_filter_average_text_view_min"
                 android:gravity="center|left"
                 android:textAppearance="?android:attr/textAppearanceMedium"/>
@@ -126,6 +129,7 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/fragment_create_kpi_filter_stub_linear_layout_max"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="horizontal">
@@ -134,7 +138,7 @@
                 android:id="@+id/fragment_create_kpi_filter_stub_average_text_view_max"
                 android:layout_width="1dp"
                 android:layout_height="match_parent"
-                android:layout_weight="1.3"
+                android:layout_weight="1.15"
                 android:text="@string/fragment_create_kpi_filter_average_text_view_max"
                 android:gravity="center|left"
                 android:textAppearance="?android:attr/textAppearanceMedium"/>
@@ -164,6 +168,7 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/fragment_create_kpi_filter_stub_linear_layout_stdDev"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="horizontal">
@@ -172,7 +177,7 @@
                 android:id="@+id/fragment_create_kpi_filter_stub_average_text_view_stdDev"
                 android:layout_width="1dp"
                 android:layout_height="match_parent"
-                android:layout_weight="1.3"
+                android:layout_weight="1.15"
                 android:text="@string/fragment_create_kpi_filter_average_text_view_std_dev"
                 android:gravity="center|left"
                 android:textAppearance="?android:attr/textAppearanceMedium"/>

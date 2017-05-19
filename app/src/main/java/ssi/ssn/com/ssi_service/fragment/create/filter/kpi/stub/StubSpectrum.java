@@ -24,6 +24,7 @@ public class StubSpectrum extends AbstractKpiTypeStub{
 
     private KpiTypeSpectrum kpiType;
 
+    private View inflatedView;
     private EditText etValue;
     private VerificationButton vbValue;
     private Spinner spCategories;
@@ -53,11 +54,11 @@ public class StubSpectrum extends AbstractKpiTypeStub{
     @Override
     public void initViewComponents(){
         viewStub.setLayoutResource(STUB_LAYOUT);
-        View inflated = viewStub.inflate();
+        inflatedView = viewStub.inflate();
 
-        etValue = (EditText) inflated.findViewById(R.id.fragment_create_kpi_filter_stub_spectrum_edit_text_value);
-        vbValue = (VerificationButton) inflated.findViewById(R.id.fragment_create_kpi_filter_stub_spectrum_button_verification_object_value);
-        spCategories = (Spinner) inflated.findViewById(R.id.fragment_create_kpi_filter_stub_spectrum_spinner_categories);
+        etValue = (EditText) inflatedView.findViewById(R.id.fragment_create_kpi_filter_stub_spectrum_edit_text_value);
+        vbValue = (VerificationButton) inflatedView.findViewById(R.id.fragment_create_kpi_filter_stub_spectrum_button_verification_object_value);
+        spCategories = (Spinner) inflatedView.findViewById(R.id.fragment_create_kpi_filter_stub_spectrum_spinner_categories);
 
 
         List<String> spectrumCategories = new ArrayList<String>(Arrays.asList(definition.getSpectrumCategories()));
@@ -78,6 +79,11 @@ public class StubSpectrum extends AbstractKpiTypeStub{
     @Override
     public FilterKpi.KpiTypeSignification getKpiTypeSignification(){
         return FilterKpi.KpiTypeSignification.SPECTRUM;
+    }
+
+    @Override
+    public View getInflatedView(){
+        return inflatedView;
     }
 
     @Override

@@ -19,6 +19,8 @@ public class StubStatusEvent extends AbstractKpiTypeStub{
     private static int STUB_LAYOUT = R.layout.fragment_create_filter_kpi_stub_status_event;
 
     private KpiTypeStatusEvent kpiType;
+
+    private View inflatedView;
     private EditText etValue;
     private VerificationButton vbValue;
 
@@ -45,10 +47,10 @@ public class StubStatusEvent extends AbstractKpiTypeStub{
     @Override
     public void initViewComponents(){
         viewStub.setLayoutResource(STUB_LAYOUT);
-        View inflated = viewStub.inflate();
+        inflatedView = viewStub.inflate();
 
-        etValue = (EditText) inflated.findViewById(R.id.fragment_create_kpi_filter_stub_singular_status_event_edit_text_value);
-        vbValue = (VerificationButton) inflated.findViewById(R.id.fragment_create_kpi_filter_stub_singular_status_event_button_verification_object_value);
+        etValue = (EditText) inflatedView.findViewById(R.id.fragment_create_kpi_filter_stub_singular_status_event_edit_text_value);
+        vbValue = (VerificationButton) inflatedView.findViewById(R.id.fragment_create_kpi_filter_stub_singular_status_event_button_verification_object_value);
         vbValue.setVerificationObjects(new ArrayList<VerificationObject>(){
             {
                 add(VerificationObject.EQUALS);
@@ -65,6 +67,11 @@ public class StubStatusEvent extends AbstractKpiTypeStub{
     @Override
     public FilterKpi.KpiTypeSignification getKpiTypeSignification(){
         return FilterKpi.KpiTypeSignification.STATUS_EVENT;
+    }
+
+    @Override
+    public View getInflatedView(){
+        return inflatedView;
     }
 
     @Override
