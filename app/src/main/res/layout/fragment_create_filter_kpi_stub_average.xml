@@ -47,7 +47,7 @@
                 android:layout_weight="1.6"
                 android:gravity="center"
                 android:hint="double"
-                android:inputType="number"/>
+                android:inputType="numberDecimal"/>
         </LinearLayout>
 
         <LinearLayout
@@ -125,7 +125,7 @@
                 android:layout_weight="1.6"
                 android:gravity="center"
                 android:hint="double"
-                android:inputType="number"/>
+                android:inputType="numberDecimal"/>
         </LinearLayout>
 
         <LinearLayout
@@ -164,7 +164,7 @@
                 android:layout_weight="1.6"
                 android:gravity="center"
                 android:hint="double"
-                android:inputType="number"/>
+                android:inputType="numberDecimal"/>
         </LinearLayout>
 
         <LinearLayout
@@ -203,7 +203,7 @@
                 android:layout_weight="1.6"
                 android:gravity="center"
                 android:hint="double"
-                android:inputType="number" />
+                android:inputType="numberDecimal" />
         </LinearLayout>
 
     </LinearLayout>

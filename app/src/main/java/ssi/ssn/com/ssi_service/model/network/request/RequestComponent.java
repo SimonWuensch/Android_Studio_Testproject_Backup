@@ -35,6 +35,11 @@ public class RequestComponent extends AbstractRequest {
     }
 
     public static RequestComponent init(Project project, String name) {
+        if(name.equals("opcua")){
+            name = "OpcUa";
+        }else if (name.equals("webmi")){
+            name = "WebMi";
+        }
         return new RequestComponent(project, name);
     }
 

@@ -395,9 +395,9 @@ public class FragmentCreateProject extends AbstractFragment {
                     return;
                 }
 
-                asyncTaskList.add(new AsyncTask<Object, Void, Object>() {
+                asyncTaskList.add(new AsyncTask<Object, Void, String>() {
                     @Override
-                    protected Object doInBackground(Object... objects) {
+                    protected String doInBackground(Object... objects) {
                         requestHandler.sendRequestApplication(project);
                         if (project.getDefaultResponseApplication().getCode() != 200) {
                             String serverAddress = project.getServerAddress();
@@ -406,17 +406,20 @@ public class FragmentCreateProject extends AbstractFragment {
 
                             if (project.getDefaultResponseApplication().getCode() != 200) {
                                 project.setServerAddress(serverAddress);
-                                Toast.makeText(getActivity(), SourceHelper.getString(getActivity(), R.string.fragment_create_project_message_server_address_is_no_valid_lighthouse_address), Toast.LENGTH_SHORT).show();
-                                return null;
+                                //Toast.makeText(getActivity(), SourceHelper.getString(getActivity(), R.string.fragment_create_project_message_server_address_is_no_valid_lighthouse_address), Toast.LENGTH_SHORT).show();
+                                //return null;
+                                return SourceHelper.getString(getActivity(), R.string.fragment_create_project_message_server_address_is_no_valid_lighthouse_address);
                             }
                         }
 
                         ResponseApplication responseApplication = (ResponseApplication) JsonHelper.fromJsonGeneric(ResponseApplication.class, project.getDefaultResponseApplication().getResult());
                         if (!responseApplication.getBuild().getVersion().startsWith(MainActivity.ACCEPTED_PROJECT_VERSION)) {
-                            Toast.makeText(getActivity(),
+                            /*Toast.makeText(getActivity(),
                                     SourceHelper.getString(getActivity(), R.string.fragment_create_project_message_application_version_equals_not_2_0)
                                             + " - [" + responseApplication.getBuild().getVersion() + "]", Toast.LENGTH_SHORT).show();
-                            return null;
+                            return null;*/
+                            return SourceHelper.getString(getActivity(), R.string.fragment_create_project_message_application_version_equals_not_2_0)
+                                    + " - [" + responseApplication.getBuild().getVersion() + "]";
                         }
 
                         if (fragmentStatus.equals(CreateUpdateDeleteStatus.UPDATE)) {
@@ -427,7 +430,12 @@ public class FragmentCreateProject extends AbstractFragment {
                     }
 
                     @Override
-                    protected void onPostExecute(Object o) {
+                    protected void onPostExecute(String errorMessage) {
+                        if(errorMessage != null){
+                            Toast.makeText(getActivity(),errorMessage, Toast.LENGTH_SHORT).show();
+                            setLoadingViewVisible(false);
+                            return;
+                        }
                         if (project.getDefaultResponseLogin().getCode() != 200) {
                             Toast.makeText(getActivity(), SourceHelper.getString(getActivity(), R.string.fragment_create_project_message_login_data_not_correct), Toast.LENGTH_SHORT).show();
                         } else {
