@@ -3,8 +3,11 @@ package ssi.ssn.com.ssi_service.model.data.source;
 import com.owlike.genson.annotation.JsonIgnore;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import ssi.ssn.com.ssi_service.model.data.source.filter.kpi.FilterKpi;
 import ssi.ssn.com.ssi_service.model.network.DefaultResponse;
 
 public class NetworkProject {
@@ -29,7 +32,7 @@ public class NetworkProject {
     @JsonIgnore
     private DefaultResponse defaultResponseKPIDefinitions;
     @JsonIgnore
-    private DefaultResponse defaultResponseKPIMeasurements;
+    private Map<String, DefaultResponse> defaultResponseKPIMeasurementMap = new HashMap<>();
     @JsonIgnore
     private List<DefaultResponse> defaultResponseComponentList;
     @JsonIgnore
@@ -137,13 +140,13 @@ public class NetworkProject {
     }
 
     @JsonIgnore
-    public DefaultResponse getDefaultResponseKPIMeasurementList() {
-        return defaultResponseKPIMeasurements;
+    public Map<String, DefaultResponse> getDefaultResponseKPIMeasurementMap() {
+        return defaultResponseKPIMeasurementMap;
     }
 
     @JsonIgnore
-    public void setDefaultResponseKPIMeasurements(DefaultResponse defaultResponseKPIMeasurements) {
-        this.defaultResponseKPIMeasurements = defaultResponseKPIMeasurements;
+    public void putDefaultResponseKPIMeasurement(FilterKpi filter, DefaultResponse defaultResponseKPIMeasurements) {
+        this.defaultResponseKPIMeasurementMap.put(filter.getDefinition().getKey(), defaultResponseKPIMeasurements);
     }
 
     @JsonIgnore

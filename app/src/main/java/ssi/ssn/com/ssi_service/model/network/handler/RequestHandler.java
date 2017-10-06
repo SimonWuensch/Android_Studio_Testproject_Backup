@@ -5,6 +5,7 @@ import java.util.Map;
 import java.util.concurrent.ExecutorService;
 
 import ssi.ssn.com.ssi_service.model.data.source.Project;
+import ssi.ssn.com.ssi_service.model.data.source.filter.kpi.FilterKpi;
 import ssi.ssn.com.ssi_service.model.data.source.filter.notification.FilterNotification;
 import ssi.ssn.com.ssi_service.model.network.request.RequestApplication;
 import ssi.ssn.com.ssi_service.model.network.request.RequestApplicationConfig;
@@ -101,8 +102,8 @@ public class RequestHandler {
         RequestKPIDefinitions.init(project).getTaskGET(getCookieHandler(project));
     }
 
-    public void sendRequestKPIMeasurements(Project project) {
-        RequestKPIMeasurements.init(project).getTaskGET(getCookieHandler(project));
+    public void sendRequestKPIMeasurements(Project project, FilterKpi filter) {
+        RequestKPIMeasurements.init(project, filter).getTaskGET(getCookieHandler(project));
     }
 
     // *** Scada ******************************************************************************** //

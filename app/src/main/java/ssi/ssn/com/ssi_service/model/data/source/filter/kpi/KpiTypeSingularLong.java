@@ -27,7 +27,8 @@ public class KpiTypeSingularLong implements KpiType {
     }
 
     @Override
-    public boolean check(ResponseKpiMeasurement measurement) {
-        return false;
+    public boolean check(FilterKpi filter, ResponseKpiMeasurement measurement) {
+        //TODO Check value
+        return voValue.check(measurement.getValue(), value);
     }
 }

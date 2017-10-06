@@ -52,6 +52,7 @@ public class ResponseKpiMeasurement extends AbstractResponse {
     }
 
     public double getValue() {
+        //TODO Check value -> Objekt umwandeln wahrscheinlich
         return value;
     }
 

@@ -23,6 +23,7 @@ import ssi.ssn.com.ssi_service.model.helper.JsonHelper;
 import ssi.ssn.com.ssi_service.model.helper.SourceHelper;
 import ssi.ssn.com.ssi_service.model.network.handler.RequestHandler;
 import ssi.ssn.com.ssi_service.model.network.response.kpi.definitions.ResponseKpiDefinitionList;
+import ssi.ssn.com.ssi_service.model.network.response.kpi.measurements.ResponseKPIMeasurementList;
 import ssi.ssn.com.ssi_service.notification_android.AbstractAndroidNotification;
 
 public class CardObjectKpi extends AbstractCardObject {
@@ -32,6 +33,7 @@ public class CardObjectKpi extends AbstractCardObject {
     private static int NOTIFICATION_ID = 4;
 
     private ResponseKpiDefinitionList definitions;
+    private ResponseKPIMeasurementList measurements;
     private List<FilterKpi> kpiFilters = new LinkedList<>();
     private int filterCount = 0;
 
@@ -77,6 +79,14 @@ public class CardObjectKpi extends AbstractCardObject {
 
     public void setDefinitions(ResponseKpiDefinitionList definitions) {
         this.definitions = definitions;
+    }
+
+    public ResponseKPIMeasurementList getMeasurements() {
+        return measurements;
+    }
+
+    public void setMeasurements(ResponseKPIMeasurementList measurements) {
+        this.measurements = measurements;
     }
 
     public List<FilterKpi> getKpiFilters() {
@@ -146,7 +156,6 @@ public class CardObjectKpi extends AbstractCardObject {
         }
         return false;
     }
-
 
     private boolean isFilterExistingByID(FilterKpi newFilter) {
         for (FilterKpi oldFilter : kpiFilters) {

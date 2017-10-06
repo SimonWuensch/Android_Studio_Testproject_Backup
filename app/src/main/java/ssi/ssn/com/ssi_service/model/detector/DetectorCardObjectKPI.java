@@ -2,14 +2,18 @@ package ssi.ssn.com.ssi_service.model.detector;
 
 import android.util.Log;
 
+import java.util.ArrayList;
+
 import ssi.ssn.com.ssi_service.model.data.source.Project;
 import ssi.ssn.com.ssi_service.model.data.source.Status;
 import ssi.ssn.com.ssi_service.model.data.source.cardobject.CardObjectKpi;
 import ssi.ssn.com.ssi_service.model.data.source.filter.kpi.FilterKpi;
 import ssi.ssn.com.ssi_service.model.database.SQLiteDB;
 import ssi.ssn.com.ssi_service.model.helper.JsonHelper;
+import ssi.ssn.com.ssi_service.model.network.DefaultResponse;
 import ssi.ssn.com.ssi_service.model.network.handler.RequestHandler;
 import ssi.ssn.com.ssi_service.model.network.response.kpi.definitions.ResponseKpiDefinitionList;
+import ssi.ssn.com.ssi_service.model.network.response.kpi.measurements.ResponseKpiMeasurement;
 
 public class DetectorCardObjectKPI {
 
@@ -39,21 +43,34 @@ public class DetectorCardObjectKPI {
     }
 
     public static void loadKpiMeasurementByFilter(RequestHandler requestHandler, Project project, FilterKpi filter) {
-        //TODO Card Object Kpi -> Load Kpi Measurement By Filter from Network
-        /*CardObjectKPI cardObject = project.getCardObjectKPI();
+        CardObjectKpi cardObject = project.getCardObjectKpi();
         Log.d(TAG + " Project ID: " + cardObject.get_id_project(), cardObject.getClass().getSimpleName() + " start load card object kpi filter information from network...");
         requestHandler.sendRequestLogin(project);
-        requestHandler.sendRequestNotification(project, filter);
+        requestHandler.sendRequestKPIMeasurements(project, filter);
 
-        if (project.getDefaultResponseNotification().getCode() != 200) {
-            filter.setNotificationTable(null);
+        DefaultResponse defaultResponse = project.getDefaultResponseKPIMeasurementMap().get(filter.getDefinition().getKey());
+        if (defaultResponse.getCode() != 200) {
+            filter.setMeasurements(new ArrayList<ResponseKpiMeasurement>());
+            Log.e(TAG + " Project ID: " + cardObject.get_id_project() + " Filter: " + filter.identity(), "No filter found. ID [" + filter.getDefinition().getKey() + "]");
             return;
         }
 
-        ResponseNotificationTable notificationTable = (ResponseNotificationTable) JsonHelper.fromJsonGeneric(ResponseNotificationTable.class, project.getDefaultResponseNotification().getResult());
-        filter.setNotificationTable(notificationTable);
-        filter.checkResponseNotificationTable();
-        Log.d(TAG + " Project ID: " + cardObject.get_id_project() + " Filter: " + filter.identity(), "Response notification table size is [" + filter.getNotificationTable().getCount() + "], [" + filter.getNotificationTable().getData() + "]");*/
+        if (!defaultResponse.getResult().equals("[]")) {
+            filter.setMeasurements(new ArrayList<ResponseKpiMeasurement>());
+            Log.i(TAG + " Project ID: " + cardObject.get_id_project() + " Filter: " + filter.identity(), "No measurements found. ID [" + filter.getDefinition().getKey() + "]");
+            return;
+        }
+
+        if (!defaultResponse.getResult().startsWith("[")) {
+            ResponseKpiMeasurement[] measurementArray = (ResponseKpiMeasurement[]) JsonHelper.fromJsonGeneric(ResponseKpiMeasurement[].class, defaultResponse.getResult());
+            for (ResponseKpiMeasurement measurement : measurementArray) {
+                filter.getMeasurements().add(measurement);
+            }
+        } else {
+            ResponseKpiMeasurement measurement = (ResponseKpiMeasurement) JsonHelper.fromJsonGeneric(ResponseKpiMeasurement.class, defaultResponse.getResult());
+            filter.getMeasurements().add(measurement);
+        }
+        Log.d(TAG + " Project ID: " + cardObject.get_id_project() + " Filter: " + filter.identity(), "Measurement size [" + filter.getMeasurements().size() + "], [" + filter.getMeasurements() + "]");
     }
 
     public static void detectCardStatus(SQLiteDB sqLiteDB, CardObjectKpi cardObject) {
@@ -65,11 +82,11 @@ public class DetectorCardObjectKPI {
             overAllState = Status.OK;
         } else {
             for (FilterKpi filter : cardObject.getKpiFilters()) {
-                //TODO CARD Object Kpi -> Filter status check
-                /*if (filter.getActiveTimeReachedNotificationTable().getCount() > 0) {
-                    overAllState = Status.ERROR;
-                    break;
-                }*/
+                for (ResponseKpiMeasurement measurement : filter.getMeasurements()) {
+                    if (!filter.getKpiType().check(measurement)){
+                        overAllState = Status.ERROR;
+                    }
+                }
             }
         }
         cardObject.setStatus(overAllState);

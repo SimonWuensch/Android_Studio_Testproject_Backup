@@ -27,7 +27,8 @@ public class KpiTypeStatusEvent implements KpiType {
     }
 
     @Override
-    public boolean check(ResponseKpiMeasurement measurement) {
+    public boolean check(FilterKpi filter, ResponseKpiMeasurement measurement) {
+        //TODO Check value
         return false;
     }
 

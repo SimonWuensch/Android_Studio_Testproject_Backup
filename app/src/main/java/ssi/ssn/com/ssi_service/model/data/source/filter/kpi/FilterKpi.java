@@ -2,8 +2,12 @@ package ssi.ssn.com.ssi_service.model.data.source.filter.kpi;
 
 import com.owlike.genson.annotation.JsonIgnore;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import ssi.ssn.com.ssi_service.model.helper.JsonHelper;
 import ssi.ssn.com.ssi_service.model.network.response.kpi.definitions.ResponseKpiDefinition;
+import ssi.ssn.com.ssi_service.model.network.response.kpi.measurements.ResponseKpiMeasurement;
 
 public class FilterKpi {
 
@@ -11,6 +15,7 @@ public class FilterKpi {
 
     private int id;
     private ResponseKpiDefinition definition;
+    private List<ResponseKpiMeasurement> measurements = new ArrayList<>();
 
     private FilterKpi.KpiTypeSignification signification;
     private String jsonKpiType;
@@ -35,6 +40,14 @@ public class FilterKpi {
 
     public void setDefinition(ResponseKpiDefinition definition) {
         this.definition = definition;
+    }
+
+    public List<ResponseKpiMeasurement> getMeasurements() {
+        return measurements;
+    }
+
+    public void setMeasurements(List<ResponseKpiMeasurement> measurements) {
+        this.measurements = measurements;
     }
 
     public KpiTypeSignification getSignification() {
