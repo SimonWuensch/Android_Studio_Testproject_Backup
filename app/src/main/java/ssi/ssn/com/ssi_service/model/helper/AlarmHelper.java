@@ -34,8 +34,17 @@ public class AlarmHelper {
         int requestCode = project.get_id() * 1000;
         PendingIntent pendingIntent = PendingIntent.getBroadcast(context.getApplicationContext(), requestCode, intent, 0);
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(context.ALARM_SERVICE);
+
+        long nextObservationInMillis;
+        if (!ObservationHelper.isProjectOutOfDate(project)) {
+            nextObservationInMillis = project.getObservationInterval() - (System.currentTimeMillis() - project.getLastObservationTime());
+        } else {
+            nextObservationInMillis = 0;
+        }
+
         alarmManager.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + project.getObservationInterval(), pendingIntent);
-        Log.i(TAG, "Background observation interval started. Project: " + project.identity() + " Time: " + FormatHelper.formatMillisecondsToMinutes(project.getObservationInterval()));
-        Log.i(TAG, "Next oberservation at " + FormatHelper.formatDate(System.currentTimeMillis() + project.getObservationInterval()));
+        Log.i(TAG, "Background observation interval started. Project: " + project.identity() + ", "
+                + "interval: " + FormatHelper.formatMillisecondsToMinutes(project.getObservationInterval()) + ", "
+                + "Next observation at " + FormatHelper.formatDate(System.currentTimeMillis() + nextObservationInMillis));
     }
 }
