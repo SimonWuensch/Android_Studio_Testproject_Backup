@@ -35,11 +35,9 @@ public class AlarmHelper {
         PendingIntent pendingIntent = PendingIntent.getBroadcast(context.getApplicationContext(), requestCode, intent, 0);
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(context.ALARM_SERVICE);
 
-        long nextObservationInMillis;
+        long nextObservationInMillis = 0;
         if (!ObservationHelper.isProjectOutOfDate(project)) {
             nextObservationInMillis = project.getObservationInterval() - (System.currentTimeMillis() - project.getLastObservationTime());
-        } else {
-            nextObservationInMillis = 0;
         }
 
         alarmManager.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + project.getObservationInterval(), pendingIntent);
