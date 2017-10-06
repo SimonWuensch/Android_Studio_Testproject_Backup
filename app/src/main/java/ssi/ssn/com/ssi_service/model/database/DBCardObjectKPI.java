@@ -68,7 +68,7 @@ public class DBCardObjectKPI extends SQLiteOpenHelper implements DBCardObject, D
             }
         }
 
-        SQLiteDatabase db = this.getWritableDatabase();
+        SQLiteDatabase db = getWritableDatabase();
 
         ContentValues values = new ContentValues();
         values.put(_ID_PROJECT, cardObject.get_id_project());
@@ -86,16 +86,17 @@ public class DBCardObjectKPI extends SQLiteOpenHelper implements DBCardObject, D
 
     @Override
     public long getCount(long projectID) {
-        SQLiteDatabase db = this.getReadableDatabase();
-        return DatabaseUtils.queryNumEntries(db, TABLE_KPI,
+        SQLiteDatabase db = getReadableDatabase();
+        long count = DatabaseUtils.queryNumEntries(db, TABLE_KPI,
                 _ID_PROJECT + "=?", new String[]{String.valueOf(projectID)});
-        //db.close();
+        db.close();
+        return count;
     }
 
     // ** GET *********************************************************************************** //
     @Override
     public CardObjectKpi getByProjectID(long id) {
-        SQLiteDatabase db = this.getReadableDatabase();
+        SQLiteDatabase db = getReadableDatabase();
         Cursor cursor = db.rawQuery("SELECT * " +
                 "FROM " + TABLE_KPI + " " +
                 "WHERE " + _ID + " = " + id + "", null);
@@ -115,7 +116,7 @@ public class DBCardObjectKPI extends SQLiteOpenHelper implements DBCardObject, D
 
         Log.d(TAG, "ID Project: " + cardObject.get_id_project() + "| GET: Card Object KPI [" + cardObject + "]");
         this.oldCardObjectString = JsonHelper.toJson(cardObject);
-
+        db.close();
         return cardObject;
     }
 
@@ -171,8 +172,8 @@ public class DBCardObjectKPI extends SQLiteOpenHelper implements DBCardObject, D
             return true;
         }
 
+        SQLiteDatabase db = getWritableDatabase();
         try {
-            SQLiteDatabase db = getWritableDatabase();
             int affectedRows = db.update(TABLE_KPI, values, _ID + " = ?", new String[]{
                     String.valueOf(cardObject.get_id())
             });
@@ -187,6 +188,8 @@ public class DBCardObjectKPI extends SQLiteOpenHelper implements DBCardObject, D
         } catch (SQLiteException ex) {
             Log.e(TAG, "ID Project: " + cardObject.get_id_project() + "| [ERROR] UPDATE: Card Object KPI [" + cardObject + "]. \n" + ex.getMessage() + " \n" + ex.getStackTrace().toString());
             return false;
+        } finally {
+            db.close();
         }
     }
 
@@ -201,10 +204,11 @@ public class DBCardObjectKPI extends SQLiteOpenHelper implements DBCardObject, D
     // ** DELETE ******************************************************************************** //
     @Override
     public void delete(AbstractCardObject cardObject) {
-        SQLiteDatabase db = this.getWritableDatabase();
+        SQLiteDatabase db = getWritableDatabase();
         db.delete(TABLE_KPI,
                 _ID + " = ?",
                 new String[]{String.valueOf(cardObject.get_id())});
+        db.close();
         Log.d(TAG, "ID Project: " + cardObject.get_id_project() + "| DELETE: Card Object KPI + [" + cardObject + "]");
     }
 }

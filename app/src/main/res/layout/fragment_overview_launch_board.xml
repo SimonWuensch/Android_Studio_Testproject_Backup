@@ -70,9 +70,9 @@
         android:id="@+id/fragment_launch_board_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_alignParentLeft="true"
+        android:scrollbars="vertical"
         android:layout_below="@+id/fragment_launch_board_relative_layout_project_state_background"
-        android:layout_margin="5dp"
-        android:scrollbars="vertical" />
+        android:layout_alignLeft="@+id/fragment_launch_board_relative_layout_project_state_background"
+        android:layout_alignStart="@+id/fragment_launch_board_relative_layout_project_state_background" />
 
 </RelativeLayout>

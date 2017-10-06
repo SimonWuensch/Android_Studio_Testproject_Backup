@@ -1,16 +1,16 @@
 package ssi.ssn.com.ssi_service.activity;
 
-import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Handler;
 
-import java.util.TimerTask;
+import java.util.List;
 
 import ssi.ssn.com.ssi_service.R;
 import ssi.ssn.com.ssi_service.model.data.source.Project;
+import ssi.ssn.com.ssi_service.model.database.DBApplicationStatus;
+import ssi.ssn.com.ssi_service.model.helper.AlarmHelper;
 import ssi.ssn.com.ssi_service.model.helper.JsonHelper;
 import ssi.ssn.com.ssi_service.notification_android.AndroidNotificationHelper;
-import ssi.ssn.com.ssi_service.service.UpdateService;
 
 public class MainActivity extends AbstractActivity {
 
@@ -36,24 +36,33 @@ public class MainActivity extends AbstractActivity {
     }
 
     @Override
-    protected void onStart() {
-        super.onStart();
-        TimerTask timerTask = new TimerTask() {
+    protected void onResume() {
+        super.onResume();
+        new AsyncTask<Object, Void, List<Project>>() {
             @Override
-            public void run() {
-                Intent intent = new Intent(MainActivity.this, UpdateService.class);
-                stopService(intent);
+            protected List<Project> doInBackground(Object... params) {
+                sqliteDB.application().updateApplicationStatus(DBApplicationStatus.ApplicationStatus.FOREGROUND);
+                return null;
             }
-        };
-        final Handler handler = new Handler();
-        handler.postDelayed(timerTask, 3000);
+        }.execute();
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-        Intent startIntent = new Intent(getBaseContext(), UpdateService.class);
-        startService(startIntent);
+        new AsyncTask<Object, Void, List<Project>>(){
+            @Override
+            protected List<Project> doInBackground(Object... params) {
+                sqliteDB.application().updateApplicationStatus(DBApplicationStatus.ApplicationStatus.BACKGROUND);
+                return sqliteDB.project().getALL();
+            }
+
+            @Override
+            protected void onPostExecute(List<Project> projects) {
+                AlarmHelper.startAlertPerString(MainActivity.this, projects);
+                super.onPostExecute(projects);
+            }
+        }.execute();
     }
 
     private void addTestProjects() {

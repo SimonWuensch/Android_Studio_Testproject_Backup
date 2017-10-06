@@ -68,7 +68,7 @@ public class DBCardObjectNotification extends SQLiteOpenHelper implements DBCard
             }
         }
 
-        SQLiteDatabase db = this.getWritableDatabase();
+        SQLiteDatabase db = getWritableDatabase();
 
         ContentValues values = new ContentValues();
         values.put(_ID_PROJECT, cardObject.get_id_project());
@@ -86,16 +86,17 @@ public class DBCardObjectNotification extends SQLiteOpenHelper implements DBCard
 
     @Override
     public long getCount(long projectID) {
-        SQLiteDatabase db = this.getReadableDatabase();
-        return DatabaseUtils.queryNumEntries(db, TABLE_NOTIFICATION,
+        SQLiteDatabase db = getReadableDatabase();
+        long count =  DatabaseUtils.queryNumEntries(db, TABLE_NOTIFICATION,
                 _ID_PROJECT + "=?", new String[]{String.valueOf(projectID)});
-        //db.close();
+        db.close();
+        return count;
     }
 
     // ** GET *********************************************************************************** //
     @Override
     public CardObjectNotification getByProjectID(long id) {
-        SQLiteDatabase db = this.getReadableDatabase();
+        SQLiteDatabase db = getReadableDatabase();
         Cursor cursor = db.rawQuery("SELECT * " +
                 "FROM " + TABLE_NOTIFICATION + " " +
                 "WHERE " + _ID + " = " + id + "", null);
@@ -115,7 +116,7 @@ public class DBCardObjectNotification extends SQLiteOpenHelper implements DBCard
 
         Log.d(TAG, "ID Project: " + cardObject.get_id_project() + "| GET: Card Object Notification [" + cardObject + "]");
         this.oldCardObjectString = JsonHelper.toJson(cardObject);
-
+        db.close();
         return cardObject;
     }
 
@@ -171,8 +172,8 @@ public class DBCardObjectNotification extends SQLiteOpenHelper implements DBCard
             return true;
         }
 
+        SQLiteDatabase db = getWritableDatabase();
         try {
-            SQLiteDatabase db = getWritableDatabase();
             int affectedRows = db.update(TABLE_NOTIFICATION, values, _ID + " = ?", new String[]{
                     String.valueOf(cardObject.get_id())
             });
@@ -187,6 +188,8 @@ public class DBCardObjectNotification extends SQLiteOpenHelper implements DBCard
         } catch (SQLiteException ex) {
             Log.e(TAG, "ID Project: " + cardObject.get_id_project() + "| [ERROR] UPDATE: Card Object Notification [" + cardObject + "]. \n" + ex.getMessage() + " \n" + ex.getStackTrace().toString());
             return false;
+        }finally {
+            db.close();
         }
     }
 
@@ -201,10 +204,11 @@ public class DBCardObjectNotification extends SQLiteOpenHelper implements DBCard
     // ** DELETE ******************************************************************************** //
     @Override
     public void delete(AbstractCardObject cardObject) {
-        SQLiteDatabase db = this.getWritableDatabase();
+        SQLiteDatabase db = getWritableDatabase();
         db.delete(TABLE_NOTIFICATION,
                 _ID + " = ?",
                 new String[]{String.valueOf(cardObject.get_id())});
+        db.close();
         Log.d(TAG, "ID Project: " + cardObject.get_id_project() + "| DELETE: Card Object Notification + [" + cardObject + "]");
     }
 }

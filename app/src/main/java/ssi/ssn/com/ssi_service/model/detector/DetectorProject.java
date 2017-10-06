@@ -41,15 +41,15 @@ public class DetectorProject {
         project.initCardObjects(sqLiteDB);
         project.detectApplicationStatus(requestHandler);
         if (!project.getApplicationStatus().equals(Status.OK)) {
-            project.setLastObservationTime(new Date().getTime());
+            project.setLastObservationTime(new Date().getTime()); //Gebraucht?
             project.setStatus(project.getApplicationStatus());
             sqLiteDB.project().update(project);
             for (AbstractCardObject cardObject : project.getAllCardObjects()) {
-                cardObject.setLastObservationTime(new Date().getTime());
+                cardObject.setLastObservationTime(new Date().getTime()); //Gebraucht?
                 cardObject.setStatus(Status.NOT_AVAILABLE);
                 cardObject.getDBSQLiteCardObject(sqLiteDB).update(cardObject);
             }
-            ObservationHelper.setLastObservationTimeToNOW(sqLiteDB, project);
+            ObservationHelper.setLastObservationTimeToNOW(sqLiteDB, project); 
             return;
         }
 

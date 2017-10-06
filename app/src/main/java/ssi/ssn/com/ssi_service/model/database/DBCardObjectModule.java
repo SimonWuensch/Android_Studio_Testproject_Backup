@@ -67,7 +67,7 @@ public class DBCardObjectModule extends SQLiteOpenHelper implements DBCardObject
             }
         }
 
-        SQLiteDatabase db = this.getWritableDatabase();
+        SQLiteDatabase db = getWritableDatabase();
 
         ContentValues values = new ContentValues();
         values.put(_ID_PROJECT, cardObject.get_id_project());
@@ -86,17 +86,17 @@ public class DBCardObjectModule extends SQLiteOpenHelper implements DBCardObject
 
     @Override
     public long getCount(long projectID) {
-        SQLiteDatabase db = this.getReadableDatabase();
+        SQLiteDatabase db = getReadableDatabase();
         long count = DatabaseUtils.queryNumEntries(db, TABLE_MODULE,
                 _ID_PROJECT + "=?", new String[]{String.valueOf(projectID)});
-        //db.close();
+        db.close();
         return count;
     }
 
     // ** GET *********************************************************************************** //
     @Override
     public CardObjectModule getByProjectID(long id) {
-        SQLiteDatabase db = this.getReadableDatabase();
+        SQLiteDatabase db = getReadableDatabase();
         Cursor cursor = db.rawQuery("SELECT * " +
                 "FROM " + TABLE_MODULE + " " +
                 "WHERE " + _ID + " = " + id + "", null);
@@ -116,6 +116,7 @@ public class DBCardObjectModule extends SQLiteOpenHelper implements DBCardObject
 
         Log.d(TAG, "ID Project: " + cardObject.get_id_project() + "| GET: Card Object Module [" + cardObject + "]");
         this.oldCardObjectString = JsonHelper.toJson(cardObject);
+        db.close();
         return cardObject;
     }
 
@@ -166,8 +167,8 @@ public class DBCardObjectModule extends SQLiteOpenHelper implements DBCardObject
 
     @Override
     public boolean updateValue(AbstractCardObject cardObject, ContentValues values) {
+        SQLiteDatabase db = getWritableDatabase();
         try {
-            SQLiteDatabase db = getWritableDatabase();
             int affectedRows = db.update(TABLE_MODULE, values, _ID + " = ?", new String[]{
                     String.valueOf(cardObject.get_id())
             });
@@ -182,6 +183,8 @@ public class DBCardObjectModule extends SQLiteOpenHelper implements DBCardObject
         } catch (SQLiteException ex) {
             Log.e(TAG, "ID Project: " + cardObject.get_id_project() + "| [ERROR] UPDATE: Card Object Module [" + cardObject + "]. \n" + ex.getMessage() + " \n" + ex.getStackTrace());
             return false;
+        } finally {
+            db.close();
         }
     }
 
@@ -197,10 +200,11 @@ public class DBCardObjectModule extends SQLiteOpenHelper implements DBCardObject
     // ** DELETE ******************************************************************************** //
     @Override
     public void delete(AbstractCardObject cardObject) {
-        SQLiteDatabase db = this.getWritableDatabase();
+        SQLiteDatabase db = getWritableDatabase();
         db.delete(TABLE_MODULE,
                 _ID + " = ?",
                 new String[]{String.valueOf(cardObject.get_id())});
+        db.close();
         Log.d(TAG, "ID Project: " + cardObject.get_id_project() + "| DELETE: Card Object Module + [" + cardObject + "]");
     }
 }

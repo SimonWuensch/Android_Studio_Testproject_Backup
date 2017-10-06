@@ -52,16 +52,21 @@ public class DBProject extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(android.database.sqlite.SQLiteDatabase db) {
+        db.execSQL(DBApplicationStatus.CREATE_TABLE_APPLICATION_STATUS);
+
         db.execSQL(CREATE_TABLE_PROJECT);
         db.execSQL(DBCardObjectModule.CREATE_TABLE_CARD_OBJECT_MODULE);
         db.execSQL(DBCardObjectComponent.CREATE_TABLE_CARD_OBJECT_COMPONENT);
         db.execSQL(DBCardObjectNotification.CREATE_TABLE_CARD_OBJECT_NOTIFICATION);
         db.execSQL(DBCardObjectKPI.CREATE_TABLE_CARD_OBJECT_KPI);
+
     }
 
     @Override
     public void onUpgrade(android.database.sqlite.SQLiteDatabase db, int oldVersion, int newVersion) {
         Log.w(TAG, "DB UPGRADE: From version " + oldVersion + " to " + newVersion + ".");
+        db.execSQL(DBApplicationStatus.DROP_TABLE_APPLICATION_STATUS);
+
         db.execSQL(DROP_TABLE_PROJECT);
         db.execSQL(DBCardObjectModule.DROP_TABLE_CARD_OBJECT_MODULE);
         db.execSQL(DBCardObjectComponent.DROP_TABLE_CARD_OBJECT_COMPONENT);
@@ -71,7 +76,7 @@ public class DBProject extends SQLiteOpenHelper {
     }
 
     public void add(Project project) {
-        SQLiteDatabase db = this.getWritableDatabase();
+        SQLiteDatabase db = getWritableDatabase();
 
         ContentValues values = new ContentValues();
         values.put(OBSERVATION_INTERVAL, project.getObservationInterval());
@@ -81,14 +86,14 @@ public class DBProject extends SQLiteOpenHelper {
         db.insert(TABLE_PROJECT,
                 null,
                 values);
-
+        db.close();
         Log.d(TAG, "ADD: Project [" + project + "]");
     }
 
     // ** GET *********************************************************************************** //
 
     public Project getByID(long id) {
-        SQLiteDatabase db = this.getReadableDatabase();
+        SQLiteDatabase db = getReadableDatabase();
         Cursor cursor = db.rawQuery("SELECT * " +
                 "FROM " + TABLE_PROJECT + " " +
                 "WHERE " + _ID + " = " + id + "", null);
@@ -107,6 +112,7 @@ public class DBProject extends SQLiteOpenHelper {
         project.setStatus(status);
 
         Log.d(TAG, "GET: Project [" + project + "]");
+        db.close();
         return project;
     }
 
@@ -114,7 +120,7 @@ public class DBProject extends SQLiteOpenHelper {
         List<Project> projects = new LinkedList<>();
         String query = "SELECT  * FROM " + TABLE_PROJECT;
 
-        SQLiteDatabase db = this.getWritableDatabase();
+        SQLiteDatabase db = getWritableDatabase();
         Cursor cursor = db.rawQuery(query, null);
 
         if (cursor.moveToFirst()) {
@@ -135,11 +141,12 @@ public class DBProject extends SQLiteOpenHelper {
         }
 
         Log.d(TAG, "GET - ALL: Project count [" + projects.size() + "]" + projects);
+        db.close();
         return projects;
     }
 
     public long getCount() {
-        SQLiteDatabase db = this.getReadableDatabase();
+        SQLiteDatabase db = getReadableDatabase();
         long cnt = DatabaseUtils.queryNumEntries(db, TABLE_PROJECT);
         Log.i(TAG, "PROJECT COUNT [" + cnt + "].");
         return cnt;
@@ -193,8 +200,8 @@ public class DBProject extends SQLiteOpenHelper {
     }
 
     private boolean updateValue(Project project, ContentValues values) {
+        SQLiteDatabase db = getWritableDatabase();
         try {
-            SQLiteDatabase db = getWritableDatabase();
             int affectedRows = db.update(TABLE_PROJECT, values, _ID + " = ?", new String[]{
                     String.valueOf(project.get_id())
             });
@@ -209,12 +216,14 @@ public class DBProject extends SQLiteOpenHelper {
         } catch (SQLiteException ex) {
             Log.e(TAG, "[ERROR] UPDATE: Project [" + project + "]. \n" + ex.getMessage() + " \n" + ex.getStackTrace());
             return false;
+        }finally {
+            db.close();
         }
     }
 
     // ** DELETE ******************************************************************************** //
     public void delete(Project project) {
-        SQLiteDatabase db = this.getWritableDatabase();
+        SQLiteDatabase db = getWritableDatabase();
         db.delete(TABLE_PROJECT,
                 _ID + " = ?",
                 new String[]{String.valueOf(project.get_id())});
@@ -224,5 +233,6 @@ public class DBProject extends SQLiteOpenHelper {
         for (AbstractCardObject cardObject : project.getAllCardObjects()) {
             cardObject.getDBSQLiteCardObject(sqLiteDB).delete(cardObject);
         }
+        db.close();
     }
 }

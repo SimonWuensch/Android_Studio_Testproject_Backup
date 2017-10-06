@@ -22,11 +22,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        <service android:name=".service.UpdateService" />
-        <service
-            android:name=".service.TestIntentService"
-            android:exported="false"></service>
+        <receiver android:name=".model.helper.AlarmBroadcastReceiver" >
+        </receiver>
     </application>
 
 </manifest>
